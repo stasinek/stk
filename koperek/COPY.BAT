@@ -1,0 +1,1 @@
+xcopy /y *.dll c:\windows\system32
