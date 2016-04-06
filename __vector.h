@@ -6,17 +6,17 @@
 #include "./text/tsoft_cstr_manipulation.h"
 #include "./tsoft_main.h"
 //---------------------------------------------------------------------------
-//implementation of std::vector combined with hash chain of pointers ;)
+//implementation of std::vector, much simpler "wheel" without iterator, allocator etc :<
 //---------------------------------------------------------------------------
 namespace ts {
 //---------------------------------------------------------------------------
 #define __vector_DEFAULT_RESERVED(T) ((4096-32-4-32)/sizeof(T))
 template <class a_element_T> class __vector {
 private:
-    a_element_T *f_ptrs; uint32_t f_ptrs_ocupied; uint32_t f_ptrs_reserved;
+    a_element_T *f_ptrs; uint32_t f_ptrs_ocupied, f_ptrs_reserved;
 public:
 //---------------------------------------------------------------------------
-inline __vector(uint32_t a_count = __vector_DEFAULT_RESERVED(a_element_T))
+inline __vector(const uint32_t a_count = __vector_DEFAULT_RESERVED(a_element_T))
     :
       f_ptrs(NULL),
       f_ptrs_ocupied(0), f_ptrs_reserved(0)
@@ -35,12 +35,12 @@ __DEBUG_FUNC_CALLED__
     this->resize(0);
 }
 //---------------------------------------------------------------------------
-inline uint32_t __stdcall push(a_element_T& a_new)
+inline uint32_t __stdcall push(const a_element_T& a_new)
 {
 return this->add(a_new);
 }
 //---------------------------------------------------------------------------
-uint32_t __stdcall add(a_element_T& a_new)
+uint32_t __stdcall add(const a_element_T& a_new)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED__
@@ -63,7 +63,7 @@ inline void  __stdcall pop_all()
 return this->resize(0);
 }
 //---------------------------------------------------------------------------
-a_element_T __stdcall remove(uint32_t a_index)
+a_element_T __stdcall remove(const uint32_t a_index)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED__
@@ -80,7 +80,7 @@ __DEBUG_FUNC_CALLED__
         return ret;
 }
 //---------------------------------------------------------------------------
-uint32_t __stdcall insert(a_element_T& a_new,uint32_t a_index)
+uint32_t __stdcall insert(const a_element_T& a_new,const uint32_t a_index)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED__
@@ -94,7 +94,7 @@ __DEBUG_FUNC_CALLED__
         return f_ptrs_ocupied;
 }
 //---------------------------------------------------------------------------
-void __stdcall swap(uint32_t a_index1,uint32_t a_index2)
+void __stdcall swap(const uint32_t a_index1,const uint32_t a_index2)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED__
@@ -104,7 +104,7 @@ __DEBUG_FUNC_CALLED__
         &f_ptrs[a_index1] = t;
 }
 //---------------------------------------------------------------------------
-inline a_element_T __stdcall front(void) const
+inline a_element_T& __stdcall front(void) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED__
@@ -112,12 +112,12 @@ __DEBUG_FUNC_CALLED__
     return f_ptrs[f_ptrs_ocupied];
 }
 //---------------------------------------------------------------------------
-inline a_element_T __stdcall top(void) const
+inline a_element_T& __stdcall top(void) const
 {
     return front();
 }
 //---------------------------------------------------------------------------
-inline a_element_T __stdcall back(void) const
+inline a_element_T& __stdcall back(void) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED__
@@ -125,11 +125,34 @@ __DEBUG_FUNC_CALLED__
     return f_ptrs[0];
 }
 //---------------------------------------------------------------------------
-inline a_element_T __stdcall bottom(void) const
+inline a_element_T& __stdcall bottom(void) const
 {
     return back();
 }
 //---------------------------------------------------------------------------
+inline a_element_T& __stdcall at(const uint32_t a_index) const
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED__
+#endif
+    return f_ptrs[a_index];
+}
+//---------------------------------------------------------------------------
+inline a_element_T& __stdcall operator [] (const uint32_t a_index) const
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED__
+#endif
+    return f_ptrs[a_index];
+}
+//---------------------------------------------------------------------------
+inline a_element_T& __stdcall set(const uint32_t a_index, const a_element_T& a_value) const
+{
+    return f_ptrs[a_index] = a_value;
+}
+//---------------------------------------------------------------------------
+
+
 inline uint32_t __stdcall count(void)  const
 {
 #ifdef __DEBUG_VECTOR__
@@ -160,7 +183,6 @@ virtual void __stdcall cleared(void)
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED__
 #endif
-
 }
 //---------------------------------------------------------------------------
 inline uint32_t __stdcall set_size(uint32_t a_new_size)

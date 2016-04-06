@@ -11,10 +11,12 @@
 //---------------------------------------------------------------------------
 #include <winsock2.h>
 #include "tsoft_kop32_API.h"
+
 //---------------------------------------------------------------------------
 #include "./../io/tsoft_file_eno_header.h"
 #include "./../hash/tsoft_hash_ssc1.h"
 #include "./../process_journal/tsoft_journal.h"
+#include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 #include <windows.h>
 #include <wincon.h>
@@ -29,7 +31,7 @@
 // The main class
 //---------------------------------------------------------------------------
 ts::__kop32_class *kop32;
-static ts::__kop32_class__progress_controler Progress;
+static ts::__kop32_class_progress_controler console_progress(kop32);
 
 /*__int32 *hist_l_dict;
 __int32 hist_l_dict_max;
@@ -44,7 +46,7 @@ __int32 hist_e_brun_max;
 */
 
 static uint32_t rdtsc_b;
-uint32_t __stdcall C_Start()
+uint32_t __stdcall c_start()
 {
 #ifdef BCC
 	__asm {rdtsc		 }
@@ -52,7 +54,7 @@ uint32_t __stdcall C_Start()
 	return 0;
 #endif
 }
-uint32_t __stdcall C_End(uint32_t b)
+uint32_t __stdcall c_end(uint32_t b)
 {
 #ifdef BCC
 	__asm {rdtsc		 }
@@ -66,7 +68,7 @@ uint32_t __stdcall C_End(uint32_t b)
 //---------------------------------------------------------------------------
 // The callback function
 //---------------------------------------------------------------------------
-int __stdcall Classic_monitor_proc()
+int __stdcall classic_monitor_proc()
 {
 	static char szPrb[13] = "[		  ]";
 	static UINT nPos = 0;
@@ -75,27 +77,28 @@ int __stdcall Classic_monitor_proc()
 		static UINT nRot = 0;
 		nRot = (nRot+1) &0x0FL;
 // PREVENT DIVISION BY '0'
-	if (Console_progress.src_all->readed == 0 || Console_progress.src_one->size == 0 || Console_progress.src_all->size == 0 || (Console_progress.Elapsed() == 0)) {
+	if (console_progress.src->all->readed == 0 || console_progress.src->one->size == 0 || console_progress.src->all->size == 0 || (console_progress.elapsed() == 0)) {
 		ts::console::print_formated("\r[		  ] - <0%% 0kB/s>");
 		return 1;
 	}
 //PROGRESS BAR
-	nPos = (unsigned int)(10 *double(Console_progress.src_all->readed) / double(Console_progress.src_all->size));
+	nPos = (unsigned int)(10 *double(console_progress.src->all->readed) / double(console_progress.src->all->size));
 	memmove(szPrb, "[		  ]", 12);
 	memmove(szPrb, "[����������]", 1+nPos);
 	ts::console::print_formated("\r																		   ");
-	ts::console::print_formated("\r%s %.1lf%c <%.2lf%% ", szPrb, 100 *(double(Console_progress.src_all->readed) / double(Console_progress.src_all->size)),
-						  szGfx[(nRot >> 2) &0x03L], 100 *(double(Console_progress.dst_all->readed)
-								  / double(Console_progress.src_all->readed)));
+	ts::console::print_formated("\r%s %.1lf%c <%.2lf%% ", szPrb, 100 *(double(console_progress.src->all->readed) / double(console_progress.src->all->size)),
+						  szGfx[(nRot >> 2) &0x03L], 100 *(double(console_progress.dst->all->readed)
+								  / double(console_progress.src->all->readed)));
 // SPEED MB/s
 	if (kop32->options->operation == OPERATION_ENCODE)
-		ts::console::print_formated("%.2lfkB/s> ", double(Console_progress.src_all->readed) / double(Console_progress.Elapsed()) /
+		ts::console::print_formated("%.2lfkB/s> ", double(console_progress.src->all->readed) / double(console_progress.elapsed()) /
 							  1024);
 	if (kop32->options->operation == OPERATION_DECODE)
-		ts::console::print_formated("%.2lfkB/s> ", double(Console_progress.src_all->readed) / double(Console_progress.Elapsed()) /
+		ts::console::print_formated("%.2lfkB/s> ", double(console_progress.src->all->readed) / double(console_progress.elapsed()) /
 							  1024);
 // FILE NAME "?????.???"
-	ts::text::extract_file_name(szTmp, kop32->list->src_main_list->items[kop32->list->cur_i]->text);
+//kop32->list->src_main_list->items[kop32->list->cur_i];
+	ts::cstr::extract_file_name(szTmp, kop32->list->src_main_list->items()->get_text(kop32->list->cur_i));
 	if (ts::cstr::len(szTmp) > 30-3) {
 		szTmp[30] = 0;
 		strcat(szTmp, "...");
@@ -103,16 +106,16 @@ int __stdcall Classic_monitor_proc()
 	ts::console::print_formated("\"%s\"", szTmp);
 // CHECK ESCAPE CODE if ESC was pressed and if so request STOP
 	if (nRot == 0xFFL && kbhit() != 0) {
-		if (ts::console::getch() == 0x00L) if (ts::console::getch() == 0x1BL) kop32->cancel();
+		if (ts::console::getch() == 0x00L) if (ts::console::getch() == 0x1BL) kop32->abort();
 	}
 // RETURN SUCCES
 	return 1;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall Classic_event_handler(__int32 a_op, __int32 a_code, __int32 a_param)
+const char* __stdcall classic_event_handler(ts::__kop32_class *a_kop32, const char *a_event, const char *a_code, const char *a_code_ex)
 {
-	if (a_op &on_PROGRESSBAR)
+/*	if (a_op &on_PROGRESSBAR)
 				Classic_monitor_proc();
 	if (a_op &on_ASK_USER)
 		return mrYes;
@@ -121,33 +124,22 @@ __int32 __stdcall Classic_event_handler(__int32 a_op, __int32 a_code, __int32 a_
 	if (a_op &on_ERROR)
 		return mrYes;
 	return mrYes;
+	*/
 }
 //---------------------------------------------------------------------------
 
-int __stdcall Start_kop32_in_text_mode(char *args)
-{
-Start_kop32_in_text_mode(args, &Console_event_handler, &ts::console::classic_print_handler, &ts::console::classic_get_char_handler);
-}
-//---------------------------------------------------------------------------
-
-int __stdcall Start_kop32_in_text_mode(char *args, ts::console::print_handler *aprinthandler,ts::console::get_char_handler *agetchhandler)
-{
-		ts::console::print_handler = aprinthandler;
-		ts::console::get_char_handler = agetchhandler;
-}
-
-int __stdcall Start_kop32_in_text_mode(char *args, ts::__kop32_class::External_callback_event_handler_ptr *akop32eventhandler,ts::console::print_handler *aprinthandler,ts::console::get_char_handler *agetchhandler)
+int __stdcall start_kop32_in_text_mode(char *args, ts::__kop32_class_progress_controler::__callback_event_handler *akop32eventhandler, const ts::console::__print_handler *aprinthandler,const ts::console::__getch_handler *agetchhandler)
 {
 		kop32 = new ts::__kop32_class;
-		kop32->External_callback_event_handler_ptr = &akop32eventhandler;
-		kop32->progress = &Progress;
+		kop32->progress->callback_event_handler = akop32eventhandler;
+		kop32->progress = &console_progress;
 
 		ts::__journal journal;
 	journal.create();
 	char *c_temp = new char[1024];
 	ts::cstr::mov(c_temp, "\0");
 	//__int32 s = ::GetModuleFileNameA(NULL, c_temp, MAX_PATH);
-	if (ts::cstr::strlen(args) <=8) {
+	if (ts::cstr::len(args) <=8) {
 		if (strstr(args, "-L") != NULL || strstr(args, "--LICENSE") != NULL ||
 				strstr(args, "/LICENSE") != NULL) {
 			ts::console::print_formated("============================================================================\n");
@@ -199,44 +191,58 @@ int __stdcall Start_kop32_in_text_mode(char *args, ts::__kop32_class::External_c
 	ts::console::print_formated("============================================================================\n");
 	if (ts::console::getch()=='\r') {
 		if (kop32->prepare_options(args))
-			if (kop32->prepare())
-				Console_progress.initialize_timer();
-		if (kop32->execute_all()) {
+			if (kop32->prepare_list())
+				console_progress.initialize_timer();
+		if (kop32->exec_all()) {
 			ts::console::print_formated("\r																		   ");
 			ts::console::print_formated("\n");
 			ts::console::print_formated("Finished!\n");
 			ts::console::print_formated("\n");
 		}
-		Console_progress.Freeze_timer();
+		console_progress.freeze_timer();
 	} else {
 		ts::console::print_formated("canceled, please wait...\n");
 	}
 //-------------------------------------------------------------------
 	double ratio = 0;
 //-------------------------------------------------------------------
-	if (Console_progress.Stop == true) {
+	if (console_progress.cancel == true) {
 		ts::console::print_formated("============================================================================\n");
 		ts::console::print_formated("\n ESC -> Operation canceled");
 		ts::console::print_formated("============================================================================\n");
 		ts::console::print_formated("\n");
 	} else {
-		ts::console::print_formated("size in			:  %uB\n", (__int32)Console_progress.src_all->readed);
+		ts::console::print_formated("size in			:  %uB\n", (__int32)console_progress.src->all->readed);
 		if (kop32->options->operation == OPERATION_ENCODE
-				&&  Console_progress.src_all->readed!=0) {
+				&&  console_progress.src->all->readed!=0) {
 			ts::console::print_formated("compression ratio  :  ");
-			ratio = double(Console_progress.dst_all->readed) / double(Console_progress.src_all->readed);
+			ratio = double(console_progress.dst->all->readed) / double(console_progress.src->all->readed);
 			ts::console::print_formated("%.2lf%%, %.2lf bit/B vs 8 bit/B\n", 100 *(ratio), 8 *ratio);
 		}
-		ts::console::print_formated("size out		   :  %uB\n", (__int32)Console_progress.dst_all->readed);
+		ts::console::print_formated("size out		   :  %uB\n", (__int32)console_progress.dst->all->readed);
 		ts::console::print_formated("============================================================================\n");
-		ts::console::print_formated("Time			   :  %.2lfs\n", (double)(Console_progress.Elapsed()));
-		if (Console_progress.Elapsed()!=0)
+		ts::console::print_formated("Time			   :  %.2lfs\n", (double)(console_progress.elapsed()));
+		if (console_progress.elapsed()!=0)
 			ts::console::print_formated("Averange speed	 :  %.2lfkB/s\n",
-								  ((double)Console_progress.src_all->readed / (double)(Console_progress.Elapsed())) / 1024);
+								  ((double)console_progress.src->all->readed / (double)(console_progress.elapsed())) / 1024);
 		ts::console::print_formated("\n");
 	}
 	delete kop32;
 	return 1;
+}
+//---------------------------------------------------------------------------
+
+int __stdcall start_kop32_in_text_mode(char *args, ts::console::__print_handler *aprinthandler,ts::console::__getch_handler *agetchhandler)
+{
+	ts::console::print_handler = aprinthandler;
+	ts::console::getch_handler = agetchhandler;
+	return start_kop32_in_text_mode(args, &classic_event_handler, &ts::console::stdout_handler, &ts::console::stdinp_handler);
+}
+//---------------------------------------------------------------------------
+
+int __stdcall start_kop32_in_text_mode(char *args)
+{
+ 	return start_kop32_in_text_mode(args, &ts::console::stdout_handler, &ts::console::stdinp_handler);
 }
 //---------------------------------------------------------------------------
 /*
@@ -414,7 +420,7 @@ return 0;
 		{
 //-------------------------------------------------------------------
 		fprintf(journal.get_stream(),
-			"TOTAL BYTES IN:%d\nTOTAL BYTES OUT:%d\nRATIO:%.2lf%%, %.2lf bit/B\nTIME: %.2lfs\nSPEED %.2lfkB/s\n", (__int32)Console_progress.src_all->readed, (__int32)Console_progress.dst_all->readed, 100 *(ratio), 8 *ratio, (double)(Console_progress.T2 - Console_progress.T1 + 1) / 1000.0, (double)Console_progress.src_all->readed / (double)(Console_progress.T2 - Console_progress.T1 + 1) / 1024);
+			"TOTAL BYTES IN:%d\nTOTAL BYTES OUT:%d\nRATIO:%.2lf%%, %.2lf bit/B\nTIME: %.2lfs\nSPEED %.2lfkB/s\n", (__int32)console_progress.src->all->readed, (__int32)console_progress.dst->all->readed, 100 *(ratio), 8 *ratio, (double)(console_progress.T2 - console_progress.T1 + 1) / 1000.0, (double)console_progress.src->all->readed / (double)(console_progress.T2 - console_progress.T1 + 1) / 1024);
 //-------------------------------------------------------------------
 		__int32 l, h;
 //-------------------------------------------------------------------

@@ -500,17 +500,17 @@ return s_answer;
 	register uint64_t rcor;
 	for (i = 0; i < TIMES;i++) {
 		ts::cpu::tsc_overhead(); //heat up CPU?
-		ts::cpu::tsc_start(); t1 = ts::time::time_ms(); ts::cpu::tsc_checkpoint();
+		ts::cpu::tsc_start(); t1 = ts::time::clock_ms(); ts::cpu::tsc_checkpoint();
 		rcor = (uint64_t)ts::cpu::tsc_elapsed();
-		do {t2 = ts::time::time_ms();  // SYNC to clock-tick interval
+		do {t2 = ts::time::clock_ms();  // SYNC to clock-tick interval
 		} while (t2<=t1);
 		ts::cpu::tsc_start();
 		for (register uint32_t trash1 = INTERVAL_TIME; trash1 > 0; trash1--) //conajmniej raz
 		for (register uint32_t trash2 = 0; trash2 < 1000*1000; trash2++) //conajmniej 1000000 mln instrukcji
 					{}
 				//measure time: ~INTERVAL * 1MHz
-		t3 = ts::time::time_ms();
-		do {t4 = ts::time::time_ms();  // SYNC to clock-tick interval
+		t3 = ts::time::clock_ms();
+		do {t4 = ts::time::clock_ms();  // SYNC to clock-tick interval
 		} while (t4<=t3);
 		ts::cpu::tsc_checkpoint();
 		r = (uint64_t)ts::cpu::tsc_elapsed();

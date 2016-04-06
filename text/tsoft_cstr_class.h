@@ -13,17 +13,15 @@ class __cstr_class : public __vector<char> {
 	protected:
 	void						 __stdcall	__init(const uint32_t a_initial_size, const char* __restrict__ a_c_to_clone);
 //-------------------------------
-	char *f_ptr;
-	uint32_t f_ptr_size;
-	mutable char *f_ptr_dup;
 	mutable char *f_subs;
 	mutable uint32_t f_subs_size;
+	mutable char *f_ptr_dup;
 //-------------------------------
 	public:
 //-------------------------------
-						__stdcall	__cstr_class(void);
-						__stdcall	__cstr_class(const char* __restrict__ a_c_to_clone);
+						__stdcall	__cstr_class();
 						__stdcall	__cstr_class(const uint32_t a_initial_size);
+						__stdcall	__cstr_class(const char* __restrict__ a_c_to_clone);
 						__stdcall	__cstr_class(const uint32_t a_initial_size, const char* __restrict__ a_c_to_clone);
 	   const char*		__stdcall	set(const char* __restrict__ a_c_to_clone);
 inline const char      *__stdcall   set(__cstr_class* __restrict__ a_text_c) {
@@ -34,32 +32,24 @@ return set(ts::cstr::itoa(a_i_to_clone));
 }
 	  const char	   *__stdcall	add(const char* __restrict__ a_c_to_add);
 inline      char       *__stdcall   data() {
-return f_ptr;
+return &__vector<char>::bottom();
 }
 inline const char      *__stdcall   at(const uint32_t a_pos) const {
-return (const char*)&f_ptr[a_pos];
+return (const char*)&__vector<char>::at(a_pos);
 }
-inline const char      *__stdcall   operator[] (const uint32_t a_pos) const {
-return at(a_pos);
-}
-	const   char	   *__stdcall	front(void) const;
-	const   char	   *__stdcall	back(void)  const;
 	const   char	   *__stdcall	substr(uint32_t a_pos, uint32_t a_len)  const;
 inline      uint32_t    __stdcall   len(void) const {
-return ts::cstr::len(f_ptr);
-}
-inline      uint32_t    __stdcall   size(void) const {
-return f_ptr_size;
+return ts::cstr::len(&__vector<char>::bottom());
 }
 		void			__stdcall	reserve(const uint32_t a_new_size);
 		void			__stdcall	resize(const uint32_t a_new_len);
 		void			__stdcall	shrink_to_fit();
 		void			__stdcall	clear();
 inline __int32          __stdcall   i(void) const {
-return ts::cstr::atoi(f_ptr);
+return ts::cstr::atoi(&__vector<char>::bottom());
 }
 inline const char      *__stdcall   c_str(void) const {
-return (const char*)f_ptr;
+return (const char*)&__vector<char>::bottom();
 }
 inline                  __stdcall   operator const char* () const {
 return c_str();

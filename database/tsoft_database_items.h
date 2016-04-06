@@ -75,11 +75,14 @@ class __database_items {
                 void			__stdcall	set_number				(const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_number);
                 void			__stdcall	set_data_chunk			(const uint32_t a_index_S, const uint32_t a_column_Y, void *a_ptr);
                 //------------------------------------
-                inline const ts::__database_items::__atom* operator [] (uint32_t a_index) const {
+                inline const ts::__database_items::__atom* __stdcall operator [] (const uint32_t a_index) const {
+                return f_atom_matrix[a_index];
+                }
+                inline const ts::__database_items::__atom* __stdcall operator [] (const uint32_t a_index) {
                 return f_atom_matrix[a_index];
                 }
                 //---------------------------------------------------------------------------
-                inline const ts::__database_items::__atom *__stdcall get(const uint32_t a_index_G) const {
+                inline const ts::__database_items::__atom* __stdcall get(const uint32_t a_index_G) const {
                 return f_atom_matrix[a_index_G];
                 }
                 //---------------------------------------------------------------------------
@@ -137,7 +140,6 @@ class __database_items {
                 void			__stdcall	sort_data_chunk			(const uint32_t a_column_Y);
                 void			__stdcall	swap					(const uint32_t a_index_P, const uint32_t a_index_B);
                 //---------------------------------------------------------------------------
-                //------------------------------------
             const char *__stdcall text(const char* __restrict__ a_format) const;
                 //------------------------------------
 __stdcall  ~__database_items		();

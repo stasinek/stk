@@ -5,19 +5,23 @@
 #include "./../text/tsoft_cstr_manipulation.h"
 //---------------------------------------------------------------------------
 
-__stdcall ts::__cstr_class::__cstr_class(void)
-:	f_ptr(NULL), f_ptr_size(0), f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0)
+__stdcall ts::__cstr_class::__cstr_class()
+:
+f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0),
+__vector<char>(0)
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
 #endif
 
-__init(1,"\0");
+__init(0,"\0");
 }
 //---------------------------------------------------------------------------
 
 __stdcall ts::__cstr_class::__cstr_class(const uint32_t a_initial_size)
-:	f_ptr(NULL), f_ptr_size(0), f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0)
+:
+f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0),
+__vector<char>(a_initial_size)
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
@@ -28,7 +32,9 @@ __init(a_initial_size,"\0");
 //---------------------------------------------------------------------------
 
 __stdcall ts::__cstr_class::__cstr_class(const char* __restrict__ a_text_to_clone)
-:	f_ptr(NULL), f_ptr_size(0), f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0)
+:
+f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0),
+__vector<char>()
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
@@ -38,7 +44,9 @@ __DEBUG_FUNC_CALLED__
 //---------------------------------------------------------------------------
 
 __stdcall ts::__cstr_class::__cstr_class(const uint32_t a_initial_size,const char* __restrict__ a_text_to_clone)
-:	f_ptr(NULL), f_ptr_size(0), f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0)
+:
+f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0),
+__vector<char>(a_initial_size)
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
@@ -52,19 +60,8 @@ void __stdcall ts::__cstr_class::__init(const uint32_t a_initial_size, const cha
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
 #endif
-
-        if (a_initial_size==0 || a_text_to_clone==NULL) {
-                f_ptr_size = 0;
-                f_ptr = ts::cstr::allocex(f_ptr_size + 1,"\0");
-                return;
-        }
-        else
-        {
-                f_ptr_size = a_initial_size;
-                f_ptr = ts::cstr::allocex(f_ptr_size + 1, a_text_to_clone);
-                return;
-        }
-f_subs_size = 32;
+__vector<char>::resize(a_initial_size);
+f_subs_size = 64-4;
 f_subs = ts::cstr::alloc(f_subs_size);
 }
 //---------------------------------------------------------------------------
@@ -75,17 +72,16 @@ const char* __stdcall ts::__cstr_class::set(const char* __restrict__ a_text_to_c
 __DEBUG_FUNC_CALLED__
 #endif
         if (a_text_to_clone==NULL) {
-                f_ptr[0] = '\0';
-                return f_ptr;
+                        __vector<char>::at(0) = '\0';
+                return &__vector<char>::at(0);
         }
         else
         {
                 register uint32_t container_len = ts::cstr::len(a_text_to_clone);
-                if (f_ptr_size < container_len) {
-                        f_ptr = ts::cstr::realloc(f_ptr, container_len + 1);
+                if (__vector<char>::size() <=  container_len) {
+                    __vector<char>::resize(container_len + 1);
                 }
-                ts::cstr::mov(f_ptr, a_text_to_clone);
-                return f_ptr;
+                return ts::cstr::mov(&__vector<char>::bottom(), a_text_to_clone);
         }
 }
 //---------------------------------------------------------------------------
@@ -95,7 +91,6 @@ const char *__stdcall ts::__cstr_class::add(const char* __restrict__ a_text_to_c
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
 #endif
-
         register uint32_t add_size, new_size;
         if (a_text_to_clone!=NULL) {
                 add_size = ts::cstr::len(a_text_to_clone);
@@ -103,11 +98,11 @@ __DEBUG_FUNC_CALLED__
         else {
                 add_size = 0;
         }
-                new_size = ts::cstr::len(f_ptr) + add_size;
-        if (new_size > f_ptr_size) {
-                reserve(new_size);
+                new_size = ts::cstr::len(&__vector<char>::bottom()) + add_size;
+        if (new_size > __vector<char>::size()) {
+                __vector<char>::resize(new_size);
         }
-        return ts::cstr::cat(f_ptr,a_text_to_clone);
+        return ts::cstr::cat(&__vector<char>::bottom(),a_text_to_clone);
 }
 //---------------------------------------------------------------------------
 const char	   *__stdcall	ts::__cstr_class::substr(uint32_t a_pos, uint32_t a_len) const
@@ -120,7 +115,7 @@ if (f_subs_size < a_len + 1)
     f_subs_size = a_len + 1;
     f_subs = ts::cstr::realloc(f_subs,f_subs_size);
 }
-ts::cstr::substr(f_subs,f_ptr,a_pos,a_len);
+ts::cstr::substr(f_subs,&__vector<char>::bottom(),a_pos,a_len);
 return f_subs;
 }
 //---------------------------------------------------------------------------
@@ -130,10 +125,7 @@ void __stdcall ts::__cstr_class::reserve(const uint32_t a_new_size)
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
 #endif
-
-        f_ptr_size = a_new_size;
-        f_ptr = ts::cstr::realloc(f_ptr, f_ptr_size + 1);
-        f_ptr[f_ptr_size] = '\0';
+        __vector<char>::resize(a_new_size);
 }
 //---------------------------------------------------------------------------
 
@@ -142,9 +134,9 @@ void __stdcall ts::__cstr_class::resize(const uint32_t a_new_len)
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
 #endif
-register uint32_t lp = ts::cstr::len(f_ptr) +1;
-if (a_new_len <= lp) f_ptr[a_new_len] = '\0';
-else ts::cstr::set_end(f_ptr,'\0',lp,a_new_len);
+register uint32_t lp = ts::cstr::len(&__vector<char>::bottom()) +1;
+if (a_new_len <= lp) __vector<char>::at(a_new_len) = '\0';
+else ts::cstr::set_end(&__vector<char>::bottom(),'\0',lp,a_new_len);
 }
 //---------------------------------------------------------------------------
 
@@ -153,7 +145,7 @@ inline void __stdcall ts::__cstr_class::clear(void)
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
 #endif
-if (f_ptr!=NULL) f_ptr[0]= '\0';
+if (__vector<char>::size()!=0) __vector<char>::bottom() = '\0';
 }
 //---------------------------------------------------------------------------
 
@@ -162,10 +154,8 @@ void __stdcall ts::__cstr_class::shrink_to_fit(void)
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
 #endif
-
-if (f_ptr!=NULL && f_ptr_size!=0) {
-        f_ptr_size = ts::cstr::len(f_ptr);
-        f_ptr  = ts::cstr::realloc(f_ptr, f_ptr_size + 1);
+if (__vector<char>::size()!=0) {
+        __vector<char>::resize(ts::cstr::len(&__vector<char>::bottom())+1);
         }
 }
 //---------------------------------------------------------------------------
@@ -175,12 +165,7 @@ __stdcall ts::__cstr_class::~__cstr_class()
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
 #endif
-
         if (f_subs!=NULL) delete f_subs;
-        if (f_ptr!=NULL) ts::cstr::free(f_ptr);
-        if (f_ptr_dup!=NULL) ts::cstr::free(f_ptr_dup);
-        f_ptr = NULL;
         f_ptr_dup = NULL;
-        f_ptr_size = 0;
 }
 //---------------------------------------------------------------------------

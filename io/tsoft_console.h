@@ -18,15 +18,19 @@ namespace ts { namespace console {
 //---------------------------------------------------------------------------
 extern char		__stdcall	getch			(void);
 extern void		__cdecl 	print_formated	(const char* __restrict__ a_format, ...);
-extern void		__cdecl		print_repeated	(const char*  __restrict__ atext, __int8 an_times);
+extern void		__cdecl		print_repeated	(const char* __restrict__ atext, __int8 an_times);
 extern void		__stdcall	print			(const char* __restrict__ atext);
 
-extern void		__stdcall 	set_console_handlers(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*));
-extern char	   (__stdcall  *getch_handler)	(void);
-extern void	   (__stdcall  *print_handler)	(const char* a_text);
-extern void	   (__stdcall  *error_handler)	(const char* a_text);
+typedef char	   (__stdcall  __getch_handler)	(void);
+typedef void	   (__stdcall  __print_handler)	(const char* a_text);
+typedef void	   (__stdcall  __error_handler)	(const char* a_text);
 
-extern char		 __stdcall	stdin_handler	(void);
+extern void		__stdcall 	set_console_handlers(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*));
+extern __getch_handler *getch_handler;
+extern __print_handler *print_handler;
+extern __error_handler *error_handler;
+
+extern char		__stdcall	stdinp_handler	(void);
 extern void		__stdcall 	stdout_handler	(const char* a_text);
 extern void		__stdcall	stderr_handler	(const char* a_text);
 extern void		__cdecl  	__destructor	(void);

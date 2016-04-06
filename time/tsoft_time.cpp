@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------
 #include  <time.h>
 
-uint64_t __stdcall ts::time::time_us(void)
+uint64_t __stdcall ts::time::clock_us(void)
 // cross-platform timeGetTime (on Windows minimum return is 1000us, on linux there is us acuracy (probably?) CLOCKS_PER_SEC >=1M
 {
 #ifdef __DEBUG_TIME__
@@ -20,7 +20,7 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-uint64_t __stdcall ts::time::time_ms(void) // cross-platform timeGetTime
+uint64_t __stdcall ts::time::clock_ms(void) // cross-platform timeGetTime
 {
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED__

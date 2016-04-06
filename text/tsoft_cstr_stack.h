@@ -17,7 +17,7 @@ protected:
 private:
 		uint32_t  f_text_class_size;
 public:
-__stdcall				__cstr_stack						(void);
+__stdcall				__cstr_stack						();
 __stdcall				__cstr_stack						(const uint32_t a_count);
 __stdcall				__cstr_stack						(const uint32_t a_count, const uint32_t a_text_class_size);
 		uint32_t		__stdcall	set_size				(const uint32_t a_count);

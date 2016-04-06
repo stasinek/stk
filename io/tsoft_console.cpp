@@ -8,7 +8,7 @@
 //---------------------------------------------------------------------------
 
 void (__stdcall *ts::console::print_handler)(const char*)  = &ts::console::stdout_handler;
-char (__stdcall *ts::console::getch_handler)() = &ts::console::stdin_handler;
+char (__stdcall *ts::console::getch_handler)() = &ts::console::stdinp_handler;
 void (__stdcall *ts::console::error_handler)(const char*)  = &ts::console::stderr_handler;
 
 //---------------------------------------------------------------------------
@@ -30,7 +30,7 @@ void  __stdcall ts::console::stdout_handler(const char* a_text)
 }
 //---------------------------------------------------------------------------
 
-char __stdcall ts::console::stdin_handler(void)
+char __stdcall ts::console::stdinp_handler(void)
 {
     return (char)getchar();
 }
@@ -116,7 +116,7 @@ ATOMIC_UNLOCK(1)
 char __stdcall ts::console::getch(void)
 {
     if (getch_handler!=NULL) return getch_handler();
-    else return stdin_handler();
+    else return stdinp_handler();
 }
 
 /*

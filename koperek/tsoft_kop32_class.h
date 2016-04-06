@@ -4,13 +4,13 @@
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 //---------------------------------------------------------------------------
-#include "tsoft_kop32_search.h"
 #include "./../text/tsoft_cstr_stack.h"
 #include "./../database/tsoft_database.h"
 //---------------------------------------------------------------------------
-#include "tsoft_kop32_controler.h"
 #include "tsoft_kop32_options.h"
 #include "tsoft_kop32_list.h"
+#include "tsoft_kop32_controler.h"
+#include "tsoft_kop32_search.h"
 //---------------------------------------------------------------------------
 namespace ts {
 //---------------------------------------------------------------------------

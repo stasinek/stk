@@ -8,8 +8,8 @@
 
 __stdcall ts::__cstr_stack::__cstr_stack(void)
 :
-        f_text_class_size(0),
-        __vector<__cstr_class*>()
+        __vector<__cstr_class*>(0),
+        f_text_class_size(0)
 {
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_FUNC_CALLED__
@@ -18,22 +18,22 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__stdcall ts::__cstr_stack::__cstr_stack(const uint32_t a_size = 0)
+__stdcall ts::__cstr_stack::__cstr_stack(const uint32_t a_size)
 :
-        f_text_class_size(0),
-        __vector<__cstr_class*>(a_size)
+        __vector<__cstr_class*>(a_size),
+        f_text_class_size(0)
 {
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_FUNC_CALLED__
 #endif
-        __init(a_size,0);
+        __init(a_size,64-4);
 }
 //---------------------------------------------------------------------------
 
-__stdcall ts::__cstr_stack::__cstr_stack(const uint32_t a_size = 0, const uint32_t a_text_size = 64-4)
+__stdcall ts::__cstr_stack::__cstr_stack(const uint32_t a_size, const uint32_t a_text_size)
 :
-        f_text_class_size(0),
-        __vector<__cstr_class*>(a_size)
+        __vector<__cstr_class*>(a_size),
+        f_text_class_size(0)
 {
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_FUNC_CALLED__

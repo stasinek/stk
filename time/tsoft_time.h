@@ -6,8 +6,8 @@
 //---------------------------------------------------------------------------
 namespace ts { namespace time {
 //------------------------------------
-extern uint64_t			__stdcall	time_us(void);
-extern uint64_t			__stdcall	time_ms(void);
+extern uint64_t			__stdcall	clock_us(void);
+extern uint64_t			__stdcall	clock_ms(void);
 extern void 			__stdcall	wait_us(__int32 a_microseconds);
 extern void 			__stdcall	wait_ms(__int32 a_milliseconds);
 time_t __stdcall FILETIME_to_time_t(FILETIME const& ft);
