@@ -146,8 +146,8 @@ typedef uint64_t ULONGLONG;
 //#define __DEBUG_MEM32__
 //#define __DEBUG_MEM32_ALLOC__
 //#define __DEBUG_CSTR__
-//#define __DEBUG_CSTR_CLASS__
-//#define __DEBUG_CSTR_STACK__
+#define __DEBUG_CSTR_CLASS__
+#define __DEBUG_CSTR_STACK__
 #define __DEBUG_DATABASE_ITEMS__
 #define __DEBUG_DATABASE__
 #define __DEBUG_KOP32_CLASS__
@@ -174,12 +174,14 @@ typedef uint64_t ULONGLONG;
 #define __DEBUG_CRC32_HASHER__
 #define __DEBUG_MD5_HASHER__
 #define __DEBUG_SSC1_HASHER__
+
 #define __DEBUG_SOCKET__
 #define __DEBUG_RS232__
 #define __DEBUG_FILE_IO__
 #define __DEBUG_FILE_INI__
-//#define __DEBUG_TIME__
+#define __DEBUG_TIME__
 
+#include "./text/tsoft_cstr_manipulation.h"
 #define __DEBUG_FUNC_ENTER__
 //---------------------------------------------------------------------------
 #endif
@@ -188,24 +190,23 @@ typedef uint64_t ULONGLONG;
 #define __DEBUG_FUNC_CALLED__ \
 static const  int __entered_line = __LINE__;\
 static int __entered_time = 1;\
-	char *__file__ = __FILE__;\
-	char *__file_name__ = ::strrchr(__file__,'/');\
-	  if (__file_name__==NULL) __file_name__ = ::strrchr(__file__,'\\');\
-	  if (__file_name__==NULL) __file_name__ = __file__;\
-	printf("DEBUG: Entered func() @%s %d, time %d\n",__file_name__,__entered_line,__entered_time++);
-#define __DEBUG_FUNC_RET__\
-	printf("DEBUG: Ret. from func @%s %d at line %d\n",__file_name__,__entered_line,__LINE__);
+char *__file__ = __FILE__;\
+char *__file_name__ = ::strrchr(__file__,'/');\
+if (__file_name__==NULL) __file_name__ = ::strrchr(__file__,'\\');\
+if (__file_name__==NULL) __file_name__ = __file__;\
+printf("Entered func() @ %s %d, time %d\n",__file_name__,__entered_line, __entered_time++);
+#define __DEBUG_FUNC_RET__ printf("Ret from func @ %s %d at line %d\n",__file_name__,__entered_line,__LINE__);
 #else
 #define __DEBUG_FUNC_CALLED__
 #define __DEBUG_FUNC_RET__
 #endif
 //---------------------------------------------------------------------------
-#if !defined(__GNUC__) && !defined(__clang__)
-#define __builtin_prefetch(x1,x2,x3)   asm { push esi; mov esi,x1; prefetchnta esi+0; pop esi; }
-#define __builtin___clear_cache(x1,x2) asm { SFENCE; }
+#ifndef __GNUC__
+#define __builtin_prefetch(x1,x2,x3)
+#define __builtin___clear_cache(x1,x2)
 #define __PTRDIFF_TYPE__ __int8*
 #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
 #endif
-#include "./stasm/__stasm.h"
+#include "./__stasm.h"
 //---------------------------------------------------------------------------
 #endif

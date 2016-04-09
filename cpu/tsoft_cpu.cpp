@@ -1379,7 +1379,6 @@ void __cdecl ts::cpu::cpu_print_info()
 	PRINT_CPUID(ts::cpu::cpu_cache_line_size(3));
 	PRINT_CPUID(ts::cpu::cpu_num_cores());
 	PRINT_CPUID(ts::cpu::cpu_num_threads());
-
 #if defined(__i386__) || defined(__BORLANDC__)
 	PRINT_CPUID(ts::cpu::cpu_has_amd64());
 	PRINT_CPUID(ts::cpu::cpu_has_ht());

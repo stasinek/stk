@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------
 #include "./../database/tsoft_database.h"
 #include "./../hash/tsoft_hash_password.h"
-#include "./../io/tsoft_file_eno_header.h"
+#include "./../io/tsoft_file_lzss_header.h"
 //---------------------------------------------------------------------------
 namespace ts {
 //---------------------------------------------------------------------------
@@ -38,7 +38,7 @@ class  __kop32_class_options {
 				// coder type
 				__int16 coder;
 				// dict size 256B-16MB(0x100-0x01000000)
-				__int32 coder_LZS_dict_size;
+				__int32 coder_LZS_dup_size;
 				// checksum
 				__int32 checksum;
 #define CHECKSUM_SSC1024 	(__int32)0x00001000L
@@ -78,8 +78,8 @@ class  __kop32_class_options {
 						ask_at_error = ASK_USER;
 						block_is_cached = false;
 						block_size =  64 * 1024;  // ONE RAM SEGMENT, KEEP IT! THAT JUST FOR..FUTURE ;)
-						coder = ENO_CODER_LZS;
-						coder_LZS_dict_size = 8 * 1024;
+						coder = LZSS_CODER_LZS;
+						coder_LZS_dup_size = 8 * 1024;
 						checksum = CHECKSUM_SSC1024;
 						checksum_interval = 65536;
 						mask_list->clear();

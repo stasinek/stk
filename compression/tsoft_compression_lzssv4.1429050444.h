@@ -5,10 +5,12 @@
 #define __tsoft_bin_tree_H__
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
+#include <inttypes.h>
+#include <cstddef>
 //---------------------------------------------------------------------------
-#include "./../io/tsoft_file_lzss_header.h"
+#include "./../io/tsoft_file_eno_header.h"
 //---------------------------------------------------------------------------
-#define DUP_NULL			 (__int32)0x0F000000L
+#define DICT_NULL			 (__int32)0x0F000000
 //---------------------------------------------------------------------------
 namespace ts { namespace compression {
 //---------------------------------------------------------------------------
@@ -18,32 +20,32 @@ private:
 		__int32  *son,*dad;
 //---------------------------------------------------------------------------
 public:
-		uint32_t ring_delete, ring_insert;
+		__int32   ring_delete, ring_insert;
 		char  *ring_ptr;
-		uint32_t backward_len, backward_max_len, backward_offset, backward_max_offset;
+		__int32   find_len, max_find_len, find_offset, max_find_offset;
 		char  *find_ptr;
 //---------------------------------------------------------------------------
-		uint32_t forward_len, forward_max_len, forward_elcount, forward_max_elcount, forward_elsize, forward_max_elsize;
+		__int32   forward_len, forward_counte, forward_elsize;
 //---------------------------------------------------------------------------
-		 __lzss_compressor(const uint32_t a_dict,const uint32_t a_dup_size);
-		~__lzss_compressor();
+		 __lzss_compressor(const __int32 adict,const __int32 asize);
+	~__lzss_compressor();
 //---------------------------------------------------------------------------
-		void __stdcall  initialize(const char *a_base_ptr);
+		void __stdcall  initialize(const char *abase_ptr);
 //---------------------------------------------------------------------------
-		void __stdcall  update(const char *a_add_ptr, const uint32_t a_update_count, const bool a_insert);
-		void __stdcall  insert(void);
-		void __stdcall  skip(void);
-		void __stdcall  cut(const uint32_t a_choosen_ring_delete);
+		void __stdcall  update(const char *aadd_ptr, const __int32 aupdate_count, const bool ainsert);
+	void __stdcall  insert(void);
+	void __stdcall  skip(void);
+		void __stdcall  cut(const __int32 zchoosen_ring_delete);
 //---------------------------------------------------------------------------
-		uint32_t __stdcall  search_forward(void);
-		void __stdcall  clear_forward_result(void);
-		uint32_t __stdcall  search_backward(void);
-		void __stdcall  clear_backward_result(void);
+		__int32 __stdcall  search_forward(void);
+	void __stdcall  clear_forward_result(void);
+		__int32 __stdcall  search_backward(void);
+	void __stdcall  clear_backward_result(void);
 //---------------------------------------------------------------------------
-		uint32_t small_offset;
+	int small_offset;
 //---------------------------------------------------------------------------
-#ifdef LZSSv4_HEAD
-		file_header::__lzssv4_header_coder header_coder;
+#ifdef LZSSv4_HDR
+	file_header::__lzssv4_header_coder header_coder;
 #endif
 //---------------------------------------------------------------------------
 };
@@ -56,15 +58,15 @@ public:
 /* cpx1_bgn =&ring_ptr[p]; cpx2_ptr =find_ptr;
  if (((__int32*)cpx1_bgn)[0]!=((__int32*)cpx2_ptr)[0]) // warunek konieczny
  continue;
-				cpx1_ptr =cpx1_bgn+sizeof(__int32);
-				cpx2_ptr+=+sizeof(__int32);
-		  cpx1_ptr_end = cpx1_bgn + find_max_len-1;
+		cpx1_ptr =cpx1_bgn+4;
+		cpx2_ptr+=4;
+	  cpx1_ptr_end = cpx1_bgn + find_max_len-1;
  while (cpx1_ptr <= cpx1_ptr_end) {
-		 if (cpx1_ptr[0]!=cpx2_ptr[0])
-				break;
-				cpx1_ptr+=1;
-				cpx2_ptr+=1;
-		}
+	 if (cpx1_ptr[0]!=cpx2_ptr[0])
+		break;
+		cpx1_ptr+=1;
+		cpx2_ptr+=1;
+	}
  cpx_len = cpx1_ptr-cpx1_bgn;
 */
 

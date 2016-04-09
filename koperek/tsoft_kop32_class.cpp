@@ -7,7 +7,7 @@
 #include "./../cipher/tsoft_cipher_API.h"
 #include "./../hash/tsoft_hash_API.h"
 #include "./../pharser/tsoft_pharse_command_line.h"
-#include "./../io/tsoft_file_eno_header.h"
+#include "./../io/tsoft_file_lzss_header.h"
 #include "./../io/tsoft_file_io.h"
 #include "./../io/tsoft_console.h"
 #include "./../threads/tsoft_threads.h"
@@ -154,23 +154,23 @@ if (path_separator=='\\' ?
                 options->coder  = 0x00000000L; //defauld coder type NOP
 
         if (-1!=ts::cstr::pos(temp_lpCommandSubOption->data(),0,"CRC"))
-                options->coder |= ENO_CODER_CRC;
+                options->coder |= LZSS_CODER_CRC;
         if (-1!=ts::cstr::pos(temp_lpCommandSubOption->data(),0,"SSC"))
-                options->coder |= ENO_CODER_SSC;
+                options->coder |= LZSS_CODER_SSC;
         if (-1!=ts::cstr::pos(temp_lpCommandSubOption->data(),0,"XOR"))
-                options->coder |= ENO_CODER_XOR;
+                options->coder |= LZSS_CODER_XOR;
         if (-1!=ts::cstr::pos(temp_lpCommandSubOption->data(),0,"ROT"))
-                options->coder |= ENO_CODER_ROT;
+                options->coder |= LZSS_CODER_ROT;
         if (-1!=ts::cstr::pos(temp_lpCommandSubOption->data(),0,"LZS"))
-                options->coder |= ENO_CODER_LZS;
+                options->coder |= LZSS_CODER_LZS;
         if (-1!=ts::cstr::pos(temp_lpCommandSubOption->data(),0,"HUF"))
-                options->coder |= ENO_CODER_HUF;
+                options->coder |= LZSS_CODER_HUF;
         if (-1!=ts::cstr::pos(temp_lpCommandSubOption->data(),0,"ARI"))
-                options->coder |= ENO_CODER_ARI;
+                options->coder |= LZSS_CODER_ARI;
         if (-1!=ts::cstr::pos(temp_lpCommandSubOption->data(),0,"MTF"))
-                options->coder |= ENO_CODER_MTF;
+                options->coder |= LZSS_CODER_MTF;
         if (-1!=ts::cstr::pos(temp_lpCommandSubOption->data(),0,"BWT"))
-                options->coder |= ENO_CODER_BWT;
+                options->coder |= LZSS_CODER_BWT;
 
         p.delete_found(temp_lpCommand->data());
         goto GOTO_OPTIONS;
@@ -225,9 +225,9 @@ GOTO_OPTIONS:
 if (path_separator=='\\' ?
         p.find(temp_lpCommand->c_str(),"-I","--DICT","/DICT",temp_lpCommandSubOption->data())==2 :
         p.find(temp_lpCommand->c_str(),"-I","--DICT",NULL,temp_lpCommandSubOption->data())==2)
-   {options->coder_LZS_dict_size = ts::cstr::atoi(temp_lpCommandSubOption->data());
-        if (options->coder_LZS_dict_size > DICT_OFFSET_MAX || options->coder_LZS_dict_size < DICT_LEN_1)
-           {do_event(ON_ERROR,"ERROR_INVALID_USER_BUFFER",OK);
+   {options->coder_LZS_dup_size = ts::cstr::atoi(temp_lpCommandSubOption->data());
+        if (options->coder_LZS_dup_size > DUP_OFFSET_MAX || options->coder_LZS_dup_size < DUP_LEN_N)
+           {do_event(ON_ERROR,"ERROR_INVALID_USER_DICT",OK);
                 progress->cancel = true;
                 return 0;
            }
@@ -281,7 +281,7 @@ if (path_separator=='\\' ?
         p.delete_found(temp_lpCommand->data());
    }
 //
-// ENO_CODER OPTIONS
+// LZSS_CODER OPTIONS
 //
 //
 /// prepare source and destination regarding command line
@@ -1104,14 +1104,14 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
                 f_dst_file.size = f_src_file.size;
                 f_dst_file.size+= sizeof(file_header::__eno_header_struct) + sizeof(file_header::__eno_block_header_struct)*(1 + (f_src_file.size / options->block_size));
 
-                if (options->coder &ENO_CODER_BWT)
-                f_dst_file.size+= BWT_TRASH_BPB(options->block_size,options->coder_LZS_dict_size) * (1 + (f_src_file.size / options->block_size));
-                if (options->coder &ENO_CODER_LZS)
-                f_dst_file.size+= LZS_TRASH_BPB(options->block_size,options->coder_LZS_dict_size) * (1 + (f_src_file.size / options->block_size));
-                if (options->coder &ENO_CODER_HUF)
-                f_dst_file.size+= HUF_TRASH_BPB(options->block_size)*(1+(f_src_file.size / options->block_size));
-                if (options->coder &ENO_CODER_ARI)
-                f_dst_file.size+= ARI_TRASH_BPB(options->block_size)*(1+(f_src_file.size / options->block_size));
+                if (options->coder &LZSS_CODER_BWT)
+                f_dst_file.size+= BWT_WASTE_BPB(options->block_size,options->coder_LZS_dup_size) * (1 + (f_src_file.size / options->block_size));
+                if (options->coder &LZSS_CODER_LZS)
+                f_dst_file.size+= LZS_WASTE_BPB(options->block_size,options->coder_LZS_dup_size) * (1 + (f_src_file.size / options->block_size));
+                if (options->coder &LZSS_CODER_HUF)
+                f_dst_file.size+= HUF_WASTE_BPB(options->block_size) * (1+(f_src_file.size / options->block_size));
+                if (options->coder &LZSS_CODER_ARI)
+                f_dst_file.size+= ARI_WASTE_BPB(options->block_size) * (1+(f_src_file.size / options->block_size));
 
                 f_dst_file.hand_map = ts::file::create_map(f_dst_file.hand, NULL,
                                                                                                                 PAGE_READWRITE|SEC_RESERVE,
@@ -1120,7 +1120,7 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
                 if (f_dst_file.buffer.ptr==NULL)
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
-                hdr.signature  = ENO_HEADER_SIG;
+                hdr.signature  = LZSS_HEADER_SIG;
                 hdr.size = f_src_file.size;
                 ts::mem32::mov(f_dst_file.buffer.ptr,(void*)&hdr,sizeof(file_header::__eno_header_struct));
                 f_dst_file.readed += sizeof(file_header::__eno_header_struct);
@@ -1152,7 +1152,7 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
                 f_src_file.readed += sizeof(file_header::__eno_header_struct);
                 ts::file::close_map_view(f_src_file.buffer.ptr);
                 ts::file::close_map(f_src_file.hand_map);
-                if (hdr.signature!=ENO_HEADER_SIG)
+                if (hdr.signature!=LZSS_HEADER_SIG)
                         {SetLastError(ERROR_INVALID_DATATYPE);
                          goto GOTO_execute_io_cleanup_ERROR;
                         }
@@ -1319,69 +1319,69 @@ else
                 ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((__int8*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
                 f_mem_buffer_map.count=1;
 
-                if (options->coder & ENO_CODER_BWT) {
-                f_mem_buffer_map.map[f_mem_buffer_map.count].size = f_mem_buffer_map.map[f_mem_buffer_map.count-1].size + BWT_TRASH_BPB(f_mem_buffer_map.map[f_mem_buffer_map.count-1].size,options->coder_LZS_dict_size);
+                if (options->coder & LZSS_CODER_BWT) {
+                f_mem_buffer_map.map[f_mem_buffer_map.count].size = f_mem_buffer_map.map[f_mem_buffer_map.count-1].size + BWT_WASTE_BPB(f_mem_buffer_map.map[f_mem_buffer_map.count-1].size,options->coder_LZS_dup_size);
                 f_mem_buffer_map.count++;}
-                if (options->coder & ENO_CODER_LZS) {
-                f_mem_buffer_map.map[f_mem_buffer_map.count].size = f_mem_buffer_map.map[f_mem_buffer_map.count-1].size + LZS_TRASH_BPB(f_mem_buffer_map.map[f_mem_buffer_map.count-1].size,options->coder_LZS_dict_size);
+                if (options->coder & LZSS_CODER_LZS) {
+                f_mem_buffer_map.map[f_mem_buffer_map.count].size = f_mem_buffer_map.map[f_mem_buffer_map.count-1].size + LZS_WASTE_BPB(f_mem_buffer_map.map[f_mem_buffer_map.count-1].size,options->coder_LZS_dup_size);
                 f_mem_buffer_map.count++;}
-                if (options->coder & ENO_CODER_HUF) {
-                f_mem_buffer_map.map[f_mem_buffer_map.count].size = f_mem_buffer_map.map[f_mem_buffer_map.count-1].size + HUF_TRASH_BPB(f_mem_buffer_map.map[f_mem_buffer_map.count-1].size);
+                if (options->coder & LZSS_CODER_HUF) {
+                f_mem_buffer_map.map[f_mem_buffer_map.count].size = f_mem_buffer_map.map[f_mem_buffer_map.count-1].size + HUF_WASTE_BPB(f_mem_buffer_map.map[f_mem_buffer_map.count-1].size);
                 f_mem_buffer_map.count++;}
-                if (options->coder & ENO_CODER_ARI) {
-                f_mem_buffer_map.map[f_mem_buffer_map.count].size = f_mem_buffer_map.map[f_mem_buffer_map.count-1].size + ARI_TRASH_BPB(f_mem_buffer_map.map[f_mem_buffer_map.count-1].size);
+                if (options->coder & LZSS_CODER_ARI) {
+                f_mem_buffer_map.map[f_mem_buffer_map.count].size = f_mem_buffer_map.map[f_mem_buffer_map.count-1].size + ARI_WASTE_BPB(f_mem_buffer_map.map[f_mem_buffer_map.count-1].size);
                 f_mem_buffer_map.count++;}
                 //
                 // transformacja Burrowsa-Wheelra
-                if (options->coder & ENO_CODER_BWT)
+                if (options->coder & LZSS_CODER_BWT)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
-                         f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_BWT(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dict_size);
+                         f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_BWT(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
 //			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
                 // kompresja LZS
-                if (options->coder & ENO_CODER_LZS)
+                if (options->coder & LZSS_CODER_LZS)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
-                         f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_LZS(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dict_size);
+                         f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_LZS(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
 //			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
                 // kodowanie MTF
-                if (options->coder & ENO_CODER_MTF)
+                if (options->coder & LZSS_CODER_MTF)
                         {ts::cipher::cript_MTF(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                         }
                 // kompresja HUFFMANA
-                if (options->coder & ENO_CODER_HUF)
+                if (options->coder & LZSS_CODER_HUF)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
-                         f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_HUF(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dict_size);
+                         f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_HUF(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
 //			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
                                 // kompresja ARYTMETYCZNA
-                if (options->coder & ENO_CODER_ARI)
+                if (options->coder & LZSS_CODER_ARI)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
-                         f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_ARI(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dict_size);
+                         f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_ARI(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
 //			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
                 // QDRowanie
-                if (options->coder & ENO_CODER_ROT)
+                if (options->coder & LZSS_CODER_ROT)
                         {ts::cipher::cript_ROT(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->password->text.size());
                         }
                 // Xorowanie
-                if (options->coder & ENO_CODER_XOR)
+                if (options->coder & LZSS_CODER_XOR)
                         {ts::cipher::cript_XOR(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->password->text.get(),options->password->text.size());
                         }
                                 // FILE INTEGRITY PROTECTION 32bit CHECKSUM
-                                if (options->coder & ENO_CODER_SSC)
+                                if (options->coder & LZSS_CODER_SSC)
                         {b_hdr.data_protection_code = ts::hash::ssc1::calc_SSC1(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,32)[0];
                         }
                                 else
-                                if (options->coder & ENO_CODER_CRC)
+                                if (options->coder & LZSS_CODER_CRC)
                         {b_hdr.data_protection_code = ts::hash::crc32::calc_CRC32(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                         }
                 // naglowek
@@ -1393,10 +1393,10 @@ else
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
                 ts::mem32::set((void*)&b_hdr.size,0,sizeof(b_hdr.size));
-                b_hdr.signature = ENO_BLOCK_HEADER_SIG;
+                b_hdr.signature = LZSS_BLOCK_HEADER_SIG;
                 b_hdr.signature_version = 0x0001L;
                 b_hdr.data_range = f_src_file.readed;
-                b_hdr.data_compression_coder = options->coder;
+                b_hdr.data_coder = options->coder;
                                 b_hdr.size_count = f_mem_buffer_map.count;
                 for (__int32 i = 0; i < f_mem_buffer_map.count; i++) {b_hdr.size[i] = (__int32)f_mem_buffer_map.map[i].size;
                          }
@@ -1439,13 +1439,13 @@ else
                         {SetLastError(ERROR_INVALID_DATATYPE);
                          goto GOTO_execute_io_cleanup_ERROR;
                         }
-                if (b_hdr.data_compression_coder & ENO_CODER_ARI)
+                if (b_hdr.data_coder & LZSS_CODER_ARI)
                 {f_mem_buffer_map.count++;}
-                if (b_hdr.data_compression_coder & ENO_CODER_HUF)
+                if (b_hdr.data_coder & LZSS_CODER_HUF)
                 {f_mem_buffer_map.count++;}
-                if (b_hdr.data_compression_coder & ENO_CODER_LZS)
+                if (b_hdr.data_coder & LZSS_CODER_LZS)
                 {f_mem_buffer_map.count++;}
-                if (b_hdr.data_compression_coder & ENO_CODER_BWT)
+                if (b_hdr.data_coder & LZSS_CODER_BWT)
                 {f_mem_buffer_map.count++;}
 
 //				f_mem_buffer_map.count = b_hdr.s_count;
@@ -1453,7 +1453,7 @@ else
                 {f_mem_buffer_map.map[i].size = b_hdr.size[i];
                         }
                 ts::file::close_map_view((void*)f_src_file.buffer.ptr);
-                if (b_hdr.signature!=ENO_BLOCK_HEADER_SIG)
+                if (b_hdr.signature!=LZSS_BLOCK_HEADER_SIG)
                         {SetLastError(ERROR_INVALID_DATATYPE);
                          goto GOTO_execute_io_cleanup_ERROR;
                         }
@@ -1470,29 +1470,29 @@ else
                 f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                 ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((__int8*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
 
-                if (b_hdr.data_compression_coder & ENO_CODER_SSC) {
+                if (b_hdr.data_coder & LZSS_CODER_SSC) {
                 if (b_hdr.data_protection_code!=ts::hash::ssc1::calc_SSC1(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,32)[0])
                         {SetLastError(ERROR_CRC);
                          goto GOTO_execute_io_cleanup_ERROR;
                         }
                 }
                 else {
-                if (b_hdr.data_compression_coder & ENO_CODER_CRC) {
+                if (b_hdr.data_coder & LZSS_CODER_CRC) {
                 if (b_hdr.data_protection_code!=ts::hash::crc32::calc_CRC32(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size))
                         {SetLastError(ERROR_CRC);
                          goto GOTO_execute_io_cleanup_ERROR;
                         }
                 }}
                 // DEXORowanie
-                if (b_hdr.data_compression_coder & ENO_CODER_XOR)
+                if (b_hdr.data_coder & LZSS_CODER_XOR)
                         {ts::cipher::uncript_XOR(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->password->text.get(),options->password->text.size());
                         }
                 // DEQDRowanie
-                if (b_hdr.data_compression_coder & ENO_CODER_ROT)
+                if (b_hdr.data_coder & LZSS_CODER_ROT)
                         {ts::cipher::uncript_ROT(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->password->text.size());
                         }
                 // DEkompresja ARI
-                if (b_hdr.data_compression_coder & ENO_CODER_ARI)
+                if (b_hdr.data_coder & LZSS_CODER_ARI)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          ts::compression::uncompress_ARI(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
 //			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
@@ -1500,7 +1500,7 @@ else
                          f_mem_buffer_map.index--;
                          }
                 // DEkompresja HUF
-                if (b_hdr.data_compression_coder & ENO_CODER_HUF)
+                if (b_hdr.data_coder & LZSS_CODER_HUF)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          ts::compression::uncompress_HUF(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
 //			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
@@ -1508,11 +1508,11 @@ else
                          f_mem_buffer_map.index--;
                          }
                 // DEkodowanie MTF
-                if (b_hdr.data_compression_coder & ENO_CODER_MTF)
+                if (b_hdr.data_coder & LZSS_CODER_MTF)
                         {ts::cipher::uncript_MTF(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                         }
                 // DEkompresja LZS
-                if (b_hdr.data_compression_coder & ENO_CODER_LZS)
+                if (b_hdr.data_coder & LZSS_CODER_LZS)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          ts::compression::uncompress_LZS(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
 //			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
@@ -1520,7 +1520,7 @@ else
                          f_mem_buffer_map.index--;
                          }
                 // DEkompresja Burrowsa-Wheelra
-                if (b_hdr.data_compression_coder & ENO_CODER_BWT)
+                if (b_hdr.data_coder & LZSS_CODER_BWT)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          ts::compression::uncompress_BWT(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
 //			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);

@@ -329,7 +329,7 @@ __DEBUG_FUNC_CALLED__
 																															} else
 //
 //Authentication password.
-																																if (ts::cstr::pos(buffer.recv_lp,0,"PASS")==0) {
+																																if (ts::cstr::pos(buffer.recv_lp,0,"PLAIN")==0) {
 																																} else
 //
 //Enter passive mode.

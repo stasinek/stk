@@ -9,11 +9,10 @@ namespace ts { namespace file_header {
 
 #define LZSSv4_HDR // define used HDR (less compilation time)
 
-#define ENO_HEADER_SIG (__int32)(('.'<<24) | ('E'<<16) | ('N'<<8) | 'O')
+#define ENO_HEADER_SIG (__int32)(('H'<<0) | ('E'<<8) | ('A'<<16) | ('D'<<24))
 typedef struct {
 		__int32 signature;
 		__int32 signature_version;
-		__int32 reserved_1;
 		__int32 o;
 		__int32 o_h;
 		__int32 size;
@@ -22,34 +21,38 @@ typedef struct {
 		__int32 attribute_ex;
 		__int32 time_t;
 		__int32 time_t_h;
-		__int32 reserved_2;
+		__int32 reserved_code_11;
+                __int32 reserved_code_12;
+                __int32 reserved_code_13;
+                __int32 reserved_code_14;
+                __int32 reserved_code_15;
+                __int32 reserved_code_16;
 } __eno_header_struct;
 
-#define ENO_BLOCK_HEADER_SIG (__int16)(('B'<<8) | 'H')
+#define ENO_BLOCK_HEADER_SIG (__int32)(('B'<<0) | ('O'<<8) | ('D'<<16) | ('Y'<<24))
 
-#define ENO_CODER_LZS	 (__int16)0x0001L
-#define ENO_CODER_HUF	 (__int16)0x0002L
-#define ENO_CODER_ARI	 (__int16)0x0004L
-#define ENO_CODER_BWT	 (__int16)0x0010L
-#define ENO_CODER_MTF	 (__int16)0x0020L
-#define ENO_CODER_ROT	 (__int16)0x0040L
-#define ENO_CODER_XOR	 (__int16)0x0080L
+#define ENO_CODER_LZS	 (__int32)0x0001L
+#define ENO_CODER_HUF	 (__int32)0x0002L
+#define ENO_CODER_ARI	 (__int32)0x0004L
+#define ENO_CODER_BWT	 (__int32)0x0010L
+#define ENO_CODER_MTF	 (__int32)0x0020L
+#define ENO_CODER_ROT	 (__int32)0x0040L
+#define ENO_CODER_XOR	 (__int32)0x0080L
 
-#define ENO_CODER_CRC	 (__int16)0x0100L
-#define ENO_CODER_SSC	 (__int16)0x0200L
+#define ENO_CODER_CRC	 (__int32)0x0100L
+#define ENO_CODER_SSC	 (__int32)0x0200L
 
-#define ENO_CODER_DEFAULT (__int16)ENO_CODER_CRC | ENO_CODER_LZS
+#define ENO_CODER_DEFAULT (__int32)ENO_CODER_CRC | ENO_CODER_LZS
 
 typedef struct {
-		__int16 signature;
-		__int16 signature_version;
-		__int16 data_compression_coder;
-		__int16 reserved_1;
-		__int32 data_range_offset;
+		__int32 signature;
+		__int32 signature_version;
+		__int32 data_coder;
 		__int32 data_range;
-		uint32_t data_protection_code;
-		__int16 reserved_2;
-		__int16 size_count;
+		__int32 data_range_offset;
+		__int32 data_range_offset_h;
+                uint32_t data_protection_code;
+		__int32 size_count;
 		__int32 size[8];
 } __eno_block_header_struct;
 

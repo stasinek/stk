@@ -13,7 +13,7 @@ extern   int __stdcall helloasm4(void);
 #include "./compression/tsoft_compression_API.h"
 #include "./cipher/tsoft_cipher_API.h"
 #include "./hash/tsoft_hash_API.h"
-#include "./io/tsoft_file_eno_header.h"
+#include "./io/tsoft_file_lzss_header.h"
 #include "./text/tsoft_cstr_manipulation.h"
 #include "./process_journal/tsoft_journal.h"
 #include "./io/tsoft_console.h"

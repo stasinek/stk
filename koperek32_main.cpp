@@ -11,15 +11,15 @@ using namespace std;
 #endif
 
 #define TESTUJ_INIT(tsize,rtimes)\
-int t;\
-__int32 TESTUJ_SIZE = tsize;\
-__int32 RANDOM_TIMES = rtimes;\
+__int64 t;\
+__int64 TESTUJ_SIZE = tsize;\
+__int64 RANDOM_TIMES = rtimes;\
 char *in  = ts::cstr::alloc(TESTUJ_SIZE);\
 char *out = ts::cstr::alloc(TESTUJ_SIZE);\
-double speed,f;\
+double speed,s;\
 double old_time;\
-	for (__int32 x = 0; x < TESTUJ_SIZE; x++) {\
-		if (x%10000==0) { srand(::clock()); }\
+	for (__int64 x = 0; x < TESTUJ_SIZE; x++) {\
+		if (x % 65536==0) { srand(::clock()); }\
 		in[x] = (char)rand();\
 		if (in[x]== 0 )  in[x] = 'x';\
 		else\
@@ -35,18 +35,20 @@ double old_time;\
 
 #define TESTUJ(func) ts::cpu::tsc_start();\
 	old_time = ::timeGetTime();\
+	printf(#func"\n");\
+	printf("WYKONUJE...\n");\
 	func;\
-	printf(#func);\
 	old_time = ::timeGetTime() - old_time;\
-	printf("\nczas=%fms\n",old_time);\
-	if (old_time!=0) speed = double((TESTUJ_SIZE /1000000) * 1000) / double(old_time);\
+	printf("CZAS=%fms\n",old_time);\
+	if (old_time!=0) speed = double(TESTUJ_SIZE/1000) / double(old_time);\
 		else speed = 0;\
-	printf("in=%u, out=%u, %fMB/s\n",TESTUJ_SIZE,r,speed);\
+	printf("in=%u, out=%u, %5.2fMB/s\n",TESTUJ_SIZE,r,float(speed));\
 	ts::cpu::tsc_checkpoint();\
-	for (f = 0; f < speed;f+=50) printf("#");\
+	for (s = 0; s < speed;s+=1000/80) printf("#");\
 	printf("\n");\
 	printf("%llu.cpu ticks\r\n\n",ts::cpu::tsc_elapsed());
-#define TESTUJ_RANDOM(func) TESTUJ(for (t = 0; t < 1000000;  t++) { func } )
+
+#define TESTUJ_RANDOM(func) TESTUJ(for (t = 0; t < RANDOM_TIMES;  t++) { func } )
 
 
 /*void main_CreateConsole()
@@ -120,7 +122,8 @@ register int r = 0;
 	ts::cpu::cpu_print_info();
 if (ts::hash::crc32::test_CRC32(1)) printf("CRC32 OK\n");
 
-TESTUJ_INIT(100000000,1000000)
+
+TESTUJ_INIT(10000000,1000)
 printf("Rozmiar buforow %dMB\n",TESTUJ_SIZE/1024/1024);
 printf("Ilosc wykonan w trybie \"random\" t < %d\n",RANDOM_TIMES);
 TESTUJ(ts::hash::crc32::calc_CRC32(in,TESTUJ_SIZE,0);)
@@ -139,22 +142,22 @@ TESTUJ(ts::cstr::chr_sum(in,'a');)
 TESTUJ(ts::cstr::mov(out,in);)
 printf("wbudowane libc.mem-------------------------------------------------\n");
 TESTUJ(memchr(in,'\0',TESTUJ_SIZE);)
-TESTUJ_RANDOM(memchr(in+t*(TESTUJ_SIZE/RANDOM_TIMES),'\0',TESTUJ_SIZE/RANDOM_TIMES);)
+TESTUJ_RANDOM(memchr(&in[(t*TESTUJ_SIZE)/RANDOM_TIMES],'\0',TESTUJ_SIZE/RANDOM_TIMES);)
 TESTUJ(memset(out,'A',TESTUJ_SIZE);)
-TESTUJ_RANDOM(memset(out+t*(TESTUJ_SIZE/RANDOM_TIMES),'A',TESTUJ_SIZE/RANDOM_TIMES);)
+TESTUJ_RANDOM(memset(&out[(t*TESTUJ_SIZE)/RANDOM_TIMES],'A',TESTUJ_SIZE/RANDOM_TIMES);)
 TESTUJ(memcpy(out,in,TESTUJ_SIZE);)
-TESTUJ_RANDOM(memcpy(out+t*(TESTUJ_SIZE/RANDOM_TIMES),in,TESTUJ_SIZE/RANDOM_TIMES);)
+TESTUJ_RANDOM(memcpy(&out[(t*TESTUJ_SIZE)/RANDOM_TIMES],in,TESTUJ_SIZE/RANDOM_TIMES);)
 TESTUJ(memmove(out,in,TESTUJ_SIZE);)
-TESTUJ_RANDOM(memmove(out+t*(TESTUJ_SIZE/RANDOM_TIMES),in+t*(TESTUJ_SIZE/RANDOM_TIMES),TESTUJ_SIZE/RANDOM_TIMES);)
+TESTUJ_RANDOM(memmove(&out[(t*TESTUJ_SIZE)/RANDOM_TIMES],&in[((t*TESTUJ_SIZE)/RANDOM_TIMES)],TESTUJ_SIZE/RANDOM_TIMES);)
 printf("mem32--------------------------------------------------------------\n");
 TESTUJ(ts::mem32::chr(in,'\0',TESTUJ_SIZE);)
-TESTUJ_RANDOM(ts::mem32::chr(in+t*(TESTUJ_SIZE/RANDOM_TIMES),'\0',TESTUJ_SIZE/RANDOM_TIMES);)
+TESTUJ_RANDOM(ts::mem32::chr(&in[(t*TESTUJ_SIZE)/RANDOM_TIMES],'\0',TESTUJ_SIZE/RANDOM_TIMES);)
 //TESTUJ(ts::mem32::chrr(in,'a',TESTUJ_SIZE);)
-//TESTUJ_RANDOM(ts::mem32::chrr(in+t*(TESTUJ_SIZE/RANDOM_TIMES),'a',TESTUJ_SIZE/RANDOM_TIMES);)
+//TESTUJ_RANDOM(ts::mem32::chrr(&in[(t*TESTUJ_SIZE)/RANDOM_TIMES],'a',TESTUJ_SIZE/RANDOM_TIMES);)
 TESTUJ(ts::mem32::mov(out,in,TESTUJ_SIZE);)
-TESTUJ_RANDOM(ts::mem32::mov(out+t*(TESTUJ_SIZE/RANDOM_TIMES),in+t*(TESTUJ_SIZE/RANDOM_TIMES),TESTUJ_SIZE/RANDOM_TIMES);)
+TESTUJ_RANDOM(ts::mem32::mov(&out[(t*TESTUJ_SIZE)/RANDOM_TIMES],&in[(t*TESTUJ_SIZE)/RANDOM_TIMES],TESTUJ_SIZE/RANDOM_TIMES);)
 //TESTUJ(ts::mem32::set(out,'A',TESTUJ_SIZE);)
-//TESTUJ_RANDOM(ts::mem32::set(out+t*(TESTUJ_SIZE/RANDOM_TIMES),'A',TESTUJ_SIZE/RANDOM_TIMES);)
+//TESTUJ_RANDOM(ts::mem32::set(&out[(t*TESTUJ_SIZE)/RANDOM_TIMES],'A',TESTUJ_SIZE/RANDOM_TIMES);)
 
 TESTUJ(ts::mem32::setex(out,&"AA",2,TESTUJ_SIZE/2);)
 TESTUJ(ts::mem32::setex(out,&"AAAAAAAA",8,TESTUJ_SIZE/8);)
@@ -440,4 +443,8 @@ sesi[0] = 1;
 //ts::compression::test();
 //TESTUJ(cop = ts::compression::compress_ARI(out,in,TESTUJ_SIZE,1000));
 */
+
+
+
+
 

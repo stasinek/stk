@@ -69,9 +69,9 @@ __DEBUG_FUNC_CALLED__
 				xor [EDI],AL
 				inc ESI
 				cmp ESI,ECX
-				jl cript_XOR_PASS
+				jl cript_XOR_PLAIN
 				mov ESI,EBX
-				cript_XOR_PASS:
+				cript_XOR_PLAIN:
 				inc EDI
 				cmp EDI,EDX
 				jl cript_XOR_LOOP

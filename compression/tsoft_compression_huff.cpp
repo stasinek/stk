@@ -152,7 +152,7 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-char __stdcall ts::compression::__huff_compressor::encode(char *a_code_ptr, const __int8 a_code_ptr_bit, const char axdata_uncoded)
+__int8 __stdcall ts::compression::__huff_compressor::encode(char *a_code_ptr, const __int8 a_code_ptr_bit, const char axdata_uncoded)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
 __DEBUG_FUNC_CALLED__
@@ -160,20 +160,19 @@ __DEBUG_FUNC_CALLED__
 
 		register __int32 current_node = dad[TREE_SIZE + (__int32)axdata_uncoded];
 		register __int32 code = 0;
-		register __int32 code_bits = 0;
+		register __int8 code_bits = 0;
 //----------------------												/* travel from leaf to ROOT_NODE */
 		do {
 //----------------------												/*  determine position in tree bit by bit */
 				code = (code<<1) | (current_node & 0x00000001L);
 				code_bits++;
-				if (current_node>=TREE_SIZE + BIT_COMBINATIONS_PER_BYTE)
-						current_node=0;
+				if (current_node>=TREE_SIZE + BIT_COMBINATIONS_PER_BYTE) current_node = 0;
 				current_node = dad[current_node];
 //----------------------
 		} while (current_node!=ROOT_NODE);
 //----------------------												/* send bits to output and update model */
 		update(axdata_uncoded);
-		__int32 result = code; // so code could be stored in ALU register, result shared as RAM address
+		__int32 result = code; // duplicated so "code" variable could be stored in ALU register, and just once passed there as RAM address
 		ts::mem32::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,code_bits);
 		return code_bits;
 }

@@ -63,7 +63,7 @@ public:
 		//------------------------------------
 		const char*	__stdcall do_event(const char*, const char*, const char*);
 		//------------------------------------
-		typedef const char* (__stdcall __callback_event_handler)(__kop32_class*, const char *a_event, const char *a_code, const char *a_code_ex) const;
+		typedef const char* (__stdcall __callback_event_handler)(__kop32_class*, const char *a_event, const char *a_code, const char *a_code_ex);
 		__callback_event_handler *callback_event_handler;
 		 static const char*  __stdcall  default_callback_event_handler(__kop32_class*, const char*, const char*, const char*);
 };

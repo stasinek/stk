@@ -13,6 +13,8 @@
 //#define HASH_SIZE (__int32)(256<<7)
 //#define HASH(ptr) (__int32)(((__int16)ptr[0])^(((__int16)ptr[1])<<3)^(((__int16)ptr[2])<<5)^(((__int16)ptr[3])<<7)) //5.1MB
 // 16kB (for sure cached in ~L1)
+//#define HASH_SIZE (__int32)(256<<6)
+//#define HASH(ptr) (__int32)(__int32((__int16)ptr[0])^(__int32((__int16)ptr[1])<<2)^(__int32((__int16)ptr[2])<<4)^(__int32((__int16)ptr[3])<<6)) //5.1MB
 #define HASH_SIZE (__int32)(256<<6)
 #define HASH(ptr) (__int32)(__int32((__int16)ptr[0])^(__int32((__int16)ptr[1])<<2)^(__int32((__int16)ptr[2])<<4)^(__int32((__int16)ptr[3])<<6)) //5.1MB
 //#define HASH_SIZE (__int32)(256<<6)
@@ -45,7 +47,7 @@
 // newest charters are allways at begining of hash chain and old characters unregistered
 // dad, son are array of indexes, nodes those makes tree.
 // son[TREE]+"character treated as number" points to the index of this character in ring_ptr
-// son[previous index] contains index of next (same) character. When last char is found son[]=DICT_NULL
+// son[previous index] contains index of next (same) character. When last char is found son[]=DUP_NULL
 // dad[current index] = index of previous index that is "owner" of it, that points to it
 //
 ts::compression::__lzss_compressor::__lzss_compressor(const uint32_t adict, const uint32_t asize)
@@ -55,20 +57,13 @@ __DEBUG_FUNC_CALLED__
 #endif
 
 //------------------------------------------
-		if (asize > DICT_LEN_MAX)
-				max_find_len = DICT_LEN_MAX;
-		else if (asize < DICT_LEN_MIN)
-				max_find_len = DICT_LEN_MIN;
-		else
-				max_find_len = asize;
-		if (adict > DICT_OFFSET_MAX)
-				max_find_offset = DICT_OFFSET_MAX;
-		else if (adict < DICT_OFFSET_MIN)
-				max_find_offset = DICT_OFFSET_MIN;
-		else
-				max_find_offset = adict;
-//if (max_find_len>8) max_find_len=8;
-		if (max_find_offset < max_find_len * 2) max_find_len = (max_find_offset >> 1) - 1;
+		if (asize > DUP_LEN_MAX) backward_max_len = DUP_LEN_MAX;
+		else if (asize < DUP_LEN_MIN) backward_max_len = DUP_LEN_MIN; else backward_max_len = asize;
+                
+		if (adict > DUP_OFFSET_MAX) backward_max_offset = DUP_OFFSET_MAX;
+		else if (adict < DUP_OFFSET_MIN) backward_max_offset = DUP_OFFSET_MIN; else backward_max_offset = adict;
+//if (backward_max_len>8) backward_max_len=8;
+		if (backward_max_offset < backward_max_len * 2) backward_max_len = (backward_max_offset >> 1) - 1;
 // rozmiar s�ownika(okna wstecz) musi by� nie mniejszy ni� dwukrotno�� aktualnego okna wzprzedzenia danych
 //------------------------------------------
 		/*
@@ -77,10 +72,10 @@ __DEBUG_FUNC_CALLED__
 		son		  SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS|SSSSSSSSS __int32 x offset + HASH_SIZE
 		ring_ptr  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|XXXXXXXXXXXXXXX|X char x offset + char x max_len + sizeof(int64) for QWORD cmp pruposses - access violation of full __int32 comparision)
 		*/
-		dad = (__int32*)ts::mem32::alloc(sizeof(__int32)*(max_find_offset));
-		son = (__int32*)ts::mem32::alloc(sizeof(__int32)*(max_find_offset + HASH_SIZE));
+		dad = (__int32*)ts::mem32::alloc(sizeof(__int32)*(backward_max_offset));
+		son = (__int32*)ts::mem32::alloc(sizeof(__int32)*(backward_max_offset + HASH_SIZE));
 //------------------------------------------
-		ring_ptr =	(char*)ts::mem32::alloc(max_find_offset + max_find_len + 2*sizeof(__int32)); // search_forward minimum match 4 bytes -> __int32 mode(8 bytes ahead)
+		ring_ptr =	(char*)ts::mem32::alloc(backward_max_offset + backward_max_len + 2*sizeof(__int32)); // search_forward minimum match 4 bytes -> __int32 mode(8 bytes ahead)
 //------------------------------------------
 		small_offset = 0;
 }
@@ -99,7 +94,7 @@ __DEBUG_FUNC_CALLED__
 //cos nadpisuje na pozycji dalej i przy usuwaniu access voliation!  rozszerzam ring_ptr+1
 }
 //---------------------------------------------------------------------------
-// dad=son[TREE+for 0 to 256]=DICT_NULL
+// dad=son[TREE+for 0 to 256]=DUP_NULL
 //
 
 void __stdcall ts::compression::__lzss_compressor::initialize(const char *aptr)
@@ -109,28 +104,28 @@ __DEBUG_FUNC_CALLED__
 #endif
 
 //------------------------------------------
-		find_len = 0;
-		find_offset = 0;
+		backward_len = 0;
+		backward_offset = 0;
 		forward_len = 0;
-		forward_counte = 0;
+		forward_elcount = 0;
 		forward_elsize = 1;
 //------------------------------------------
-		ring_insert = max_find_offset - max_find_len;
+		ring_insert = backward_max_offset - backward_max_len;
 		ring_delete = 0;
-		ts::mem32::mov((char*)&ring_ptr[ring_insert],aptr,max_find_len);
+		ts::mem32::mov((char*)&ring_ptr[ring_insert],aptr,backward_max_len);
 //------------------------------------------
 		uint32_t  i;
-		for (i=0; i <= max_find_offset + HASH_SIZE;) {
-				son[i++]=DICT_NULL;
+		for (i=0; i <= backward_max_offset + HASH_SIZE;) {
+				son[i++]=DUP_NULL;
 		}
-		for (i=0; i <= max_find_offset;) {
-				dad[i++]=DICT_NULL;
+		for (i=0; i <= backward_max_offset;) {
+				dad[i++]=DUP_NULL;
 		}
 //------------------------------------------
 }
 //---------------------------------------------------------------------------
 // if current 'x' characters of string is "abcdef" and asize=3 so adict=6 and ring buffer probably will be "aaabcdaaa"
-// son[TREE+'a']=0 -> son[0]=1 -> son[1]=2 -> son[2]=DICT_NULL ...son[TREE+'d']=5
+// son[TREE+'a']=0 -> son[0]=1 -> son[1]=2 -> son[2]=DUP_NULL ...son[TREE+'d']=5
 // when next character would been inserted ring_ptr="gaabcdgaa"
 // after this operation son[TREE+'g']=0 and son[TREE+'a']=1 and dad[1] will change form 0 to TREE+'a'
 // of course 'a' must be deleted first (ts::compression::__lzss_compressor::delete) becouse it is no longer exists in buffer history
@@ -147,11 +142,11 @@ __DEBUG_FUNC_CALLED__
 		register uint32_t  ins = ring_insert;
 		register char *ins_ptr =((char*)ring_ptr + ins);
 		register uint32_t  hsh_ins = HASH(ins_ptr);
-		register uint32_t  stn = max_find_offset + hsh_ins;
+		register uint32_t  stn = backward_max_offset + hsh_ins;
 		register uint32_t  cpx = son[stn];
 		son[stn]=ins;
 		dad[ins]=stn;
-		if (cpx==DICT_NULL) {
+		if (cpx==DUP_NULL) {
 				return;
 		}
 		dad[cpx]=ins;
@@ -167,7 +162,7 @@ __DEBUG_FUNC_CALLED__
 
 		register uint32_t  skp = ring_insert;
 // function dosnt check whatever skp was inserted or not so does nothing
-// son[skp]=DICT_NULL; dad[skp]=DICT_NULL;
+// son[skp]=DUP_NULL; dad[skp]=DUP_NULL;
 }
 
 //---------------------------------------------------------------------------
@@ -179,19 +174,19 @@ __DEBUG_FUNC_CALLED__
 #endif
 
 		register uint32_t del;
-		if (choosen_ring_delete!=DICT_NULL) del = choosen_ring_delete;
+		if (choosen_ring_delete!=DUP_NULL) del = choosen_ring_delete;
 		else del = ring_delete;
 		register uint32_t dad_del = dad[del];
-		if (dad_del==DICT_NULL) {
+		if (dad_del==DUP_NULL) {
 				return;					// element nie zarejestrowany
 		}
-		dad[del]=DICT_NULL;
+		dad[del]=DUP_NULL;
 		register uint32_t son_del = son[del];
-		son[dad_del] = son_del;						 // MADE connection the 'del' DAD is parrent of 'del' SON (even if it's DICT NULL)
-		if (son_del==DICT_NULL) {					 // DICT_NULL can't have SON
+		son[dad_del] = son_del;						 // MADE connection the 'del' DAD is parrent of 'del' SON (even if it's DUP NULL)
+		if (son_del==DUP_NULL) {					 // DUP_NULL can't have SON
 				return;
 		}
-		son[del]=DICT_NULL;
+		son[del]=DUP_NULL;
 		dad[son_del] = dad_del;						 // MADE connection the 'del' SON is parrent of 'del' DAD
 }
 //---------------------------------------------------------------------------
@@ -205,8 +200,8 @@ __DEBUG_FUNC_CALLED__
 #endif
 
 //------------------------------------------
-		register uint32_t maxl = max_find_len;
-		register uint32_t maxo = max_find_offset;
+		register uint32_t maxl = backward_max_len;
+		register uint32_t maxo = backward_max_offset;
 //------------------------------------------
 		register uint32_t ucnt = aupdate_count;
 		register char *uptr = &((char*)aadd_ptr)[maxl];
@@ -215,8 +210,8 @@ __DEBUG_FUNC_CALLED__
 		while  (ucnt!=0) {
 				ucnt--;
 //------------------------------------------
-// UNREGISTER OLD CHARTER FROM DICTIONARY (DICT NULL MEANS current ring pos not CHOOSEN)
-				cut(DICT_NULL);
+// UNREGISTER OLD CHARTER FROM DUPIONARY (DUP NULL MEANS current ring pos not CHOOSEN)
+				cut(DUP_NULL);
 //-------------------
 // COPY NEW CHARTER FROM INPUT INTO RING BUFFER,
 				rptr	= &ring_ptr[ring_delete];
@@ -230,7 +225,7 @@ __DEBUG_FUNC_CALLED__
 //-------------------
 				if (++ring_delete >=maxo) ring_delete =0;
 //------------------------------------------
-// REGISTER CHARTER INTO DICTIONARY
+// REGISTER CHARTER INTO DUPIONARY
 				if (a_insert==true) insert();
 				else skip();
 //-------------------
@@ -240,7 +235,7 @@ __DEBUG_FUNC_CALLED__
 //------------------------------------------
 }
 //---------------------------------------------------------------------------
-// will recrusevly search for longest match of string at ref_ptr[ring_insert]...max_find_len with ref_ptr[...]
+// will recrusevly search for longest match of string at ref_ptr[ring_insert]...backward_max_len with ref_ptr[...]
 //
 uint32_t __stdcall ts::compression::__lzss_compressor::search_backward(void)
 {
@@ -254,7 +249,7 @@ __DEBUG_FUNC_CALLED__
 		register char *ref_ptr = &((char*)ring_ptr)[ref];
 		uint32_t hsh_ref = HASH(ref_ptr) & (HASH_SIZE-1);
 		register uint32_t  cur_len, cur_ofs;
-		register uint32_t  cur = max_find_offset + hsh_ref;
+		register uint32_t  cur = backward_max_offset + hsh_ref;
 		register char *cur_ptr;
 		uint32_t  cur_tail_minmach = cur + 0; //+len
 //----------------------
@@ -264,15 +259,15 @@ __DEBUG_FUNC_CALLED__
 		while (1) {
 // GET NEXT ELEMENT IN CURRENT HASH CHAIN, CHECK AGAINST EXISTING IN CHAIN
 ENTRY:
- if (son[cur] == DICT_NULL) break;
+ if (son[cur] == DUP_NULL) break;
 else cur = son[cur];
 //------------------------------------------
  if (bst_len<=4) goto COMPARE;
 // CHECK WHATEVER PLAUSIBLE & SENSE TO CHECK AGAINST TAIL HASH
- if (son[cur_tail_minmach] == DICT_NULL) break;
+ if (son[cur_tail_minmach] == DUP_NULL) break;
 else		 cur_tail_minmach = son[cur_tail_minmach];
 // SKIP MAIN CHAIN UNTIL FIT THE ACTUAL FOUND TAIL
-for (; son[cur]==DICT_NULL; cur = son[cur]) {
+for (; son[cur]==DUP_NULL; cur = son[cur]) {
 		  if ((cur + bst_len - 4) < cur_tail_minmach) continue;
 		  else if ((cur + bst_len - 4) < cur_tail_minmach) goto COMPARE;
 }
@@ -299,7 +294,7 @@ COMPARE:
 						else {
 						cur_len+=1;
 						}
-						if (cur_len >= max_find_len)
+						if (cur_len >= backward_max_len)
 							break;
 						else {
 						cur_ptr+=1;
@@ -315,7 +310,7 @@ COMPARE:
 				  break;
 
 				  cur_len+=8;
-				  if (cur_len >= max_find_len) {goto CALCULATE_OFFSET;}
+				  if (cur_len >= backward_max_len) {goto CALCULATE_OFFSET;}
 				  else {
 				  cur_ptr+=8;
 				  ref_ptr+=8;
@@ -329,7 +324,7 @@ COMPARE:
 				  break;
 
 				  cur_len+=1;
-				  if (cur_len >= max_find_len) {goto CALCULATE_OFFSET;}
+				  if (cur_len >= backward_max_len) {goto CALCULATE_OFFSET;}
 				  else {
 				  cur_ptr+=1;
 				  ref_ptr+=1;
@@ -342,7 +337,7 @@ COMPARE:
 //----------------------
 CALCULATE_OFFSET:
 // TREE_SEARCH_CALC_OFFSET_AND_STORE
-				if (ref <= cur) cur_ofs  = max_find_offset + ref - cur;
+				if (ref <= cur) cur_ofs  = backward_max_offset + ref - cur;
 		   else cur_ofs  = ref - cur;
 // CHECK CURRENT OFFSET IS VALIDITY(MATCH DATA OVERLAPS OR NOT)
 				if (cur_ofs <= cur_len) {
@@ -356,9 +351,9 @@ CALCULATE_OFFSET:
 				cur_tail_minmach = cur + cur_len - 4;
 //----------------------
 // TREE_EXIT_IF_MAX
-				if (bst_len>=max_find_len) {
+				if (bst_len>=backward_max_len) {
 					cut(cur);
-					bst_len =max_find_len;
+					bst_len =backward_max_len;
 					break;
 				}
 				// ^^ skip or delete cur charter at found offset from dictionary! because current charter@hash will be soon fresh in dictionary with maximum length
@@ -368,8 +363,8 @@ CALCULATE_OFFSET:
 //------------------------------------------
 // RETURN FOUND ELEMENT LEN AND SET LEN & OFS PAIRS
 EXIT:
-		find_len = bst_len;
-		find_offset = bst_ofs;
+		backward_len = bst_len;
+		backward_offset = bst_ofs;
 		return bst_len;
 }
 //---------------------------------------------------------------------------
@@ -380,8 +375,8 @@ void __stdcall  ts::compression::__lzss_compressor::clear_backward_result(void)
 __DEBUG_FUNC_CALLED__
 #endif
 
-		find_len = 0;
-		find_offset = 0;
+		backward_len = 0;
+		backward_offset = 0;
 }
 //---------------------------------------------------------------------------
 // will search for characters(groups 1,2,3,4) repetitions, faster than dictionary matches more efectively for compression
@@ -434,7 +429,7 @@ __DEBUG_FUNC_CALLED__
 		if (cur_els==0) { // NOTHING FOUND
 //--------------------
 				forward_len =0;
-				forward_counte =0;
+				forward_elcount =0;
 				forward_elsize =1;
 //--------------------
 				return forward_len;
@@ -442,10 +437,10 @@ __DEBUG_FUNC_CALLED__
 		}
 //--------------------
 //
-// SEARCH OPTIMAL BRUNS
+// SEARCH OPTIMAL PATTERNS
 		register char  *cur_ptr_end;
-		if (max_find_len < BRUN_LEN_MAX) cur_ptr_end = cur_ref + max_find_len;
-		else cur_ptr_end = cur_ref + BRUN_LEN_MAX;
+		if (backward_max_len < PATTERN_LEN_MAX) cur_ptr_end = cur_ref + backward_max_len;
+		else cur_ptr_end = cur_ref + PATTERN_LEN_MAX;
 		if (cur_els_max>=4 ? cur_els<=4 : false)
 				while (cur_ptr <= cur_ptr_end -4) {
 						if (((__int32*)cur_ref)[0]!=((__int32*)cur_ptr)[0])
@@ -476,7 +471,7 @@ __DEBUG_FUNC_CALLED__
 //--------------------
 		forward_len =(size_t)(cur_ptr - cur_ref);
 		forward_elsize =cur_els;
-		forward_counte =forward_len / forward_elsize;
+		forward_elcount =forward_len / forward_elsize;
 		return forward_len;
 //--------------------
 }
@@ -489,7 +484,7 @@ __DEBUG_FUNC_CALLED__
 #endif
 
 		forward_len =0;
-		forward_counte =0;
+		forward_elcount =0;
 		forward_elsize =1;
 }
 //-------------------------------THE END-------------------------------------

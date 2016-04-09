@@ -13,7 +13,7 @@
 #include "tsoft_kop32_API.h"
 
 //---------------------------------------------------------------------------
-#include "./../io/tsoft_file_eno_header.h"
+#include "./../io/tsoft_file_lzss_header.h"
 #include "./../hash/tsoft_hash_ssc1.h"
 #include "./../process_journal/tsoft_journal.h"
 #include "./../io/tsoft_console.h"
@@ -34,15 +34,15 @@ ts::__kop32_class *kop32;
 static ts::__kop32_class_progress_controler console_progress(kop32);
 
 /*__int32 *hist_l_dict;
-__int32 hist_l_dict_max;
+__int32 hist_l_dup_max;
 __int32 *hist_l_brun;
-__int32 hist_l_brun_max;
+__int32 hist_l_pattern_max;
 __int32 *hist_l_pass;
-__int32 hist_l_pass_max;
+__int32 hist_l_plain_max;
 __int32 *hist_o_dict;
-__int32 hist_o_dict_max;
+__int32 hist_o_dup_max;
 __int32 *hist_e_brun;
-__int32 hist_e_brun_max;
+__int32 hist_e_pattern_max;
 */
 
 static uint32_t rdtsc_b;
@@ -167,7 +167,7 @@ int __stdcall start_kop32_in_text_mode(char *args, ts::__kop32_class_progress_co
 			ts::console::print_formated("\n");
 			ts::console::print_formated("-E --ENCODE[ LZS,HUF,ARI,MTF,BWT,CRC,ADLER,XOR,SXQ,STORE,DEFAULT,ULTRA ]\n");
 			ts::console::print_formated("-P --PASSWORD[ password ] for XOR and SXQ\n");
-			ts::console::print_formated("-I --DICT[ 256 ] -> set LZSS dict size: 256 < 65536\n");
+			ts::console::print_formated("-I --DUP[ 256 ] -> set LZSS dict size: 256 < 65536\n");
 			ts::console::print_formated("-H --CHECKSUM[ CRC32 ] -> CRC32 or SSC1024\n");
 			ts::console::print_formated("-D --DECODE\n");
 			ts::console::print_formated("\n");
@@ -386,30 +386,30 @@ return 0;
 /*
 
 	char *bar = new char[100+5];
-	hist_l_dict_max = 1;
-	hist_o_dict_max = 1;
-	hist_l_brun_max = 1;
-	hist_e_brun_max = 1;
-	hist_l_pass_max = 1;
+	hist_l_dup_max = 1;
+	hist_o_dup_max = 1;
+	hist_l_pattern_max = 1;
+	hist_e_pattern_max = 1;
+	hist_l_plain_max = 1;
 	__int32 i, x;
-	hist_o_dict = new __int32[DICT_OFFSET_MAX / 256+1];
-	for (i = 0, x = 0; i <= DICT_OFFSET_MAX / 256 && hist_o_dict_max == 1; i++)
+	hist_o_dict = new __int32[DUP_OFFSET_MAX / 256+1];
+	for (i = 0, x = 0; i <= DUP_OFFSET_MAX / 256 && hist_o_dup_max == 1; i++)
 		hist_o_dict[i] = 0;
 // for debuging,statistics
-	hist_l_dict = new __int32[DICT_LEN_MAX + 1];
-	for (i = 0, x = 0; i <= DICT_LEN_MAX && hist_l_dict_max == 1; i++)
+	hist_l_dict = new __int32[DUP_LEN_MAX + 1];
+	for (i = 0, x = 0; i <= DUP_LEN_MAX && hist_l_dup_max == 1; i++)
 		hist_l_dict[i] = 0;
 // for debuging,statistics
 	hist_e_brun = new __int32[4+1];
-	for (i = 0, x = 0; i <= 4 && hist_e_brun_max == 1; i++)
+	for (i = 0, x = 0; i <= 4 && hist_e_pattern_max == 1; i++)
 		hist_e_brun[i] = 0;
 // for debuging,statistics
-	hist_l_brun = new __int32[BRUN_LEN_MAX + 1];
-	for (i = 0, x = 0; i <= BRUN_LEN_MAX && hist_l_brun_max == 1; i++)
+	hist_l_brun = new __int32[PATTERN_LEN_MAX + 1];
+	for (i = 0, x = 0; i <= PATTERN_LEN_MAX && hist_l_pattern_max == 1; i++)
 		hist_l_brun[i] = 0;
 // for debuging,statistics
-	hist_l_pass = new __int32[PASS_LEN_MAX + 1];
-	for (i = 0, x = 0; i <= PASS_LEN_MAX && hist_l_pass_max == 1; i++)
+	hist_l_pass = new __int32[PLAIN_LEN_MAX + 1];
+	for (i = 0, x = 0; i <= PLAIN_LEN_MAX && hist_l_plain_max == 1; i++)
 		hist_l_pass[i] = 0;
 // for debuging,statistics
 //koniec statystyk
@@ -425,14 +425,14 @@ return 0;
 		__int32 l, h;
 //-------------------------------------------------------------------
 		l = 0, h = 0;
-		fprintf(journal.get_stream(), "GLOBALLY NORMAL DICT LENGHTS\n");
-		for (i = 0, x = 0; i <= DICT_LEN_MAX; i++)
+		fprintf(journal.get_stream(), "GLOBALLY NORMAL DUP LENGHTS\n");
+		for (i = 0, x = 0; i <= DUP_LEN_MAX; i++)
 			{
 			ts::cstr::mov(bar,
 				"##############################################################################################################");
 			x = hist_l_dict[i];
 			x = x * 100;
-			x = x / hist_l_dict_max;
+			x = x / hist_l_dup_max;
 			bar[x] = '\0';
 			fprintf(journal.get_stream(), "%3d=%7d=%s\n", i, hist_l_dict[i], bar);
 			if (i <= 64)
@@ -443,14 +443,14 @@ return 0;
 		fprintf(journal.get_stream(), "LENGTH<=64 = %d, LENGTH>64 = %d\n", l, h);
 //-------------------------------------------------------------------
 		l = 0, h = 0;
-		fprintf(journal.get_stream(), "GLOBALLY NORMAL DICT OFFSETS/256\n");
-		for (i = 0, x = 0; i <= DICT_OFFSET_2 >> 8; i++)
+		fprintf(journal.get_stream(), "GLOBALLY NORMAL DUP OFFSETS/256\n");
+		for (i = 0, x = 0; i <= DUP_OFFSET_2 >> 8; i++)
 			{
 			ts::cstr::mov(bar,
 				"##############################################################################################################");
 			x = hist_o_dict[i];
 			x = x * 100;
-			x = x / hist_o_dict_max;
+			x = x / hist_o_dup_max;
 			bar[x] = '\0';
 			if (i <= 256)
 				fprintf(journal.get_stream(), "%5d=%7d=%s\n", 256 *i, hist_o_dict[i], bar);
@@ -462,14 +462,14 @@ return 0;
 		fprintf(journal.get_stream(), "OFFSET<=256 = %d, OFFSET>256 = %d\n", l, h);
 //-------------------------------------------------------------------
 		l = 0, h = 0;
-		fprintf(journal.get_stream(), "GLOBALLY NORMAL BRUN COUNTES\n");
-		for (i = 0, x = 0; i <= BRUN_LEN_MAX; i++)
+		fprintf(journal.get_stream(), "GLOBALLY NORMAL PATTERN COUNTES\n");
+		for (i = 0, x = 0; i <= PATTERN_LEN_MAX; i++)
 			{
 			ts::cstr::mov(bar,
 				"##############################################################################################################");
 			x = hist_l_brun[i];
 			x = x * 100;
-			x = x / hist_l_brun_max;
+			x = x / hist_l_pattern_max;
 			bar[x] = '\0';
 			fprintf(journal.get_stream(), "%3d=%7d=%s\n", i, hist_l_brun[i], bar);
 			if (i <= 15)
@@ -480,14 +480,14 @@ return 0;
 		fprintf(journal.get_stream(), "COUNTE<=15 = %d, COUNTE>15 = %d\n", l, h);
 //-------------------------------------------------------------------
 		l = 0, h = 0;
-		fprintf(journal.get_stream(), "GLOBALLY NORMAL BRUN ELEMENT SIZES\n");
+		fprintf(journal.get_stream(), "GLOBALLY NORMAL PATTERN ELEMENT SIZES\n");
 		for (i = 0, x = 0; i <= 4; i++)
 			{
 			ts::cstr::mov(bar,
 				"##############################################################################################################");
 			x = hist_e_brun[i];
 			x = x * 100;
-			x = x / hist_e_brun_max;
+			x = x / hist_e_pattern_max;
 			bar[x] = '\0';
 			fprintf(journal.get_stream(), "%3d=%7d=%s\n", i, hist_e_brun[i], bar);
 			if (i <= 1)
@@ -498,14 +498,14 @@ return 0;
 		fprintf(journal.get_stream(), "ELSIZE<=1 = %d, ELSIZE>1 = %d\n", l, h);
 //-------------------------------------------------------------------
 		l = 0, h = 0;
-		fprintf(journal.get_stream(), "GLOBALLY NORMAL PASS LENGTHS\n");
-		for (i = 0, x = 0; i <= PASS_LEN_MAX; i++)
+		fprintf(journal.get_stream(), "GLOBALLY NORMAL PLAIN LENGTHS\n");
+		for (i = 0, x = 0; i <= PLAIN_LEN_MAX; i++)
 			{
 			ts::cstr::mov(bar,
 				"##############################################################################################################");
 			x = hist_l_pass[i];
 			x = x * 100;
-			x = x / hist_l_pass_max;
+			x = x / hist_l_plain_max;
 			bar[x] = '\0';
 			fprintf(journal.get_stream(), "%3d=%7d=%s\n", i, hist_l_pass[i], bar);
 			if (i <= 64)
