@@ -3,6 +3,7 @@
 //---------------------------------------------------------------------------
 #include "tsoft_kop32_controler.h"
 #include "tsoft_kop32_class.h"
+#include "./../time/tsoft_time.h"
 //---------------------------------------------------------------------------
 
  __stdcall ts::__kop32_class_progress_controler::__stat::__stat()
@@ -89,7 +90,7 @@ __int32 __stdcall ts::__kop32_class_progress_controler::initialize_timer(void)
 __DEBUG_FUNC_CALLED__
 #endif
 		f_timer_freezed = false;
-		f_t1 = time(&f_t);
+        f_t1 = ts::time::clock_ms();
 		f_t2 = f_t1;
 		return f_t1;
 }
@@ -110,7 +111,7 @@ void	__stdcall ts::__kop32_class_progress_controler::resume_timer(void)
 __DEBUG_FUNC_CALLED__
 #endif
 		__int32 d = f_t2-f_t1;
-		f_t2 = time(&f_t);
+        f_t2 = ts::time::clock_ms();
 		f_t1 = f_t2-d;
 		f_timer_freezed = false;
 }
@@ -121,7 +122,7 @@ __int32 __stdcall ts::__kop32_class_progress_controler::elapsed(void)
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
 __DEBUG_FUNC_CALLED__
 #endif
-		if (f_timer_freezed==false) f_t2 = time(&f_t);
+        if (f_timer_freezed==false) f_t2 = ts::time::clock_ms();
 		return f_t2 - f_t1;
 }
 //---------------------------------------------------------------------------
@@ -132,7 +133,7 @@ __int32 __stdcall ts::__kop32_class_progress_controler::actual_time(void)
 __DEBUG_FUNC_CALLED__
 #endif
 		f_timer_freezed = false;
-		f_t2 = time(&f_t);
+        f_t2 = ts::time::clock_ms();
 		return f_t2;
 }
 //---------------------------------------------------------------------------

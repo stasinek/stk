@@ -68,20 +68,20 @@ namespace ts { namespace cstr {
         else return r - s;
         }
 //---------------------------------------------------------------------------
-        extern char		*__stdcall extract_file_root    (char *a_dst_ptr, const char *a_src_ptr);
-        extern char		*__stdcall extract_file_path    (char *a_dst_ptr, const char *a_src_ptr);
-        extern char		*__stdcall extract_file_name    (char *a_dst_ptr, const char *a_src_ptr);
-        extern char		*__stdcall extract_file_name_ext(char *a_dst_ptr, const char *a_src_ptr);
+        extern char		*__stdcall extract_file_root        (char *a_dst_ptr, const char *a_src_ptr);
+        extern char		*__stdcall extract_file_path        (char *a_dst_ptr, const char *a_src_ptr);
+        extern char		*__stdcall extract_file_name        (char *a_dst_ptr, const char *a_src_ptr);
+        extern char		*__stdcall extract_file_extt        (char *a_dst_ptr, const char *a_src_ptr);
         //---------------------------------------------------------------------------
-        extern char		*__stdcall get_file_name		(const char *a_src_ptr);
-        extern char		*__stdcall get_file_ext			(const char *a_src_ptr);
+        extern char		*__stdcall get_file_name            (const char *a_src_ptr);
+        extern char		*__stdcall get_file_extt            (const char *a_src_ptr);
 //---------------------------------------------------------------------------
-        extern char		*__stdcall fix_file_path        (char *a_dst_ptr,const char *a_src_ptr);
+        extern char		*__stdcall fix_file_path            (char *a_dst_ptr, const char *a_src_ptr);
 //---------------------------------------------------------------------------
-        extern __int32		 __stdcall atoi             (const char *a_src_ptr);
-        extern const char	*__stdcall itoa             (const __int32 aint, char* a_dst_ptr, const __int8 abase);
-        extern const char	*__stdcall itoa             (const __int32 aint, const __int8 abase);
-        extern const char	*__stdcall itoa             (const __int32 aint);
+        extern __int32		 __stdcall atoi                 (const char *a_src_ptr);
+        extern const char	*__stdcall itoa                 (const __int32 aint, char* a_dst_ptr, const __int8 abase);
+        extern const char	*__stdcall itoa                 (const __int32 aint, const __int8 abase);
+        extern const char	*__stdcall itoa                 (const __int32 aint);
 //---------------------------------------------------------------------------
 inline int isupper(char c){
     return (c >= 'A' && c <= 'Z');

@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_database_items_H__
-#define __tsoft_database_items_H__
+#ifndef tsoft_database_items_h
+#define tsoft_database_items_h
+#pragma once
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 #include "./../text/tsoft_cstr_class.h"
@@ -57,23 +58,23 @@ class __database_items {
         private:
         __atom  *f_temp_atom;
         protected:
-                void			__stdcall	__init					(void);
+                void                    __stdcall       __init                                  (void);
         public:
                 //------------------------------------
-        __stdcall	__database_items		(const __database *a_owner);
-        __stdcall	__database_items		(void);
+        __stdcall       __database_items                (const __database *a_owner);
+        __stdcall       __database_items                (void);
                 //------------------------------------
                 inline uint32_t __stdcall   count() const {
                 return f_atom_matrix_count;
                 }
                 //------------------------------------
-                uint32_t		__stdcall	set_count				(const uint32_t a_count);
+                uint32_t                __stdcall       set_count                               (const uint32_t a_count);
                 //------------------------------------
-                void			__stdcall	set						(const uint32_t a_index_S, const __atom* __restrict__ a_whole_atom);
-                void			__stdcall	set_text				(const uint32_t a_index_S, const char* __restrict__ a_text);
-                void			__stdcall	set_text_size			(const uint32_t a_index_S, const uint32_t a_text_size);
-                void			__stdcall	set_number				(const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_number);
-                void			__stdcall	set_data_chunk			(const uint32_t a_index_S, const uint32_t a_column_Y, void *a_ptr);
+                void                    __stdcall       set                                             (const uint32_t a_index_S, const __atom* __restrict__ a_whole_atom);
+                void                    __stdcall       set_text                                (const uint32_t a_index_S, const char* __restrict__ a_text);
+                void                    __stdcall       set_text_size                   (const uint32_t a_index_S, const uint32_t a_text_size);
+                void                    __stdcall       set_number                              (const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_number);
+                void                    __stdcall       set_data_chunk                  (const uint32_t a_index_S, const uint32_t a_column_Y, void *a_ptr);
                 //------------------------------------
                 inline const ts::__database_items::__atom* __stdcall operator [] (const uint32_t a_index) const {
                 return f_atom_matrix[a_index];
@@ -102,49 +103,49 @@ class __database_items {
                 return f_atom_matrix[a_index_G]->number[a_column_Y];
                 }
                 //------------------------------------
-                void			__stdcall	clear					(void);
+                void                    __stdcall       clear                                   (void);
                 //---------------------------------------------------------------------------
                 inline void     __stdcall   clear_all() {
                 set_count(0);
                 }
                 //------------------------------------
-                uint32_t		__stdcall	add						(const __atom * __restrict__ a_whole_atom);
-                uint32_t		__stdcall	add_text				(const char* __restrict__ a_text);
-                uint32_t		__stdcall	add_data_chunk			(const uint32_t a_column_Y, void *a_pointer);
-                uint32_t		__stdcall	add_number				(const uint32_t a_column_Y, const uint32_t a_value);
-                uint32_t		__stdcall	insert					(const uint32_t a_index_I, const __atom *a_whole_atom);
-                uint32_t		__stdcall	insert_text				(const uint32_t a_index_I, const char* __restrict__ a_text);
-                uint32_t		__stdcall	insert_number			(const uint32_t a_index_I, const uint32_t a_column_Y, const uint32_t a_value);
-                uint32_t		__stdcall	insert_data_chunk		(const uint32_t a_index_I, const uint32_t a_column_Y, void *a_pointer);
-                uint32_t		__stdcall	cut						(const uint32_t a_index_C);
-                __int32			__stdcall	search_ex				(const uint32_t a_index_S, const __atom * __restrict__ a_whole_atom) const;
-                __int32			__stdcall	search					(const __atom * __restrict__ a_whole_atom) const;
+                uint32_t                __stdcall       add                                             (const __atom * __restrict__ a_whole_atom);
+                uint32_t                __stdcall       add_text                                (const char* __restrict__ a_text);
+                uint32_t                __stdcall       add_data_chunk                  (const uint32_t a_column_Y, void *a_pointer);
+                uint32_t                __stdcall       add_number                              (const uint32_t a_column_Y, const uint32_t a_value);
+                uint32_t                __stdcall       insert                                  (const uint32_t a_index_I, const __atom *a_whole_atom);
+                uint32_t                __stdcall       insert_text                             (const uint32_t a_index_I, const char* __restrict__ a_text);
+                uint32_t                __stdcall       insert_number                   (const uint32_t a_index_I, const uint32_t a_column_Y, const uint32_t a_value);
+                uint32_t                __stdcall       insert_data_chunk               (const uint32_t a_index_I, const uint32_t a_column_Y, void *a_pointer);
+                uint32_t                __stdcall       cut                                             (const uint32_t a_index_C);
+                __int32                 __stdcall       search_ex                               (const uint32_t a_index_S, const __atom * __restrict__ a_whole_atom) const;
+                __int32                 __stdcall       search                                  (const __atom * __restrict__ a_whole_atom) const;
             //---------------------------------------------------------------------------
-                __int32			__stdcall	search_text_ex			(const uint32_t a_index_S, const char* __restrict__ a_char) const;
+                __int32                 __stdcall       search_text_ex                  (const uint32_t a_index_S, const char* __restrict__ a_char) const;
             inline __int32      __stdcall   search_text             (const char* __restrict__ a_Char) const {
             return search_text_ex(0,a_Char);
             }
             //---------------------------------------------------------------------------
-            __int32				__stdcall	search_number_ex		(const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_number_value) const;
+            __int32                             __stdcall       search_number_ex                (const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_number_value) const;
             inline __int32      __stdcall   search_number           (const uint32_t a_column_Y, uint32_t a_number) const {
             return search_number_ex(0,a_column_Y,a_number);
             }
             //---------------------------------------------------------------------------
-            __int32				__stdcall	search_data_chunk_ex	(const uint32_t a_index_S, const uint32_t a_column_Y, const void *a_pointer) const;
+            __int32                             __stdcall       search_data_chunk_ex    (const uint32_t a_index_S, const uint32_t a_column_Y, const void *a_pointer) const;
             inline __int32      __stdcall   search_data_chunk       (const uint32_t a_column_Y, const void *a_pointer) const {
             return search_data_chunk_ex(0,a_column_Y,a_pointer);
             }
             //---------------------------------------------------------------------------
-                void			__stdcall	sort_text				(void);
-                void			__stdcall	sort_number				(const uint32_t a_column_Y);
-                void			__stdcall	sort_data_chunk			(const uint32_t a_column_Y);
-                void			__stdcall	swap					(const uint32_t a_index_P, const uint32_t a_index_B);
+                void                    __stdcall       sort_text                               (void);
+                void                    __stdcall       sort_number                             (const uint32_t a_column_Y);
+                void                    __stdcall       sort_data_chunk                 (const uint32_t a_column_Y);
+                void                    __stdcall       swap                                    (const uint32_t a_index_P, const uint32_t a_index_B);
                 //---------------------------------------------------------------------------
             const char *__stdcall text(const char* __restrict__ a_format) const;
                 //------------------------------------
-__stdcall  ~__database_items		();
+__stdcall  ~__database_items            ();
                 //------------------------------------
-friend __database;
+friend class __database;
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------

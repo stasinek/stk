@@ -102,7 +102,7 @@ __int32 __stdcall ts::__kop32_search::f_seek_src(const char *a_lpSource)
 __DEBUG_FUNC_CALLED__
 #endif
 
-		register __int32 current = 0;
+		register __int32 current;
 		ts::__cstr_class *currentlpSource = new ts::__cstr_class(1024);
 		currentlpSource->set(a_lpSource);
 		ts::cstr::fix_file_path(currentlpSource->data(),a_lpSource);
@@ -214,7 +214,7 @@ __int32 __stdcall ts::__kop32_search::f_seek_src_file(const char *a_lpSource, co
 __DEBUG_FUNC_CALLED__
 #endif
 
-		register uint32_t current = 0;
+		register uint32_t current;
 		ts::__cstr_class *currentlpSource = new ts::__cstr_class(1024);//f_text_stack->push(1024);
 		for (uint32_t i = 0; i < f_external_mask_list_ptr->items()->count() && progress->cancel==0; i++) {
 				currentlpSource->set(a_lpSource);
@@ -388,31 +388,27 @@ __DEBUG_FUNC_CALLED__
 #include <iostream>
 #include <stdio.h>
 
-int main_search()
+int search(char a_dir[MAX_PATH])
 {
 WIN32_FIND_DATAA FindFileData;
-HANDLE hFind = INVALID_HANDLE_VALUE;
-char DirSpec[MAX_PATH]; // directory specification
+HANDLE hFind;
 
 std::cout<<"Path: ";
-std::cin.get(DirSpec, MAX_PATH);
+std::cin.get(a_dir, MAX_PATH);
 std::cout<<"\n";
-strncat(DirSpec, "\\*", 3);
-hFind = ::FindFirstFileA(DirSpec, &FindFileData);
+strncat(a_dir, "\\*", 3);
+hFind = ::FindFirstFileA(a_dir, &FindFileData);
 
-	if(hFind == INVALID_HANDLE_VALUE)
-	{
+if(hFind == INVALID_HANDLE_VALUE)
+{
 	std::cout<<"Error: invalid path\n";
-	}
+}
 
 std::cout<<FindFileData.cFileName<<"\n";
-
-	while(::FindNextFileA(hFind, &FindFileData) != 0)
-	{
+while(::FindNextFileA(hFind, &FindFileData) != 0)
+{
 	std::cout<<FindFileData.cFileName<<"\n";
-	}
-
+}
 ::FindClose(hFind);
-
 return 0;
 }

@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_text_c_H__
-#define __tsoft_text_c_H__
+#ifndef tsoft_cstr_class_h
+#define tsoft_cstr_class_h
+#pragma once
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 #include "./tsoft_cstr_manipulation.h"
@@ -22,7 +23,7 @@ class __cstr_class : public __vector<char> {
 						__stdcall	__cstr_class();
 						__stdcall	__cstr_class(const uint32_t a_initial_size);
 						__stdcall	__cstr_class(const char* __restrict__ a_c_to_clone);
-						__stdcall	__cstr_class(const uint32_t a_initial_size, const char* __restrict__ a_c_to_clone);
+						__stdcall	__cstr_class(const uint32_t a_initial_size, const char *__restrict__ a_c_to_clone);
 	   const char*		__stdcall	set(const char* __restrict__ a_c_to_clone);
 inline const char      *__stdcall   set(__cstr_class* __restrict__ a_text_c) {
 return set(a_text_c->c_str());

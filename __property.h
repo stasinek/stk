@@ -6,7 +6,7 @@
 #include <iostream>
 //---------------------------------------------------------------------------
 namespace ts {
-#ifndef __BORLANDC__
+#if defined(__GNUC__) || defined(__clang__)
 //---------------------------------------------------------------------------
 template <typename T> class __property {
 				T f_value;

@@ -1,22 +1,23 @@
 #include "tsoft_bsearch.h"
 
-
-void* __cdecl ts::bsearch(const void *key, const void *base, size_t num, size_t size,
-			   int (*cmp)(const void *key, const void *elt))
+void* __cdecl ts::bsearch(const void *k, const void *base, size_t number_of_elements, size_t size_of_element,
+			   int (*compare)(const void *k1, const void *k2))
  {
-		 __int32 start = 0, end = num;
-		 int result;
+		 size_t istart = 0;
+		 size_t imid, imid_times_size, icount = number_of_elements;
+		 size_t size = size_of_element;
+		 size_t compare_result;
 
-		 while (start < end) {
-				 size_t mid = start + (end - start) / 2;
-
-				 result = cmp(key, &(((__int8*)base)[mid * size]));
-				 if (result < 0)
-						 end = mid;
-				 else if (result > 0)
-						 start = mid + 1;
+		 while (istart < icount) {
+				 imid = istart + ((icount - istart) >> 1); // >>1 faster than /2	
+				 imid_times_size = imid * size;
+				 compare_result = compare(k, &(((__int8*)base)[imid_times_size]));
+				 
+				 if (compare_result < 0) icount = imid;
+				 else 
+				 if (compare_result > 0) istart = imid + 1;
 				 else
-						 return (void*)&(((__int8*)base)[mid * size]);
+					 return (void*)&(((__int8*)base)[imid_times_size]);
 		 }
 
 		 return NULL;

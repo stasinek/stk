@@ -472,7 +472,7 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-char *__stdcall ts::cstr::extract_file_name_ext(char *a_dst_ptr, const char *a_src_ptr)
+char *__stdcall ts::cstr::extract_file_extt(char *a_dst_ptr, const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
 __DEBUG_FUNC_CALLED__
@@ -492,7 +492,7 @@ char *__stdcall ts::cstr::fix_file_path(char *a_dst_ptr,const char *a_src_ptr)
 #ifdef __DEBUG_CSTR__
 __DEBUG_FUNC_CALLED__
 #endif
-    register __int32				  lensrc = ts::cstr::len(a_src_ptr);
+    register __int32                              lensrc = ts::cstr::len(a_src_ptr);
     register __int32 lendestination = lensrc;
     if (lensrc==0) {
         a_dst_ptr[0]='\0';
@@ -530,7 +530,7 @@ __int32 delimiter = ts::cstr::chrr(a_src_ptr, '/');
 }
 //---------------------------------------------------------------------------
 
-char *__stdcall ts::cstr::get_file_ext(const char *a_src_ptr)
+char *__stdcall ts::cstr::get_file_extt(const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
 __DEBUG_FUNC_CALLED__
@@ -577,9 +577,9 @@ __DEBUG_FUNC_CALLED__
     register __int32 l = ts::cstr::len(a_dst_ptr);
     register __int32 i;
     for (i=0; i<l; i++) {
-        if (((unsigned char)a_dst_ptr[i]>=0x61L) &&  ((unsigned char)a_dst_ptr[i]<=0x7AL)) a_dst_ptr[i] = a_dst_ptr[i] & 0xDFL;		//a-z
+        if (((unsigned char)a_dst_ptr[i]>=0x61L) &&  ((unsigned char)a_dst_ptr[i]<=0x7AL)) a_dst_ptr[i] = a_dst_ptr[i] & 0xDFL;         //a-z
         else
-        if (((unsigned char)a_dst_ptr[i]>=0xE0L) && (((unsigned char)a_dst_ptr[i] <0xFEL) || ((unsigned char)a_dst_ptr[i]==0xFFL))) a_dst_ptr[i] = a_dst_ptr[i] & 0xDFL;		//³aciñskie literki ma³e
+        if (((unsigned char)a_dst_ptr[i]>=0xE0L) && (((unsigned char)a_dst_ptr[i] <0xFEL) || ((unsigned char)a_dst_ptr[i]==0xFFL))) a_dst_ptr[i] = a_dst_ptr[i] & 0xDFL;                //³aciñskie literki ma³e
         // kasowanie najbardziej znacznego bitu, przesuwa w tabeli o szczebelek obie grupy
     }
     return a_dst_ptr;
@@ -613,13 +613,13 @@ __DEBUG_FUNC_CALLED__
     register __int32 l1 = ts::cstr::len(alp1), l2 = ts::cstr::len(alp2),  r;
     if (l1>l2) {
         r = ts::mem32::cmp(alp1,alp2,l2);
-//	cmp != equal
+//      cmp != equal
         if (r==0) r = +1;
     }
     else
     if (l1<l2) {
         r = ts::mem32::cmp(alp1,alp2,l1);
-//	cmp != equal
+//      cmp != equal
         if (r==0) r = -1;
     }
     else {
@@ -641,13 +641,13 @@ __DEBUG_FUNC_CALLED__
 
     if (l1>l2) {
         r = ts::mem32::cmp(alp1,alp2,l2);
-//	cmp != equal
+//      cmp != equal
         if (r==0) r = +1;
     }
     else
     if (l1<l2) {
         r = ts::mem32::cmp(alp1,alp2,l1);
-//	cmp != equal
+//      cmp != equal
         if (r==0) r = -1;
     }
     else {
@@ -758,7 +758,7 @@ The standard ASCII table defines 128 character codes (from 0 to 127), of
 which, the first 32 are control codes (non-printable), and the remaining 96
 character codes are representable characters:
 */
- 
+#ifndef __WATCOMC__
 #include <iostream>
 #include <iomanip>
 using namespace std;
@@ -768,37 +768,39 @@ int main_ascii()
     char cmd[32][4]= {"NUL","SOH","STX","ETX","EOT","ENQ","ACK","BEL","BS","TAB",
                       "LF","VT","FF","CR","SO","SI","DLE","DC1","DC2","DC3","DC4","NAK",
                       "SYN","ETB","CAN","EM","SUB","ESC","FS","GS","RS","US"};
-     cout << "The standard ASCII table defines 128 character codes (from 0 to 127),";
-     cout << "\n of which,the first 32 are control codes (non-printable), and the";
-     cout << "\n remaining 96 charactercodes are representable characters:\n";
-        cout << "*";
+     std::cout << "The standard ASCII table defines 128 character codes (from 0 to 127),";
+     std::cout << "\n of which,the first 32 are control codes (non-printable), and the";
+     std::cout << "\n remaining 96 charactercodes are representable characters:\n";
+        std::cout << "*";
     for( i = 0 ; i < 10 ; i++)
-        cout << setw(4) << i;
+        std::cout << setw(4) << i;
  
     for( i = 0x41 ; i < 0x47 ; i++)
-        cout << setw(4) << static_cast<char>(i);
-        cout << endl << "-- ";
+        std::cout << setw(4) << static_cast<char>(i);
+        std::cout << std::endl << "-- ";
  
     for( i = 0 ; i < 16 ; i++)
-     cout << left << "--- ";
+     std::cout << left << "--- ";
  
     for( i = 0 ; i < 2 ; i++ )
         {
-            cout << endl <<  i << "| " ;
+            std::cout << std::endl <<  i << "| " ;
  
     for(j = 0 ; j < 16 ; j++)
-        cout << setw(4) << left << cmd[i*16+j];
+        std::cout << setw(4) << left << cmd[i*16+j];
         }
     for( i = 2 ; i < 8 ; i++ )
         {
-        cout << endl << i << "| " ;
+        std::cout << std::endl << i << "| " ;
     for( j = 0 ; j < 16 ; j++)
             if((i*16 + j) != 127 )
-         cout << setw(4) << left << static_cast<char>(i*16+j);
+         std::cout << setw(4) << left << static_cast<char>(i*16+j);
         }
-    cout << endl << endl;
+    std::cout << std::endl << std::endl;
     return 0;
 }
+#endif
+
 /*Program's output
 The standard ASCII table defines 128 character codes (from 0 to 127),
  of which,the first 32 are control codes (non-printable), and the
@@ -813,9 +815,6 @@ The standard ASCII table defines 128 character codes (from 0 to 127),
 5| P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
 6| `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
 7| p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~
- 
- 
-Process returned 0 (0x0)   execution time : 0.078 s
-Press any key to continue.
- 
+
+
 */

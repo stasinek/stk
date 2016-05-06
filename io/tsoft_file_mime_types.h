@@ -7,7 +7,11 @@
 namespace ts { namespace file { namespace mime {
 //---------------------------------------------------------------------------
 extern char *__stdcall decode(char* a_file_name);
+#ifdef __WATCOMC__
+extern void  __destructor(void);
+#else
 extern void __cdecl  __destructor(void);
+#endif
 //---------------------------------------------------------------------------
 }}}
 //---------------------------------------------------------------------------

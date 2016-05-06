@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __vector_H
-#define __vector_H
+#ifndef vector_h
+#define vector_h
 //---------------------------------------------------------------------------
 #include "./mem/tsoft_mem32.h"
 #include "./text/tsoft_cstr_manipulation.h"

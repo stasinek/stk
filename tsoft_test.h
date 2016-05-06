@@ -1,10 +1,8 @@
 //---------------------------------------------------------------------------
-#ifndef koperek32_main_h
-#define koperek32_main_h
+#ifndef tsoft_test_h
+#define tsoft_test_h
 //---------------------------------------------------------------------------
 #include "./tsoft_MAIN.h"
-//---------------------------------------------------------------------------
-extern "C" int __cdecl helloasm3(int par);
 //---------------------------------------------------------------------------
 #include "./text/tsoft_cstr_manipulation.h"
 #include "./mem/tsoft_mem32.h"
@@ -22,16 +20,9 @@ extern "C" int __cdecl helloasm3(int par);
 #include "__vector.h"
 #include "./3d/__3dvector.h"
 #include "__tree.h"
-//---------------------------------------------------------------------------
-#ifdef QT_GUI
-#include "tapplication.h"
-extern void __stdcall Qt_app_main(const int argc, const char *argv[]);
-extern void __stdcall Qt_console_print_event_handler(const char *a_text);
-extern char __stdcall Qt_console_getch_event_handler(void);
-extern void __stdcall Qt_console_error_event_handler(const char *a_text);
-extern const char*__stdcall Qt_kop32_event_handler(ts::__kop32_class *akop, const char *a_event, const char *a_code, const char *a_code_ex);
-extern TApplication *Application;
-extern QThread *Thread[8];
-#endif
+namespace ts { namespace test {
+int __stdcall test_main(int argc, char *argv[]);
+}}
+
 //---------------------------------------------------------------------------
 #endif

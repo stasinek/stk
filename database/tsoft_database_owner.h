@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_database_owner_H__
-#define __tsoft_database_owner_H__
+#ifndef tsoft_database_owner_h
+#define tsoft_database_owner_h
+#pragma once
 //---------------------------------------------------------------------------
 #include "./../tsoft_MAIN.h"
 //---------------------------------------------------------------------------

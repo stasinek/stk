@@ -22,11 +22,11 @@ public:
 	__stdcall ~__huff_compressor();
 //---------------------------------------------------------------------------
 	void __stdcall reconstruct(void);
-		void __stdcall update(const char axdata_uncoded);
+	void __stdcall update(const __int8 axdata_uncoded);
 	void __stdcall initialize(void);
 //---------------------------------------------------------------------------
-		char __stdcall encode(char *a_code_ptr, const __int8 a_code_ptr_bit, const char axdata_uncoded);
-		char __stdcall decode(char *alpdata_uncoded, const char *a_code_ptr, const __int8 a_code_ptr_bit);
+		__int8 __stdcall encode(__int8 *a_code_ptr, const __int8 a_code_ptr_bit, const __int8 axdata_uncoded);
+		__int8 __stdcall decode(__int8 *alpdata_uncoded, const __int8 *a_code_ptr, const __int8 a_code_ptr_bit);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------

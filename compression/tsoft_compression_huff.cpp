@@ -152,7 +152,7 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int8 __stdcall ts::compression::__huff_compressor::encode(char *a_code_ptr, const __int8 a_code_ptr_bit, const char axdata_uncoded)
+__int8 __stdcall ts::compression::__huff_compressor::encode(__int8 *a_code_ptr, const __int8 a_code_ptr_bit, const __int8 axdata_uncoded)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
 __DEBUG_FUNC_CALLED__
@@ -160,7 +160,7 @@ __DEBUG_FUNC_CALLED__
 
 		register __int32 current_node = dad[TREE_SIZE + (__int32)axdata_uncoded];
 		register __int32 code = 0;
-		register __int8 code_bits = 0;
+		register __int8  code_bits = 0;
 //----------------------												/* travel from leaf to ROOT_NODE */
 		do {
 //----------------------												/*  determine position in tree bit by bit */
@@ -178,7 +178,7 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-char __stdcall ts::compression::__huff_compressor::decode(char *alpdata_uncoded, const char *a_code_ptr, const __int8 a_code_ptr_bit)
+__int8 __stdcall ts::compression::__huff_compressor::decode(__int8 *alpdata_uncoded, const __int8 *a_code_ptr, const __int8 a_code_ptr_bit)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
 __DEBUG_FUNC_CALLED__
@@ -204,8 +204,8 @@ __DEBUG_FUNC_CALLED__
 		} while (current_node <TREE_SIZE);
 //----------------------												/* send bits to output and update model */
 		current_node -=TREE_SIZE;
-		alpdata_uncoded[0] = (char)current_node;
-		update((char)current_node);
+		((__int8*)alpdata_uncoded)[0] = (__int8)current_node;
+		update((__int8)current_node);
 		return code_bits;
 }
 //---------------------------------------------------------------------------

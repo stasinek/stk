@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_database_alias_H__
-#define __tsoft_database_alias_H__
+#ifndef tsoft_database_alias_h
+#define tsoft_database_alias_h
+#pragma once
 //---------------------------------------------------------------------------
 #include "./../text/tsoft_cstr_class.h"
 //---------------------------------------------------------------------------

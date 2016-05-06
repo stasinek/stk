@@ -83,15 +83,15 @@ __DEBUG_FUNC_CALLED__
 #include <stdarg.h>
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__journal::write_formated_line(const char* __restrict__ aformat, ...)
+__int32 __stdcall ts::__journal::write_formated_line(const char* __restrict__ a_format, ...)
 {
 #ifdef __DEBUG_JOURNAL__
 __DEBUG_FUNC_CALLED__
 #endif
 do {
 va_list  param;
-va_start(param,aformat);
-    uint32_t sprinted = vsnprintf(f_write_buffer,f_buffer_size,aformat,param);
+va_start(param,a_format);
+    uint32_t sprinted = vsnprintf(f_write_buffer,f_buffer_size,a_format,param);
 va_end(param);
  if (sprinted + 1 > f_buffer_size)
     {f_buffer_size  = sprinted + 1;

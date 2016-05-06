@@ -1,19 +1,19 @@
 //---------------------------------------------------------------------------
 // ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "tsoft_database_items.h"
-//---------------------------------------------------------------------------
-#include "tsoft_database.h"
-//---------------------------------------------------------------------------
 #include "./../io/tsoft_console.h"
 #include "./../text/tsoft_cstr_manipulation.h"
 #include "./../mem/tsoft_mem32.h"
+//---------------------------------------------------------------------------
+#include "tsoft_database.h"
+//---------------------------------------------------------------------------
+#include "tsoft_database_items.h"
 //---------------------------------------------------------------------------
 // DATABASE_ITEMS
 //---------------------------------------------------------------------------
 
 __stdcall  ts::__database_items::__database_items(void)
-:	f_this_class_owner(NULL),
+:       f_this_class_owner(NULL),
         f_atom_matrix(NULL),
         f_atom_matrix_count(0)
 {
@@ -24,7 +24,7 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 __stdcall  ts::__database_items::__database_items(const ts::__database *a_owner)
-:	f_this_class_owner((ts::__database*)a_owner),
+:       f_this_class_owner((ts::__database*)a_owner),
         f_atom_matrix(NULL),
         f_atom_matrix_count(0)
 {
@@ -122,7 +122,7 @@ ts::console::print("\r\n\r\n");
 }
 //---------------------------------------------------------------------------
 
-void	__stdcall ts::__database_items::set_text_size(const uint32_t a_index_S, const uint32_t a_text_size)
+void    __stdcall ts::__database_items::set_text_size(const uint32_t a_index_S, const uint32_t a_text_size)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED__
@@ -131,7 +131,7 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-void	__stdcall ts::__database_items::set_number(const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_value)
+void    __stdcall ts::__database_items::set_number(const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_value)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED__
@@ -144,7 +144,7 @@ ts::console::print("\r\n\r\n");
 }
 //---------------------------------------------------------------------------
 
-void	__stdcall ts::__database_items::set_data_chunk(const uint32_t a_index_S, const uint32_t a_column_Y, void *a_pointer)
+void    __stdcall ts::__database_items::set_data_chunk(const uint32_t a_index_S, const uint32_t a_column_Y, void *a_pointer)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED__

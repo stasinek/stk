@@ -40,7 +40,7 @@ __DEBUG_FUNC_CALLED__
 		#ifdef WIN32
 		::Sleep(milliseconds);
 		#else
-		 usleep(milliseconds * 1000);
+		_usleep(milliseconds * 1000);
 		#endif // win32
 }
 //---------------------------------------------------------------------------
@@ -54,7 +54,7 @@ __DEBUG_FUNC_CALLED__
 		::Sleep(microseconds/1000);
 		//MSDN: A value of zero causes the thread to relinquish the remainder of its time slice to any other thread that is ready to run
 		#else
-		 usleep(microseconds);
+		_usleep(microseconds);
 		#endif // win32
 }
 //---------------------------------------------------------------------------
@@ -96,85 +96,86 @@ void printMonth( unsigned int , unsigned int& ); //takes number of days in month
 void skip( unsigned int ); //prints the specified amount of spaces
 
 int main_cal() {
-    unsigned int year , firstDayInCurrentMonth;
-    std::cout << "Calendar year? ";
-    std::cin >> year;
-    std::cout << "\n";
-    firstDayInCurrentMonth = firstDayOfJanuary( year );
-    skip(9);
-    std::cout << year << "\n";
-    for ( unsigned int currentMonth = 1 ; currentMonth <= 12 ; currentMonth++ ) {
-        printHeader( currentMonth );
-        printMonth( numOfDaysInMonth( currentMonth , year ) , firstDayInCurrentMonth );
-        std::cout << "\n\n\n";
-    }
-    std::cout << "Press Enter to Exit...";
-    std::cin.ignore();
-    std::cin.get();
+	unsigned int year , firstDayInCurrentMonth;
+	std::cout << "Calendar year? ";
+	std::cin >> year;
+	std::cout << "\n";
+	firstDayInCurrentMonth = firstDayOfJanuary( year );
+	skip(9);
+	std::cout << year << "\n";
+	for ( unsigned int currentMonth = 1 ; currentMonth <= 12 ; currentMonth++ ) {
+		printHeader( currentMonth );
+		printMonth( numOfDaysInMonth( currentMonth , year ) , firstDayInCurrentMonth );
+		std::cout << "\n\n\n";
+	}
+	std::cout << "Press Enter to Exit...";
+	std::cin.ignore();
+	std::cin.get();
+	return 0;
 }
 
 bool isLeapYear( unsigned int& year ) { //if number is multiple of 4 and is either multiple of 400 or not multiple of 100, is leap year
-    return ( year % 4 == 0 ) && ( year % 100 != 0 || year % 400 == 0 );
+	return ( year % 4 == 0 ) && ( year % 100 != 0 || year % 400 == 0 );
 }
 
 unsigned int firstDayOfJanuary( unsigned int& year ) {
-    /* "( 97 * year - 97 ) / 400" is the simplification of:
+	/* "( 97 * year - 97 ) / 400" is the simplification of:
 
-    x1 = (year - 1)/ 4;
-    x2 = (year - 1)/ 100;
-    x3 = (year - 1)/ 400;
-    day_start = (year + x1 - x2 + x3) % 7;
+	x1 = (year - 1)/ 4;
+	x2 = (year - 1)/ 100;
+	x3 = (year - 1)/ 400;
+	day_start = (year + x1 - x2 + x3) % 7;
 
-    after each value is plugged in
-     */
+	after each value is plugged in
+	 */
 
-    return ( year + ( 97 * year - 97 ) / 400 ) % 7;
+	return ( year + ( 97 * year - 97 ) / 400 ) % 7;
 }
 
 unsigned int numOfDaysInMonth( unsigned int m , unsigned int& year ) {
-    if ( m == 2 )
-        return isLeapYear( year ) ? 29 : 28; //if month is February, return correct number based on whether it is leap year
-    else
-        return 30 + ( m % 2 ); //otherwise return 31 if month number is odd, 30 if month number is even
+	if ( m == 2 )
+		return isLeapYear( year ) ? 29 : 28; //if month is February, return correct number based on whether it is leap year
+	else
+		return 30 + ( m % 2 ); //otherwise return 31 if month number is odd, 30 if month number is even
 }
 
 void printHeader( unsigned int m ) {
-    skip( 7 );
+	skip( 7 );
 
-    if ( m == 1 ) std::cout << "January";
-    else if ( m == 2 ) std::cout << "February";
-    else if ( m == 3 ) std::cout << "March";
-    else if ( m == 4 ) std::cout << "April";
-    else if ( m == 5 ) std::cout << "May";
-    else if ( m == 6 ) std::cout << "June";
-    else if ( m == 7 ) std::cout << "July";
-    else if ( m == 8 ) std::cout << "August";
-    else if ( m == 9 ) std::cout << "September";
-    else if ( m == 10 ) std::cout << "October";
-    else if ( m == 11 ) std::cout << "November";
-    else if ( m == 12 ) std::cout << "December";
+	if ( m == 1 ) std::cout << "January";
+	else if ( m == 2 ) std::cout << "February";
+	else if ( m == 3 ) std::cout << "March";
+	else if ( m == 4 ) std::cout << "April";
+	else if ( m == 5 ) std::cout << "May";
+	else if ( m == 6 ) std::cout << "June";
+	else if ( m == 7 ) std::cout << "July";
+	else if ( m == 8 ) std::cout << "August";
+	else if ( m == 9 ) std::cout << "September";
+	else if ( m == 10 ) std::cout << "October";
+	else if ( m == 11 ) std::cout << "November";
+	else if ( m == 12 ) std::cout << "December";
 
-    std::cout << "\n S  M  T  W  T  F  S" << "\n";
-    std::cout << "____________________" << "\n";
+	std::cout << "\n S  M  T  W  T  F  S" << "\n";
+	std::cout << "____________________" << "\n";
 }
 
 void skip( unsigned int i ) {
-    while ( i > 0 ) {
-        std::cout << " ";
-        i--;
-    }
+	while ( i > 0 ) {
+		std::cout << " ";
+		i--;
+	}
 }
 
 void printMonth( unsigned int numDays, unsigned int &weekDay ) {
-    skip( 3 * weekDay ); //3 is width of a calendar number
-    for ( unsigned int day = 1 ; day <= numDays ; day++ ) {
-        std::cout << std::setw(2) << day << " ";
+	skip( 3 * weekDay ); //3 is width of a calendar number
+	for ( unsigned int day = 1 ; day <= numDays ; day++ ) {
+		std::cout << std::setw(2) << day << " ";
 
-        if ( weekDay == 6 ) {
-            std::cout << "\n";
-            weekDay = 0;
-        }
-        else
-            weekDay++;
-    }
+		if ( weekDay == 6 ) {
+			std::cout << "\n";
+			weekDay = 0;
+		}
+		else
+			weekDay++;
+	}
 }

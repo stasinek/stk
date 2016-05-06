@@ -307,15 +307,15 @@ __DEBUG_FUNC_CALLED__
 #endif
 
 	register __int8 *ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register const __int8 *ptrs_end = static_cast<__int8*> (const_cast<void*>(a_src_ptr)) + a_count;
+	register __int8 *ptrs_end = static_cast<__int8*> (const_cast<void*>(a_src_ptr)) + a_count;
 	register __int8 *ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-	register char ptrd_bit = 0;
+	register __int8 ptrd_bit = 0;
 	ts::compression::__huff_compressor* huff = new ts::compression::__huff_compressor();
 	huff->initialize();
 //------------------------------------------
 	for ( ; ptrs < ptrs_end; ptrs++) {
 //------------------------------------------
-		ptrd_bit += huff->encode((char*)ptrd,ptrd_bit,((char*)ptrs)[0]);
+		ptrd_bit += huff->encode((__int8*)ptrd,ptrd_bit,((__int8*)ptrs)[0]);
 		ptrd += ptrd_bit>>3; // wykorzystano tyle pelnych bajtow wyjscia
 		ptrd_bit = ptrd_bit & 0x07L; // numer bitu w ostatnim bajcie ptrd ktory wykorzystano od ktorej to zacznie zapisywac kolejne
 //------------------------------------------
@@ -335,7 +335,7 @@ __DEBUG_FUNC_CALLED__
 #endif
 
 	register __int8 *ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register unsigned char ptrs_bit = 0;
+	register __int8 ptrs_bit = 0;
 	register __int8 *ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
 	register const __int8 *ptrd_end = static_cast<__int8*> (const_cast<void*>(a_dst_ptr)) + a_count;
 //------------------------------------------
@@ -363,7 +363,7 @@ __DEBUG_FUNC_CALLED__
 	register __int8 *ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
 	register const __int8 *ptrs_end = static_cast<__int8*> (const_cast<void*>(a_src_ptr)) + a_count;
 	register __int8 *ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-	register char ptrd_bit = 0;
+	register __int8 ptrd_bit = 0;
 	ts::compression::__ari_compressor *ari = new ts::compression::__ari_compressor();
 	ari->initialize_encoder();
 //------------------------------------------
@@ -393,7 +393,7 @@ __DEBUG_FUNC_CALLED__
 #endif
 
 	register __int8 *ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register char ptrs_bit = 0;
+	register __int8 ptrs_bit = 0;
 	register __int8 *ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
 	register const __int8 *ptrd_end = static_cast<__int8*> (const_cast<void*>(a_dst_ptr)) + a_count;
 //------------------------------------------

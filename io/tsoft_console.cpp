@@ -1,9 +1,9 @@
 //---------------------------------------------------------------------------
 // ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "tsoft_console.h"
 #include "./../text/tsoft_cstr_manipulation.h"
 #include "./../threads/tsoft_threads.h"
+#include "tsoft_console.h"
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
@@ -77,7 +77,11 @@ ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 
+#ifdef __WATCOMC__
+void  ts::console::__destructor(void)
+#else
 void __cdecl  ts::console::__destructor(void)
+#endif
 {
 if (print_buffer!=NULL && buffer_size>0)
 delete print_buffer;

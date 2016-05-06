@@ -1,0 +1,2 @@
+"to jest test"                      "\n"
+"to jest nowa linia"                "\n"

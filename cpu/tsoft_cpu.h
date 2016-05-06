@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_cpu_id_H__
-#define __tsoft_cpu_id_H__
+#ifndef tsoft_cpu_h
+#define tsoft_cpu_h
+#pragma once
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 //---------------------------------------------------------------------------
@@ -8,16 +9,18 @@ namespace ts { namespace cpu {
 //---------------------------------------------------------------------------
 extern uint32_t	 __cdecl	__cpuidex(uint32_t *a_eax,uint32_t *a_ebx,uint32_t *a_ecx,uint32_t *a_adx,uint32_t a_function,uint32_t a_feature_ecx);
 extern void		 __cdecl	cpu_print_info(void);
+extern void		 __cdecl	cpu_test(void);
+//---------------------------------------------------------------------------
 extern char		*__cdecl	cpu_vendor(void);
 extern char		*__cdecl	cpu_name(void);
-extern uint32_t *__cdecl	cpu_psn(void);
 extern uint32_t  __cdecl	cpu_num_cores(void);
 extern uint32_t  __cdecl	cpu_num_threads(void);
-extern uint32_t  __cdecl	cpu_num_current_mhz(bool a_constant_update);
+extern uint32_t  __cdecl	cpu_num_mhz(bool a_constant_update);
+extern uint32_t *__cdecl	cpu_psn(void);
 extern uint32_t  __cdecl	cpu_cache_size(uint8_t a_level);
 extern uint32_t  __cdecl	cpu_cache_line_size(uint8_t a_level);
 //---------------------------------------------------------------------------
-#if defined(__i386__) || defined(__BORLANDC__)
+#if defined(__i386__)
 extern bool 	 __cdecl	cpu_has_x87(void);
 extern bool 	 __cdecl	cpu_has_cmov(void);
 extern uint32_t	 __cdecl	cpu_has_cmpxchg(void);
@@ -79,6 +82,7 @@ extern bool		 __cdecl	cpu_has_psn(void);
 20-27	Extended Family Number*/
 //---------------------------------------------------------------------------
 extern uint64_t	 __cdecl	__rdtsc(void);
+//---------------------------------------------------------------------------
 extern uint64_t	 __cdecl	tsc_start(void);
 extern uint64_t  __cdecl	tsc_pause(void);
 extern uint64_t  __cdecl	tsc_start_paused(void);

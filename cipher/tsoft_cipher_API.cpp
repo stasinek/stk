@@ -51,7 +51,7 @@ void __stdcall ts::cipher::cript_XOR(void *a_dst_ptr, const uint32_t a_count, co
 #ifdef __DEBUG_CIPHER_API__
 __DEBUG_FUNC_CALLED__
 #endif
-#ifdef BCC
+#ifdef __BORLANDC__
 		__asm {
 				mov EDI,a_dst_ptr
 				mov EDX,EDI
@@ -105,7 +105,7 @@ __DEBUG_FUNC_CALLED__
 		char *buff_ptr = ts::cstr::alloc(buff_count+1);
 		__int8 *ptrd 	  = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
 		__int8 *ptrd_end  = static_cast<__int8*> (const_cast<void*>(a_dst_ptr)) + size_t(a_count) - size_t(buff_count);
-#ifdef BCC
+#ifdef __BORLANDC__
 		__asm {
 				movzx EAX,buff_count
 				movzx EBX,buff_sq
