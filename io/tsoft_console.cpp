@@ -5,126 +5,157 @@
 #include "./../threads/tsoft_threads.h"
 #include "tsoft_console.h"
 //---------------------------------------------------------------------------
+
+void (__stdcall *ts::con::print_handler)(const char*)  = &ts::con::stdout_handler;
+char (__stdcall *ts::con::getch_handler)() = &ts::con::stdinp_handler;
+void (__stdcall *ts::con::error_handler)(const char*)  = &ts::con::stderr_handler;
+
 //---------------------------------------------------------------------------
 
-void (__stdcall *ts::console::print_handler)(const char*)  = &ts::console::stdout_handler;
-char (__stdcall *ts::console::getch_handler)() = &ts::console::stdinp_handler;
-void (__stdcall *ts::console::error_handler)(const char*)  = &ts::console::stderr_handler;
-
-//---------------------------------------------------------------------------
-
-void __stdcall ts::console::set_console_handlers(char (__stdcall *a_getch_event_handler)(void),
-                                                 void (__stdcall *a_print_event_handler)(const char*),
-                                                 void (__stdcall *a_error_event_handler)(const char*)
-                                                 )
+void __stdcall ts::con::set_console_handlers(char (__stdcall *a_getch_event_handler)(void),
+                                             void (__stdcall *a_print_event_handler)(const char*),
+                                             void (__stdcall *a_error_event_handler)(const char*))
 {
-    if (a_getch_event_handler!=NULL) ts::console::getch_handler = a_getch_event_handler;
-    if (a_print_event_handler!=NULL) ts::console::print_handler = a_print_event_handler;
-    if (a_error_event_handler!=NULL) ts::console::error_handler = a_error_event_handler;
+    if (a_getch_event_handler!=NULL) ts::con::getch_handler = a_getch_event_handler;
+    if (a_print_event_handler!=NULL) ts::con::print_handler = a_print_event_handler;
+    if (a_error_event_handler!=NULL) ts::con::error_handler = a_error_event_handler;
 }
 //---------------------------------------------------------------------------
 
-void  __stdcall ts::console::stdout_handler(const char* a_text)
+void  __stdcall ts::con::stdout_handler(const char* a_text)
 {
     fputs(a_text,stdout);
 }
 //---------------------------------------------------------------------------
 
-char __stdcall ts::console::stdinp_handler(void)
+char __stdcall ts::con::stdinp_handler(void)
 {
     return (char)getchar();
 }
 //---------------------------------------------------------------------------
 
-void  __stdcall ts::console::stderr_handler(const char* a_text)
+void  __stdcall ts::con::stderr_handler(const char* a_text)
 {
     fputs(a_text,stderr);
 }
 //---------------------------------------------------------------------------
 
-void  __stdcall ts::console::print(const char* atext)
+void  __stdcall ts::con::print(const char* a_text)
 {
-    if (print_handler!=NULL) print_handler(atext);
-    else stdout_handler(atext);
+    if (print_handler!=NULL) print_handler(a_text);
+    else stdout_handler(a_text);
 }
 //---------------------------------------------------------------------------
-static uint32_t buffer_size = 0; static char *print_buffer = NULL;
-//---------------------------------------------------------------------------
-
-void  __cdecl ts::console::print_repeated(const char* atext,__int8 an_times)
-{
-ATOMIC(1)
-__int32 atext_len = ts::cstr::len(atext);
-if (atext_len==0 || an_times==0)
-return;
-
-ATOMIC_LOCK(1)
-register uint32_t buffer_neaded = an_times *(atext_len) + 1;
-if (buffer_size < buffer_neaded) {
-if (buffer_size==0) {
-    print_buffer = (char*)ts::cstr::alloc(buffer_neaded);
-    }
-else {
-    print_buffer = (char*)ts::cstr::realloc(print_buffer,buffer_neaded);
-    }
-buffer_size = an_times *(atext_len) + 1;
-}
-print_buffer[0]='\0';
-for (__int32 i = 0; i< an_times; i++) { ts::cstr::cat(print_buffer,atext);
-    }
-print(print_buffer);
-ATOMIC_UNLOCK(1)
-}
+static uint32_t s_print_buffer_size = 0; static char *s_print_buffer = NULL;
 //---------------------------------------------------------------------------
 
 #ifdef __WATCOMC__
-void  ts::console::__destructor(void)
+void  ts::con::atexit(void)
 #else
-void __cdecl  ts::console::__destructor(void)
+void __cdecl  ts::con::atexit(void)
 #endif
 {
-if (print_buffer!=NULL && buffer_size>0)
-delete print_buffer;
+if (s_print_buffer!=NULL && s_print_buffer_size > 0)
+    delete s_print_buffer;
 }
 //---------------------------------------------------------------------------
 
-void  __cdecl ts::console::print_formated(const char* __restrict__ aformat, ...)
+void  __cdecl ts::con::printe(const char* __restrict__ a_format, ...)
 {
 ATOMIC(1)
 #define VA_DEFAULT_SIZE 512
 ATOMIC_LOCK(1)
-if (buffer_size==0) {
-    print_buffer = (char*)ts::cstr::alloc(VA_DEFAULT_SIZE);
-    buffer_size =VA_DEFAULT_SIZE;
-    atexit(&ts::console::__destructor);
+if (s_print_buffer_size==0) {
+    ::atexit(&ts::con::atexit);
+    s_print_buffer = (char*)ts::cstr::alloc(VA_DEFAULT_SIZE);
+    assert(s_print_buffer!=NULL);
+    s_print_buffer_size =VA_DEFAULT_SIZE;
     }
 #include <stdarg.h>
 do {
 va_list  param;
-va_start(param,aformat);
-uint32_t needed_size = vsnprintf(print_buffer,buffer_size,aformat,param) + 1;
+va_start(param,a_format);
+uint32_t needed_size = vsnprintf(s_print_buffer,s_print_buffer_size,a_format,param) + 1;
 va_end(param);
 
- if (needed_size > buffer_size)
-    {buffer_size = needed_size;
-     print_buffer = (char*)ts::cstr::realloc(print_buffer,buffer_size);
+ if (needed_size > s_print_buffer_size)
+    {s_print_buffer = (char*)ts::cstr::realloc(s_print_buffer,s_print_buffer_size);
+     assert(s_print_buffer!=NULL);
+     s_print_buffer_size = needed_size;
      continue;
     }
  else break;
 } while (1);
-print(print_buffer);
+ts::con::stderr_handler(s_print_buffer);
 ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 
-char __stdcall ts::console::getch(void)
+void  __cdecl ts::con::prints(const char* __restrict__ a_format, ...)
+{
+ATOMIC(1)
+#define VA_DEFAULT_SIZE 512
+ATOMIC_LOCK(1)
+if (s_print_buffer_size==0) {
+    ::atexit(&ts::con::atexit);
+    s_print_buffer = (char*)ts::cstr::alloc(VA_DEFAULT_SIZE);
+    assert(s_print_buffer!=NULL);
+    s_print_buffer_size =VA_DEFAULT_SIZE;
+    }
+#include <stdarg.h>
+do {
+va_list  param;
+va_start(param,a_format);
+uint32_t needed_size = vsnprintf(s_print_buffer,s_print_buffer_size,a_format,param) + 1;
+va_end(param);
+
+ if (needed_size > s_print_buffer_size)
+    {s_print_buffer = (char*)ts::cstr::realloc(s_print_buffer,s_print_buffer_size);
+     assert(s_print_buffer!=NULL);
+     s_print_buffer_size = needed_size;
+     continue;
+    }
+ else break;
+} while (1);
+ts::con::stdout_handler(s_print_buffer);
+ATOMIC_UNLOCK(1)
+}
+//---------------------------------------------------------------------------
+
+void  __cdecl ts::con::printr(const char* a_text,__int8 an_times)
+{
+ATOMIC(1)
+__int32 a_text_len = ts::cstr::len(a_text);
+if (a_text_len==0 || an_times==0)
+return;
+
+ATOMIC_LOCK(1)
+register uint32_t f_buffer_neaded = an_times *(a_text_len) + 1;
+if (s_print_buffer_size < f_buffer_neaded) {
+if (s_print_buffer_size==0) {
+    s_print_buffer = (char*)ts::cstr::alloc(f_buffer_neaded);
+    }
+else {
+    s_print_buffer = (char*)ts::cstr::realloc(s_print_buffer,f_buffer_neaded);
+    }
+s_print_buffer_size = an_times *(a_text_len) + 1;
+}
+s_print_buffer[0]='\0';
+for (__int32 i = 0; i< an_times; i++) { ts::cstr::cat(s_print_buffer,a_text);
+    }
+ts::con::stdout_handler(s_print_buffer);
+ATOMIC_UNLOCK(1)
+}
+//---------------------------------------------------------------------------
+
+char __stdcall ts::con::getch(void)
 {
     if (getch_handler!=NULL) return getch_handler();
     else return stdinp_handler();
 }
 
 /*
-void  __stdcall ts::console::print(const char* a_format,...){
+void  __stdcall ts::con::prints(const char* a_format,...){
 char x_ch[50];
  int x_precission = 0, x_with_sign = 0, x_justify = 0, x_no_sign = 0, x_alternate = 0, x_minimum_digits = 0, x_type = 0;
  int x_num_of_par = 0;
@@ -160,7 +191,7 @@ print_handler("print\n");
 }
 //---------------------------------------------------------------------------
 
-char  __stdcall ts::console::getch(){
+char  __stdcall ts::con::getch(){
 
 return getch_handler();
 }

@@ -157,7 +157,7 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__stdcall ts::__cstr_stack::~__cstr_stack()
+inline __stdcall ts::__cstr_stack::~__cstr_stack()
 {
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_FUNC_CALLED__

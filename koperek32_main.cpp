@@ -220,6 +220,13 @@ return  ret;
 }
 //---------------------------------------------------------------------------
 #endif
+
+unsigned long __stdcall thread2(void*arg){
+printf("Thread2! Wo³acz mówi %s",(char*)arg);
+ts::time::wait_ms(1000);
+return 0;
+}
+
 int main(int argc, char *argv[])
 {
 static char sx[] = { " test" };
@@ -235,7 +242,11 @@ static char sx[] = { " test" };
         char a[] = {
 #include "./test.txt"
 };
+ts::thread::ssthread_t t2;
+ts::thread::create(&t2,thread2,"Czeœæ");
+ts::thread::run(&t2);
 printf("%s",a);
+ts::thread::join(&t2);
 
         return r;
 #else
@@ -252,13 +263,13 @@ printf("%s",a);
 //                               ts::cstr::cat(args,"\" ");
 //              }
 //              printf("Argts:\n");
-//              ts::console::print_formated("%s\n",args);
+//              ts::con::prints("%s\n",args);
 //              ts::__kop32::start((char*)args,&ts::__kop32::console_event_handler);
-//              ts::console::print_formated("\r\n");
+//              ts::con::prints("\r\n");
 //              char s[100],d[100];
 //              ts::cstr::mov(s,"To jest test movmmx o d³ugoœci kilkudziesiêciu znaków aby zobaczyæ czy dzia³a poprawnie czy nie....");
 //              ts::mem32::mmxmov(d,s,100);
-//              ts::console::print_formated("d=%s\n", d);
+//              ts::con::prints("d=%s\n", d);
 //      uint64_t end =ts::cpu::tsc_end();
 //      printf("MMX=%d\r\n",ts::cpu::cpuid_have_mmx());
 //      printf("%I64d.end, %I64d.elapsed\r\n",end, ts::cpu::tsc_was());

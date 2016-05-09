@@ -4,21 +4,22 @@
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 //---------------------------------------------------------------------------
-#define PRINT_I64(val)  printf(#val "= %1lld\n" ,       val);
-#define PRINT_UI64(val) printf(#val "= %1llu\n" ,       val);
-#define PRINT_L(val)    printf(#val "= %1ld\n"  ,       val);
-#define PRINT_UL(val)   printf(#val "= %1lu\n"  ,       val);
-#define PRINT_I(val)    printf(#val "= %1d\n"   ,       val);
-#define PRINT_UI(val)   printf(#val "= %1u\n"   ,       val);
-#define PRINT_F(val)    printf(#val "= %1f\n"   ,       val);
-#define PRINT_S(val)    printf(#val "= %1s\n"   ,       val);
-#define PRINT(val)      printf(#val);
+#define PRINT_I64(val)  ts::con::prints(#val "= %1lld\n" ,       val);
+#define PRINT_UI64(val) ts::con::prints(#val "= %1llu\n" ,       val);
+#define PRINT_L(val)    ts::con::prints(#val "= %1ld\n"  ,       val);
+#define PRINT_UL(val)   ts::con::prints(#val "= %1lu\n"  ,       val);
+#define PRINT_I(val)    ts::con::prints(#val "= %1d\n"   ,       val);
+#define PRINT_UI(val)   ts::con::prints(#val "= %1u\n"   ,       val);
+#define PRINT_F(val)    ts::con::prints(#val "= %1f\n"   ,       val);
+#define PRINT_S(val)    ts::con::prints(#val "= %1s\n"   ,       val);
+#define PRINT(val)      ts::con::prints(#val);
 
-namespace ts { namespace console {
+namespace ts { namespace con {
 //---------------------------------------------------------------------------
 extern char             __stdcall       getch                   (void);
-extern void             __cdecl         print_formated  (const char* __restrict__ a_format, ...);
-extern void             __cdecl         print_repeated  (const char* __restrict__ atext, __int8 an_times);
+extern void             __cdecl         prints  (const char* __restrict__ a_format, ...);
+extern void             __cdecl         printr  (const char* __restrict__ atext, __int8 an_times);
+extern void             __cdecl         printe  (const char* __restrict__ a_format, ...);
 extern void             __stdcall       print                   (const char* __restrict__ atext);
 
 typedef char       (__stdcall  __getch_handler) (void);
@@ -34,9 +35,9 @@ extern char             __stdcall       stdinp_handler  (void);
 extern void             __stdcall       stdout_handler  (const char* a_text);
 extern void             __stdcall       stderr_handler  (const char* a_text);
 #ifdef __WATCOMC__
-extern void             __destructor    (void);
+extern void             atexit    (void);
 #else
-extern void             __cdecl         __destructor    (void);
+extern void             __cdecl         atexit(void);
 #endif
 //---------------------------------------------------------------------------
 

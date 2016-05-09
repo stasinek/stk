@@ -11,40 +11,42 @@
 //---------------------------------------------------------------------------
 namespace ts { namespace socket {
 //---------------------------------------------------------------------------
-extern SOCKET  __stdcall create_server_socket(const char *aipv4_port_s, const int atimeout_s);
-extern SOCKET  __stdcall create_server_socket(const char *aipv4_addr_s, const char *aipv4_port_s, const int atimeout_s);
-extern SOCKET  __stdcall create_client_socket(const char *aipv4_addr_s, const char *aipv4_port_s, const int atimeout_s);
-extern __int32 __stdcall close_socket(SOCKET amain_socket);
-extern __int32 __stdcall recv_for_sure(SOCKET amain_socket,char *arecv_lp, const __int32 alen,const  __int32 ax);
-extern __int32 __stdcall send_for_sure(SOCKET amain_socket,const char *asend_lp, const __int32 alen,const  __int32 ax);
-extern __int32 __stdcall start_simple_ftp_server(const char* apath, const char *aipv4_addr_s, const char *aipv4_port_s);
-extern __int32 __stdcall start_simple_http_server(const char* apath, const char *aipv4_addr_s, const char *aipv4_port_s);
+extern SOCKET  __stdcall create_server_socket(const char *a_ipv4_port_s, const int a_timeout_s);
+extern SOCKET  __stdcall create_server_socket(const char *a_ipv4_addr_s, const char *a_ipv4_port_s, const int a_timeout_s);
+extern SOCKET  __stdcall create_client_socket(const char *a_ipv4_addr_s, const char *a_ipv4_port_s, const int a_timeout_s);
+extern __int32 __stdcall close_socket(SOCKET a_main_socket);
 
-extern __int32 __stdcall get_file_size(const char* afilename);
-extern const char   *__stdcall get_file_size_ansi(const char* afilename);
-extern __int32 __stdcall get_file_content(const char* afilename, char *afile_content, const __int32 amax_size);
+extern __int32 __stdcall recv_for_sure(SOCKET a_main_socket,char *a_recv_lp, const __int32 alen,const  __int32 ax);
+extern __int32 __stdcall send_for_sure(SOCKET a_main_socket,const char *a_send_lp, const __int32 alen,const  __int32 ax);
+extern __int32 __stdcall start_tftp_server(const char* a_path, const char *a_ipv4_addr_s, const char *a_ipv4_port_s);
+extern __int32 __stdcall start_http_server(const char* a_path, const char *a_ipv4_addr_s, const char *a_ipv4_port_s);
+
+extern __int32 __stdcall get_file_size(const char* a_filename);
+extern const char   *__stdcall get_file_size_ansi(const char* a_filename);
+extern __int32 __stdcall get_file_content(const char* a_filename, char *a_file_content, const __int32 a_max_size);
 extern void	__stdcall print_socket_error();
 
 class SOCKET_BUFFER_CLASS {
 public:
 
-		int  send_done_count;
+		int send_done_count;
 		int send_count;
-		static const int send_size = 16 * 65536;
+		const int send_size;
 		char *send_lp;
-		int  recv_done_count;
+
+		int recv_done_count;
 		int recv_count;
-		static const int recv_size = 16 * 65536;
+		const int recv_size;
 		char *recv_lp;
 
-		__stdcall  SOCKET_BUFFER_CLASS(void) {
-				recv_done_count = SOCKET_ERROR;
-				send_done_count = 0;
-				recv_count = send_count = 0;
-				recv_lp = new char[ recv_size ];
-				send_lp = new char[ send_size ];
+		__stdcall  SOCKET_BUFFER_CLASS(void)
+         :  send_done_count(0), send_count(0), send_size(16*65536),
+            recv_done_count(SOCKET_ERROR), recv_count(0), recv_size(10*65536)
+         {
+				recv_lp = new char[recv_size];
+				send_lp = new char[send_size];
 		}
-		__stdcall ~SOCKET_BUFFER_CLASS(void) {
+		virtual __stdcall ~SOCKET_BUFFER_CLASS(void) {
 				delete recv_lp;
 				delete send_lp;
 		}
@@ -52,21 +54,22 @@ public:
 
 class http_request_content {
 public:
-		__stdcall  http_request_content()
-		{
-		command = new char[8];
-		file_name = new char[ MAX_PATH ];
-		host = new char[ MAX_PATH];
-		}
-		__stdcall ~http_request_content()
-		{
-		delete command;
-		delete file_name;
-		delete host;
-		}
 		char *command;
 		char *file_name;
 		char *host;
+
+		__stdcall  http_request_content()
+		{
+		        command = new char[8];
+		        file_name = new char[MAX_PATH];
+		        host = new char[MAX_PATH];
+		}
+		virtual __stdcall ~http_request_content()
+		{
+		        delete command;
+		        delete file_name;
+		        delete host;
+		}
 };
 
 class http_answer {

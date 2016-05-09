@@ -158,7 +158,6 @@ public:
 
 		static __int32 __stdcall check_dup_Match_Cost(__int32 aplain_len,__int32 adup_len,__int32 adup_offset);
 		static __int32 __stdcall check_pattern_Match_Cost(__int32 aplain_len,__int32 apattern_counte,__int32 apattern_elsize);
-
 };
 #endif
 //---------------------------------------------------------------------------

@@ -14,8 +14,8 @@ class __cstr_class : public __vector<char> {
 	protected:
 	void						 __stdcall	__init(const uint32_t a_initial_size, const char* __restrict__ a_c_to_clone);
 //-------------------------------
-	mutable char *f_subs;
-	mutable uint32_t f_subs_size;
+    mutable uint32_t f_subs_size;
+    mutable char *f_subs;
 	mutable char *f_ptr_dup;
 //-------------------------------
 	public:
@@ -73,8 +73,7 @@ else return set("0");
 inline const char*		__stdcall	operator= (const __int32 a_i_to_clone) {
 return set(a_i_to_clone);
 }
-										__stdcall  ~__cstr_class();
-		__int32			__stdcall	test();
+virtual inline __stdcall  ~__cstr_class(void);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------

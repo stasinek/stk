@@ -59,20 +59,20 @@ __DEBUG_FUNC_CALLED__
         setsockopt(main_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,sizeof(struct timeval));
         }
         accepted_socket = SOCKET_ERROR;
-        ts::console::print_formated("Waiting for a client to connect...\n" );
+        ts::con::prints("Waiting for a client to connect...\n" );
         while( accepted_socket == (unsigned int)SOCKET_ERROR ) {
         accepted_socket = accept( main_socket, NULL, NULL );
 ts::time::wait_ms(500);
         }
-        ts::console::print_formated("Client connected.\n" );
+        ts::con::prints("Client connected.\n" );
         main_socket = accepted_socket;
         buffer.recv_done_count = SOCKET_ERROR;
         ts::cstr::mov(buffer.recv_lp,"");
         ts::mem32::mov(&socket, &main_socket, sizeof(SOCKET));
-        ts::console::print_formated("SOCKET %d Connection established.\n",socket );
+        ts::con::prints("SOCKET %d Connection established.\n",socket );
         return socket;
 NEW_GOTO_ERROR_SOCKET:
-        ts::console::print_formated("SOMETHING GOES WRONG! SOCKET Terminated.\n" );
+        ts::con::prints("SOMETHING GOES WRONG! SOCKET Terminated.\n" );
         return SOCKET_ERROR;
 }
 
@@ -112,10 +112,10 @@ __DEBUG_FUNC_CALLED__
         setsockopt(main_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,sizeof(struct timeval));
         }
         ts::mem32::mov(&socket, &main_socket, sizeof(SOCKET));
-        ts::console::print_formated("SOCKET %d Connection established.\n",socket );
+        ts::con::prints("SOCKET %d Connection established.\n",socket );
         return socket;
 NEW_GOTO_ERROR_SOCKET:
-        ts::console::print_formated("SOMETHING GOES WRONG! SOCKET Terminated.\n" );
+        ts::con::prints("SOMETHING GOES WRONG! SOCKET Terminated.\n" );
         return SOCKET_ERROR;
 }
 //---------------------------------------------------------------------------
@@ -149,10 +149,10 @@ __DEBUG_FUNC_CALLED__
         ts::time::wait_ms(22);
         }
         }
-        ts::console::print_formated("send_for_sure(%d); sent: %dB\n", amain_socket, s_sum );
-        ts::console::print_formated("-----------------------------------------------------------------------\n");
-        ts::console::print_formated("%s\n", asend_lp );
-        ts::console::print_formated("-----------------------------------------------------------------------\n");
+        ts::con::prints("send_for_sure(%d); sent: %dB\n", amain_socket, s_sum );
+        ts::con::prints("-----------------------------------------------------------------------\n");
+        ts::con::prints("%s\n", asend_lp );
+        ts::con::prints("-----------------------------------------------------------------------\n");
         return s_sum;
 }
 //---------------------------------------------------------------------------
@@ -173,16 +173,16 @@ __DEBUG_FUNC_CALLED__
         ts::time::wait_ms(22);
         } else r_sum+=r;
         } while (r_sum>=to_r);
-        ts::console::print_formated("recv_for_sure(%d); received: %dB\n", amain_socket, r_sum );
-        ts::console::print_formated("-----------------------------------------------------------------------\n");
-        ts::console::print_formated("%s\n", arecv_lp );
-        ts::console::print_formated("-----------------------------------------------------------------------\n");
+        ts::con::prints("recv_for_sure(%d); received: %dB\n", amain_socket, r_sum );
+        ts::con::prints("-----------------------------------------------------------------------\n");
+        ts::con::prints("%s\n", arecv_lp );
+        ts::con::prints("-----------------------------------------------------------------------\n");
         return r_sum;
 }
 //---------------------------------------------------------------------------
 
 
-__int32 __stdcall ts::socket::start_simple_ftp_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
+__int32 __stdcall ts::socket::start_tftp_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
 {
 #ifdef __DEBUG_SOCKET__
 __DEBUG_FUNC_CALLED__
@@ -204,10 +204,10 @@ __DEBUG_FUNC_CALLED__
         buffer.recv_done_count = recv( main_socket,buffer.recv_lp,MAX_REQUEST,0 );
         if (buffer.recv_done_count == 0 || buffer.recv_done_count == WSAECONNRESET || buffer.recv_done_count  < 0 || buffer.recv_done_count == SOCKET_ERROR)
         break;
-        ts::console::print_formated("received: %dB\n", buffer.recv_done_count );
-        ts::console::print_formated("-----------------------------------------------------------------------\n");
-        ts::console::print_formated("%s\n", buffer.recv_lp );
-        ts::console::print_formated("-----------------------------------------------------------------------\n");
+        ts::con::prints("received: %dB\n", buffer.recv_done_count );
+        ts::con::prints("-----------------------------------------------------------------------\n");
+        ts::con::prints("%s\n", buffer.recv_lp );
+        ts::con::prints("-----------------------------------------------------------------------\n");
         if (buffer.recv_done_count < 4) {
 //
 /* BAD COMMAND
@@ -531,14 +531,14 @@ HTTP_GOTO_CLOSE_SOCKET:
         return 1;
 HTTP_GOTO_ERROR_SOCKET:
         if (main_socket!=(unsigned int)SOCKET_ERROR) close_socket(main_socket);
-        ts::console::print_formated("SOCKET Terminated!\n" );
+        ts::con::prints("SOCKET Terminated!\n" );
         delete temp_lp;
         return 0;
 }
 
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::socket::start_simple_http_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
+__int32 __stdcall ts::socket::start_http_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
 {
 #ifdef __DEBUG_SOCKET__
 __DEBUG_FUNC_CALLED__
@@ -558,10 +558,10 @@ __DEBUG_FUNC_CALLED__
         buffer.recv_done_count = recv( main_socket,buffer.recv_lp,MAX_REQUEST,0 );
         if (buffer.recv_done_count == 0 || buffer.recv_done_count == WSAECONNRESET || buffer.recv_done_count  < 0 || buffer.recv_done_count == SOCKET_ERROR)
         break;
-        ts::console::print_formated("received: %dB text:\n", buffer.recv_done_count );
-        ts::console::print_formated("-----------------------------------------------------------------------\n");
-        ts::console::print_formated("%s\n", buffer.recv_lp );
-        ts::console::print_formated("-----------------------------------------------------------------------\n");
+        ts::con::prints("received: %dB text:\n", buffer.recv_done_count );
+        ts::con::prints("-----------------------------------------------------------------------\n");
+        ts::con::prints("%s\n", buffer.recv_lp );
+        ts::con::prints("-----------------------------------------------------------------------\n");
         if (buffer.recv_done_count < 4) {
         ts::cstr::mov(buffer.send_lp,"HTTP/1.1 400 Bad Request\r\n");
         buffer.send_count = ts::cstr::len(buffer.send_lp);
@@ -597,7 +597,7 @@ HTTP_GOTO_CLOSE_SOCKET:
         return 1;
 HTTP_GOTO_ERROR_SOCKET:
         if (main_socket!=(unsigned int)SOCKET_ERROR) close_socket(main_socket);
-        ts::console::print_formated("SOCKET Terminated!\n" );
+        ts::con::prints("SOCKET Terminated!\n" );
         delete temp_lp;
         return 0;
 }
@@ -664,14 +664,14 @@ __DEBUG_FUNC_CALLED__
         switch(serrorno) {
         case WSA_INVALID_HANDLE:
 //6
-        ts::console::print_formated("%s\n","Specified event object handle is invalid.\
+        ts::con::prints("%s\n","Specified event object handle is invalid.\
 An application attempts to use an event object, but the specified handle is not valid. \
 Note that this error is returned by the operating system, so the error number may change in future releases of Windows. \
 ");
         break;
         case WSA_NOT_ENOUGH_MEMORY:
 //8
-        ts::console::print_formated("%s\n","Insufficient memory available. \
+        ts::con::prints("%s\n","Insufficient memory available. \
 An application used a Windows Sockets function that directly maps to a Windows function. \
 The Windows function is indicating a lack of required memory resources. \
 Note that this error is returned by the operating system, so the error number may change in future releases of Windows. \
@@ -679,7 +679,7 @@ Note that this error is returned by the operating system, so the error number ma
         break;
         case WSA_INVALID_PARAMETER:
 //87
-        ts::console::print_formated("%s\n","One or more parameters are invalid. \
+        ts::con::prints("%s\n","One or more parameters are invalid. \
 An application used a Windows Sockets function which directly maps to a Windows function. \
 The Windows function is indicating a problem with one or more parameters. \
 Note that this error is returned by the operating system, so the error number may change in future releases of Windows. \
@@ -687,14 +687,14 @@ Note that this error is returned by the operating system, so the error number ma
         break;
         case WSA_OPERATION_ABORTED:
 //995
-        ts::console::print_formated("%s\n","Overlapped operation aborted. \
+        ts::con::prints("%s\n","Overlapped operation aborted. \
 An overlapped operation was canceled due to the closure of the socket, or the execution of the SIO_FLUSH command in case WSAIoctl. \
 Note that this error is returned by the operating system, so the error number may change in future releases of Windows. \
 ");
         break;
         case WSA_IO_INCOMPLETE:
 //996
-        ts::console::print_formated("%s\n","Overlapped I/O event object not in signaled state. \
+        ts::con::prints("%s\n","Overlapped I/O event object not in signaled state. \
 The application has tried to determine the status of an overlapped operation which is not yet completed. \
 Applications that use case WSAGetOverlappedResult (with the fWait flag set to FALSE) in a polling mode to determine when an overlapped operation has completed, get this error code until the operation is complete. \
 Note that this error is returned by the operating system, so the error number may change in future releases of Windows. \
@@ -702,7 +702,7 @@ Note that this error is returned by the operating system, so the error number ma
         break;
         case WSA_IO_PENDING:
 //997
-        ts::console::print_formated("%s\n","Overlapped operations will complete later. \
+        ts::con::prints("%s\n","Overlapped operations will complete later. \
 The application has initiated an overlapped operation that cannot be completed immediately. \
 A completion indication will be given later when the operation has been completed. \
 Note that this error is returned by the operating system, so the error number may change in future releases of Windows. \
@@ -710,19 +710,19 @@ Note that this error is returned by the operating system, so the error number ma
         break;
         case WSAEINTR:
 //10004
-        ts::console::print_formated("%s\n","Interrupted function call. \
+        ts::con::prints("%s\n","Interrupted function call. \
 A blocking operation was interrupted by a call to case WSAcancelBlockingCall. \
 ");
         break;
         case WSAEBADF:
 //10009
-        ts::console::print_formated("%s\n","File handle is not valid. \
+        ts::con::prints("%s\n","File handle is not valid. \
 The file handle supplied is not valid. \
 ");
         break;
         case WSAEACCES:
 //10013
-        ts::console::print_formated("%s\n","Permission denied. \
+        ts::con::prints("%s\n","Permission denied. \
 An attempt was made to access a socket in a way forbidden by its access permissions. \
 An example is using a broadcast address for sendto without broadcast permission being set using setsockopt(SO_BROADCAST). \
 Another possible reason for the case WSAEACCES error is that when the bind function is called (on Windows NT 4. \0 with SP4 and later), another application, service, or kernel mode driver is bound to the same address with exclusive access. \
@@ -731,7 +731,7 @@ Such exclusive access is a new feature of Windows NT 4. \0 with SP4 and later, a
         break;
         case WSAEFAULT:
 //10014
-        ts::console::print_formated("%s\n","Bad address. \
+        ts::con::prints("%s\n","Bad address. \
 The system detected an invalid pointer address in attempting to use a pointer argument of a call. \
 This error occurs if an application passes an invalid pointer value, or if the length of the buffer is too small. \
 For instance, if the length of an argument, which is a sockaddr structure, is smaller than the sizeof(sockaddr). \
@@ -739,21 +739,21 @@ For instance, if the length of an argument, which is a sockaddr structure, is sm
         break;
         case WSAEINVAL:
 //10022
-        ts::console::print_formated("%s\n","Invalid argument. \
+        ts::con::prints("%s\n","Invalid argument. \
 Some invalid argument was supplied (for example, specifying an invalid level to the setsockopt function). \
 In some instances, it also refers to the current state of the socket�for instance, calling accept on a socket that is not listening. \
 ");
         break;
         case WSAEMFILE:
 //10024
-        ts::console::print_formated("%s\n","Too many open files. \
+        ts::con::prints("%s\n","Too many open files. \
 Too many open sockets. \
 Each implementation may have a maximum number of socket handles available, either globally, per process, or per thread. \
 ");
         break;
         case WSAEWOULDBLOCK:
 //10035
-        ts::console::print_formated("%s\n","Resource temporarily unavailable. \
+        ts::con::prints("%s\n","Resource temporarily unavailable. \
 This error is returned from operations on nonblocking sockets that cannot be completed immediately, for example recv when no data is queued to be read from the socket. \
 It is a nonfatal error, and the operation should be retried later. \
 It is normal for case WSAEWOULDBLOCK to be reported as the result from calling connect on a nonblocking SOCK_STREAM socket, since some time must elapse for the connection to be established. \
@@ -761,74 +761,74 @@ It is normal for case WSAEWOULDBLOCK to be reported as the result from calling c
         break;
         case WSAEINPROGRESS:
 //10036
-        ts::console::print_formated("%s\n","Operation now in progress. \
+        ts::con::prints("%s\n","Operation now in progress. \
 A blocking operation is currently executing. \
 Windows Sockets only allows a single blocking operation�per- task or thread�to be outstanding, and if any other function call is made (whether or not it references that or any other socket) the function fails with the case WSAEINPROGRESS error. \
 ");
         break;
         case WSAEALREADY:
 //10037
-        ts::console::print_formated("%s\n","Operation already in progress. \
+        ts::con::prints("%s\n","Operation already in progress. \
 An operation was attempted on a nonblocking socket with an operation already in progress�that is, calling connect a second time on a nonblocking socket that is already connecting, or canceling an asynchronous request (case WSAAsyncGetXbyY) that has already been canceled or completed. \
 ");
         break;
         case WSAENOTSOCK:
 //10038
-        ts::console::print_formated("%s\n","Socket operation on nonsocket. \
+        ts::con::prints("%s\n","Socket operation on nonsocket. \
 An operation was attempted on something that is not a socket. \
 Either the socket handle parameter did not reference a valid socket, or for select, a member of an fd_set was not valid. \
 ");
         break;
         case WSAEDESTADDRREQ:
 //10039
-        ts::console::print_formated("%s\n","Destination address required. \
+        ts::con::prints("%s\n","Destination address required. \
 A required address was omitted from an operation on a socket. \
 For example, this error is returned if sendto is called with the remote address of ADDR_ANY. \
 ");
         break;
         case WSAEMSGSIZE:
 //10040
-        ts::console::print_formated("%s\n","Message too long. \
+        ts::con::prints("%s\n","Message too long. \
 A message sent on a datagram socket was larger than the internal message buffer or some other network limit, or the buffer used to receive a datagram was smaller than the datagram itself. \
 ");
         break;
         case WSAEPROTOTYPE:
 //10041
-        ts::console::print_formated("%s\n","Protocol wrong type for socket. \
+        ts::con::prints("%s\n","Protocol wrong type for socket. \
 A protocol was specified in the socket function call that does not support the semantics of the socket type requested. \
 For example, the ARPA Internet UDP protocol cannot be specified with a socket type of SOCK_STREAM. \
 ");
         break;
         case WSAENOPROTOOPT:
 //10042
-        ts::console::print_formated("%s\n","Bad protocol option. \
+        ts::con::prints("%s\n","Bad protocol option. \
 An unknown, invalid or unsupported option or level was specified in a getsockopt or setsockopt call. \
 ");
         break;
         case WSAEPROTONOSUPPORT:
 //10043
-        ts::console::print_formated("%s\n","Protocol not supported. \
+        ts::con::prints("%s\n","Protocol not supported. \
 The requested protocol has not been configured into the system, or no implementation for it exists. \
 For example, a socket call requests a SOCK_DGRAM socket, but specifies a stream protocol. \
 ");
         break;
         case WSAESOCKTNOSUPPORT:
 //10044
-        ts::console::print_formated("%s\n","Socket type not supported. \
+        ts::con::prints("%s\n","Socket type not supported. \
 The support for the specified socket type does not exist in this address family. \
 For example, the optional type SOCK_RAW might be selected in a socket call, and the implementation does not support SOCK_RAW sockets at all. \
 ");
         break;
         case WSAEOPNOTSUPP:
 //10045
-        ts::console::print_formated("%s\n","Operation not supported. \
+        ts::con::prints("%s\n","Operation not supported. \
 The attempted operation is not supported for the type of object referenced. \
 Usually this occurs when a socket descriptor to a socket that cannot support this operation is trying to accept a connection on a datagram socket. \
 ");
         break;
         case WSAEPFNOSUPPORT:
 //10046
-        ts::console::print_formated("%s\n","Protocol family not supported. \
+        ts::con::prints("%s\n","Protocol family not supported. \
 The protocol family has not been configured into the system or no implementation for it exists. \
 This message has a slightly different meaning from case WSAEAFNOSUPPORT. \
 However, it is interchangeable in most cases, and all Windows Sockets functions that return one of these messages also specify case WSAEAFNOSUPPORT. \
@@ -836,7 +836,7 @@ However, it is interchangeable in most cases, and all Windows Sockets functions 
         break;
         case WSAEAFNOSUPPORT:
 //10047
-        ts::console::print_formated("%s\n","Address family not supported by protocol family. \
+        ts::con::prints("%s\n","Address family not supported by protocol family. \
 An address incompatible with the requested protocol was used. \
 All sockets are created with an associated address family (that is, AF_INET for Internet Protocols) and a generic protocol type (that is, SOCK_STREAM). \
 This error is returned if an incorrect protocol is explicitly requested in the socket call, or if an address of the wrong family is used for a socket, for example, in sendto. \
@@ -844,7 +844,7 @@ This error is returned if an incorrect protocol is explicitly requested in the s
         break;
         case WSAEADDRINUSE:
 //10048
-        ts::console::print_formated("%s\n","Address already in use. \
+        ts::con::prints("%s\n","Address already in use. \
 Typically, only one usage of each socket address (protocol/IP address/port) is permitted. \
 This error occurs if an application attempts to bind a socket to an IP address/port that has already been used for an existing socket, or a socket that was not closed properly, or one that is still in the process of closing. \
 For server applications that need to bind multiple sockets to the same port number, consider using setsockopt (SO_REUSEADDR). \
@@ -855,7 +855,7 @@ This could happen with a call to another function later, including connect, list
         break;
         case WSAEADDRNOTAVAIL:
 //10049
-        ts::console::print_formated("%s\n","Cannot assign requested address. \
+        ts::con::prints("%s\n","Cannot assign requested address. \
 The requested address is not valid in its context. \
 This normally results from an attempt to bind to an address that is not valid for the local computer. \
 This can also result from connect, sendto, case WSAConnect, case WSAJoinLeaf, or case WSASendTo when the remote address or port is not valid for a remote computer (for example, address or port 0). \
@@ -863,34 +863,34 @@ This can also result from connect, sendto, case WSAConnect, case WSAJoinLeaf, or
         break;
         case WSAENETDOWN:
 //10050
-        ts::console::print_formated("%s\n","Network is down. \
+        ts::con::prints("%s\n","Network is down. \
 A socket operation encountered a dead network. \
 This could indicate a serious failure of the network system (that is, the protocol stack that the Windows Sockets DLL runs over), the network interface, or the local network itself. \
 ");
         break;
         case WSAENETUNREACH:
 //10051
-        ts::console::print_formated("%s\n","Network is unreachable. \
+        ts::con::prints("%s\n","Network is unreachable. \
 A socket operation was attempted to an unreachable network. \
 This usually means the local software knows no route to reach the remote host. \
 ");
         break;
         case WSAENETRESET:
 //10052
-        ts::console::print_formated("%s\n","Network dropped connection on reset. \
+        ts::con::prints("%s\n","Network dropped connection on reset. \
 The connection has been broken due to keep-alive activity detecting a failure while the operation was in progress. \
 It can also be returned by setsockopt if an attempt is made to set SO_KEEPALIVE on a connection that has already failed. \
 ");
         break;
         case WSAECONNABORTED:
 //10053
-        ts::console::print_formated("%s\n","Software caused connection abort. \
+        ts::con::prints("%s\n","Software caused connection abort. \
 An established connection was aborted by the software in your host computer, possibly due to a data transmission time-out or protocol error. \
 ");
         break;
         case WSAECONNRESET:
 //10054
-        ts::console::print_formated("%s\n","Connection reset by peer. \
+        ts::con::prints("%s\n","Connection reset by peer. \
 An existing connection was forcibly closed by the remote host. \
 This normally results if the peer application on the remote host is suddenly stopped, the host is rebooted, the host or remote network interface is disabled, or the remote host uses a hard close (see setsockopt for more information on the SO_LINGER option on the remote socket). \
 This error may also result if a connection was broken due to keep-alive activity detecting a failure while one or more operations are in progress. \
@@ -900,65 +900,65 @@ Subsequent operations fail with case WSAECONNRESET. \
         break;
         case WSAENOBUFS:
 //10055
-        ts::console::print_formated("%s\n","No buffer space available. \
+        ts::con::prints("%s\n","No buffer space available. \
 An operation on a socket could not be performed because the system lacked sufficient buffer space or because a queue was full. \
 ");
         break;
         case WSAEISCONN:
 //10056
-        ts::console::print_formated("%s\n","Socket is already connected. \
+        ts::con::prints("%s\n","Socket is already connected. \
 A connect request was made on an already-connected socket. \
 Some implementations also return this error if sendto is called on a connected SOCK_DGRAM socket (for SOCK_STREAM sockets, the to parameter in sendto is ignored) although other implementations treat this as a legal occurrence. \
 ");
         break;
         case WSAENOTCONN:
 //10057
-        ts::console::print_formated("%s\n","Socket is not connected. \
+        ts::con::prints("%s\n","Socket is not connected. \
 A request to send or receive data was disallowed because the socket is not connected and (when sending on a datagram socket using sendto) no address was supplied. \
 Any other type of operation might also return this error�for example, setsockopt setting SO_KEEPALIVE if the connection has been reset. \
 ");
         break;
         case WSAESHUTDOWN:
 //10058
-        ts::console::print_formated("%s\n","Cannot send after socket shutdown. \
+        ts::con::prints("%s\n","Cannot send after socket shutdown. \
 A request to send or receive data was disallowed because the socket had already been shut down in that direction with a previous shutdown call. \
 By calling shutdown a partial close of a socket is requested, which is a signal that sending or receiving, or both have been discontinued. \
 ");
         break;
         case WSAETOOMANYREFS:
 //10059
-        ts::console::print_formated("%s\n","Too many references. \
+        ts::con::prints("%s\n","Too many references. \
 Too many references to some kernel object. \
 ");
         break;
         case WSAETIMEDOUT:
 //10060
-        ts::console::print_formated("%s\n","Connection timed out. \
+        ts::con::prints("%s\n","Connection timed out. \
 A connection attempt failed because the connected party did not properly respond after a period of time, or the established connection failed because the connected host has failed to respond. \
 ");
         break;
         case WSAECONNREFUSED:
 //10061
-        ts::console::print_formated("%s\n","Connection refused. \
+        ts::con::prints("%s\n","Connection refused. \
 No connection could be made because the target computer actively refused it. \
 This usually results from trying to connect to a service that is inactive on the foreign host�that is, one with no server application running. \
 ");
         break;
         case WSAELOOP:
 //10062
-        ts::console::print_formated("%s\n","Cannot translate name. \
+        ts::con::prints("%s\n","Cannot translate name. \
 Cannot translate a name. \
 ");
         break;
         case WSAENAMETOOLONG:
 //10063
-        ts::console::print_formated("%s\n","Name too long. \
+        ts::con::prints("%s\n","Name too long. \
 A name component or a name was too long. \
 ");
         break;
         case WSAEHOSTDOWN:
 //10064
-        ts::console::print_formated("%s\n","Host is down. \
+        ts::con::prints("%s\n","Host is down. \
 A socket operation failed because the destination host is down. \
 A socket operation encountered a dead host. \
 Networking activity on the local host has not been initiated. \
@@ -967,51 +967,51 @@ These conditions are more likely to be indicated by the error case WSAETIMEDOUT.
         break;
         case WSAEHOSTUNREACH:
 //10065
-        ts::console::print_formated("%s\n","No route to host. \
+        ts::con::prints("%s\n","No route to host. \
 A socket operation was attempted to an unreachable host. \
 See case WSAENETUNREACH. \
 ");
         break;
         case WSAENOTEMPTY:
 //10066
-        ts::console::print_formated("%s\n","Directory not empty. \
+        ts::con::prints("%s\n","Directory not empty. \
 Cannot remove a directory that is not empty. \
 ");
         break;
         case WSAEPROCLIM:
 //10067
-        ts::console::print_formated("%s\n","Too many processes. \
+        ts::con::prints("%s\n","Too many processes. \
 A Windows Sockets implementation may have a limit on the number of applications that can use it simultaneously. \
 case WSAStartup may fail with this error if the limit has been reached. \
 ");
         break;
         case WSAEUSERS:
 //10068
-        ts::console::print_formated("%s\n","User quota exceeded. \
+        ts::con::prints("%s\n","User quota exceeded. \
 Ran out of user quota. \
 ");
         break;
         case WSAEDQUOT:
 //10069
-        ts::console::print_formated("%s\n","Disk quota exceeded. \
+        ts::con::prints("%s\n","Disk quota exceeded. \
 Ran out of disk quota. \
 ");
         break;
         case WSAESTALE:
 //10070
-        ts::console::print_formated("%s\n","Stale file handle reference. \
+        ts::con::prints("%s\n","Stale file handle reference. \
 The file handle reference is no longer available. \
 ");
         break;
         case WSAEREMOTE:
 //10071
-        ts::console::print_formated("%s\n","Item is remote. \
+        ts::con::prints("%s\n","Item is remote. \
 The item is not available locally. \
 ");
         break;
         case WSASYSNOTREADY:
 //10091
-        ts::console::print_formated("%s\n","Network subsystem is unavailable. \
+        ts::con::prints("%s\n","Network subsystem is unavailable. \
 This error is returned by case WSAStartup if the Windows Sockets implementation cannot function at this time because the underlying system it uses to provide network services is currently unavailable. \
 Users should check: \
 That the appropriate Windows Sockets DLL file is in the current path. \
@@ -1022,40 +1022,40 @@ The Windows Sockets implementation documentation to be sure all necessary compon
         break;
         case WSAVERNOTSUPPORTED:
 //10092
-        ts::console::print_formated("%s\n","Winsock.dll version out of range. \
+        ts::con::prints("%s\n","Winsock.dll version out of range. \
 The current Windows Sockets implementation does not support the Windows Sockets specification version requested by the application. \
 Check that no old Windows Sockets DLL files are being accessed. \
 ");
         break;
         case WSANOTINITIALISED:
 //10093
-        ts::console::print_formated("%s\n","Successful case WSAStartup not yet performed. \
+        ts::con::prints("%s\n","Successful case WSAStartup not yet performed. \
 Either the application has not called case WSAStartup or case WSAStartup failed. \
 The application may be accessing a socket that the current active task does not own (that is, trying to share a socket between tasks), or case WSACleanup has been called too many times. \
 ");
         break;
         case WSAEDISCON:
 //10101
-        ts::console::print_formated("%s\n","Graceful shutdown in progress. \
+        ts::con::prints("%s\n","Graceful shutdown in progress. \
 Returned by case WSARecv and case WSARecvFrom to indicate that the remote party has initiated a graceful shutdown sequence. \
 ");
         break;
         case WSAENOMORE:
 //10102
-        ts::console::print_formated("%s\n","No more results. \
+        ts::con::prints("%s\n","No more results. \
 No more results can be returned by the case WSALookupServiceNext function. \
 ");
         break;
         case WSAECANCELLED:
 //10103
-        ts::console::print_formated("%s\n","Call has been canceled. \
+        ts::con::prints("%s\n","Call has been canceled. \
 A call to the case WSALookupServiceEnd function was made while this call was still processing. \
 The call has been canceled. \
 ");
         break;
         case WSAEINVALIDPROCTABLE:
 //10104
-        ts::console::print_formated("%s\n","Procedure call table is invalid. \
+        ts::con::prints("%s\n","Procedure call table is invalid. \
 The service provider procedure call table is invalid. \
 A service provider returned a bogus procedure table to Ws2_32.dll. \
 This is usually caused by one or more of the function pointers being NULL. \
@@ -1063,7 +1063,7 @@ This is usually caused by one or more of the function pointers being NULL. \
         break;
         case WSAEINVALIDPROVIDER:
 //10105
-        ts::console::print_formated("%s\n","Service provider is invalid. \
+        ts::con::prints("%s\n","Service provider is invalid. \
 The requested service provider is invalid. \
 This error is returned by the WSCGetProviderInfo and WSCGetProviderInfo32 functions if the protocol entry specified could not be found. \
 This error is also returned if the service provider returned a version number other than 2. \0. \
@@ -1071,14 +1071,14 @@ This error is also returned if the service provider returned a version number ot
         break;
         case WSAEPROVIDERFAILEDINIT:
 //10106
-        ts::console::print_formated("%s\n","Service provider failed to initialize. \
+        ts::con::prints("%s\n","Service provider failed to initialize. \
 The requested service provider could not be loaded or initialized. \
 This error is returned if either a service provider's DLL could not be loaded (LoadLibrary failed) or the provider's WSPStartup or NSPStartup function failed. \
 ");
         break;
         case WSASYSCALLFAILURE:
 //10107
-        ts::console::print_formated("%s\n","System call failure. \
+        ts::con::prints("%s\n","System call failure. \
 A system call that should never fail has failed. \
 This is a generic error code, returned under various conditions. \
 Returned when a system call that should never fail does fail. \
@@ -1089,39 +1089,39 @@ Can indicate a service provider implementation error. \
         break;
         case WSASERVICE_NOT_FOUND:
 //10108
-        ts::console::print_formated("%s\n","Service not found. \
+        ts::con::prints("%s\n","Service not found. \
 No such service is known. \
 The service cannot be found in the specified name space. \
 ");
         break;
         case WSATYPE_NOT_FOUND:
 //10109
-        ts::console::print_formated("%s\n","Class type not found. \
+        ts::con::prints("%s\n","Class type not found. \
 The specified class was not found. \
 ");
         break;
         case WSA_E_NO_MORE:
 //10110
-        ts::console::print_formated("%s\n","No more results. \
+        ts::con::prints("%s\n","No more results. \
 No more results can be returned by the case WSALookupServiceNext function. \
 ");
         break;
         case WSA_E_CANCELLED:
 //10111
-        ts::console::print_formated("%s\n","Call was canceled. \
+        ts::con::prints("%s\n","Call was canceled. \
 A call to the case WSALookupServiceEnd function was made while this call was still processing. \
 The call has been canceled. \
 ");
         break;
         case WSAEREFUSED:
 //10112
-        ts::console::print_formated("%s\n","database query was refused. \
+        ts::con::prints("%s\n","database query was refused. \
 A database query failed because it was actively refused. \
 ");
         break;
         case WSAHOST_NOT_FOUND:
 //11001
-        ts::console::print_formated("%s\n","Host not found. \
+        ts::con::prints("%s\n","Host not found. \
 No such host is known. \
 The name is not an official host name or alias, or it cannot be found in the database(s) being queried. \
 This error may also be returned for protocol and service queries, and means that the specified name could not be found in the relevant database. \
@@ -1129,21 +1129,21 @@ This error may also be returned for protocol and service queries, and means that
         break;
         case WSATRY_AGAIN:
 //11002
-        ts::console::print_formated("%s\n","Nonauthoritative host not found. \
+        ts::con::prints("%s\n","Nonauthoritative host not found. \
 This is usually a temporary error during host name resolution and means that the local server did not receive a response from an authoritative server. \
 A retry at some time later may be successful. \
 ");
         break;
         case WSANO_RECOVERY:
 //11003
-        ts::console::print_formated("%s\n","This is a nonrecoverable error. \
+        ts::con::prints("%s\n","This is a nonrecoverable error. \
 This indicates that some sort of nonrecoverable error occurred during a database lookup. \
 This may be because the database files (for example, BSD-compatible HOSTS, SERVICES, or PROTOCOLS files) could not be found, or a DNS request was returned by the server with a severe error. \
 ");
         break;
         case WSANO_DATA:
 //11004
-        ts::console::print_formated("%s\n","Valid name, no data record of requested type. \
+        ts::con::prints("%s\n","Valid name, no data record of requested type. \
 The requested name is valid and was found in the database, but it does not have the correct associated data being resolved for. \
 The usual example for this is a host name-to-address translation attempt (using gethostbyname or case WSAAsyncGetHostByName) which uses the DNS (Domain Name Server). \
 An MX record is returned but no A record�indicating the host itself exists, but is not directly reachable. \
@@ -1151,62 +1151,62 @@ An MX record is returned but no A record�indicating the host itself exists, bu
         break;
         case WSA_QOS_RECEIVERS:
 //11005
-        ts::console::print_formated("%s\n","QoS receivers. \
+        ts::con::prints("%s\n","QoS receivers. \
 At least one QoS reserve has arrived. \
 ");
         break;
         case WSA_QOS_SENDERS:
 //11006
-        ts::console::print_formated("%s\n","QoS senders. \
+        ts::con::prints("%s\n","QoS senders. \
 At least one QoS send path has arrived. \
 ");
         break;
         case WSA_QOS_NO_SENDERS:
 //11007
-        ts::console::print_formated("%s\n","No QoS senders. \
+        ts::con::prints("%s\n","No QoS senders. \
 There are no QoS senders. \
 ");
         break;
         case WSA_QOS_NO_RECEIVERS:
 //11008
-        ts::console::print_formated("%s\n","QoS no receivers. \
+        ts::con::prints("%s\n","QoS no receivers. \
 There are no QoS receivers. \
 ");
         break;
         case WSA_QOS_REQUEST_CONFIRMED:
 //11009
-        ts::console::print_formated("%s\n","QoS request confirmed. \
+        ts::con::prints("%s\n","QoS request confirmed. \
 The QoS reserve request has been confirmed. \
 ");
         break;
         case WSA_QOS_ADMISSION_FAILURE:
 //11010
-        ts::console::print_formated("%s\n","QoS admission error. \
+        ts::con::prints("%s\n","QoS admission error. \
 A QoS error occurred due to lack of resources. \
 ");
         break;
         case WSA_QOS_POLICY_FAILURE:
 //11011
-        ts::console::print_formated("%s\n","QoS policy failure. \
+        ts::con::prints("%s\n","QoS policy failure. \
 The QoS request was rejected because the policy system couldn't allocate \
 the requested resource within the existing policy. \
 ");
         break;
         case WSA_QOS_BAD_STYLE:
 //11012
-        ts::console::print_formated("%s\n","QoS bad style. \
+        ts::con::prints("%s\n","QoS bad style. \
 An unknown or conflicting QoS style was encountered. \
 ");
         break;
         case WSA_QOS_BAD_OBJECT:
 //11013
-        ts::console::print_formated("%s\n","QoS bad object. \
+        ts::con::prints("%s\n","QoS bad object. \
 A problem was encountered with some part of the filterspec or the provider-specific buffer in general. \
 ");
         break;
         case WSA_QOS_TRAFFIC_CTRL_ERROR:
 //11014
-        ts::console::print_formated("%s\n","QoS traffic control error. \
+        ts::con::prints("%s\n","QoS traffic control error. \
 An error with the underlying traffic control (TC)  \
 API as the generic QoS request was converted for local enforcement by the TC API. \
 This could be due to an out of memory error or to an internal QoS provider error. \
@@ -1214,105 +1214,105 @@ This could be due to an out of memory error or to an internal QoS provider error
         break;
         case WSA_QOS_GENERIC_ERROR:
 //11015
-        ts::console::print_formated("%s\n","QoS generic error. \
+        ts::con::prints("%s\n","QoS generic error. \
 A general QoS error. \
 ");
         break;
         case WSA_QOS_ESERVICETYPE:
 //11016
-        ts::console::print_formated("%s\n","QoS service type error. \
+        ts::con::prints("%s\n","QoS service type error. \
 An invalid or unrecognized service type was found in the QoS flowspec. \
 ");
         break;
         case WSA_QOS_EFLOWSPEC:
 //11017
-        ts::console::print_formated("%s\n","QoS flowspec error. \
+        ts::con::prints("%s\n","QoS flowspec error. \
 An invalid or inconsistent flowspec was found in the QOS structure. \
 ");
         break;
         case WSA_QOS_EPROVSPECBUF:
 //11018
-        ts::console::print_formated("%s\n","Invalid QoS provider buffer. \
+        ts::con::prints("%s\n","Invalid QoS provider buffer. \
 An invalid QoS provider-specific buffer. \
 ");
         break;
         case WSA_QOS_EFILTERSTYLE:
 //11019
-        ts::console::print_formated("%s\n","Invalid QoS filter style. \
+        ts::con::prints("%s\n","Invalid QoS filter style. \
 An invalid QoS filter style was used. \
 ");
         break;
         case WSA_QOS_EFILTERTYPE:
 //11020
-        ts::console::print_formated("%s\n","Invalid QoS filter type. \
+        ts::con::prints("%s\n","Invalid QoS filter type. \
 An invalid QoS filter type was used. \
 ");
         break;
         case WSA_QOS_EFILTERCOUNT:
 //11021
-        ts::console::print_formated("%s\n","Incorrect QoS filter count. \
+        ts::con::prints("%s\n","Incorrect QoS filter count. \
 An incorrect number of QoS FILTERSPECs were specified in the FLOWDESCRIPTOR. \
 ");
         break;
         case WSA_QOS_EOBJLENGTH:
 //11022
-        ts::console::print_formated("%s\n","Invalid QoS object length. \
+        ts::con::prints("%s\n","Invalid QoS object length. \
 An object with an invalid ObjectLength field was specified in the QoS provider-specific buffer. \
 ");
         break;
         case WSA_QOS_EFLOWCOUNT:
 //11023
-        ts::console::print_formated("%s\n","Incorrect QoS flow count. \
+        ts::con::prints("%s\n","Incorrect QoS flow count. \
 An incorrect number of flow descriptors was specified in the QoS structure. \
 ");
         break;
 #ifndef __WATCOMC__
         case WSA_QOS_EUNKOWNPSOBJ:
 //11024
-        ts::console::print_formated("%s\n","Unrecognized QoS object. \
+        ts::con::prints("%s\n","Unrecognized QoS object. \
 An unrecognized object was found in the QoS provider-specific buffer. \
 ");
         break;
 #endif
         case WSA_QOS_EPOLICYOBJ:
 //11025
-        ts::console::print_formated("%s\n","Invalid QoS policy object. \
+        ts::con::prints("%s\n","Invalid QoS policy object. \
 An invalid policy object was found in the QoS provider-specific buffer. \
 ");
         break;
         case WSA_QOS_EFLOWDESC:
 //11026
-        ts::console::print_formated("%s\n","Invalid QoS flow descriptor. \
+        ts::con::prints("%s\n","Invalid QoS flow descriptor. \
 An invalid QoS flow descriptor was found in the flow descriptor list. \
 ");
         break;
         case WSA_QOS_EPSFLOWSPEC:
 //11027
-        ts::console::print_formated("%s\n","Invalid QoS provider-specific flowspec. \
+        ts::con::prints("%s\n","Invalid QoS provider-specific flowspec. \
 An invalid or inconsistent flowspec was found in the QoS provider-specific buffer. \
 ");
         break;
         case WSA_QOS_EPSFILTERSPEC:
 //11028
-        ts::console::print_formated("%s\n","Invalid QoS provider-specific filterspec. \
+        ts::con::prints("%s\n","Invalid QoS provider-specific filterspec. \
 An invalid FILTERSPEC was found in the QoS provider-specific buffer. \
 ");
         break;
         case WSA_QOS_ESDMODEOBJ:
 //11029
-        ts::console::print_formated("%s\n","Invalid QoS shape discard mode object. \
+        ts::con::prints("%s\n","Invalid QoS shape discard mode object. \
 An invalid shape discard mode object was found in the QoS provider-specific buffer. \
 ");
         break;
         case WSA_QOS_ESHAPERATEOBJ:
 //11030
-        ts::console::print_formated("%s\n","Invalid QoS shaping rate object. \
+        ts::con::prints("%s\n","Invalid QoS shaping rate object. \
 An invalid shaping rate object was found in the QoS provider-specific buffer. \
 ");
         break;
         case WSA_QOS_RESERVED_PETYPE:
 //11031
-        ts::console::print_formated("%s\n","Reserved policy QoS element type. \
+        ts::con::prints("%s\n","Reserved policy QoS element type. \
 A reserved policy element was found in the QoS provider-specific buffer. \
 ");
         break;

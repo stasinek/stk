@@ -37,7 +37,7 @@ static	DWORD		WINAPI		f_write_file_thread				(LPVOID a_caller);
 public:
 //------------------------------------
 					__stdcall  	__kop32_class   (void);
-					__stdcall ~	__kop32_class   (void);
+			virtual __stdcall ~	__kop32_class   (void);
 //------------------------------------
 		void				__stdcall reset 			(void);
 //------------------------------------

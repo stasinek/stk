@@ -48,7 +48,7 @@ __DEBUG_FUNC_CALLED__
 		nRot = (nRot+1) &0x0FL;
 // PREVENT DIVISION BY '0'
 		if (akop->progress->src->all->readed == 0 || akop->progress->src->one->size == 0 || akop->progress->src->all->size == 0 || (akop->progress->elapsed() == 0)) {
-				ts::console::print_formated("\r[				  ] - <0%% 0kB/s>");
+				ts::con::prints("\r[				  ] - <0%% 0kB/s>");
 				return 1;
 		}
 //PROGRESS BAR
@@ -56,16 +56,16 @@ __DEBUG_FUNC_CALLED__
 		memmove(szPrb, "[				  ]", 12);
 		memmove(szPrb, "[**********]", 1+nPos);
 
-		ts::console::print_formated("\r%79s"," ");
-		ts::console::print_formated("\r%s %.1lf%c <%.2lf%% ", szPrb, 100 *(double(akop->progress->src->all->readed) / double(akop->progress->src->all->size)),
+		ts::con::prints("\r%79s"," ");
+		ts::con::prints("\r%s %.1lf%c <%.2lf%% ", szPrb, 100 *(double(akop->progress->src->all->readed) / double(akop->progress->src->all->size)),
 												  szGfx[(nRot >> 2) &0x03L], 100 *(double(akop->progress->dst->all->readed)
 																  / double(akop->progress->src->all->readed)));
 // SPEED MB/s
 		if (akop->options->operation == OPERATION_ENCODE)
-				ts::console::print_formated("%.2lfkB/s> ", double(akop->progress->src->all->readed) / double(akop->progress->elapsed()) /
+				ts::con::prints("%.2lfkB/s> ", double(akop->progress->src->all->readed) / double(akop->progress->elapsed()) /
 														  1024);
 		if (akop->options->operation == OPERATION_DECODE)
-				ts::console::print_formated("%.2lfkB/s> ", double(akop->progress->src->all->readed) / double(akop->progress->elapsed()) /
+				ts::con::prints("%.2lfkB/s> ", double(akop->progress->src->all->readed) / double(akop->progress->elapsed()) /
 														  1024);
 // FILE NAME "?????.???"
 		ts::cstr::extract_file_name(szTmp, akop->list->src_main_list->items()->get_text(akop->list->cur_i));
@@ -73,10 +73,10 @@ __DEBUG_FUNC_CALLED__
 				szTmp[30] = 0;
 				strcat(szTmp, "...");
 		}
-		ts::console::print_formated("\"%s\"", szTmp);
+		ts::con::prints("\"%s\"", szTmp);
 // CHECK ESCAPE CODE if ESC was pressed and if so request STOP
 		if (nRot == 0xFFL && kbhit() != 0) {
-				if (ts::console::getch() == 0x00L) if (ts::console::getch() == 0x1BL) akop->abort();
+				if (ts::con::getch() == 0x00L) if (ts::con::getch() == 0x1BL) akop->abort();
 		}
 // RETURN SUCCES
 		return 1;
@@ -96,61 +96,61 @@ __DEBUG_FUNC_CALLED__
 		else
 		if (ts::cstr::compare(aevent,"ASK_USER")==0)
 		{
-				ts::console::print_repeated("==========",8);
-				ts::console::print_formated("press enter to continue\r\n");
-				ts::console::print_repeated("==========",8);
-				register  char c =  ts::console::getch();
+				ts::con::printr("==========",8);
+				ts::con::prints("press enter to continue\r\n");
+				ts::con::printr("==========",8);
+				register  char c =  ts::con::getch();
 				if (c=='\r' || c == '\n') return "OK\0";
 				else return "CANCEL\0";
 		}
 		else
 		if (ts::cstr::compare(aevent,"SHOW_LICENSE")==0)
 		{
-				ts::console::print("\r\n");
-				ts::console::print_repeated("==========",8);
-				ts::console::print_formated("This program at current version is FREE software");
-				ts::console::print_formated("This program is distributed in the HOPE that it will be USEFUL,\n");
-				ts::console::print_formated("but WITHOUT ANY WARRANTY;\n""MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE\n");
-				ts::console::print_formated("IMPORTANT!!!!");
-				ts::console::print_repeated("----------",8);
-				ts::console::print_formated("YOU USE AT YOUR OWN RISK. THE AUTHOR WILL NOT BE LIABLE FOR DATA LOSS,\n");
-				ts::console::print_formated("DAMAGES, LOSS OF PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR\n");
-				ts::console::print_formated("MISUSING THIS SOFTWARE.\n");
-				ts::console::print_repeated("----------",8);
-				ts::console::print_formated("Press ANY KEY to EXIT \n");
-				ts::console::print_repeated("==========",8);
-				register  char c =  ts::console::getch();
+				ts::con::print("\r\n");
+				ts::con::printr("==========",8);
+				ts::con::prints("This program at current version is FREE software");
+				ts::con::prints("This program is distributed in the HOPE that it will be USEFUL,\n");
+				ts::con::prints("but WITHOUT ANY WARRANTY;\n""MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE\n");
+				ts::con::prints("IMPORTANT!!!!");
+				ts::con::printr("----------",8);
+				ts::con::prints("YOU USE AT YOUR OWN RISK. THE AUTHOR WILL NOT BE LIABLE FOR DATA LOSS,\n");
+				ts::con::prints("DAMAGES, LOSS OF PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR\n");
+				ts::con::prints("MISUSING THIS SOFTWARE.\n");
+				ts::con::printr("----------",8);
+				ts::con::prints("Press ANY KEY to EXIT \n");
+				ts::con::printr("==========",8);
+				register  char c =  ts::con::getch();
 				if (c=='\r' || c == '\n') return "OK\0";
 				else return "CANCEL\0";
 		}
 		else
 		if (ts::cstr::compare(aevent,"SHOW_COMMAND_ARGS")==0)
 		{
-				ts::console::print("\r\n");
-				ts::console::print_repeated("==========",8);
-				ts::console::print_formated("main.exe -operand[sub-options] <multiple infiles/dir ... > <one outfile/dir>\n");
-				ts::console::print_formated("-C --COPY \n");
-				ts::console::print_formated("-M --MOVE -> move or rename on the same partition\n");
-				ts::console::print_formated("-X --REMOVE\n");
-				ts::console::print_formated("\n");
-				ts::console::print_formated("-E --ENCODE[ LZS,HUF,ARI,MTF,BWT,CRC,ADLER,XOR,SXQ,STORE,DEFAULT,ULTRA ]\n");
-				ts::console::print_formated("-P --PASSWORD[ password ] for XOR and SXQ\n");
-				ts::console::print_formated("-I --DUP[ 256 ] -> set LZSS dict size: 256 < 65536\n");
-				ts::console::print_formated("-H --CHECKSUM[ CRC32 ] -> CRC32 or SSC1024\n");
-				ts::console::print_formated("-D --DECODE\n");
-				ts::console::print_formated("\n");
-				ts::console::print_formated("-L --LISTING source directories and files\n");
-				ts::console::print_formated("-A --ARGUMENTS[ special words: #dir #file #size #attr #modified_date]\n");
-				ts::console::print_formated("\n");
-				ts::console::print_formated("-B --BUFF[ kB ] -> file buffer size\n");
-				ts::console::print_formated("-F --CACHED to use MS Windows cache for COPY or ENCODE\n");
-				ts::console::print_formated("\n");
-				ts::console::print_formated("All these operations would be done with inclusive comma separated name mask:\n");
-				ts::console::print_formated("-K --MASK[ name.extension *.exe, *.bmp etc.]\n");
-				ts::console::print_repeated("----------",8);
-				ts::console::print_formated(" Press ANY KEY to exit, M for more.. sstsoft>> (c)2004-2013 sstsoft@wp.pl\n");
-				ts::console::print_repeated("==========",8);
-				register  char c =  ts::console::getch();
+				ts::con::print("\r\n");
+				ts::con::printr("==========",8);
+				ts::con::prints("main.exe -operand[sub-options] <multiple infiles/dir ... > <one outfile/dir>\n");
+				ts::con::prints("-C --COPY \n");
+				ts::con::prints("-M --MOVE -> move or rename on the same partition\n");
+				ts::con::prints("-X --REMOVE\n");
+				ts::con::prints("\n");
+				ts::con::prints("-E --ENCODE[ LZS,HUF,ARI,MTF,BWT,CRC,ADLER,XOR,SXQ,STORE,DEFAULT,ULTRA ]\n");
+				ts::con::prints("-P --PASSWORD[ password ] for XOR and SXQ\n");
+				ts::con::prints("-I --DUP[ 256 ] -> set LZSS dict size: 256 < 65536\n");
+				ts::con::prints("-H --CHECKSUM[ CRC32 ] -> CRC32 or SSC1024\n");
+				ts::con::prints("-D --DECODE\n");
+				ts::con::prints("\n");
+				ts::con::prints("-L --LISTING source directories and files\n");
+				ts::con::prints("-A --ARGUMENTS[ special words: #dir #file #size #attr #modified_date]\n");
+				ts::con::prints("\n");
+				ts::con::prints("-B --BUFF[ kB ] -> file buffer size\n");
+				ts::con::prints("-F --CACHED to use MS Windows cache for COPY or ENCODE\n");
+				ts::con::prints("\n");
+				ts::con::prints("All these operations would be done with inclusive comma separated name mask:\n");
+				ts::con::prints("-K --MASK[ name.extension *.exe, *.bmp etc.]\n");
+				ts::con::printr("----------",8);
+				ts::con::prints(" Press ANY KEY to exit, M for more.. sstsoft>> (c)2004-2013 sstsoft@wp.pl\n");
+				ts::con::printr("==========",8);
+				register  char c =  ts::con::getch();
 				if (c=='\r' || c == '\n') return "OK";
 				else return "CANCEL";
 		}
@@ -163,41 +163,41 @@ __DEBUG_FUNC_CALLED__
 		if (ts::cstr::compare(aevent,"FINISHED")==0)
 		{
 				double ratio;
-				ts::console::print("\r\n");
-				ts::console::print("\r\n");
-				ts::console::print_formated("Operation finished!\r\n");
-				ts::console::print_repeated("==========",8);
-				ts::console::print_formated("Size in\t\t\t%uB\r\n",(__int32)akop->progress->src->all->readed);
+				ts::con::print("\r\n");
+				ts::con::print("\r\n");
+				ts::con::prints("Operation finished!\r\n");
+				ts::con::printr("==========",8);
+				ts::con::prints("Size in\t\t\t%uB\r\n",(__int32)akop->progress->src->all->readed);
 				if (akop->options->operation == OPERATION_ENCODE
 				&&  akop->progress->src->all->readed!=0) {
-						ts::console::print_formated("Compression ratio\t");
+						ts::con::prints("Compression ratio\t");
 						ratio = double(akop->progress->dst->all->readed) / double(akop->progress->src->all->readed);
-						ts::console::print_formated("%.2lf%%, %.2lf bit/B vs 8 bit/B\r\n", 100 *(ratio), 8 *ratio);
+						ts::con::prints("%.2lf%%, %.2lf bit/B vs 8 bit/B\r\n", 100 *(ratio), 8 *ratio);
 				}
-				ts::console::print_formated("Size out\t\t%uB\r\n", (__int32)akop->progress->dst->all->readed);
-				ts::console::print_repeated("----------",8);
-				ts::console::print_formated("Time\t\t\t%.2lfs\r\n", (double)(akop->progress->elapsed()));
+				ts::con::prints("Size out\t\t%uB\r\n", (__int32)akop->progress->dst->all->readed);
+				ts::con::printr("----------",8);
+				ts::con::prints("Time\t\t\t%.2lfs\r\n", (double)(akop->progress->elapsed()));
 				if (akop->progress->elapsed()!=0)
-						ts::console::print_formated("Averange speed\t\t%.2lfkB/s\n",
+						ts::con::prints("Averange speed\t\t%.2lfkB/s\n",
 						((double)akop->progress->src->all->readed / (double)(akop->progress->elapsed())) / 1024);
-				ts::console::print_repeated("==========",8);
-				ts::console::print("\r\n");
+				ts::con::printr("==========",8);
+				ts::con::print("\r\n");
 				return "OK\0";
 		}
 		else
 		if (ts::cstr::compare(aevent,"CANCELED")==0)
 		{
-				ts::console::print("\r\n");
-				ts::console::print_repeated("==========",8);
-				ts::console::print_formated("operation canceled, please wait...\n");
-				ts::console::print_repeated("==========",8);
-				ts::console::print_formated("\n");
+				ts::con::print("\r\n");
+				ts::con::printr("==========",8);
+				ts::con::prints("operation canceled, please wait...\n");
+				ts::con::printr("==========",8);
+				ts::con::prints("\n");
 				return "OK\0";
 		}
 		else
 		if (ts::cstr::compare(aevent,"ERROR")==0)
 		{
-				ts::console::print_formated("%s,%s",acode,acode_ex);
+				ts::con::prints("%s,%s",acode,acode_ex);
 				return "OK";
 		}
 				return "OK";
@@ -209,7 +209,7 @@ void __stdcall ts::__kop32::set_console_handlers(char (__stdcall *a_getch_event_
 #ifdef __DEBUG_KOP32_CONSOLE__
 __DEBUG_FUNC_CALLED__
 #endif
-ts::console::set_console_handlers(a_getch_event_handler,a_print_event_handler,a_error_event_handler);
+ts::con::set_console_handlers(a_getch_event_handler,a_print_event_handler,a_error_event_handler);
 }
 //---------------------------------------------------------------------------
 
@@ -264,7 +264,7 @@ __DEBUG_FUNC_CALLED__
 				kop32->do_event("CANCELED","","");
 		}
 //-------------------------------------------------------------------
-		double ratio = 0;
+		double ratio;
 //-------------------------------------------------------------------
 		delete kop32;
 		return 1;
@@ -399,13 +399,13 @@ return 0;
 				d[x] = 0;
 				}
 		ts::mem32::bit_mov(d, 0, bla, 0, 8 *32);
-		ts::console::print_formated("src\n");
+		ts::con::prints("src\n");
 		for (int i = 0; i < 8; i++)
-		{ts::console::print_formated("%d\n", bla[i]);}
+		{ts::con::prints("%d\n", bla[i]);}
 
-		ts::console::print_formated("dst\n");
+		ts::con::prints("dst\n");
 		for (int i = 0; i < 8; i++)
-		{ts::console::print_formated("%d\n", d[i]);}
+		{ts::con::prints("%d\n", d[i]);}
 // koniec test�w
 */
 /*

@@ -33,10 +33,10 @@ __int32 __stdcall ts::__pharser::find(const char *lpsrc, const char *lpparameter
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_PHARSER__
-ts::console::print_formated("__pharser::find(a_src_ptr:%s,lpparameter_min:%s,lpparameter_normal:%s,lpparameter_alternative:%s,",lpsrc,lpparameter_min,lpparameter_normal,lpparameter_alternative);
-if (r_lpsuboption==NULL) ts::console::print("NULL)");
-else ts::console::print_formated("%s)",r_lpsuboption);
-ts::console::print("\n");
+ts::con::prints("__pharser::find(a_src_ptr:%s,lpparameter_min:%s,lpparameter_normal:%s,lpparameter_alternative:%s,",lpsrc,lpparameter_min,lpparameter_normal,lpparameter_alternative);
+if (r_lpsuboption==NULL) ts::con::print("NULL)");
+else ts::con::prints("%s)",r_lpsuboption);
+ts::con::print("\n");
 #endif
 
 		f_result_base = (char*)lpsrc;
@@ -147,9 +147,9 @@ __DEBUG_FUNC_CALLED__
 #endif
 		if (lpsrc!=f_result_base) return;
 #ifdef __DEBUG_PHARSER__
-ts::console::print_formated("__pharser::delete_found(%s)",lpsrc);
-ts::console::print_formated("initiator:%d, terminator:%d, len:%d",f_result_positions[PHASE_INITIATOR_POS],f_result_positions[PHASE_TERMINATOR_POS],ts::cstr::len(lpsrc));
-ts::console::print("\n");
+ts::con::prints("__pharser::delete_found(%s)",lpsrc);
+ts::con::prints("initiator:%d, terminator:%d, len:%d",f_result_positions[PHASE_INITIATOR_POS],f_result_positions[PHASE_TERMINATOR_POS],ts::cstr::len(lpsrc));
+ts::con::print("\n");
 #endif
 		if (f_result_positions[PHASE_INITIATOR_POS]<0 || f_result_positions[PHASE_TERMINATOR_POS]<0) return;
 		ts::cstr::cut_end(lpsrc,f_result_positions[PHASE_INITIATOR_POS],f_result_positions[PHASE_TERMINATOR_POS]);

@@ -27,8 +27,8 @@ double speed,s;\
                 else\
                 if (in[x]=='A')  in[x] = 'Z';\
                 }\
-                in[TESTUJ_SIZE-1] = '\0';\
-                in[TESTUJ_SIZE/2] = 'a';
+                in[TESTUJ_SIZE -1] = '\0';\
+                in[TESTUJ_SIZE>>1] = 'a';
 
 #define TESTUJ_EXIT()\
                         ts::cstr::free(out); ts::cstr::free(in);
@@ -84,9 +84,9 @@ return (char)getchar();
 //---------------------------------------------------------------------------
 
 #ifdef __WATCOMC__
-void test_before_exit(void)
+void atexit(void)
 #else
-void __cdecl test_before_exit(void)
+void __cdecl ts::test::atexit(void)
 #endif
 {
 #ifdef __BORLANDC__
@@ -99,12 +99,12 @@ int i asm("i");
 #include <stdio.h>
 #include <conio.h>
 
-int __stdcall ts::test::test_main(int argc, char *argv[])
+int __stdcall ts::test::main(int argc, char *argv[])
 {
-atexit(&test_before_exit);
+::atexit(&ts::test::atexit);
 system("COLOR A");
 register __int32 r = 0;
-ts::console::set_console_handlers(&test_ConsoleGetchHandler, &test_ConsolePrintHandler,NULL);
+ts::con::set_console_handlers(&test_ConsoleGetchHandler, &test_ConsolePrintHandler,NULL);
 char *args = new char[4096];
 args[0] = '\0';
 

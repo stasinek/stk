@@ -24,23 +24,23 @@ __DEBUG_FUNC_CALLED__
 	char *dst = ts::cstr::alloc(4096);
 if (src==NULL || dst==NULL)
 return;
-	ts::console::print_formated("Adres src: %d\n",(__int8*)src);
+	ts::con::prints("Adres src: %d\n",(__int8*)src);
 	ts::cstr::mov(src,(char*)"Here the defined words consist of two disjoint classes, sequences of alphanumeric characters and sequences of nonalphanumeric characters.\0");
 	i = ts::cstr::len(src);
-	ts::console::print_formated("do kompresji %d bajtow\n",i);
-	ts::console::print_formated("%s\n",src);
-	ts::console::print_formated("Compress\n",i);
+	ts::con::prints("do kompresji %d bajtow\n",i);
+	ts::con::prints("%s\n",src);
+	ts::con::prints("Compress\n",i);
 	o = ts::compression::compress_LZS(dst,src,1024,4096);
-	ts::console::print_formated("Zmniejszono do %d bajtow\n",o);
+	ts::con::prints("Zmniejszono do %d bajtow\n",o);
 	for (int x = 0,k = 0;x < o;x++) {
-		if (dst[x]>=' ' && dst[x]<='~') ts::console::print_formated(" \'%c\' ",dst[x]); //ASCII numbers,letters, special !~# etc.
-	   else ts::console::print_formated(" \'%#02x\' ",dst[x]);
+		if (dst[x]>=' ' && dst[x]<='~') ts::con::prints(" \'%c\' ",dst[x]); //ASCII numbers,letters, special !~# etc.
+	   else ts::con::prints(" \'%#02x\' ",dst[x]);
 	   //unprintable compressor codes 0xXXL
 	}
-	ts::console::print_formated("\n");
-	ts::console::print_formated("Decompress\n");
+	ts::con::prints("\n");
+	ts::con::prints("Decompress\n");
 //	ts::compression::uncompress_LZS(dst,o,src);
-	ts::console::print_formated("End\n");
+	ts::con::prints("End\n");
 	ts::cstr::free(src);
 	ts::cstr::free(dst);
 }

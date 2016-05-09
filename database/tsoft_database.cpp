@@ -147,8 +147,8 @@ __int32 __stdcall ts::__database::export_to(char *a_data, const char* __restrict
         C_FROM_DATA(x, a_format, this);
         ts::cstr::mov((char*)a_data,x);
 #ifdef __DEBUG_DATABASE__
-ts::console::print_formated("__database::export_to(a_data,a_format:%s)\r\nreturn len:%d\r\na_data:%s",a_format,ts::cstr::len(a_data),a_data);
-ts::console::print("\r\n\r\n");
+ts::con::prints("__database::export_to(a_data,a_format:%s)\r\nreturn len:%d\r\na_data:%s",a_format,ts::cstr::len(a_data),a_data);
+ts::con::print("\r\n\r\n");
 #endif
         delete x;
         return ts::cstr::len(a_data);
@@ -161,8 +161,8 @@ __DEBUG_FUNC_CALLED__
 #endif
         DATA_FROM_C(this, a_format, a_data);
 #ifdef __DEBUG_DATABASE__
-ts::console::print_formated("__database::import_from(a_data,a_format:%s)\r\na_data:%s\r\nreturn %d",a_format,a_data,items()->count());
-ts::console::print("\r\n\r\n");
+ts::con::prints("__database::import_from(a_data,a_format:%s)\r\na_data:%s\r\nreturn %d",a_format,a_data,items()->count());
+ts::con::print("\r\n\r\n");
 #endif
 
         return items()->count();

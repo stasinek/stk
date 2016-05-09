@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_text_stack_H__
-#define __tsoft_text_stack_H__
+#ifndef tsoft_text_stack_h
+#define tsoft_text_stack_h
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 //---------------------------------------------------------------------------
@@ -30,7 +30,7 @@ __stdcall				__cstr_stack						(const uint32_t a_count, const uint32_t a_text_cl
 		__cstr_class   *__stdcall	push					(const __cstr_class *a_text_c);
 		void			__stdcall	pop						(void);
 		void			__stdcall	pop						(const uint32_t a_cnt);
-__stdcall ~__cstr_stack				();
+virtual inline          __stdcall ~__cstr_stack				(void);
 };
 //---------------------------------------------------------------------------
 }

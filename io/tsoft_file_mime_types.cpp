@@ -15,9 +15,9 @@ static char  *filecontent = NULL;
 static size_t filecontent_size = 0;
 //---------------------------------------------------------------------------
 #ifdef __WATCOMC__
-void ts::file::mime::__destructor(void)
+void ts::file::mime::atexit(void)
 #else
-void __cdecl  ts::file::mime::__destructor(void)
+void __cdecl  ts::file::mime::atexit(void)
 #endif
 {
 if (filecontent!=NULL) ts::mem32::free(filecontent);
@@ -30,15 +30,16 @@ char *__stdcall ts::file::mime::decode(char* a_file_name)
 
         static char t[40] = "file/unknown";
         static __int32 tl = 12, tb,te;
-        static char e[20] = ".EXTT";
-        static __int32 el =  5, eb,ee;
+        static char e[20];
+        static __int32 el, eb,ee;
         ts::cstr::extract_file_extt(e, a_file_name);
         ts::cstr::insert(e,0,".");
         el = ts::cstr::len(e);
+
         if (filecontent==NULL) {
                 filecontent_size = 64*1024;
                 filecontent = new char[filecontent_size];
-                atexit(&ts::file::mime::__destructor);
+                ::atexit(&ts::file::mime::atexit);
                 }
         struct _stat statbuf;
         register __int32 file_c, filesize, filehandle = _open(mime_t_filename, O_RDONLY|O_BINARY);

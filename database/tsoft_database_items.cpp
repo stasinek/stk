@@ -108,8 +108,8 @@ void __stdcall ts::__database_items::set_text(const uint32_t a_index_S, const ch
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-ts::console::print_formated("__database_items::set_text(a_index_S:%d,a_text)\r\na_text:%s)",a_index_S,a_text);
-ts::console::print("\r\n\r\n");
+ts::con::prints("__database_items::set_text(a_index_S:%d,a_text)\r\na_text:%s)",a_index_S,a_text);
+ts::con::print("\r\n\r\n");
 #endif
 
         register uint32_t a_size = ts::cstr::len(a_text);
@@ -137,8 +137,8 @@ void    __stdcall ts::__database_items::set_number(const uint32_t a_index_S, con
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-ts::console::print_formated("__database_items::set_number(a_index_S:%d,a_column_Y:%d,a_value:%d)",a_index_S,a_column_Y,a_value);
-ts::console::print("\r\n\r\n");
+ts::con::prints("__database_items::set_number(a_index_S:%d,a_column_Y:%d,a_value:%d)",a_index_S,a_column_Y,a_value);
+ts::con::print("\r\n\r\n");
 #endif
         f_atom_matrix[a_index_S]->number[a_column_Y] = a_value;
 }
@@ -150,8 +150,8 @@ void    __stdcall ts::__database_items::set_data_chunk(const uint32_t a_index_S,
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-ts::console::print_formated("__database_items::set_data_chunk(a_index_S:%d,a_column_Y:%d,a_pointer:%d)",a_index_S,a_column_Y,(uint32_t)a_pointer);
-ts::console::print("\r\n\r\n");
+ts::con::prints("__database_items::set_data_chunk(a_index_S:%d,a_column_Y:%d,a_pointer:%d)",a_index_S,a_column_Y,(uint32_t)a_pointer);
+ts::con::print("\r\n\r\n");
 #endif
         f_atom_matrix[a_index_S]->data_chunk[a_column_Y] = a_pointer;
 }
@@ -205,10 +205,10 @@ uint32_t __stdcall ts::__database_items::add(const ts::__database_items::__atom 
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-if (a_atom->text!=NULL) ts::console::print_formated("__database_items::add_atom(a_atom)\r\na_atom->text:%s)",a_atom->text);
+if (a_atom->text!=NULL) ts::con::prints("__database_items::add_atom(a_atom)\r\na_atom->text:%s)",a_atom->text);
 else
-ts::console::print("__database_items::add_atom(a_atom->text=NULL)");
-ts::console::print("\r\n\r\n");
+ts::con::print("__database_items::add_atom(a_atom->text=NULL)");
+ts::con::print("\r\n\r\n");
 #endif
 
         set_count(count()+1);
@@ -223,8 +223,8 @@ uint32_t __stdcall ts::__database_items::add_text(const char* __restrict__ a_tex
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-ts::console::print_formated("__database_items::add_text(a_text)\r\na_text:%s",a_text);
-ts::console::print("\r\n\r\n");
+ts::con::prints("__database_items::add_text(a_text)\r\na_text:%s",a_text);
+ts::con::print("\r\n\r\n");
 #endif
         set_count(count()+1); set_text(count()-1, a_text);
           return  count()-1;
@@ -237,10 +237,10 @@ uint32_t __stdcall ts::__database_items::insert(const uint32_t a_index, const ts
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-if (a_atom->text!=NULL) ts::console::print_formated("__database_items::insert(a_index:%d,a_atom)\r\na_atom->text:%s",a_index,a_atom->text);
+if (a_atom->text!=NULL) ts::con::prints("__database_items::insert(a_index:%d,a_atom)\r\na_atom->text:%s",a_index,a_atom->text);
 else
-ts::console::print_formated("__database_items::insert(a_index:%d,a_atom->text=NULL)",a_index);
-ts::console::print("\r\n\r\n");
+ts::con::prints("__database_items::insert(a_index:%d,a_atom->text=NULL)",a_index);
+ts::con::print("\r\n\r\n");
 #endif
 
         set_count(count()+1);
@@ -261,8 +261,8 @@ uint32_t __stdcall ts::__database_items::cut(const uint32_t a_index)
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-ts::console::print_formated("__database_items::cut(a_index:%d)\r\ntext[a_index]:%s",a_index,f_atom_matrix[a_index]->text);
-ts::console::print("\r\n\r\n");
+ts::con::prints("__database_items::cut(a_index:%d)\r\ntext[a_index]:%s",a_index,f_atom_matrix[a_index]->text);
+ts::con::print("\r\n\r\n");
 #endif
         ts::__database_items::__atom *d_atom = f_atom_matrix[a_index];
         register uint32_t last_atom_index = count()-1;

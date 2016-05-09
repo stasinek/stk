@@ -6,7 +6,7 @@ void* __cdecl ts::bsearch(const void *k, const void *base, size_t number_of_elem
 		 size_t istart = 0;
 		 size_t imid, imid_times_size, icount = number_of_elements;
 		 size_t size = size_of_element;
-		 size_t compare_result;
+		 int compare_result;
 
 		 while (istart < icount) {
 				 imid = istart + ((icount - istart) >> 1); // >>1 faster than /2	

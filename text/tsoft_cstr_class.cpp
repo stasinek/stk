@@ -7,8 +7,8 @@
 
 __stdcall ts::__cstr_class::__cstr_class()
 :
-f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0),
-__vector<char>(0)
+  __vector<char>(0),
+f_subs_size(0), f_subs(NULL), f_ptr_dup(NULL)
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
@@ -20,8 +20,8 @@ __init(0,"\0");
 
 __stdcall ts::__cstr_class::__cstr_class(const uint32_t a_initial_size)
 :
-f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0),
-__vector<char>(a_initial_size)
+  __vector<char>(a_initial_size),
+  f_subs_size(0), f_subs(NULL), f_ptr_dup(NULL)
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
@@ -33,8 +33,8 @@ __init(a_initial_size,"\0");
 
 __stdcall ts::__cstr_class::__cstr_class(const char* __restrict__ a_text_to_clone)
 :
-f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0),
-__vector<char>()
+  __vector<char>(),
+  f_subs_size(0), f_subs(NULL), f_ptr_dup(NULL)
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
@@ -45,8 +45,8 @@ __DEBUG_FUNC_CALLED__
 
 __stdcall ts::__cstr_class::__cstr_class(const uint32_t a_initial_size,const char* __restrict__ a_text_to_clone)
 :
-f_ptr_dup(NULL), f_subs(NULL),f_subs_size(0),
-__vector<char>(a_initial_size)
+  __vector<char>(a_initial_size),
+  f_subs_size(0), f_subs(NULL), f_ptr_dup(NULL)
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
@@ -140,7 +140,7 @@ else ts::cstr::set_end(&__vector<char>::bottom(),'\0',lp,a_new_len);
 }
 //---------------------------------------------------------------------------
 
-inline void __stdcall ts::__cstr_class::clear(void)
+void __stdcall ts::__cstr_class::clear(void)
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__
@@ -160,7 +160,7 @@ if (__vector<char>::size()!=0) {
 }
 //---------------------------------------------------------------------------
 
-__stdcall ts::__cstr_class::~__cstr_class()
+inline __stdcall ts::__cstr_class::~__cstr_class()
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__

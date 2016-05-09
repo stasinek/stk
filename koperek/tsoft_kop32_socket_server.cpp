@@ -58,7 +58,7 @@ for (buffer.send_done_count = 0; buffer.send_done_count < buffer.send_count;) {
 } while (1);
 
 ts::socket::close_socket(server);
-ts::console::print_formated("\n");
+ts::con::prints("\n");
 return 0;
 }
 

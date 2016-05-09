@@ -32,10 +32,10 @@
 #include <omp.h>
 int main() {
         #pragma omp parallel num_threads(2)
-        ts::console::print_formated"Hi, I'm thread number %d!\n",omp_get_thread_num());
+        ts::con::prints"Hi, I'm thread number %d!\n",omp_get_thread_num());
         #pragma omp parallel for num_threads(2)
         for(int i = 0;i < 20;i++) {
-                ts::console::print_formated"\nThread number %d, executing iteration %d...",omp_get_thread_num(),i);
+                ts::con::prints"\nThread number %d, executing iteration %d...",omp_get_thread_num(),i);
         }
 }
 */
@@ -51,8 +51,8 @@ __stdcall ts::__kop32_class::__kop32_class()
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class:__kop32_class()");
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class:__kop32_class()");
+ts::con::print("\r\n");
 #endif
         options = new __kop32_class_options();
         options->mask_list->set_alias("OPTIONS_MASKS.clst");
@@ -78,8 +78,8 @@ void __stdcall ts::__kop32_class::reset(void)
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class:reset()");
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class:reset()");
+ts::con::print("\r\n");
 #endif
         do_event(ON_BEFORE_RESET,EMPTY,EMPTY);
         this->progress->reset();
@@ -99,8 +99,8 @@ void __stdcall ts::__kop32_class::abort(void)
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class:abort()");
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class:abort()");
+ts::con::print("\r\n");
 #endif
         do_event(ON_BEFORE_ABORT,EMPTY,EMPTY);
         progress->cancel = true;
@@ -113,8 +113,8 @@ __int32 __stdcall ts::__kop32_class::prepare_options(const char *alpCommand)
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::prepare_options(alpCommand)\r\nalpCommand:%s",alpCommand);
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::prepare_options(alpCommand)\r\nalpCommand:%s",alpCommand);
+ts::con::print("\r\n");
 #endif
         if (!ts::cstr::test(do_event(ON_BEFORE_PREPARE_OPTIONS,OKCANCEL,alpCommand),OK))
                 {abort();
@@ -339,8 +339,8 @@ if (!ts::cstr::test(do_event(ON_PREPARE_OPTIONS_OK,OKCANCEL,temp_lpCommand->c_st
 delete temp_lpCommand;
 delete temp_lpCommandSubOption;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print("__kop32_class:__prepare_options, return 1 (OK)");
-ts::console::print("\r\n");
+ts::con::print("__kop32_class:__prepare_options, return 1 (OK)");
+ts::con::print("\r\n");
 #endif
 do_event(ON_PREPARE_OPTIONS_END,OK,EMPTY);
 return 1;
@@ -356,8 +356,8 @@ ts::__cstr_class  *temp_lpDestination = new ts::__cstr_class(512);
 ts::__cstr_class  *temp_lpSource = new ts::__cstr_class(512);
 uint32_t ret,z,d;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print("__kop32_class::prepare()");
-ts::console::print("\r\n");
+ts::con::print("__kop32_class::prepare()");
+ts::con::print("\r\n");
 #endif
 if (options->operation==OPERATION_NULL)
    {
@@ -477,8 +477,8 @@ do_event(ON_SEARCH_OK,OK,EMPTY);
 delete temp_lpSource;
 delete temp_lpDestination;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print("__kop32_class:prepare, return 1(OK)");
-ts::console::print("\r\n");
+ts::con::print("__kop32_class:prepare, return 1(OK)");
+ts::con::print("\r\n");
 #endif
 do_event(ON_SEARCH_END,OK,EMPTY);
 return 1;
@@ -488,8 +488,8 @@ do_event(ON_SEARCH_ERROR,OK,EMPTY);
 delete temp_lpSource;
 delete temp_lpDestination;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print("__kop32_class:prepare, return 0(ERROR)");
-ts::console::print("\r\n");
+ts::con::print("__kop32_class:prepare, return 0(ERROR)");
+ts::con::print("\r\n");
 #endif
 do_event(ON_SEARCH_END,OK,EMPTY);
 return 0;
@@ -501,8 +501,8 @@ __int32 __stdcall ts::__kop32_class::exec_one(__int32 a_item)
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::execute_selected(a_item:%d)",a_item);
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::execute_selected(a_item:%d)",a_item);
+ts::con::print("\r\n");
 #endif
 return f_exec_one(a_item, options->operation);
 }
@@ -514,10 +514,10 @@ __int32 __stdcall ts::__kop32_class::exec_all(void)
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print("__kop32_class::execute_all()");
-ts::console::print_formated("src->count():%d\r\n",list->src_main_list->items()->count());
-ts::console::print_formated("dst->count():%d\r\n",list->dst_main_list->items()->count());
-ts::console::print("\r\n");
+ts::con::print("__kop32_class::execute_all()");
+ts::con::prints("src->count():%d\r\n",list->src_main_list->items()->count());
+ts::con::prints("dst->count():%d\r\n",list->dst_main_list->items()->count());
+ts::con::print("\r\n");
 #endif
 ts::__cstr_class  *templp	= new ts::__cstr_class(512);
 char *ret = ts::cstr::allocex(32,"");
@@ -683,8 +683,8 @@ f_write_file_thread_handle = NULL;
 ts::cstr::free(ret);
 delete templp;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::execute_all, return %d",(__int32)progress->cancel);
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::execute_all, return %d",(__int32)progress->cancel);
+ts::con::print("\r\n");
 #endif
 progress->freeze_timer();
 if (progress->cancel==true) {
@@ -704,8 +704,8 @@ __int32 __stdcall ts::__kop32_class::f_create_destination_list(const char *alpDe
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_create_destination_list(alpDestination:%s)",alpDestination);
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::f_create_destination_list(alpDestination:%s)",alpDestination);
+ts::con::print("\r\n");
 #endif
 if (list->src_main_list->items()->count()==0)
         return 0;
@@ -732,9 +732,9 @@ if (options->operation==OPERATION_COPY || options->operation==OPERATION_MOVE || 
 delete lpDestination;
 delete lpSource;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("dst->count():%d\r\n",list->dst_main_list->items()->count());
-ts::console::print_formated("__kop32_class::f_create_destination_list, return 1");
-ts::console::print("\r\n");
+ts::con::prints("dst->count():%d\r\n",list->dst_main_list->items()->count());
+ts::con::prints("__kop32_class::f_create_destination_list, return 1");
+ts::con::print("\r\n");
 #endif
 return 1;
 }
@@ -746,11 +746,11 @@ __int32 __stdcall ts::__kop32_class::f_skip_one(const uint32_t aindex, const uin
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_skip_one(aindex:%d,a_skip_items_at_same_level:%d)",aindex,a_skip_items_at_same_level);
-ts::console::print_formated("src[aindex]:%s\r\n",list->src_main_list->items()->get_text(aindex));
+ts::con::prints("__kop32_class::f_skip_one(aindex:%d,a_skip_items_at_same_level:%d)",aindex,a_skip_items_at_same_level);
+ts::con::prints("src[aindex]:%s\r\n",list->src_main_list->items()->get_text(aindex));
 if (aindex<list->dst_main_list->items()->count())
-ts::console::print_formated("dst[aindex]:%s\r\n",list->dst_main_list->items()->get_text(aindex));
-ts::console::print("\r\n");
+ts::con::prints("dst[aindex]:%s\r\n",list->dst_main_list->items()->get_text(aindex));
+ts::con::print("\r\n");
 #endif
 ts::__cstr_class  *templp =  new ts::__cstr_class(512);
 uint32_t crt;
@@ -793,8 +793,8 @@ for (crt = aindex; crt < list->dst_main_list->items()->count(); crt++) {
 GOTO_execute_cleanup_OK:
 delete templp;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print("__kop32_class::f_skip_one, return 1");
-ts::console::print("\r\n");
+ts::con::print("__kop32_class::f_skip_one, return 1");
+ts::con::print("\r\n");
 #endif
 return 1;
 }
@@ -806,11 +806,11 @@ __int32 __stdcall ts::__kop32_class::f_exec_one(uint32_t aindex, uint32_t anacti
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_exec_one(aindex:%d,anaction:%d)",aindex,anaction);
-ts::console::print("\r\n");
-ts::console::print_formated("src[aindex]:%s\r\n",list->src_main_list->items()->get_text(aindex));
+ts::con::prints("__kop32_class::f_exec_one(aindex:%d,anaction:%d)",aindex,anaction);
+ts::con::print("\r\n");
+ts::con::prints("src[aindex]:%s\r\n",list->src_main_list->items()->get_text(aindex));
 if (aindex<list->dst_main_list->items()->count())
-ts::console::print_formated("dst[aindex]:%s\r\n",list->dst_main_list->items()->get_text(aindex));
+ts::con::prints("dst[aindex]:%s\r\n",list->dst_main_list->items()->get_text(aindex));
 #endif
 char  root[3] = "A:";
 ts::__cstr_class *templpStr1 = new ts::__cstr_class(512);
@@ -900,8 +900,8 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
         }
 }
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_exec_one, return 1(OK,DIR)");
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::f_exec_one, return 1(OK,DIR)");
+ts::con::print("\r\n");
 #endif
 do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
 do_event(ON_IO_ONE_OK,EMPTY,EMPTY);
@@ -1622,8 +1622,8 @@ do_event(ON_IO_ONE_OK,EMPTY,EMPTY);
 delete templpStr1;
 delete templpStr2;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_exec_one, return 1(OK)");
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::f_exec_one, return 1(OK)");
+ts::con::print("\r\n");
 #endif
 do_event(ON_IO_ONE_END,EMPTY,EMPTY);
 return 1;
@@ -1633,8 +1633,8 @@ do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
 delete templpStr1;
 delete templpStr2;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_exec_one, return 0(ERROR)");
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::f_exec_one, return 0(ERROR)");
+ts::con::print("\r\n");
 #endif
 do_event(ON_IO_ONE_END,EMPTY,EMPTY);
 return 0;
@@ -1646,8 +1646,8 @@ DWORD WINAPI ts::__kop32_class::f_write_file_thread(LPVOID a_caller) {
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_write_file_thread(a_caller=%d)",(__int32)a_caller);
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::f_write_file_thread(a_caller=%d)",(__int32)a_caller);
+ts::con::print("\r\n");
 #endif
 register ts::__kop32_class *caller_kop32 = (ts::__kop32_class*)a_caller;
 
@@ -1655,8 +1655,8 @@ register ts::__kop32_class *caller_kop32 = (ts::__kop32_class*)a_caller;
         if ((caller_kop32->f_write_file_thread_control & 1) != 0) {
 
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_write_file_thread, thread_control=%d)",1/*(__int32)caller_kop32->f_write_file_thread_control*/);
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::f_write_file_thread, thread_control=%d)",1/*(__int32)caller_kop32->f_write_file_thread_control*/);
+ts::con::print("\r\n");
 #endif
                 //int i =  caller_kop32->f_mem_buffer_map.previous_index;
                 caller_kop32->do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
@@ -1680,8 +1680,8 @@ ts::console::print("\r\n");
                 caller_kop32->f_write_file_thread_control = 0;
                                 SwitchToThread();
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_write_file_thread, thread_control=%d)",(__int32)caller_kop32->f_write_file_thread_control);
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::f_write_file_thread, thread_control=%d)",(__int32)caller_kop32->f_write_file_thread_control);
+ts::con::print("\r\n");
 #endif
                 }
 else
@@ -1699,8 +1699,8 @@ __int64 __stdcall ts::__kop32_class::f_check_free_space(const char *avolume_name
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::f_check_free_space(avolume_name:%s)",avolume_name);
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::f_check_free_space(avolume_name:%s)",avolume_name);
+ts::con::print("\r\n");
 #endif
 ULARGE_INTEGER disk_UInt;
 __int64 disk_real_free_space = 0;
@@ -1741,8 +1741,8 @@ while (::GetDiskFreeSpaceExA(avolume_name,&disk_UInt,NULL,NULL))	 {
                 break;
 }
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class::check_free_space, return %d",disk_real_free_space);
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class::check_free_space, return %d",disk_real_free_space);
+ts::con::print("\r\n");
 #endif
 return disk_real_free_space;
 }
@@ -1754,9 +1754,9 @@ const char* __stdcall ts::__kop32_class::do_event(const char *a_event, const cha
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class_progress_controler::do_event(a_event,a_code,a_code_ex)\r\n");
-ts::console::print_formated("a_event:%s, a_code:%s\r\n",a_event,a_code);
-ts::console::print_formated("a_code_ex:%s\r\n",a_code_ex);
+ts::con::prints("__kop32_class_progress_controler::do_event(a_event,a_code,a_code_ex)\r\n");
+ts::con::prints("a_event:%s, a_code:%s\r\n",a_event,a_code);
+ts::con::prints("a_code_ex:%s\r\n",a_code_ex);
 #endif
 return progress->do_event(a_event,a_code,a_code_ex);
 }
@@ -1768,11 +1768,22 @@ __stdcall ts::__kop32_class::~__kop32_class(void)
 __DEBUG_FUNC_CALLED__
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::console::print_formated("__kop32_class:~__kop32_class()");
-ts::console::print("\r\n");
+ts::con::prints("__kop32_class:~__kop32_class()");
+ts::con::print("\r\n");
 #endif
         delete list;
         delete options;
         delete f_file_seeker;
 }
 //---------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+

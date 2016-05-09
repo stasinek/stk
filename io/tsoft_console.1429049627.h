@@ -14,7 +14,7 @@ extern void  (__stdcall *print_handler)(char* a_text);
 extern char  (__stdcall *getch_handler)(void);
 extern void   __stdcall set_console_handlers( char (__stdcall *agetcheventhandler)(void),void (__stdcall *aprinteventhandler)(char*));
 extern void   __stdcall print(char* __restrict__ atext);
-extern void   __stdcall print_formated(const char* __restrict__ a_format, ...);
+extern void   __stdcall printf(const char* __restrict__ a_format, ...);
 extern char   __stdcall getch(void);
 //---------------------------------------------------------------------------
 }}

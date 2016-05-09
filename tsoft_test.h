@@ -21,7 +21,14 @@
 #include "./3d/__3dvector.h"
 #include "__tree.h"
 namespace ts { namespace test {
-int __stdcall test_main(int argc, char *argv[]);
+int __stdcall main(int argc, char *argv[]);
+#ifdef __WATCOMC__
+void atexit(void);
+#else
+void __cdecl atexit(void);
+#endif
+
+
 }}
 
 //---------------------------------------------------------------------------

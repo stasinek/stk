@@ -141,8 +141,8 @@ b = 0;
 for (int c = 0; c<8;c++) {
 b += (s>>c) & 0x01L;
 }
-if (s % 8==0)fts::console::print_formated(stream,"\n");
-fts::console::print_formated(stream,"%#04x000000, ",b);
+if (s % 8==0)fts::console::prints(stream,"\n");
+fts::console::prints(stream,"%#04x000000, ",b);
 }
 _flushall();
 fclose(stream);
@@ -223,11 +223,11 @@ void  __stdcall ts::hash::ssc1::print_SSC1(void)
 #ifdef __DEBUG_HASH_SSC1__
 __DEBUG_FUNC_CALLED__
 #endif
-                ts::console::print_formated("ssc1 HASH:\n");
+                ts::con::prints("ssc1 HASH:\n");
                 for (__int32 n = 0; n<32; n++) {
-                                ts::console::print_formated("%#010x ", h[n]);
+                                ts::con::prints("%#010x ", h[n]);
                                 if ((n+1) % 4==0)
-                                                ts::console::print_formated("\n");
+                                                ts::con::prints("\n");
                 }
 }
 //---------------------------------------------------------------------------

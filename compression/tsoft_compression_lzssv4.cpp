@@ -90,7 +90,7 @@ __DEBUG_FUNC_CALLED__
 		ts::mem32::free(dad);
 		ts::mem32::free(son);
 		ts::mem32::free(ring_ptr);
-//ts::console::print_formated"%d\n",pmmcmax);
+//ts::con::prints"%d\n",pmmcmax);
 //cos nadpisuje na pozycji dalej i przy usuwaniu access voliation!  rozszerzam ring_ptr+1
 }
 //---------------------------------------------------------------------------

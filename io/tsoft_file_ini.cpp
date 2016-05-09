@@ -21,7 +21,7 @@ __DEBUG_FUNC_CALLED__
 //function supports only unicode 16-bit files
 	HANDLE hfile = CreateFileW(szPathAndFile,GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,0,(wchar_t*)NULL);
 	if (hfile==INVALID_HANDLE_VALUE) {
-		ts::console::print_formated("Can't open .ini file?! %s",szPathAndFile);
+		ts::con::prints("Can't open .ini file?! %s",szPathAndFile);
 		return 1;
 	}
 	unsigned long i = 0,b = GetFileSize(hfile,NULL), e = b/2, br, l = 0;
@@ -29,15 +29,15 @@ __DEBUG_FUNC_CALLED__
 	wchar_t* linia = (wchar_t*)ts::mem32::alloc(100*sizeof(wchar_t));
 	bool found = false, foundsection = false;
 	if (e<=2) {
-		ts::console::print_formated(".ini file too small?! %s",szPathAndFile);
+		ts::con::prints(".ini file too small?! %s",szPathAndFile);
 		return 1;
 	}
 	if (!ReadFile(hfile,lpbuffer,b,&br,NULL)) {
-		ts::console::print_formated("For unknown reason - I can't open .ini file?! %s",szPathAndFile);
+		ts::con::prints("For unknown reason - I can't open .ini file?! %s",szPathAndFile);
 		return 1;
 	}
 	if (lpbuffer[i++]!=0xFEFFL) {
-		ts::console::print_formated("Wspieram .ini UTF16 - zmien kodowanie w notatniku",szPathAndFile);
+		ts::con::prints("Wspieram .ini UTF16 - zmien kodowanie w notatniku",szPathAndFile);
 		return 1;
 	}
 	for (; i < e; ) {

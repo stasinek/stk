@@ -1607,20 +1607,20 @@ return r;
 #endif
 //---------------------------------------------------------------------------
 
-#define PRINT_CPUVENDOR(val) ts::console::print_formated("Vendor \"%s\"\n",val);
-#define PRINT_CPUNAME(val) ts::console::print_formated("Processor name \"%s\"\n",val);
-#define PRINT_CPUCURRENTMHZ(val) ts::console::print_formated("CPU Core Clock is %dMhz\n",val);
-#define PRINT_CPUID(val) r = val; if (r!=0) console::print_formated("[SUPPORTED=%02d]%-10s%s\n",r," ",#val); else printf("NOT%21s%s\n"," ",#val);
+#define PRINT_CPUVENDOR(val) ts::con::prints("Vendor \"%s\"\n",val);
+#define PRINT_CPUNAME(val) ts::con::prints("Processor name \"%s\"\n",val);
+#define PRINT_CPUCURRENTMHZ(val) ts::con::prints("CPU Core Clock is %dMhz\n",val);
+#define PRINT_CPUID(val) r = val; if (r!=0) ts::con::prints("[SUPPORTED=%02d]%-10s%s\n",r," ",#val); else ts::con::prints("NOT%21s%s\n"," ",#val);
 
 void __cdecl ts::cpu::cpu_print_info()
 {
-    int r = 0;
+    int r;
     PRINT_CPUVENDOR(ts::cpu::cpu_vendor());
     PRINT_CPUNAME(ts::cpu::cpu_name());
     PRINT_CPUCURRENTMHZ(ts::cpu::cpu_num_mhz(true));
     PRINT_CPUID(ts::cpu::cpu_cache_size(0));
     PRINT_CPUID(ts::cpu::cpu_cache_line_size(0));
-    ts::console::print_formated("Cache L1i, uOPS cache etc. = cache L0 :)\n");
+    ts::con::prints("Cache L1i, uOPS cache etc. = cache L0 :)\n");
     PRINT_CPUID(ts::cpu::cpu_cache_size(1));
     PRINT_CPUID(ts::cpu::cpu_cache_line_size(1));
     PRINT_CPUID(ts::cpu::cpu_cache_size(2));

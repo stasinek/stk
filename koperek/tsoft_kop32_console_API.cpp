@@ -78,23 +78,23 @@ int __stdcall classic_monitor_proc()
                 nRot = (nRot+1) &0x0FL;
 // PREVENT DIVISION BY '0'
         if (console_progress.src->all->readed == 0 || console_progress.src->one->size == 0 || console_progress.src->all->size == 0 || (console_progress.elapsed() == 0)) {
-                ts::console::print_formated("\r[                  ] - <0%% 0kB/s>");
+                ts::con::prints("\r[                  ] - <0%% 0kB/s>");
                 return 1;
         }
 //PROGRESS BAR
         nPos = (unsigned int)(10 *double(console_progress.src->all->readed) / double(console_progress.src->all->size));
         memmove(szPrb, "[                 ]", 12);
         memmove(szPrb, "[����������]", 1+nPos);
-        ts::console::print_formated("\r                                                                                                                                            ");
-        ts::console::print_formated("\r%s %.1lf%c <%.2lf%% ", szPrb, 100 *(double(console_progress.src->all->readed) / double(console_progress.src->all->size)),
+        ts::con::prints("\r                                                                                                                                            ");
+        ts::con::prints("\r%s %.1lf%c <%.2lf%% ", szPrb, 100 *(double(console_progress.src->all->readed) / double(console_progress.src->all->size)),
                                                   szGfx[(nRot >> 2) &0x03L], 100 *(double(console_progress.dst->all->readed)
                                                                   / double(console_progress.src->all->readed)));
 // SPEED MB/s
         if (kop32->options->operation == OPERATION_ENCODE)
-                ts::console::print_formated("%.2lfkB/s> ", double(console_progress.src->all->readed) / double(console_progress.elapsed()) /
+                ts::con::prints("%.2lfkB/s> ", double(console_progress.src->all->readed) / double(console_progress.elapsed()) /
                                                           1024);
         if (kop32->options->operation == OPERATION_DECODE)
-                ts::console::print_formated("%.2lfkB/s> ", double(console_progress.src->all->readed) / double(console_progress.elapsed()) /
+                ts::con::prints("%.2lfkB/s> ", double(console_progress.src->all->readed) / double(console_progress.elapsed()) /
                                                           1024);
 // FILE NAME "?????.???"
 //kop32->list->src_main_list->items[kop32->list->cur_i];
@@ -103,10 +103,10 @@ int __stdcall classic_monitor_proc()
                 szTmp[30] = 0;
                 strcat(szTmp, "...");
         }
-        ts::console::print_formated("\"%s\"", szTmp);
+        ts::con::prints("\"%s\"", szTmp);
 // CHECK ESCAPE CODE if ESC was pressed and if so request STOP
         if (nRot == 0xFFL && kbhit() != 0) {
-                if (ts::console::getch() == 0x00L) if (ts::console::getch() == 0x1BL) kop32->abort();
+                if (ts::con::getch() == 0x00L) if (ts::con::getch() == 0x1BL) kop32->abort();
         }
 // RETURN SUCCES
         return 1;
@@ -129,7 +129,7 @@ return NULL;
 }
 //---------------------------------------------------------------------------
 
-int __stdcall start_kop32_in_text_mode(char *args, ts::__kop32_class_progress_controler::__callback_event_handler *akop32eventhandler, const ts::console::__print_handler *aprinthandler,const ts::console::__getch_handler *agetchhandler)
+int __stdcall start_kop32_in_text_mode(char *args, ts::__kop32_class_progress_controler::__callback_event_handler *akop32eventhandler, const ts::con::__print_handler *aprinthandler,const ts::con::__getch_handler *agetchhandler)
 {
                 kop32 = new ts::__kop32_class;
                 kop32->progress->callback_event_handler = akop32eventhandler;
@@ -143,107 +143,107 @@ int __stdcall start_kop32_in_text_mode(char *args, ts::__kop32_class_progress_co
         if (ts::cstr::len(args) <=8) {
                 if (strstr(args, "-L") != NULL || strstr(args, "--LICENSE") != NULL ||
                                 strstr(args, "/LICENSE") != NULL) {
-                        ts::console::print_formated("============================================================================\n");
-                        ts::console::print_formated("\n""This program at current version is FREE software"
+                        ts::con::prints("============================================================================\n");
+                        ts::con::prints("\n""This program at current version is FREE software"
                                                                   "This program is distributed in the HOPE that it will be USEFUL,\n"
                                                                   "but WITHOUT ANY WARRANTY;\n""MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.""n"
                                                                   "IMPORTANT!!!!");
-                        ts::console::print_formated("----------------------------------------------------------------------------\n");
-                        ts::console::print_formated("YOU USE AT YOUR OWN RISK. THE AUTHOR WILL NOT BE LIABLE FOR DATA LOSS,\n"
+                        ts::con::prints("----------------------------------------------------------------------------\n");
+                        ts::con::prints("YOU USE AT YOUR OWN RISK. THE AUTHOR WILL NOT BE LIABLE FOR DATA LOSS,\n"
                                                                   "DAMAGES, LOSS OF PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR\n"
                                                                   "MISUSING THIS SOFTWARE.\n");
-                        ts::console::print_formated("----------------------------------------------------------------------------\n");
-                        ts::console::print_formated("Press ANY KEY to EXIT \n");
-                        ts::console::print_formated("============================================================================\n");
-                        ts::console::getch();
+                        ts::con::prints("----------------------------------------------------------------------------\n");
+                        ts::con::prints("Press ANY KEY to EXIT \n");
+                        ts::con::prints("============================================================================\n");
+                        ts::con::getch();
                         return 0xFFFFFFFF;
                 } else {
-                        ts::console::print_formated("============================================================================\n");
-                        ts::console::print_formated("ERROR1: incorrect program arguments\n");
-                        ts::console::print_formated("----------------------------------------------------------------------------\n");
-                        ts::console::print_formated("main.exe -operand[sub-options] <multiple infiles/dir ... > <one outfile/dir>\n");
-                        ts::console::print_formated("-C --COPY \n");
-                        ts::console::print_formated("-M --MOVE -> move or rename on the same partition\n");
-                        ts::console::print_formated("-X --REMOVE\n");
-                        ts::console::print_formated("\n");
-                        ts::console::print_formated("-E --ENCODE[ LZS,HUF,ARI,MTF,BWT,CRC,ADLER,XOR,SXQ,STORE,DEFAULT,ULTRA ]\n");
-                        ts::console::print_formated("-P --PASSWORD[ password ] for XOR and SXQ\n");
-                        ts::console::print_formated("-I --DUP[ 256 ] -> set LZSS dict size: 256 < 65536\n");
-                        ts::console::print_formated("-H --CHECKSUM[ CRC32 ] -> CRC32 or SSC1024\n");
-                        ts::console::print_formated("-D --DECODE\n");
-                        ts::console::print_formated("\n");
-                        ts::console::print_formated("-L --LISTING source directories and files\n");
-                        ts::console::print_formated("-A --ARGUMENTS[ special words: #dir #file #size #attr #modified_date]\n");
-                        ts::console::print_formated("\n");
-                        ts::console::print_formated("-B --BUFF[ kB ] -> file buffer size\n");
-                        ts::console::print_formated("-F --CACHED to use MS Windows cache for COPY or ENCODE\n");
-                        ts::console::print_formated("\n");
-                        ts::console::print_formated("All these operations would be done with inclusive comma separated name mask:\n");
-                        ts::console::print_formated("-K --MASK[ name.extension *.exe, *.bmp etc.]\n");
-                        ts::console::print_formated("----------------------------------------------------------------------------\n");
-                        ts::console::print_formated(" Press ANY KEY to exit, M for more.. sstsoft>> (c)2004-2013 sstsoft@wp.pl\n");
-                        ts::console::print_formated("============================================================================\n");
-                        ts::console::getch();
+                        ts::con::prints("============================================================================\n");
+                        ts::con::prints("ERROR1: incorrect program arguments\n");
+                        ts::con::prints("----------------------------------------------------------------------------\n");
+                        ts::con::prints("main.exe -operand[sub-options] <multiple infiles/dir ... > <one outfile/dir>\n");
+                        ts::con::prints("-C --COPY \n");
+                        ts::con::prints("-M --MOVE -> move or rename on the same partition\n");
+                        ts::con::prints("-X --REMOVE\n");
+                        ts::con::prints("\n");
+                        ts::con::prints("-E --ENCODE[ LZS,HUF,ARI,MTF,BWT,CRC,ADLER,XOR,SXQ,STORE,DEFAULT,ULTRA ]\n");
+                        ts::con::prints("-P --PASSWORD[ password ] for XOR and SXQ\n");
+                        ts::con::prints("-I --DUP[ 256 ] -> set LZSS dict size: 256 < 65536\n");
+                        ts::con::prints("-H --CHECKSUM[ CRC32 ] -> CRC32 or SSC1024\n");
+                        ts::con::prints("-D --DECODE\n");
+                        ts::con::prints("\n");
+                        ts::con::prints("-L --LISTING source directories and files\n");
+                        ts::con::prints("-A --ARGUMENTS[ special words: #dir #file #size #attr #modified_date]\n");
+                        ts::con::prints("\n");
+                        ts::con::prints("-B --BUFF[ kB ] -> file buffer size\n");
+                        ts::con::prints("-F --CACHED to use MS Windows cache for COPY or ENCODE\n");
+                        ts::con::prints("\n");
+                        ts::con::prints("All these operations would be done with inclusive comma separated name mask:\n");
+                        ts::con::prints("-K --MASK[ name.extension *.exe, *.bmp etc.]\n");
+                        ts::con::prints("----------------------------------------------------------------------------\n");
+                        ts::con::prints(" Press ANY KEY to exit, M for more.. sstsoft>> (c)2004-2013 sstsoft@wp.pl\n");
+                        ts::con::prints("============================================================================\n");
+                        ts::con::getch();
                         return 0xFFFFFFFF;
                 }
         }
-        ts::console::print_formated("============================================================================\n");
-        ts::console::print_formated("press enter to continue\r\n");
-        ts::console::print_formated("============================================================================\n");
-        if (ts::console::getch()=='\r') {
+        ts::con::prints("============================================================================\n");
+        ts::con::prints("press enter to continue\r\n");
+        ts::con::prints("============================================================================\n");
+        if (ts::con::getch()=='\r') {
                 if (kop32->prepare_options(args))
                         if (kop32->prepare_list())
                                 console_progress.initialize_timer();
                 if (kop32->exec_all()) {
-                        ts::console::print_formated("\r                                                                                                                                            ");
-                        ts::console::print_formated("\n");
-                        ts::console::print_formated("Finished!\n");
-                        ts::console::print_formated("\n");
+                        ts::con::prints("\r                                                                                                                                            ");
+                        ts::con::prints("\n");
+                        ts::con::prints("Finished!\n");
+                        ts::con::prints("\n");
                 }
                 console_progress.freeze_timer();
         } else {
-                ts::console::print_formated("canceled, please wait...\n");
+                ts::con::prints("canceled, please wait...\n");
         }
 //-------------------------------------------------------------------
         double ratio = 0;
 //-------------------------------------------------------------------
         if (console_progress.cancel == true) {
-                ts::console::print_formated("============================================================================\n");
-                ts::console::print_formated("\n ESC -> Operation canceled");
-                ts::console::print_formated("============================================================================\n");
-                ts::console::print_formated("\n");
+                ts::con::prints("============================================================================\n");
+                ts::con::prints("\n ESC -> Operation canceled");
+                ts::con::prints("============================================================================\n");
+                ts::con::prints("\n");
         } else {
-                ts::console::print_formated("size in                    :  %uB\n", (__int32)console_progress.src->all->readed);
+                ts::con::prints("size in                    :  %uB\n", (__int32)console_progress.src->all->readed);
                 if (kop32->options->operation == OPERATION_ENCODE
                                 &&  console_progress.src->all->readed!=0) {
-                        ts::console::print_formated("compression ratio  :  ");
+                        ts::con::prints("compression ratio  :  ");
                         ratio = double(console_progress.dst->all->readed) / double(console_progress.src->all->readed);
-                        ts::console::print_formated("%.2lf%%, %.2lf bit/B vs 8 bit/B\n", 100 *(ratio), 8 *ratio);
+                        ts::con::prints("%.2lf%%, %.2lf bit/B vs 8 bit/B\n", 100 *(ratio), 8 *ratio);
                 }
-                ts::console::print_formated("size out              :  %uB\n", (__int32)console_progress.dst->all->readed);
-                ts::console::print_formated("============================================================================\n");
-                ts::console::print_formated("Time                          :  %.2lfs\n", (double)(console_progress.elapsed()));
+                ts::con::prints("size out              :  %uB\n", (__int32)console_progress.dst->all->readed);
+                ts::con::prints("============================================================================\n");
+                ts::con::prints("Time                          :  %.2lfs\n", (double)(console_progress.elapsed()));
                 if (console_progress.elapsed()!=0)
-                        ts::console::print_formated("Averange speed      :  %.2lfkB/s\n",
+                        ts::con::prints("Averange speed      :  %.2lfkB/s\n",
                                                                   ((double)console_progress.src->all->readed / (double)(console_progress.elapsed())) / 1024);
-                ts::console::print_formated("\n");
+                ts::con::prints("\n");
         }
         delete kop32;
         return 1;
 }
 //---------------------------------------------------------------------------
 
-int __stdcall start_kop32_in_text_mode(char *args, ts::console::__print_handler *aprinthandler,ts::console::__getch_handler *agetchhandler)
+int __stdcall start_kop32_in_text_mode(char *args, ts::con::__print_handler *aprinthandler,ts::con::__getch_handler *agetchhandler)
 {
-        ts::console::print_handler = aprinthandler;
-        ts::console::getch_handler = agetchhandler;
-        return start_kop32_in_text_mode(args, &classic_event_handler, &ts::console::stdout_handler, &ts::console::stdinp_handler);
+        ts::con::print_handler = aprinthandler;
+        ts::con::getch_handler = agetchhandler;
+        return start_kop32_in_text_mode(args, &classic_event_handler, &ts::con::stdout_handler, &ts::con::stdinp_handler);
 }
 //---------------------------------------------------------------------------
 
 int __stdcall start_kop32_in_text_mode(char *args)
 {
-        return start_kop32_in_text_mode(args, &ts::console::stdout_handler, &ts::console::stdinp_handler);
+        return start_kop32_in_text_mode(args, &ts::con::stdout_handler, &ts::con::stdinp_handler);
 }
 //---------------------------------------------------------------------------
 /*
@@ -375,13 +375,13 @@ return 0;
                 d[x] = 0;
                 }
         ts::memory32::bit_mov(d, 0, bla, 0, 8 *32);
-        ts::console::print_formated("src\n");
+        ts::con::prints("src\n");
         for (int i = 0; i < 8; i++)
-        {ts::console::print_formated("%d\n", bla[i]);}
+        {ts::con::prints("%d\n", bla[i]);}
 
-        ts::console::print_formated("dst\n");
+        ts::con::prints("dst\n");
         for (int i = 0; i < 8; i++)
-        {ts::console::print_formated("%d\n", d[i]);}
+        {ts::con::prints("%d\n", d[i]);}
 // koniec test�w
 */
 /*

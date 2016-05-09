@@ -1,11 +1,11 @@
 //---------------------------------------------------------------------------
 // ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "tsoft_time.h"
 #include "./../mem/tsoft_mem32.h"
 #include "./../text/tsoft_cstr_manipulation.h"
-//---------------------------------------------------------------------------
 #include  <time.h>
+//---------------------------------------------------------------------------
+#include "tsoft_time.h"
 
 uint64_t __stdcall ts::time::clock_us(void)
 // cross-platform timeGetTime (on Windows minimum return is 1000us, on linux there is us acuracy (probably?) CLOCKS_PER_SEC >=1M
@@ -32,7 +32,7 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::time::wait_ms(__int32 milliseconds) // cross-platform sleep function
+void __stdcall ts::time::wait_ms(const __int32 milliseconds) // cross-platform sleep function
 {
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED__
@@ -45,13 +45,13 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::time::wait_us(__int32 microseconds) // cross-platform sleep function
+void __stdcall ts::time::wait_us(const __int32 microseconds) // cross-platform sleep function
 {
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED__
 #endif
 		#ifdef WIN32
-		::Sleep(microseconds/1000);
+		::Sleep(microseconds / 1000);
 		//MSDN: A value of zero causes the thread to relinquish the remainder of its time slice to any other thread that is ready to run
 		#else
 		_usleep(microseconds);
@@ -88,14 +88,15 @@ __DEBUG_FUNC_CALLED__
 #include <iostream>
 #include <iomanip>
 
-bool isLeapYear( unsigned int& ); //checks if 'year' is leap year
+bool isLeapYear(const unsigned int& ); //checks if 'year' is leap year
 unsigned int firstDayOfJanuary( unsigned int& year );
 unsigned int numOfDaysInMonth( unsigned int , unsigned int& ); // takes the number of the month, and 'year' as arguments
 void printHeader( unsigned int ); //takes the number of the month, and the first day, prints, and updates
 void printMonth( unsigned int , unsigned int& ); //takes number of days in month, and reference to 'firstDayInCurrentMonth' so it updates after every call
 void skip( unsigned int ); //prints the specified amount of spaces
 
-int main_cal() {
+
+int printcalendar() {
 	unsigned int year , firstDayInCurrentMonth;
 	std::cout << "Calendar year? ";
 	std::cin >> year;
@@ -114,32 +115,17 @@ int main_cal() {
 	return 0;
 }
 
-bool isLeapYear( unsigned int& year ) { //if number is multiple of 4 and is either multiple of 400 or not multiple of 100, is leap year
-	return ( year % 4 == 0 ) && ( year % 100 != 0 || year % 400 == 0 );
+bool __stdcall is_leap_year( const unsigned int& year )
+{
+    return (year % 4 == 0) && (year % 100 != 0 || year % 400==0);
 }
 
-unsigned int firstDayOfJanuary( unsigned int& year ) {
-	/* "( 97 * year - 97 ) / 400" is the simplification of:
-
-	x1 = (year - 1)/ 4;
-	x2 = (year - 1)/ 100;
-	x3 = (year - 1)/ 400;
-	day_start = (year + x1 - x2 + x3) % 7;
-
-	after each value is plugged in
-	 */
-
-	return ( year + ( 97 * year - 97 ) / 400 ) % 7;
+unsigned int __stdcall days_in_month(const unsigned int& month, const unsigned int& year ) {
+    if (month==2) return 28 + is_leap_year(year);
+    else return 30 + (month & 1);
 }
 
-unsigned int numOfDaysInMonth( unsigned int m , unsigned int& year ) {
-	if ( m == 2 )
-		return isLeapYear( year ) ? 29 : 28; //if month is February, return correct number based on whether it is leap year
-	else
-		return 30 + ( m % 2 ); //otherwise return 31 if month number is odd, 30 if month number is even
-}
-
-void printHeader( unsigned int m ) {
+void printcalendarheader( unsigned int m ) {
 	skip( 7 );
 
 	if ( m == 1 ) std::cout << "January";
@@ -166,7 +152,7 @@ void skip( unsigned int i ) {
 	}
 }
 
-void printMonth( unsigned int numDays, unsigned int &weekDay ) {
+void printcalendarmonth( unsigned int numDays, unsigned int &weekDay ) {
 	skip( 3 * weekDay ); //3 is width of a calendar number
 	for ( unsigned int day = 1 ; day <= numDays ; day++ ) {
 		std::cout << std::setw(2) << day << " ";

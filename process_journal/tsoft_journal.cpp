@@ -47,8 +47,8 @@ __DEBUG_FUNC_CALLED__
     strcat(f_stream_name,".txt");
     f_stream = fopen(f_stream_name,"a+");
     if (!f_stream) {
-        ts::console::print_formated("ERROR CREATING ssts::LOGFILE");
-        ts::console::getch();
+        ts::con::prints("ERROR CREATING ssts::LOGFILE");
+        ts::con::getch();
         return NULL;
     } else fprintf(f_stream,"[ssts::JOURNAL_FILEv0.1]\n");
     delete module_name;

@@ -6,7 +6,6 @@
 #include "./../threads/tsoft_threads.h"
 #include "./../io/tsoft_console.h"
 #include "./../__vector.h"
-#pragma hdrstop
 #include "tsoft_mem32.h"
 //---------------------------------------------------------------------------
 static __int64 g_mem_allocated = 0;
@@ -85,9 +84,9 @@ void *__stdcall ts::mem32::realloc(void *a_dst_ptr,const size_t a_count)
 	register size_t l_p_tailed_count;
 	register size_t l_n_tailed_count;
 	register void *r;
-	register __mem_tail *o_t;
-	register __mem_tail *n_t;
 #ifdef __DEBUG_MEM32__
+    register __mem_tail *o_t;
+    register __mem_tail *n_t;
  __DEBUG_FUNC_CALLED__
 #endif
 ATOMIC(1)
@@ -95,9 +94,9 @@ ATOMIC(1)
 	l_n_tailed_count  = a_count;
 	l_n_tailed_count += l_n_tailed_count % g_mem_size_align;
 	l_n_tailed_count += sizeof(__mem_tail);
-	o_t = (__mem_tail*)((((uint8_t*)a_dst_ptr) + l_p_tailed_count) - sizeof(__mem_tail));
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
-	printf("mem32::realloc(adress=0x%08hu,%u+%d(ALIGNED_TO %d)+%u(MAGIC_TAIL))\n",(size_t)a_dst_ptr, a_count,(size_t)sizeof(__mem_tail),l_n_tailed_count - a_count - sizeof(__mem_tail),g_mem_size_align);
+    o_t = (__mem_tail*)((((uint8_t*)a_dst_ptr) + l_p_tailed_count) - sizeof(__mem_tail));
+    printf("mem32::realloc(adress=0x%08hu,%u+%d(ALIGNED_TO %d)+%u(MAGIC_TAIL))\n",(size_t)a_dst_ptr, a_count,(size_t)sizeof(__mem_tail),l_n_tailed_count - a_count - sizeof(__mem_tail),g_mem_size_align);
 	if (l_p_tailed_count > 4)
 	if (!o_t->check()) {
 	printf("WARNING! detected out of bound access 0x%08hu(@MAGIC_TAIL)\n",(size_t)a_dst_ptr);
