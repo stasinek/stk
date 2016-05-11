@@ -13,16 +13,51 @@ static uint64_t tsc_STARTED = 0, tsc_PAUSED = 0, tsc_LAST_MEASURED = 0;
 static uint64_t tsc_ADJ = ts::cpu::tsc_overhead();
 static uint64_t tsc_ELAPSED = 0;
 //---------------------------------------------------------------------------
-
-uint64_t __cdecl ts::cpu::__rdtsc(void)
+#if !defined(__BORLANDC__) && !defined(__WATCOMC__)
+uint64_t __cdecl ts::cpu::rdtscp(__int32 *a_chip, __int32 *a_core)
 {
-ATOMIC(1)
-ATOMIC_LOCK(1)
+unsigned __int32 HI, LO, CC;
+#if defined(__GNUC__) || defined(__clang__)
+asm volatile("rdtscp" : "=a" (LO), "=d" (HI), "=c" (CC));
+#else
+    __asm { rdtscp;
+            mov [LO], eax;
+            mov [HI], edx;
+            mov [CC], ecx;
+    }
+#endif
+if (a_chip!=NULL) *a_chip = (CC & 0x00FFF000)>>12;
+if (a_core!=NULL) *a_core =  CC & 0x00000FFF;
+    register unsigned __int64 r = HI;
+    r = r << 32;
+    r = r  | LO;
+    return r; //( (unsigned long long)lo)|( ((unsigned long long)hi)<<32 );
+}
+#endif
+
+uint64_t __cdecl ts::cpu::rdtsc(void)
+{
+unsigned __int32 HI, LO;
+#if defined(__GNUC__) || defined(__clang__)
+    asm volatile ("rdtsc" : "=a"(LO), "=d"(HI));
+#else
+    __asm { rdtsc;
+            mov [LO], eax;
+            mov [HI], edx;
+    }
+#endif
+    register unsigned __int64 r = HI;
+    r = r << 32;
+    r = r  | LO;
+    return r; //( (unsigned long long)lo)|( ((unsigned long long)hi)<<32 );
+}
+
+uint64_t __cdecl ts::cpu::rdtscex(void)
+{
 #if defined(__ARM__) && (defined (__GNUC__) || defined(__clang__))
-unsigned r;
+unsigned __int32 r;
     asm volatile ("mcr p15,  0, %0, c15,  c9, 0\n" : : "r" (1));
-    asm volatile ("mrc p15, 0, %0, c15, c12, 1" : "=r" (r));
-ATOMIC_UNLOCK(1)
+    asm volatile ("mrc p15,  0, %0, c15, c12, 1" : "=r" (r));
 return r;
 #elif __BORLANDC__
 uint32_t LO, HI;
@@ -69,6 +104,8 @@ uint32_t LO, HI;
     r = r << 32;
     r = r  | LO;
 #elif defined(__GNUC__) || defined(__clang__)
+ATOMIC(1)
+ATOMIC_LOCK(1)
 uint32_t LO, HI;
     __stasm(eax,ebx,ecx,edx,esi,edi,
     code,
@@ -121,7 +158,6 @@ uint32_t LO, HI;
 #else
         // Microsoft Visual Studio, OpenWatcom, Peles C
 #endif
-ATOMIC_UNLOCK(1)
 return 0;
 }
 //---------------------------------------------------------------------------
@@ -130,7 +166,7 @@ uint64_t __cdecl ts::cpu::tsc_start(void)
 {
 ATOMIC(1)
 ATOMIC_LOCK(1)
-    register uint64_t r = ts::cpu::__rdtsc();
+    register uint64_t r = ts::cpu::rdtsc();
     tsc_STARTED = r;
 ATOMIC_UNLOCK(1)
     return r;
@@ -141,7 +177,7 @@ uint64_t __cdecl ts::cpu::tsc_checkpoint(void)
 {
 ATOMIC(1)
 ATOMIC_LOCK(1)
-    register uint64_t r = ts::cpu::__rdtsc();
+    register uint64_t r = ts::cpu::rdtsc();
     register uint64_t x = tsc_STARTED - tsc_ADJ;
     register uint64_t e;
     if (r > x) e = r - x;
@@ -165,7 +201,7 @@ uint64_t __cdecl ts::cpu::tsc_pause(void)
 {
 ATOMIC(1)
 ATOMIC_LOCK(1)
-    register uint64_t n = ts::cpu::__rdtsc();
+    register uint64_t n = ts::cpu::rdtsc();
     tsc_PAUSED = n;
 ATOMIC_UNLOCK(1)
     return n;
@@ -177,7 +213,7 @@ uint64_t __cdecl ts::cpu::tsc_start_paused(void)
 ATOMIC(1)
 ATOMIC_LOCK(1)
     register uint64_t s = tsc_STARTED;
-    register uint64_t n = ts::cpu::__rdtsc();
+    register uint64_t n = ts::cpu::rdtsc();
     register uint64_t x = (tsc_PAUSED - s);
     if  (n > x)
         {s = n - x;
@@ -206,7 +242,40 @@ ATOMIC_UNLOCK(1)
 return r;
 }
 //---------------------------------------------------------------------------
-uint32_t __cdecl ts::cpu::__cpuidex(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_ecx, uint32_t *a_edx,uint32_t a_feature,uint32_t a_feature_ecx)
+
+uint32_t __cdecl ts::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_ecx, uint32_t* a_edx,uint32_t a_feature,uint32_t a_feature_ecx)
+{
+#if defined(__GNUC__) || defined(__clang__)
+    __asm__ __volatile__ (
+    "movl %0, %%eax\n"
+    "movl %1, %%ecx\n"
+    "cpuid\n"
+    "mov %%eax, %0\n"
+    "mov %%eax, %1\n"
+    "mov %%eax, %2\n"
+    "mov %%eax, %3\n"
+     : "=m"(a_eax), "=m"(a_ebx), "=m"(a_ecx), "=m"(a_edx) : "m" (a_feature), "m" (a_feature_ecx) : "eax", "ebx", "ecx", "edx", "memory");
+#else
+asm {   mov eax,a_feature;
+        mov ecx,a_feature_ecx;
+        and eax,0x80000000;
+        cpuid;
+        mov ESI,a_eax
+        mov [ESI],eax
+        mov ESI,a_ebx
+        mov [ESI],ebx
+        mov ESI,a_ecx
+        mov [ESI],ecx
+        mov ESI,a_edx
+        mov [ESI],edx
+    }
+#endif
+register uint32_t r = a_eax[0];
+return r;
+}
+//---------------------------------------------------------------------------
+
+uint32_t __cdecl ts::cpu::cpuidex(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_ecx, uint32_t *a_edx,uint32_t a_feature,uint32_t a_feature_ecx)
 {
 static uint32_t cached_eax asm("cached_eax") = 0;
 static uint32_t cached_ebx asm("cached_ebx") = 0;
@@ -334,7 +403,7 @@ char *__cdecl ts::cpu::cpu_vendor(void)
 static uint32_t v[4] = { 0,0,0,0 };
 ATOMIC(1)
 ATOMIC_LOCK(1)
-__cpuidex(&v[3],&v[0],&v[2],&v[1],0,0);
+cpuidex(&v[3],&v[0],&v[2],&v[1],0,0);
 if (v[0]!=0)
     v[3] =0;
 //-----------------------------
@@ -352,13 +421,13 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-if (__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000000,0)<0x80000004) {
+if (cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000000,0)<0x80000004) {
     ATOMIC_UNLOCK(1)
     return (char*)ts::mem32::mov(&n,"Unsupported\0",12);
 }
 for (register uint32_t f = (0x80000002), i = 0; i < 12; f++, i+=4)
     {
-    __cpuidex(&n[i+0],&n[i+1],&n[i+2],&n[i+3],f,0);
+    cpuidex(&n[i+0],&n[i+1],&n[i+2],&n[i+3],f,0);
     }
 ts::cstr::trim((char*)&n);
 ATOMIC_UNLOCK(1)
@@ -375,7 +444,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = ((f_ebx >> 16) & 0x000000FFL) + 1; // ebx[23:16]
 register uint32_t r = s_answer;
@@ -395,14 +464,14 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     // Get DCP cache info
-       __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,0);
+       cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,0);
        s_answer = ((f_eax >> 26) & 0x3FL) + 1;
     // eax[31:26] + 1
 }
 else
 if (ts::mem32::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
     // Get NC: Number of CPU cores - 1
-       __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+       cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
        s_answer = ((f_ecx & 0x000000FFL)) + 1;
     // ecx[7:0] + 1
 }
@@ -423,7 +492,7 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     if (a_level==2) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000002L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000002L,0);
     if ((f_edx && 0xFFL) == 0x40L)
        s_answer = 0;
     else
@@ -442,7 +511,7 @@ if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     if ((f_edx && 0xFFL) == 0x45L)
        s_answer = 2048;
     else {
-//    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,a_level);
+//    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,a_level);
 //    s_answer = (f_ebx & 0x001FFFFFL) + 1;
     s_answer = 0;
     }
@@ -452,22 +521,22 @@ if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
 else
 if (ts::mem32::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
     if (a_level==0) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
     s_answer = (f_edx>>24) & 0x000000FFL; //L1i, uops etc, dla mnie 0 ;)
     }
     else
     if (a_level==1) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
     s_answer = (f_ecx>>24) & 0x000000FFL; //data L1
     }
     else
     if (a_level==2) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
     s_answer = (f_ecx>>16) & 0x0000FFFFL;
     }
     else
     if (a_level==3) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
     s_answer =((f_edx>>18) & 0x00003FFFL) * 512;
     }
 }
@@ -487,25 +556,25 @@ ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,0);
     s_answer = (f_ebx & 0x00000FFFL) + 1;
 }
 else
 if (ts::mem32::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
 if (a_level==0) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
     s_answer = (f_edx & 0x000000FFL);
     }
 if (a_level==1) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
     s_answer = (f_ecx & 0x000000FFL);
     }
 if (a_level==2) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
     s_answer = (f_ecx & 0x000000FFL);
     }
 if (a_level==3) {
-    __cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
+    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
     s_answer = f_edx & 0x000000FFL;
     }
 }
@@ -583,7 +652,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 if (f_edx & (1<<0)) {
     s_answer = 1;
@@ -592,7 +661,7 @@ if (f_edx & (1<<0)) {
 }
 // second check for AMD ~K5 and other older processors
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 if (f_edx & (1<<0)) {
     s_answer = 1;
@@ -615,7 +684,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<23);
 register bool r = s_answer!=0;
@@ -633,13 +702,13 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<22); //AMD bez SSE
 if (s_answer!=0)
 return 1;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<25); //Intel z SSE == MMX-ext
 register bool r = s_answer!=0;
@@ -657,7 +726,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<29);
 register bool r = s_answer!=0;
@@ -675,7 +744,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<28);
 register bool r = s_answer!=0;
@@ -693,7 +762,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 if (f_ecx & (1<<20))
 s_answer = 42;
@@ -729,7 +798,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<6);
 register bool r = s_answer!=0;
@@ -747,10 +816,10 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 if (f_ecx & (1<<28)) {
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 if (f_ebx & (1<< 5))
 s_answer = 2;
 else
@@ -774,7 +843,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<23);
 register bool r = s_answer!=0;
@@ -792,7 +861,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<29);
 register bool r = s_answer!=0;
@@ -810,7 +879,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 if (f_ecx & (1<<13)) {
 s_answer = 16;
@@ -824,7 +893,7 @@ return 8;
 }
 //AMD second time check for older processors.
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 if (f_edx & (1<< 8)) {
 s_answer = 8;
@@ -846,7 +915,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<5);
 register bool r = s_answer!=0;
@@ -864,7 +933,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<6);
 register bool r = s_answer!=0;
@@ -882,7 +951,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<15);
 register bool r = s_answer!=0;
@@ -900,7 +969,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<22);
 register bool r = s_answer!=0;
@@ -918,7 +987,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 if (f_ebx & (1<<8))
 s_answer = 2;
@@ -942,7 +1011,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<9);
 register bool r = s_answer!=0;
@@ -960,7 +1029,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 if (f_edx & (1<<30))
 s_answer = 2;
@@ -984,7 +1053,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<8);
 register bool r = s_answer!=0;
@@ -1002,7 +1071,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<27);
 register bool r = s_answer!=0;
@@ -1020,7 +1089,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<29);
 register bool r = s_answer!=0;
@@ -1038,7 +1107,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<11);
 register bool r = s_answer!=0;
@@ -1056,7 +1125,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<16);
 register bool r = s_answer!=0;
@@ -1074,7 +1143,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<30);
 register bool r = s_answer!=0;
@@ -1092,7 +1161,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<27);
 register bool r = s_answer!=0;
@@ -1110,7 +1179,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<28);
 register bool r = s_answer!=0;
@@ -1128,7 +1197,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<26);
 register bool r = s_answer!=0;
@@ -1146,7 +1215,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<17);
 register bool r = s_answer!=0;
@@ -1164,7 +1233,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<31);
 register bool r = s_answer!=0;
@@ -1182,7 +1251,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<21);
 register bool r = s_answer!=0;
@@ -1200,7 +1269,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<1);
 register bool r = s_answer!=0;
@@ -1218,7 +1287,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<19);
 register bool r = s_answer!=0;
@@ -1236,7 +1305,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<5);
 register bool r = s_answer!=0;
@@ -1254,7 +1323,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<21);
 register bool r = s_answer!=0;
@@ -1272,7 +1341,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<19);
 register bool r = s_answer!=0;
@@ -1290,7 +1359,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<5);
 register bool r = s_answer!=0;
@@ -1308,7 +1377,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<24);
 register bool r = s_answer!=0;
@@ -1326,7 +1395,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<27);
 register bool r = s_answer!=0;
@@ -1344,7 +1413,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<12);
 register bool r = s_answer!=0;
@@ -1362,7 +1431,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<12);
 register bool r = s_answer!=0;
@@ -1380,7 +1449,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<4);
 register bool r = s_answer!=0;
@@ -1398,7 +1467,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<18);
 register bool r = s_answer!=0;
@@ -1416,7 +1485,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = ((f_ecx & (1<<26))>>26) & ((f_ecx & (1<<27))>>27);
 register bool r = s_answer!=0;
@@ -1434,7 +1503,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<2);
 register bool r = s_answer!=0;
@@ -1461,7 +1530,7 @@ return sn;
 }
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000003,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000003,0);
 //-----------------------------
 sn[2] = f_eax;
 sn[1] = f_edx;
@@ -1480,10 +1549,10 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 if (f_ecx & (1<<12)) {
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 if (f_ecx & (1<<16))
 s_answer = 4;
 else
@@ -1507,7 +1576,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<25);
 register bool r = s_answer!=0;
@@ -1525,7 +1594,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0xC0000001,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0xC0000001,0);
 //-----------------------------
 s_answer = f_edx & (1<<7);
 register bool r = s_answer!=0;
@@ -1543,7 +1612,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0xC0000001,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0xC0000001,0);
 //-----------------------------
 s_answer = f_edx & (1<<3);
 register bool r = s_answer!=0;
@@ -1561,7 +1630,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0xC0000001,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0xC0000001,0);
 //-----------------------------
 s_answer = f_edx & (1<<11);
 register bool r = s_answer!=0;
@@ -1579,7 +1648,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<18);
 register bool r = s_answer!=0;
@@ -1597,7 +1666,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-__cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
+cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<30);
 register bool r = s_answer!=0;

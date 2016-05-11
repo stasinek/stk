@@ -6,8 +6,8 @@
 //---------------------------------------------------------------------------
 namespace ts { namespace time {
 //------------------------------------
-extern uint64_t		    	__stdcall	clock_us(void);
-extern uint64_t			    __stdcall	clock_ms(void);
+extern double		    	__stdcall	clock_us(void);
+extern double			    __stdcall	clock_ms(void);
 extern void 		        __stdcall	wait_us(const __int32 a_microseconds);
 extern void 		        __stdcall	wait_ms(const __int32 a_milliseconds);
 

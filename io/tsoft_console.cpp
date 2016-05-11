@@ -40,6 +40,13 @@ void  __stdcall ts::con::stderr_handler(const char* a_text)
 }
 //---------------------------------------------------------------------------
 
+void  __stdcall ts::con::error(const char* a_text)
+{
+    if (error_handler!=NULL) error_handler(a_text);
+    else stderr_handler(a_text);
+}
+//---------------------------------------------------------------------------
+
 void  __stdcall ts::con::print(const char* a_text)
 {
     if (print_handler!=NULL) print_handler(a_text);
@@ -75,7 +82,7 @@ if (s_print_buffer_size==0) {
 do {
 va_list  param;
 va_start(param,a_format);
-uint32_t needed_size = vsnprintf(s_print_buffer,s_print_buffer_size,a_format,param) + 1;
+uint32_t needed_size = vsnprintf(s_print_buffer,s_print_buffer_size,a_format,param) + 8;
 va_end(param);
 
  if (needed_size > s_print_buffer_size)
@@ -86,15 +93,15 @@ va_end(param);
     }
  else break;
 } while (1);
-ts::con::stderr_handler(s_print_buffer);
+ts::con::error(s_print_buffer);
 ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 
 void  __cdecl ts::con::prints(const char* __restrict__ a_format, ...)
 {
-ATOMIC(1)
 #define VA_DEFAULT_SIZE 512
+ATOMIC(1)
 ATOMIC_LOCK(1)
 if (s_print_buffer_size==0) {
     ::atexit(&ts::con::atexit);
@@ -104,20 +111,20 @@ if (s_print_buffer_size==0) {
     }
 #include <stdarg.h>
 do {
-va_list  param;
-va_start(param,a_format);
-uint32_t needed_size = vsnprintf(s_print_buffer,s_print_buffer_size,a_format,param) + 1;
-va_end(param);
+    va_list  param;
+    va_start(param,a_format);
+    uint32_t needed_size = vsnprintf(s_print_buffer,s_print_buffer_size,a_format,param) + 8; //minimum needed
+    va_end(param);
 
- if (needed_size > s_print_buffer_size)
-    {s_print_buffer = (char*)ts::cstr::realloc(s_print_buffer,s_print_buffer_size);
-     assert(s_print_buffer!=NULL);
-     s_print_buffer_size = needed_size;
-     continue;
-    }
- else break;
+    if (needed_size > s_print_buffer_size) {
+        s_print_buffer = (char*)ts::cstr::realloc(s_print_buffer,s_print_buffer_size);
+        assert(s_print_buffer!=NULL);
+        s_print_buffer_size = needed_size;
+        continue;
+        }
+    else break;
 } while (1);
-ts::con::stdout_handler(s_print_buffer);
+ts::con::print(s_print_buffer);
 ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
@@ -143,7 +150,7 @@ s_print_buffer_size = an_times *(a_text_len) + 1;
 s_print_buffer[0]='\0';
 for (__int32 i = 0; i< an_times; i++) { ts::cstr::cat(s_print_buffer,a_text);
     }
-ts::con::stdout_handler(s_print_buffer);
+ts::con::print(s_print_buffer);
 ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------

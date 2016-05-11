@@ -37,18 +37,18 @@ double speed,s;\
 
 #define TESTUJ(func) ts::cpu::tsc_start();\
         time = ts::time::clock_ms();\
-        printf(#func"\n");\
-        printf("WYKONUJE...\n");\
+        ts::con::prints(#func"\n");\
+        ts::con::prints("WYKONUJE...\n");\
         func;\
-        time = ts::time::clock_ms() - time;\
-        printf("CZAS=%lldms\n",time);\
+        time = difftime(ts::time::clock_ms(),time);\
+        ts::con::prints("CZAS=%lldms\n",time);\
         if (time!=0) speed = double(double(1000*TESTUJ_SIZE)/double(1024*1024)) / double(time);\
                 else speed = 0;\
-        printf("in=%lld, out=%d, %5.2lfMB/s\n",TESTUJ_SIZE,r,double(speed));\
+        ts::con::prints("in=%lld, out=%d, %5.2lfMB/s\n",TESTUJ_SIZE,r,double(speed));\
         ts::cpu::tsc_checkpoint();\
-        for (s = 0; s < speed;s+=1000/80) printf("#");\
-        printf("\n");\
-        printf("%lld.cpu ticks\r\n\n",ts::cpu::tsc_elapsed());
+        ts::con::printr("#",(speed*80)/1000);\
+        ts::con::prints("\n");\
+        ts::con::prints("%lld.cpu ticks\r\n\n",ts::cpu::tsc_elapsed());
 
 #define TESTUJ_RANDOM(func) TESTUJ(for (t = 0; t < RANDOM_TIMES;  t++) { func } )
 
@@ -108,27 +108,27 @@ ts::con::set_console_handlers(&test_ConsoleGetchHandler, &test_ConsolePrintHandl
 char *args = new char[4096];
 args[0] = '\0';
 
-printf("Inicjuje zmienne...\n");
+ts::con::prints("Inicjuje zmienne...\n");
 TESTUJ_INIT(100000000,10000)
-printf("Rozmiar buforow %lldMB\n",TESTUJ_SIZE/1024/1024);
-printf("Ilosc wykonan w trybie \"random\" t < %lld\n",RANDOM_TIMES);
-printf("TESTY:\n");
+ts::con::prints("Rozmiar buforow %lldMB\n",TESTUJ_SIZE/1024/1024);
+ts::con::prints("Ilosc wykonan w trybie \"random\" t < %lld\n",RANDOM_TIMES);
+ts::con::prints("TESTY:\n");
 
-printf("[  %d]\t",__LINE__);
+ts::con::prints("[  %d]\t",__LINE__);
 TESTUJ(ts::cpu::cpu_test();)
 
-if (ts::hash::crc32::test_CRC32(1)) printf("CRC32 OK\n");
+if (ts::hash::crc32::test_CRC32(1)) ts::con::prints("CRC32 OK\n");
 
-printf("[  %d]\t",__LINE__);
+ts::con::prints("[  %d]\t",__LINE__);
 TESTUJ(ts::hash::crc32::calc_CRC32(in,TESTUJ_SIZE,0);)
-printf("[  %d]\t",__LINE__);
+ts::con::prints("[  %d]\t",__LINE__);
 TESTUJ(ts::hash::crc32::calc_CRC32_bitwise(in,TESTUJ_SIZE,0);)
-printf("[  %d]\t",__LINE__);
+ts::con::prints("[  %d]\t",__LINE__);
 TESTUJ(ts::hash::adler32::calc_ADLER32(in,TESTUJ_SIZE);)
-printf("[  %d]\t",__LINE__);
+ts::con::prints("[  %d]\t",__LINE__);
 TESTUJ(::strlen(in);)
 TESTUJ(ts::cstr::len(in);)
-printf("[  %d]\t",__LINE__);
+ts::con::prints("[  %d]\t",__LINE__);
 TESTUJ(::strchr(in,'\0');)
 TESTUJ(ts::cstr::chr(in,'\0');)
 TESTUJ(::strrchr(in,'a');)
@@ -138,10 +138,10 @@ TESTUJ(memchr(in,'\0',TESTUJ_SIZE);)
 TESTUJ_RANDOM(memchr(&in[(t*TESTUJ_SIZE)/RANDOM_TIMES],'\0',TESTUJ_SIZE/RANDOM_TIMES);)
 TESTUJ(ts::mem32::chr(in,'\0',TESTUJ_SIZE);)
 TESTUJ_RANDOM(ts::mem32::chr(&in[(t*TESTUJ_SIZE)/RANDOM_TIMES],'\0',TESTUJ_SIZE/RANDOM_TIMES);)
-printf("[  %d]\t",__LINE__);
+ts::con::prints("[  %d]\t",__LINE__);
 TESTUJ(::strcpy(out,in);)
 TESTUJ(ts::cstr::mov(out,in);)
-printf("[  %d]\t",__LINE__);
+ts::con::prints("[  %d]\t",__LINE__);
 TESTUJ(memset(out,'A',TESTUJ_SIZE);)
 TESTUJ_RANDOM(memset(&out[(t*TESTUJ_SIZE)/RANDOM_TIMES],'A',TESTUJ_SIZE/RANDOM_TIMES);)
 //TESTUJ(ts::mem32::set(out,'A',TESTUJ_SIZE);)
@@ -160,15 +160,15 @@ TESTUJ_RANDOM(ts::mem32::mov(&out[(t*TESTUJ_SIZE)/RANDOM_TIMES],&in[(t*TESTUJ_SI
 //TESTUJ(ts::cipher::cript_MTF(in,TESTUJ_SIZE););
 //TESTUJ(r = ts::compression::compress_HUF(out,in,TESTUJ_SIZE,1000));
 
-printf("Serdecznie dziekuje za pomoc :)\n");
+ts::con::prints("Serdecznie dziekuje za pomoc :)\n");
 TESTUJ_EXIT()
                 char text[100], *texti = "test () beginbeginendend";
                 if (ts::cstr::between(text,texti,'(',')')>=0)
-                printf("\"%s\"\n",text);
-                else printf("not found between\n");
+                ts::con::prints("\"%s\"\n",text);
+                else ts::con::prints("not found between\n");
                 if (ts::cstr::between_words(text,texti,"begin","end")>=0)
-                printf("\"%s\"\n",text);
-                else printf("not found between\n");
+                ts::con::prints("\"%s\"\n",text);
+                else ts::con::prints("not found between\n");
 delete args;
 return r;
 }

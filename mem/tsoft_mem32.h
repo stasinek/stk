@@ -7,34 +7,34 @@
 //---------------------------------------------------------------------------
 namespace ts { namespace mem32 {
 //---------------------------------------------------------------------------
-		extern __int64       __stdcall allocated            (void);
+		extern __int64         __stdcall allocated            (void);
 // must be SIGNED for mem leak detection ;)
-		extern size_t		 __stdcall size        			(const void *a_ptr);
-		extern  void		*__stdcall alloc				(const size_t a_count);
-		extern  void		*__stdcall realloc				(void *a_dst_ptr, const size_t a_count);
-		extern  void		 __stdcall free					(void *a_dst_ptr);
+		extern size_t          __stdcall size                 (const void *a_ptr);
+		extern  void          *__stdcall alloc				  (const size_t a_count);
+		extern  void          *__stdcall realloc              (void *a_dst_ptr, const size_t a_count);
+		extern  void           __stdcall free                 (void *a_dst_ptr);
 //---------------------------------------------------------------------------
-		void                *__stdcall mov              	(void *a_dst_ptr, const void *a_src_ptr, const size_t a_count);
-		extern  void		*__stdcall rev                  (void *a_dst_ptr, const void *a_src_ptr, const size_t a_count);
-		extern  void 		*__stdcall swap					(void *a_ptr, const size_t a_head_count, const size_t a_tail_count);
+		void                  *__stdcall mov                  (void *a_dst_ptr, const void *a_src_ptr, const size_t a_count);
+		extern  void          *__stdcall rev                  (void *a_dst_ptr, const void *a_src_ptr, const size_t a_count);
+		extern  void          *__stdcall swap                 (void *a_ptr, const size_t a_head_count, const size_t a_tail_count);
 		//---------------------------------------------------------------------------
-		extern  __int32      __stdcall cmp              	(const void *a_ptr1, const void *a_ptr2, const size_t a_count);
+		extern  __int32        __stdcall cmp                  (const void *a_ptr1, const void *a_ptr2, const size_t a_count);
 		//---------------------------------------------------------------------------
-		extern  void		*__stdcall set                  (void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count);
-		extern  void		*__stdcall set                  (void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count);
-		extern  void		*__stdcall setex                (void *a_dst_ptr, const void *a_src_ptr, const __int8 a_element_size, const size_t a_count);
+		extern  void          *__stdcall set                  (void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count);
+		extern  void          *__stdcall set                  (void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count);
+		extern  void          *__stdcall setex                (void *a_dst_ptr, const void *a_src_ptr, const __int8 a_element_size, const size_t a_count);
 		//---------------------------------------------------------------------------
-		extern  void		*__stdcall shr                  (void *a_dst_ptr, const size_t a_count);
-		extern  void		*__stdcall shl                  (void *a_dst_ptr, const size_t a_count);
-		extern  void		*__stdcall ror                  (void *a_dst_ptr, const size_t a_count);
-		extern  void		*__stdcall rol                  (void *a_dst_ptr, const size_t a_count);
+		extern  void          *__stdcall shr                  (void *a_dst_ptr, const size_t a_count);
+		extern  void          *__stdcall shl                  (void *a_dst_ptr, const size_t a_count);
+		extern  void          *__stdcall ror                  (void *a_dst_ptr, const size_t a_count);
+		extern  void          *__stdcall rol                  (void *a_dst_ptr, const size_t a_count);
 		//---------------------------------------------------------------------------
-		extern  __int32      __stdcall chr                  (const void *a_src_ptr, const char a_znak_B, const size_t a_count);
-		extern  __int32      __stdcall chrr                 (const void *a_src_ptr, const char a_znak_B, const size_t a_count);
+		extern  __int32        __stdcall chr                  (const void *a_src_ptr, const char a_znak_B, const size_t a_count);
+		extern  __int32        __stdcall chrr                 (const void *a_src_ptr, const char a_znak_B, const size_t a_count);
 //---------------------------------------------------------------------------
-		extern  __int32      __stdcall pos                  (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size);
-		extern  __int32      __stdcall posr                 (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size);
-        extern const char 	*__stdcall kmp_search			(const char *text, const char *pattern);
+		extern  __int32        __stdcall pos                  (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size);
+		extern  __int32        __stdcall posr                 (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size);
+        extern const char     *__stdcall kmp_search			  (const char *text, const char *pattern);
 
 //---------------------------------------------------------------------------
 #define membit(val,b) (((char*)val)[b/8] &   (0x01<<(b%8)));

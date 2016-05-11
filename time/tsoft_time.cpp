@@ -7,26 +7,26 @@
 //---------------------------------------------------------------------------
 #include "tsoft_time.h"
 
-uint64_t __stdcall ts::time::clock_us(void)
+double __stdcall ts::time::clock_us(void)
 // cross-platform timeGetTime (on Windows minimum return is 1000us, on linux there is us acuracy (probably?) CLOCKS_PER_SEC >=1M
 {
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED__
 #endif
 		clock_t t;
-		register uint64_t r = 1000 * 1000 * (uint64_t)clock();
+		register double r = 1000 * 1000 * (double)clock();
 		r = r / CLOCKS_PER_SEC;
 		return r;
 }
 //---------------------------------------------------------------------------
 
-uint64_t __stdcall ts::time::clock_ms(void) // cross-platform timeGetTime
+double __stdcall ts::time::clock_ms(void) // cross-platform timeGetTime
 {
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED__
 #endif
 		clock_t t;
-		register uint64_t r = 1000 * (uint64_t)clock();
+		register double r = 1000 * (double)clock();
 		r = r / CLOCKS_PER_SEC;
 		return r;
 }
@@ -67,7 +67,7 @@ __DEBUG_FUNC_CALLED__
 		ULARGE_INTEGER ull;
 		ull.HighPart = ft.dwHighDateTime;
 		ull.LowPart = ft.dwLowDateTime;
-		return (ull.QuadPart / 10000000ULL) - 11644473600ULL;
+		return (ull.QuadPart / (LONGLONG)10000000ULL) - (LONGLONG)11644473600ULL;
 }
 
 FILETIME* __stdcall ts::time::time_t_to_FILETIME(time_t t, LPFILETIME pft)
@@ -77,7 +77,7 @@ __DEBUG_FUNC_CALLED__
 #endif
 // Note that LONGLONG is a 64-bit value
 		LONGLONG ull;
-		ull = (LONGLONG)(((LONGLONG)(LONG)t) * (LONGLONG)((LONG)10000000) + 116444736000000000);
+		ull = (LONGLONG)(((LONGLONG)t) * (LONGLONG)(10000000LL + 116444736000000000LL));
 		pft->dwLowDateTime = (DWORD)ull;
 		pft->dwHighDateTime = ull >> 32;
 		return pft;
@@ -88,12 +88,17 @@ __DEBUG_FUNC_CALLED__
 #include <iostream>
 #include <iomanip>
 
-bool isLeapYear(const unsigned int& ); //checks if 'year' is leap year
-unsigned int firstDayOfJanuary( unsigned int& year );
-unsigned int numOfDaysInMonth( unsigned int , unsigned int& ); // takes the number of the month, and 'year' as arguments
-void printHeader( unsigned int ); //takes the number of the month, and the first day, prints, and updates
-void printMonth( unsigned int , unsigned int& ); //takes number of days in month, and reference to 'firstDayInCurrentMonth' so it updates after every call
-void skip( unsigned int ); //prints the specified amount of spaces
+bool isLeapYear(const unsigned int& ) {} //checks if 'year' is leap year
+unsigned int firstDayOfJanuary( unsigned int& year ) {}
+unsigned int numOfDaysInMonth( unsigned int , unsigned int& ) {} // takes the number of the month, and 'year' as arguments
+void printHeader( unsigned int ) {} //takes the number of the month, and the first day, prints, and updates
+void printMonth( unsigned int , unsigned int& ) {} //takes number of days in month, and reference to 'firstDayInCurrentMonth' so it updates after every call
+void skip( unsigned int i ) {
+	while ( i > 0 ) {
+		std::cout << " ";
+		i--;
+	}
+}
 
 
 int printcalendar() {
@@ -143,13 +148,6 @@ void printcalendarheader( unsigned int m ) {
 
 	std::cout << "\n S  M  T  W  T  F  S" << "\n";
 	std::cout << "____________________" << "\n";
-}
-
-void skip( unsigned int i ) {
-	while ( i > 0 ) {
-		std::cout << " ";
-		i--;
-	}
 }
 
 void printcalendarmonth( unsigned int numDays, unsigned int &weekDay ) {

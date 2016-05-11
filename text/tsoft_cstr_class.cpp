@@ -160,7 +160,7 @@ if (__vector<char>::size()!=0) {
 }
 //---------------------------------------------------------------------------
 
-inline __stdcall ts::__cstr_class::~__cstr_class()
+__stdcall ts::__cstr_class::~__cstr_class(void)
 {
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED__

@@ -3,6 +3,7 @@
 //---------------------------------------------------------------------------
 #include "tsoft_pharse_math.h"
 #include "./../text/tsoft_cstr_manipulation.h"
+#include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 
 __stdcall ts::__math_pharser:: __math_pharser(void)

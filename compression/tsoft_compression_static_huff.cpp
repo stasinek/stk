@@ -4,6 +4,7 @@
 #include "tsoft_compression_static_huff.h"
 #include "./../mem/tsoft_mem32.h"
 #include "./../text/tsoft_cstr_manipulation.h"
+#include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 #define BIT_COMBINATIONS_PER_BYTE	 (256) 		   /* kinds of characters (character code = 0..BIT_COMBINATIONS_PER_BYTE-1) */
 #define TREE_SIZE ((BIT_COMBINATIONS_PER_BYTE*2)-1)	/* size of table */

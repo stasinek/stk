@@ -4,6 +4,7 @@
 #include "tsoft_compression_ari.h"
 #include "./../mem/tsoft_mem32.h"
 #include "./../text/tsoft_cstr_manipulation.h"
+#include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 
 /*  If you are not familiar with arithmetic compression, you should read

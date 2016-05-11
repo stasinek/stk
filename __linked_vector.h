@@ -1,8 +1,9 @@
 //---------------------------------------------------------------------------
-#ifndef __linked_vector_CLASS_H
-#define __linked_vector_CLASS_H
+#ifndef __linked_vector_h
+#define __linked_vector_h
 //---------------------------------------------------------------------------
 #include "./mem/tsoft_mem32.h"
+#include "./io/tsoft_console.h"
 #include "./tsoft_main.h"
 //---------------------------------------------------------------------------
 //implementation of std::deque but using static ring buffer ;)

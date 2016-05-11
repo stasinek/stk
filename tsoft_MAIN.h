@@ -17,7 +17,6 @@
 #endif
 #if !defined(__WIN32__) && (defined(WIN32) || defined(_WIN32) || defined(__WINDOWS__))
 	 #define __WIN32__
-	 #define WIN32
 #endif
 #if !defined(__WIN64__) && (defined(WIN64) || defined(_WIN64))
 	 #define __WIN64__
@@ -48,16 +47,16 @@
 	 #define __arm__
 #endif
 //---------------------------------------------------------------------------
-#if !defined(__MMX__) && (defined(__DUPA__))
+#if !defined(__MMX__) & defined(__x86_64__)
      #define __MMX__
 #endif
-#if !defined(__SSE__) && (defined(__DUPA__))
+#if !defined(__SSE__) & defined(__x86_64__)
      #define __SSE__
 #endif
-#if !defined(__ASN_OPT__) && (defined(__DUPA__))
+#if !defined(__ASM_OPT__)
      #define __ASM_OPT__
 #endif
-#if !defined(__DEBUG__) && (defined(__DUPA__))
+#if !defined(__DEBUG__)
      #define __DEBUG__
 #endif
 //---------------------------------------------------------------------------
@@ -74,30 +73,31 @@
 // PLATFORM SPECISIC COMMON INCLUDES
 //---------------------------------------------------------------------------
 #ifdef __WIN32__
-    #ifdef __WATCOMC__
-    #define NOMINMAX
-    #endif
-    #include <winsock2.h>
-    #include <cstddef>
-    #include <windows.h>
+#ifdef __WATCOMC__
+#define NOMINMAX
+#endif
+#include <winsock2.h>
+#include <windows.h>
 #endif
 //---------------------------------------------------------------------------
 // STDC COMMON INCLUDES
 //---------------------------------------------------------------------------
+#include <cstddef>
 #include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
 //---------------------------------------------------------------------------
 #include <time.h>
 //---------------------------------------------------------------------------
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <stdio.h>
 #include <conio.h>
+//---------------------------------------------------------------------------
 #include <io.h>
 #include <direct.h>
-//---------------------------------------------------------------------------
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+//---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 // COMPILER SPECIFIC DEFINES
 //---------------------------------------------------------------------------
@@ -148,46 +148,66 @@
 #include <inttypes.h>
 #include <omp.h>
 
-#ifndef __int8
-typedef __int8  BYTE;
-typedef __int8 UBYTE;
+#if !defined(__int8) && defined(int8_t)
+typedef __int8  int8_t;
 #endif
+#if !defined(__int16) && defined(CHAR)
+typedef __int8  BYTE;
+#endif
+#if !defined(__int8) && defined(char)
+typedef __int8  char;
+#endif
+#ifndef __i8
 #define __i8 __int8
+#endif
 #ifndef int8
 #define int8 __int8
 #endif
 
+#if !defined(__int16) && defined(int16_t)
+typedef __int16  int16_t;
+#endif
 #if !defined(__int16) && defined(SHORT)
 typedef __int16  SHORT;
-typedef __int16 USHORT;
 #endif
 #if !defined(__int16) && defined(short)
 typedef __int16  short;
-typedef __int16 (unsigned short);
 #endif
-#if !defined(__int16) && defined(int16_t)
-typedef __int16  int16_t;
-typedef __int16 (uint16_t);
-#endif
+#ifndef __i16
 #define __i16 __int16
+#endif
 #ifndef int16
 #define int16 __int16
 #endif
 
-#ifndef __int32
-typedef __int32  LONG;
-typedef __int32 ULONG;
+#if !defined(__int32) && defined(int32_t)
+typedef __int32  int32_t;
 #endif
+#if !defined(__int32) && defined(DWORD)
+typedef __int32  DWORD;
+#endif
+#if !defined(__int32) && defined(long)
+typedef __int32  long;
+#endif
+#ifndef __i32
 #define __i32 __int32
+#endif
 #ifndef int32
 #define int32 __int32
 #endif
 
-#ifndef __int64
-typedef __int64   LONGLONG;
-typedef uint64_t ULONGLONG;
+#if !defined(__int64) && defined(int64_t)
+typedef __int64  int64_t;
 #endif
+#if !defined(__int64) && defined(LONGLONG)
+typedef __int64  LONGLONG;
+#endif
+#if !defined(__int64) && defined(long)
+typedef __int64 (long long);
+#endif
+#ifndef __i64
 #define __i64 __int64
+#endif
 #ifndef int64
 #define int64 __int64
 #endif
@@ -247,18 +267,18 @@ typedef uint64_t ULONGLONG;
 #define __func__ ""
 #endif
 #define __DEBUG_FUNC_CALLED__\
-        static __int64 __time_1 = ts::time::clock_ms();\
+        static double __time_1 = ts::time::clock_ms();\
         static const  int __entered_line = __LINE__;\
         static int __entered_time = 1;\
         char *__file__ = __FILE__;\
         char *__file_name__ = ::strrchr(__file__,'/');\
           if (__file_name__==NULL) __file_name__ = ::strrchr(__file__,'\\');\
           if (__file_name__==NULL) __file_name__ = __file__;\
-        printf("DEBUG: %s: Enter function: %s@%d line, count: %d\n",__file_name__,__func__,__entered_line,__entered_time++);
+        ts::con::prints("DEBUG: %s: Enter function: %s@%d line, time: %lf\n",__file_name__,__func__,__entered_line,double(__entered_time+=1));
 //
 #define RETURN(var)\
 		do {         __int64 __time_2 = ts::time::clock_ms - __time_1;\
-        printf("DEBUG: Return from function: %d, at: %d, spent %ldms:\n",__file_name__,__entered_line,__LINE__,__int64(__time_2));\
+        ts::con::prints("DEBUG: Return from function: %d, at: %d, spent %lfms:\n",__file_name__,__entered_line,__LINE__,double(__time_2));\
 		return var; } while(0); return var;
 #else
 #define __DEBUG_FUNC_CALLED__

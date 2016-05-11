@@ -4,6 +4,7 @@
 #include "tsoft_compression_lzssv4.h"
 #include "./../mem/tsoft_mem32.h"
 #include "./../text/tsoft_cstr_manipulation.h"
+#include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 // tym wi�cej bit�w im wi�ksze slide window, 12 dla 4096   wyniki dla AMD Athlon X2 3800 Dual Core 939 2.2GHz 512kB cache LZS CalgaryCorpus
 // 64kB (cache ~L2)

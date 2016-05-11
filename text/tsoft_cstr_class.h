@@ -73,7 +73,7 @@ else return set("0");
 inline const char*		__stdcall	operator= (const __int32 a_i_to_clone) {
 return set(a_i_to_clone);
 }
-virtual inline __stdcall  ~__cstr_class(void);
+virtual __stdcall  ~__cstr_class(void);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------

@@ -3,7 +3,9 @@
 //---------------------------------------------------------------------------
 #include "./../mem/tsoft_mem32.h"
 #include "./../text/tsoft_cstr_manipulation.h"
+#ifdef __BORLANDC__
 #pragma hdrstop
+#endif
 #include "tsoft_file_mime_types.h"
 //---------------------------------------------------------------------------
 #define mime_t_file

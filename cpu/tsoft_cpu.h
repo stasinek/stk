@@ -7,7 +7,8 @@
 //---------------------------------------------------------------------------
 namespace ts { namespace cpu {
 //---------------------------------------------------------------------------
-extern uint32_t	 __cdecl	__cpuidex(uint32_t *a_eax,uint32_t *a_ebx,uint32_t *a_ecx,uint32_t *a_adx,uint32_t a_function,uint32_t a_feature_ecx);
+extern uint32_t  __cdecl    cpuid(uint32_t *a_eax,uint32_t *a_ebx,uint32_t *a_ecx,uint32_t* a_edx,uint32_t a_feature,uint32_t a_feature_ecx);
+extern uint32_t	 __cdecl	cpuidex(uint32_t *a_eax,uint32_t *a_ebx,uint32_t *a_ecx,uint32_t *a_adx,uint32_t a_feature,uint32_t a_feature_ecx);
 extern void		 __cdecl	cpu_print_info(void);
 extern void		 __cdecl	cpu_test(void);
 //---------------------------------------------------------------------------
@@ -81,7 +82,11 @@ extern bool		 __cdecl	cpu_has_psn(void);
 16-19	Extended Model Number
 20-27	Extended Family Number*/
 //---------------------------------------------------------------------------
-extern uint64_t	 __cdecl	__rdtsc(void);
+#if !defined(__BORLANDC__) && !defined(__WATCOMC__)
+extern uint64_t  __cdecl    rdtscp(__int32 *a_chip, __int32 *a_core);
+#endif
+extern uint64_t  __cdecl    rdtsc(void);
+extern uint64_t	 __cdecl	rdtscex(void);
 //---------------------------------------------------------------------------
 extern uint64_t	 __cdecl	tsc_start(void);
 extern uint64_t  __cdecl	tsc_pause(void);

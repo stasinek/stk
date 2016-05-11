@@ -3,6 +3,7 @@
 #define __list_CLASS_H
 //---------------------------------------------------------------------------
 #include "./mem/tsoft_mem32.h"
+#include "./io/tsoft_console.h"
 #include "./tsoft_main.h"
 //---------------------------------------------------------------------------
 //implementation of std::list ;)

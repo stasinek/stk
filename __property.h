@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef tsoft__property_H
-#define tsoft__property_H
+#ifndef tsoft__property_h
+#define tsoft__property_h
 //---------------------------------------------------------------------------
 #include "./tsoft_MAIN.h"
 #include <iostream>

@@ -221,7 +221,7 @@ return  ret;
 //---------------------------------------------------------------------------
 #endif
 
-unsigned long __stdcall thread2(void*arg){
+unsigned long __stdcall thread2(const char *arg){
 printf("Thread2! Wo³acz mówi %s",(char*)arg);
 ts::time::wait_ms(1000);
 return 0;
@@ -243,16 +243,15 @@ static char sx[] = { " test" };
 #include "./test.txt"
 };
 ts::thread::ssthread_t t2;
-ts::thread::create(&t2,thread2,"Czeœæ");
-ts::thread::run(&t2);
+//ts::thread::create(&t2,thread2,"Czeœæ");
+//ts::thread::run(&t2);
 printf("%s",a);
-ts::thread::join(&t2);
-
+//ts::thread::join(&t2);
+system("pause");
         return r;
 #else
         return Qt_app_main(argc,argv);
 #endif
-        return 0;
         //    ts::test::test_main(argc,argv);
 }
 //---------------------------------------------------------------------------
@@ -352,6 +351,18 @@ sesi[0] = 1;
 //ts::compression::test();
 //TESTUJ(cop = ts::compression::compress_ARI(out,in,TESTUJ_SIZE,1000));
 */
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

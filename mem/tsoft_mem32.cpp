@@ -1,21 +1,26 @@
 //---------------------------------------------------------------------------
 // ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include <malloc.h>
 #include "./../cpu/tsoft_cpu.h"
 #include "./../threads/tsoft_threads.h"
 #include "./../io/tsoft_console.h"
 #include "./../__vector.h"
 #include "tsoft_mem32.h"
+#ifdef _MSC_VER
+#include <memory.h>
+#else
+#include <malloc.h>
+#endif
 //---------------------------------------------------------------------------
 static __int64 g_mem_allocated = 0;
 static __int32 g_mem_size_align = 16;
 static __int32 g_mem_pointer_align = 16;
-static __int64 g_mem_max = 30<<1;
+static __int64 g_mem_max = 1<<30;
 //---------------------------------------------------------------------------
-#define MAGIC_TAIL ((uint32_t)(0xCCCCCC00L))
+#define MAGIC_TAIL ((uint32_t)(0xCC00CC00L))
 #pragma pack(push, 1)
 struct __mem_chunk {
+uint64_t ptr_reserved_data[1];
 uint64_t ptr_size; // size of user data
 uint64_t ptr; // points to head of user data
 uint64_t chunk_reserved_data[1];
@@ -24,15 +29,15 @@ uint64_t chunk_ptr;  //points to head of this structure, pointer should be pass 
 };
 struct __mem_tail {
 	uint32_t f_magic_tail[1];
+	uint32_t f_null[1];
 	inline void __stdcall add()
-	{ __DEBUG_FUNC_CALLED__
-		 f_magic_tail[0] = MAGIC_TAIL;
+	{ 	 f_magic_tail[0] = MAGIC_TAIL;
+		 f_null[0] = 0;
 	}
 	inline bool __stdcall check()
-	{ __DEBUG_FUNC_CALLED__
-         return (f_magic_tail[0]==MAGIC_TAIL);
+	{    return (f_magic_tail[0]==MAGIC_TAIL);
 	}
-} __attribute__((packed,aligned (4)));
+} __attribute__((packed,aligned (8)));
 #pragma pack(pop)
 
 //---------------------------------------------------------------------------
@@ -57,15 +62,15 @@ __DEBUG_FUNC_CALLED__
 #endif
 ATOMIC(1)
 	l_n_tailed_count  = a_count;
-	l_n_tailed_count += l_n_tailed_count % g_mem_size_align;
 	l_n_tailed_count += sizeof(__mem_tail);
+	l_n_tailed_count += l_n_tailed_count % g_mem_size_align;
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
 	printf("mem32::alloc(%u+%d(ALIGNED_TO %d)+%u(MAGIC_TAIL))\n", a_count, (__int32)sizeof(__mem_tail),(__int32)(l_n_tailed_count - a_count - sizeof(__mem_tail)),(__int32)g_mem_size_align);
 #endif
 		r = ::calloc(l_n_tailed_count,1);
 	if (r==NULL)
 	throw "mem32::alloc=FAIL! OUT OF MEMORY?";
-	n_t = (__mem_tail*)(((uint8_t*)r + l_n_tailed_count) - sizeof(__mem_tail)) ;
+	n_t = (__mem_tail*)(((size_t)r + (size_t)l_n_tailed_count) - (size_t)sizeof(__mem_tail)) ;
 	n_t->add();
 
 ATOMIC_LOCK(1)
@@ -92,12 +97,12 @@ void *__stdcall ts::mem32::realloc(void *a_dst_ptr,const size_t a_count)
 ATOMIC(1)
 	l_p_tailed_count  = ts::mem32::size(a_dst_ptr);
 	l_n_tailed_count  = a_count;
-	l_n_tailed_count += l_n_tailed_count % g_mem_size_align;
 	l_n_tailed_count += sizeof(__mem_tail);
+	l_n_tailed_count += l_n_tailed_count % g_mem_size_align;
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
-    o_t = (__mem_tail*)((((uint8_t*)a_dst_ptr) + l_p_tailed_count) - sizeof(__mem_tail));
+	o_t = (__mem_tail*)(((size_t)a_dst_ptr + (size_t)l_p_tailed_count) - (size_t)sizeof(__mem_tail)) ;
     printf("mem32::realloc(adress=0x%08hu,%u+%d(ALIGNED_TO %d)+%u(MAGIC_TAIL))\n",(size_t)a_dst_ptr, a_count,(size_t)sizeof(__mem_tail),l_n_tailed_count - a_count - sizeof(__mem_tail),g_mem_size_align);
-	if (l_p_tailed_count > 4)
+	if (l_p_tailed_count > sizeof(__mem_tail))
 	if (!o_t->check()) {
 	printf("WARNING! detected out of bound access 0x%08hu(@MAGIC_TAIL)\n",(size_t)a_dst_ptr);
 	}
@@ -109,7 +114,7 @@ ATOMIC_UNLOCK(1)
 	if (r==NULL)
 	throw "mem32::realloc FAIL! OUT OF MEMORY";
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
-	n_t = (__mem_tail*)(((uint8_t*)r + l_n_tailed_count) - sizeof(__mem_tail));
+	n_t = (__mem_tail*)(((size_t)r + (size_t)l_n_tailed_count) - (size_t)sizeof(__mem_tail)) ;
 	n_t->add();
 #endif
 ATOMIC_LOCK(1)
@@ -132,11 +137,11 @@ __DEBUG_FUNC_CALLED__
 #endif
 ATOMIC(1)
 	l_p_tailed_count = ts::mem32::size(a_dst_ptr);
-	o_t = (__mem_tail*)((((uint8_t*)a_dst_ptr) + l_p_tailed_count) - sizeof(__mem_tail));
+	o_t = (__mem_tail*)(((size_t)a_dst_ptr + (size_t)l_p_tailed_count) - (size_t)sizeof(__mem_tail)) ;
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
 	printf("mem32::free(address=0x%08hu)\n",(size_t)a_dst_ptr);
 #endif
-	if (l_p_tailed_count > 4)
+	if (l_p_tailed_count > sizeof(__mem_tail))
 	if (!o_t->check())
 	printf("WARNING! detected out of bound access(@MAGIC_TAIL)!\n");
 ATOMIC_LOCK(1)

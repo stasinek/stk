@@ -1,10 +1,12 @@
 #include "tsoft_mem32.h"
+#include "./../io/tsoft_console.h"
 #include "tsoft_qsort.h"
+
 
 void* __cdecl ts::qsort(void *base, size_t number_of_elements, size_t size_of_element,
 			   int (*compare)(const void *k1, const void *k2))
  {
-	printf("This function doesn't work for now, it is just a prototype");
+	ts::con::prints("This function doesn't work for now, it is just a prototype");
 	assert(0); return NULL;
 
 		 size_t istart = 0;
@@ -30,7 +32,7 @@ void* __cdecl ts::qsort(void *base, size_t number_of_elements, size_t size_of_el
 
 void* __cdecl ts::isort(void *a, size_t number_of_elements, size_t size_of_element,int (*compare)(const void *k1, const void *k2))
 {
-	printf("This function doesn't work for now, it is just a prototype");
+	ts::con::prints("This function doesn't work for now, it is just a prototype");
 	assert(0); return NULL;
 
     size_t i, j, count = number_of_elements, size = size_of_element;

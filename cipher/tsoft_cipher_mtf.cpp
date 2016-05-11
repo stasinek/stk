@@ -5,6 +5,7 @@
 //---------------------------------------------------------------------------
 #include "./../mem/tsoft_mem32.h"
 #include "./../text/tsoft_cstr_manipulation.h"
+#include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 
 ts::cipher::__mtf_cipher::__mtf_cipher(void)

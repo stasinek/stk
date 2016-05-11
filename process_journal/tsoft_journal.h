@@ -34,11 +34,11 @@ public:
         inline void operator << (const __int32 a_int32) {
             write_formated_line("%d",a_int32);
         }
-        inline void operator << (const double a_double) {
-            write_formated_line("%f",a_double);
-        }
         inline void operator << (const __int64 a_int64) {
             write_formated_line("%lld",a_int64);
+        }
+        inline void operator << (const double a_double) {
+            write_formated_line("%f",a_double);
         }
         void	 __stdcall close(void);
 };

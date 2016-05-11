@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------
 #include "./mem/tsoft_mem32.h"
 #include "./text/tsoft_cstr_manipulation.h"
+#include "./io/tsoft_console.h"
 #include "./tsoft_main.h"
 //---------------------------------------------------------------------------
 //implementation of std::vector, much simpler without iterator, allocator etc.
