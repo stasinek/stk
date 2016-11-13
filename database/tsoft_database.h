@@ -29,12 +29,12 @@ public:
                         __stdcall __database(const __database *__restrict__ a_owner);
                         __stdcall __database(const __database *__restrict__ a_owner, const char *__restrict__ a_alias);
 //------------------------------------
-                __int32 __stdcall set(__database *a_database);
-                __int32 __stdcall add(__database *a_database);
-                __int32 __stdcall export_to(char *a_data, const char *__restrict__ a_format) const;
-                __int32 __stdcall save(const char *__restrict__ a_format) const;
-                __int32 __stdcall load(const char *__restrict__ a_format);
-                __int32 __stdcall import_from(const char *__restrict__ a_data, const char *__restrict__ a_format);
+                int32_t __stdcall set(__database *a_database);
+                int32_t __stdcall add(__database *a_database);
+                int32_t __stdcall export_to(char *a_data, const char *__restrict__ a_format) const;
+                int32_t __stdcall save(const char *__restrict__ a_format) const;
+                int32_t __stdcall load(const char *__restrict__ a_format);
+                int32_t __stdcall import_from(const char *__restrict__ a_data, const char *__restrict__ a_format);
      const __database*  __stdcall set_owner(__database *a_owner);
      const char*	    __stdcall set_alias(const char *a_alias);
      //---------------------------------------------------------------------------
@@ -92,7 +92,7 @@ class __csv {
                                 private:
                                 __database *Owner;
                                 char *fcsv;
-                        __int32  fcsv_size;
+                        uint32_t  fcsv_size;
                                 public:
                                 __stdcall __csv() { Owner = NULL; fcsv = ts::cstr::allocex(1,""); fcsv_size = 0;  }
                                 __stdcall __csv(__database *aOwner) { Owner = aOwner; }
@@ -106,7 +106,7 @@ class __lines {
                                 private:
                                 __database *Owner;
                                 char *fLines;
-                        __int32  fLines_size;
+                        uint32_t  fLines_size;
                                 public:
                                 __stdcall __lines() { Owner = NULL; fLines = ts::cstr::allocex(1,""); fLines_size = 0; }
                                 __stdcall __lines(__database *aOwner) { __lines(); Owner = aOwner; }
@@ -124,25 +124,25 @@ struct __atom {
 class __numbers {
                                 private:
                                 __items *Owner;
-                                __int32 f_numbers;
+                                uint32_t f_numbers;
                                 public:
                                 __stdcall __numbers() { Owner = NULL; f_numbers = 0; }
                                 __stdcall __numbers(__items *a_owner) { __numbers(); Owner = a_owner; }
-                                void   __stdcall operator= (__int32 i);
-                                __stdcall operator __int32 () { return f_numbers; }
+                                void   __stdcall operator= (uint32_t i);
+                                __stdcall operator uint32_t () { return f_numbers; }
                                 __stdcall ~__numbers() { }
 } numbers[8];
 
 class __text {
                                 private:
                                 __items *Owner;
-                                char *f_text; __int32 f_text_size;
+                                char *f_text; uint32_t f_text_size;
                                 public:
                                 __stdcall __text() { Owner = NULL; f_text = ts::cstr::allocex(1,""); f_text_size = 0; }
                                 __stdcall __text(__items *a_owner) { __text(); Owner = a_owner; }
                                 void   __stdcall operator= (char *i);
                                 __stdcall operator char* () { return f_text; }
-                                __stdcall __int32 size()
+                                __stdcall uint32_t size()
                                                 { return f_text_size; }
                                 __stdcall ~__text() { if (f_text!=NULL) ts::cstr::free(f_text); }
 } text;

@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_file_io.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 //---------------------------------------------------------------------------
 HANDLE WINAPI ts::file::create(
         LPCSTR lpFileName,
@@ -15,7 +15,7 @@ HANDLE WINAPI ts::file::create(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return CreateFileA(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
 }
@@ -30,7 +30,7 @@ BOOL WINAPI ts::file::write(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return WriteFile(hFile,lpBuffer,nNumberOfBytesToWrite,lpNumberOfBytesWritten,lpOverlapped);
 }
@@ -45,7 +45,7 @@ BOOL WINAPI ts::file::read(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return ReadFile(hFile,lpBuffer,nNumberOfBytesToRead,lpNumberOfBytesRead,lpOverlapped);
 }
@@ -61,7 +61,7 @@ HANDLE WINAPI ts::file::create_map(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return CreateFileMapping(hFile,lpAttributes,flProtect,dwMaximumSizeHigh,dwMaximumSizeLow,lpName);
 }
@@ -76,7 +76,7 @@ LPVOID WINAPI ts::file::create_map_view(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return MapViewOfFile(hFileMappingObject,dwDesiredAccess,dwFileOffsetHigh,dwFileOffsetLow,dwNumberOfBytesToMap);
 }
@@ -88,7 +88,7 @@ BOOL WINAPI ts::file::flush_map_view(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return FlushViewOfFile(lpBaseAddress,dwNumberOfBytesToFlush);
 
@@ -100,7 +100,7 @@ BOOL WINAPI ts::file::close_map_view(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return UnmapViewOfFile(lpBaseAddress);
 }
@@ -111,7 +111,7 @@ BOOL WINAPI ts::file::close(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return CloseHandle(hObject);
 }
@@ -122,7 +122,7 @@ BOOL WINAPI ts::file::close_map(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return CloseHandle(hObject);
 }
@@ -131,10 +131,10 @@ return CloseHandle(hObject);
 int ts::file::send(int file_num,void *data,unsigned long int len)
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
   DWORD i = 0;
-#ifdef WIN32
+#ifdef __WIN32__
 //  write(__file_handle,(LPVOID)data,(DWORD)len,&i,NULL);
 #else
 //  i = ::write(__file_fd,data,len);
@@ -146,10 +146,10 @@ __DEBUG_FUNC_CALLED__
 int ts::file::recv(int file_num,void *data,unsigned long int len)
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
   DWORD i = 0;
-#ifdef WIN32
+#ifdef __WIN32__
   //read(__file_handle,(LPVOID)data,(DWORD)len,&i,NULL);
 #else
 //  i = ::read(__file_fd,data,len); break;

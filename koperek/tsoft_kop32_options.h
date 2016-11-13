@@ -8,42 +8,42 @@
 //---------------------------------------------------------------------------
 namespace ts {
 //---------------------------------------------------------------------------
-#define ASK_USER			(__int8)0x00L
-#define ASK_NO				(__int8)0x01L
-#define ASK_ALL				(__int8)0x02L
+#define ASK_USER			(int8_t)0x00L
+#define ASK_NO				(int8_t)0x01L
+#define ASK_ALL				(int8_t)0x02L
 //---------------------------------------------------------------------------
 class  __kop32_class_options {
 //---------------------------------------------------------------------------
 		public:
 				//------------------------------------
-				__int32 operation;
-#define OPERATION_NULL		(__int32)0x00000000L
-#define OPERATION_COPY		(__int32)0x00000001L
-#define OPERATION_ENCODE	(__int32)0x00000002L
-#define OPERATION_DECODE	(__int32)0x00000004L
-#define OPERATION_MOVE		(__int32)0x00000008L
-#define OPERATION_REMOVE	(__int32)0x00000010L
-#define OPERATION_LIST		(__int32)0x00000020L
-#define OPERATION_CHECKSUM	(__int32)0x00000080L
-#define OPERATION_COMPARE	(__int32)0x00000021L
-#define OPERATION_SELECT	(__int32)0x00000040L
-#define OPERATION_SEEK 		(__int32)0x00080000L
+				uint32_t operation;
+#define OPERATION_NULL		(uint32_t)0x00000000L
+#define OPERATION_COPY		(uint32_t)0x00000001L
+#define OPERATION_ENCODE	(uint32_t)0x00000002L
+#define OPERATION_DECODE	(uint32_t)0x00000004L
+#define OPERATION_MOVE		(uint32_t)0x00000008L
+#define OPERATION_REMOVE	(uint32_t)0x00000010L
+#define OPERATION_LIST		(uint32_t)0x00000020L
+#define OPERATION_CHECKSUM	(uint32_t)0x00000080L
+#define OPERATION_COMPARE	(uint32_t)0x00000021L
+#define OPERATION_SELECT	(uint32_t)0x00000040L
+#define OPERATION_SEEK 		(uint32_t)0x00080000L
 				//------------------------------------
-				__int32 ask_at_break, ask_at_error;
+				uint32_t ask_at_break, ask_at_error;
 				//------------------------------------
 				// block size kB 1-65536(64MB)
-				__int32 block_size;
+				uint32_t block_size;
 				//flush buffer or not
-				__int16 block_is_cached;
+                uint16_t block_is_cached;
 				// coder type
-				__int16 coder;
+                uint16_t coder;
 				// dict size 256B-16MB(0x100-0x01000000)
-				__int32 coder_LZS_dup_size;
+				uint32_t coder_LZS_dup_size;
 				// checksum
-				__int32 checksum;
-#define CHECKSUM_SSC1024 	(__int32)0x00001000L
+				uint32_t checksum;
+#define CHECKSUM_SSC1024 	(uint32_t)0x00001000L
 				// interval for checksum
-				__int32 checksum_interval;
+				uint32_t checksum_interval;
 				//------------------------------------
 				//file mask, arguments for listing
 				__database *mask_list;

@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_file_lzss_hdr_H__
-#define __tsoft_file_lzss_hdr_H__
+#ifndef tsoft_file_lzss_hdr_H
+#define tsoft_file_lzss_hdr_H
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 //---------------------------------------------------------------------------
@@ -9,64 +9,64 @@ namespace ts { namespace file_header {
 
 #define LZSSv4_HEAD // define used HDR (less compilation time)
 
-#define LZSS_HEADER_SIG (__int32)(('H'<<0) | ('E'<<8) | ('A'<<16) | ('D'<<24))
+#define LZSS_HEADER_SIG (uint32_t)(('H'<<0) | ('E'<<8) | ('A'<<16) | ('D'<<24))
 typedef struct {
-		__int32 signature;
-		__int32 signature_version;
-		__int32 o;
-		__int32 o_h;
-		__int32 size;
-		__int32 size_h;
-		__int32 attribute;
-		__int32 attribute_ex;
-		__int32 time_t;
-		__int32 time_t_h;
-		__int32 reserved_code_11;
-                __int32 reserved_code_12;
-                __int32 reserved_code_13;
-                __int32 reserved_code_14;
-                __int32 reserved_code_15;
-                __int32 reserved_code_16;
+		uint32_t signature;
+		uint32_t signature_version;
+		uint32_t o;
+		uint32_t o_h;
+		uint32_t size;
+		uint32_t size_h;
+		uint32_t attribute;
+		uint32_t attribute_ex;
+		uint32_t time_t;
+		uint32_t time_t_h;
+		uint32_t reserved_code_11;
+                uint32_t reserved_code_12;
+                uint32_t reserved_code_13;
+                uint32_t reserved_code_14;
+                uint32_t reserved_code_15;
+                uint32_t reserved_code_16;
 } __eno_header_struct;
 
-#define LZSS_BLOCK_HEADER_SIG (__int32)(('B'<<0) | ('O'<<8) | ('D'<<16) | ('Y'<<24))
+#define LZSS_BLOCK_HEADER_SIG (uint32_t)(('B'<<0) | ('O'<<8) | ('D'<<16) | ('Y'<<24))
 
-#define LZSS_CODER_LZS	 (__int32)0x0001L
-#define LZSS_CODER_HUF	 (__int32)0x0002L
-#define LZSS_CODER_ARI	 (__int32)0x0004L
-#define LZSS_CODER_BWT	 (__int32)0x0010L
-#define LZSS_CODER_MTF	 (__int32)0x0020L
-#define LZSS_CODER_ROT	 (__int32)0x0040L
-#define LZSS_CODER_XOR	 (__int32)0x0080L
+#define LZSS_CODER_LZS	 (uint32_t)0x0001L
+#define LZSS_CODER_HUF	 (uint32_t)0x0002L
+#define LZSS_CODER_ARI	 (uint32_t)0x0004L
+#define LZSS_CODER_BWT	 (uint32_t)0x0010L
+#define LZSS_CODER_MTF	 (uint32_t)0x0020L
+#define LZSS_CODER_ROT	 (uint32_t)0x0040L
+#define LZSS_CODER_XOR	 (uint32_t)0x0080L
 
-#define LZSS_CODER_CRC	 (__int32)0x0100L
-#define LZSS_CODER_SSC	 (__int32)0x0200L
+#define LZSS_CODER_CRC	 (uint32_t)0x0100L
+#define LZSS_CODER_SSC	 (uint32_t)0x0200L
 
-#define LZSS_CODER_DEFAULT (__int32)LZSS_CODER_CRC | LZSS_CODER_LZS
+#define LZSS_CODER_DEFAULT (uint32_t)LZSS_CODER_CRC | LZSS_CODER_LZS
 
 typedef struct {
-		__int32 signature;
-		__int32 signature_version;
-		__int32 data_coder;
-		__int32 data_range;
-		__int32 data_range_offset;
-		__int32 data_range_offset_h;
+		uint32_t signature;
+		uint32_t signature_version;
+		uint32_t data_coder;
+		uint32_t data_range;
+		uint32_t data_range_offset;
+		uint32_t data_range_offset_h;
                 uint32_t data_protection_code;
-		__int32 size_count;
-		__int32 size[8];
+		uint32_t size_count;
+		uint32_t size[8];
 } __eno_block_header_struct;
 
-#define LZSS_AID_HEADER_SIG (__int16)(('S'<<8) | 'C')
+#define LZSS_AID_HEADER_SIG (int16_t)(('S'<<8) | 'C')
 typedef struct {
-		__int16 signature;
-		__int16 signature_version;
-		__int16 aid_data_coder;
-		__int16 reserved_1;
-		__int32 data_range;
+        int16_t signature;
+        int16_t signature_version;
+        int16_t aid_data_coder;
+        int16_t reserved_1;
+		uint32_t data_range;
 		uint32_t data_protection_code;
-		__int16 reserved_2;
-		__int16 ssc_bits_count;
-		__int32 ssc1024[32];
+        int16_t reserved_2;
+        int16_t ssc_bits_count;
+		uint32_t ssc1024[32];
 } __eno_aid_header_struct;
 
 //---------------------------------------------------------------------------
@@ -121,43 +121,43 @@ typedef struct {
 #define INFINITY_CODE 	 	 S_CODE_MASK
 //
 
-#define PLAIN_LEN_MIN		(__int32)(0x00000001L)
-#define PLAIN_LEN_N			(__int32)(0x0000000FL)
-#define PLAIN_LEN_E			(__int32)(0x000003FFL)
+#define PLAIN_LEN_MIN		(uint32_t)(0x00000001L)
+#define PLAIN_LEN_N			(uint32_t)(0x0000000FL)
+#define PLAIN_LEN_E			(uint32_t)(0x000003FFL)
 #define PLAIN_LEN_MAX		PLAIN_LEN_E
 
-#define PATTERN_LEN_MIN		(__int32)(0x00000002L)
-#define PATTERN_LEN_N		(__int32)(0x0000000FL)
-#define PATTERN_LEN_E		(__int32)(0x000003FFL)
+#define PATTERN_LEN_MIN		(uint32_t)(0x00000002L)
+#define PATTERN_LEN_N		(uint32_t)(0x0000000FL)
+#define PATTERN_LEN_E		(uint32_t)(0x000003FFL)
 #define PATTERN_LEN_MAX		PATTERN_LEN_E
 
-#define DUP_LEN_MIN			(__int32)(0x00000004L)
-#define DUP_LEN_N			(__int32)(0x0000000FL)
-#define DUP_LEN_E			(__int32)(0x000003FFL)
+#define DUP_LEN_MIN			(uint32_t)(0x00000004L)
+#define DUP_LEN_N			(uint32_t)(0x0000000FL)
+#define DUP_LEN_E			(uint32_t)(0x000003FFL)
 #define DUP_LEN_MAX			DUP_LEN_E
 
-#define DUP_OFFSET_MIN		(__int32)(0x00000004L)
-#define DUP_OFFSET_1  		(__int32)(0x000000FFL)
-#define DUP_OFFSET_2		(__int32)(0x0000FFFFL)
-#define DUP_OFFSET_3		(__int32)(0x00FFFFFFL)
+#define DUP_OFFSET_MIN		(uint32_t)(0x00000004L)
+#define DUP_OFFSET_1  		(uint32_t)(0x000000FFL)
+#define DUP_OFFSET_2		(uint32_t)(0x0000FFFFL)
+#define DUP_OFFSET_3		(uint32_t)(0x00FFFFFFL)
 #define DUP_OFFSET_MAX		DUP_OFFSET_3
 
 class __lzssv4_header_coder {
 public:
-		static uint8_t __stdcall plain_encode(void *a_code_ptr,__int32 axdata_uncoded_len);
-		static uint8_t __stdcall plain_decode(__int32 *a_data_uncoded_len,void *a_code_ptr);
-		static uint8_t __stdcall plain_price(__int32 axdata_uncoded_len);
+        static int8_t __stdcall plain_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len);
+        static int8_t __stdcall plain_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr);
+        static int8_t __stdcall plain_price(const uint32_t axdata_uncoded_len);
 
-		static uint8_t __stdcall pattern_encode(void *a_code_ptr,__int32 axdata_uncoded_counte, __int32 axdata_uncoded_elsize);
-		static uint8_t __stdcall pattern_decode(__int32 *a_data_uncoded_counte,__int32 *a_data_uncoded_elsize,void *a_code_ptr);
-		static uint8_t __stdcall pattern_price(__int32 axdata_uncoded_counte,__int32 axdata_uncoded_elsizes);
+        static int8_t __stdcall pattern_encode(void *a_code_ptr,const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize);
+        static int8_t __stdcall pattern_decode(uint32_t *a_data_uncoded_counte,uint32_t *a_data_uncoded_elsize, const void *a_code_ptr);
+        static int8_t __stdcall pattern_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsizes);
 
-		static uint8_t __stdcall dup_encode(void *a_code_ptr,__int32 axdata_uncoded_len,__int32 axdata_uncoded_offset);
-		static uint8_t __stdcall dup_decode(__int32 *a_data_uncoded_len,__int32 *a_data_uncoded_offset,void *a_code_ptr);
-		static uint8_t __stdcall dup_price(__int32 axdata_uncoded_len,__int32 axdata_uncoded_offset);
+        static int8_t __stdcall dup_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len,const uint32_t axdata_uncoded_offset);
+        static int8_t __stdcall dup_decode(uint32_t *a_data_uncoded_len,uint32_t *a_data_uncoded_offset, const void *a_code_ptr);
+        static int8_t __stdcall dup_price(const uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset);
 
-		static __int32 __stdcall check_dup_Match_Cost(__int32 aplain_len,__int32 adup_len,__int32 adup_offset);
-		static __int32 __stdcall check_pattern_Match_Cost(__int32 aplain_len,__int32 apattern_counte,__int32 apattern_elsize);
+        static int32_t __stdcall check_dup_Match_Cost(const uint32_t aplain_len, const uint32_t adup_len, const uint32_t adup_offset);
+        static int32_t __stdcall check_pattern_Match_Cost(const uint32_t aplain_len, const uint32_t apattern_counte, const uint32_t apattern_elsize);
 };
 #endif
 //---------------------------------------------------------------------------

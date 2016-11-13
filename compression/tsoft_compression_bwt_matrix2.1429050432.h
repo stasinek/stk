@@ -17,20 +17,20 @@ private:
 //---------------------------------------------------------------------------
 public:
 //---------------------------------------------------------------------------
-		__bwt_compressor(const __int32 ablock);
+		__bwt_compressor(const int32_t ablock);
 	~__bwt_compressor();
 //---------------------------------------------------------------------------
-		__int32 __stdcall generate(const char *a_src_ptr, const __int32 a_rowsize);
-		__int32 __stdcall sort(void);
-		__int32 __stdcall save(char *a_dst_ptr);
+		int32_t __stdcall generate(const char *a_src_ptr, const int32_t a_rowsize);
+		int32_t __stdcall sort(void);
+		int32_t __stdcall save(char *a_dst_ptr);
 		char  *matrix_ptr;
-		__int32  *matrix_idx_ptr;
-		__int32   matrix_dim;
+		int32_t  *matrix_idx_ptr;
+		int32_t   matrix_dim;
 #define BGN 0
 #define END 1
-		void __stdcall find_groups(const __int32 acolumn,const __int32 arow_bgn,const __int32 arow_end,__int32 *alist_bgn,__int32 *alist_end);
-		__int32 *groups_bgn[2], *groups_end[2];
-		void __stdcall sort_groups(const __int32 acolumn,const __int32 arow_bgn,const __int32 arow_end);
+		void __stdcall find_groups(const int32_t acolumn,const int32_t arow_bgn,const int32_t arow_end,int32_t *alist_bgn,int32_t *alist_end);
+		int32_t *groups_bgn[2], *groups_end[2];
+		void __stdcall sort_groups(const int32_t acolumn,const int32_t arow_bgn,const int32_t arow_end);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------

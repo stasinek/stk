@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "./../text/tsoft_cstr_manipulation.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 //---------------------------------------------------------------------------
 #include "tsoft_hash_password.h"
 //---------------------------------------------------------------------------
@@ -10,7 +10,7 @@
 __stdcall ts::__password::__password() : text()
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 }
 //---------------------------------------------------------------------------
@@ -18,7 +18,7 @@ __DEBUG_FUNC_CALLED__
 __stdcall ts::__password::~__password()
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 }
 //---------------------------------------------------------------------------
@@ -26,7 +26,7 @@ __DEBUG_FUNC_CALLED__
 __stdcall  ts::__password_text::__password_text()
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         f_lp_hash_str = ts::cstr::alloc(256);
         ts::mem32::set((void*)f_lp_hash_str,'\0',256);
@@ -38,17 +38,17 @@ __DEBUG_FUNC_CALLED__
 __stdcall ts::__password_text::~__password_text()
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         ts::cstr::free(f_lp_hash_str); ts::cstr::free(f_lp_plain_str);
         f_size = 0;
 }
 //---------------------------------------------------------------------------
 
-__int8 __stdcall ts::__password_text::size()
+int8_t __stdcall ts::__password_text::size()
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         return f_size;
 }
@@ -57,7 +57,7 @@ __DEBUG_FUNC_CALLED__
 const char *__stdcall ts::__password_text::get_hash(void)
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         return (const char*)&f_lp_hash_str;
 }
@@ -66,7 +66,7 @@ __DEBUG_FUNC_CALLED__
 const char *__stdcall ts::__password_text::get(void)
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         return (const char*)&f_lp_plain_str;
 }
@@ -75,12 +75,12 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::__password_text::set(const char *a_user_password)
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         f_size = ts::cstr::len(a_user_password) + 1;
         ts::mem32::mov(f_lp_plain_str, a_user_password, f_size);
-        register __int64 kod = 0;
-        register __int32 i;
+        register int64_t kod = 0;
+        register int32_t i;
         if (size() > 0) {
                 for (i = size()-1;; i--) {
                         kod +=f_lp_plain_str[i];
@@ -99,7 +99,7 @@ __DEBUG_FUNC_CALLED__
 void  __stdcall ts::__password_text::operator= (const char *a_user_password)
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         set(a_user_password);
 }
@@ -108,7 +108,7 @@ __DEBUG_FUNC_CALLED__
 __stdcall ts::__password_text::operator const char* ()
 {
 #ifdef __DEBUG_PASSWORD_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         return (const char*)&f_lp_hash_str;
 }

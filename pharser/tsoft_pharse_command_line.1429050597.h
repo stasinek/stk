@@ -26,7 +26,7 @@ public:
 		// if suboptions are found result positions[1] and [2] will index them and suboption char will be filled with
 		bool __stdcall find(const char *lpsrc, const char *lpparameter_min, const char *lpparameter_normal, const char *lpparameter_alternative, char *lpsuboption);
 		char *result_base;
-		__int32 result_positions[4];
+		int32_t result_positions[4];
 		void __stdcall delete_found(char *lpdst);
 };
 //---------------------------------------------------------------------------

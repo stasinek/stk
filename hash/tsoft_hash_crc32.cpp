@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "../text/tsoft_cstr_manipulation.h"
-#include "../threads/tsoft_threads.h"
+#include "../ssthreads/tsoft_threads.h"
 //---------------------------------------------------------------------------
 #include "tsoft_hash_crc32.h"
 //---------------------------------------------------------------------------
@@ -122,7 +122,7 @@ uint32_t CRC32_TAB[256] = {
 bool __stdcall ts::hash::crc32::test_CRC32(bool a_reset_table)
 {
 #ifdef __DEBUG_HASH_CRC32__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 char t[100]; int times = 0;
 if (a_reset_table) reset_CRC32();
@@ -145,7 +145,7 @@ else return 0;
 void __stdcall ts::hash::crc32::reset_CRC32(void)
 {
 #ifdef __DEBUG_HASH_CRC32__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
                 __builtin_prefetch(&CRC32_TAB,1,0);
         register uint32_t n, k, c;
@@ -196,7 +196,7 @@ return calc_CRC32(a_src_ptr,a_count,0);
 uint32_t __stdcall ts::hash::crc32::calc_CRC32_bitwise(const void* a_src_ptr, const size_t a_count, const uint32_t a_previous = 0)
 {
 #ifdef __DEBUG_HASH_CRC32__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 register uint32_t crc = ~a_previous; // to samo co xor 0xffffff z previous
 register uint8_t* r_src_ptr = (uint8_t*)a_src_ptr;
@@ -233,7 +233,7 @@ return ~crc;
 uint32_t __stdcall ts::hash::crc32::calc_CRC32(const void *a_src_ptr,const uint32_t a_count, const uint32_t a_previous = 0)
 {
 #ifdef __DEBUG_HASH_CRC32__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 ATOMIC(1)
 ATOMIC_LOCK(1)
@@ -333,7 +333,7 @@ return   crc;
 uint32_t __stdcall ts::hash::adler32::calc_ADLER32(const void *a_src_ptr,const uint32_t a_count)
 {
 #ifdef __DEBUG_HASH_ADLER32__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 /*#if (defined(__BORLANDC__) | defined(_MSC_VER)) & defined(__ASM_OPT__)
 __asm {

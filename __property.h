@@ -14,7 +14,7 @@ template <typename T> class __property {
 				T & operator = (const T &i)
 				{
 #ifdef __DEBUG_PROPERTY__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 ::std::cout << i << ::std::endl;
 #endif
 				return f_value = i;
@@ -25,7 +25,7 @@ __DEBUG_FUNC_CALLED__
 				template <typename T2> T2 & operator = (const T2 &i)
 				{
 #ifdef __DEBUG_PROPERTY__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 ::std::cout << "T2: " << i << ::std::endl;
 #endif
 				T2 &guard = f_value;
@@ -34,7 +34,7 @@ __DEBUG_FUNC_CALLED__
 				operator T const & () const
 				{
 #ifdef __DEBUG_PROPERTY__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 					return f_value;
 				}

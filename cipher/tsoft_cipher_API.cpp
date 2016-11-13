@@ -11,11 +11,11 @@
 void __stdcall ts::cipher::cript_MTF(void *a_dst_ptr, const uint32_t a_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		__mtf_cipher *mtf = new __mtf_cipher();
-		register __int8 *ptrd	  = static_cast<__int8*> (a_dst_ptr);
-		register __int8 *ptrd_end = static_cast<__int8*> (a_dst_ptr) + size_t(a_count);
+		register int8_t *ptrd	  = static_cast<int8_t*> (a_dst_ptr);
+		register int8_t *ptrd_end = static_cast<int8_t*> (a_dst_ptr) + size_t(a_count);
 //------------------------------------------
 		for ( ; ptrd < ptrd_end; ptrd++) {
 //------------------------------------------
@@ -30,11 +30,11 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::cipher::uncript_MTF(void *a_dst_ptr, const uint32_t a_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		__mtf_cipher *mtf = new __mtf_cipher();
-		register __int8 *ptrd	  = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-		register __int8 *ptrd_end = static_cast<__int8*> (const_cast<void*>(a_dst_ptr)) + size_t(a_count);
+		register int8_t *ptrd	  = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
+		register int8_t *ptrd_end = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr)) + size_t(a_count);
 //------------------------------------------
 		for (; ptrd < ptrd_end; ptrd++) {
 //------------------------------------------
@@ -49,7 +49,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::cipher::cript_XOR(void *a_dst_ptr, const uint32_t a_count, const char *alpHaslo, const uint32_t a_haslo_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __BORLANDC__
 		__asm {
@@ -86,7 +86,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::cipher::uncript_XOR(void *a_dst_ptr, const uint32_t a_count, const char *alpHaslo, const uint32_t a_haslo_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		cript_XOR(a_dst_ptr,a_count,alpHaslo,a_haslo_count);
 }
@@ -95,7 +95,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::cipher::cript_ROT(void *a_dst_ptr,const uint32_t a_count, const uint32_t a_haslo_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		if (a_haslo_count<=1) {
 				return;
@@ -103,8 +103,8 @@ __DEBUG_FUNC_CALLED__
 		short buff_count = a_haslo_count;
 		short buff_sq = buff_count * buff_count;
 		char *buff_ptr = ts::cstr::alloc(buff_count+1);
-		__int8 *ptrd 	  = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-		__int8 *ptrd_end  = static_cast<__int8*> (const_cast<void*>(a_dst_ptr)) + size_t(a_count) - size_t(buff_count);
+		int8_t *ptrd 	  = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
+		int8_t *ptrd_end  = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr)) + size_t(a_count) - size_t(buff_count);
 #ifdef __BORLANDC__
 		__asm {
 				movzx EAX,buff_count
@@ -157,7 +157,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::cipher::uncript_ROT(void *a_dst_ptr, const uint32_t a_count, const uint32_t a_haslo_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		cript_ROT(a_dst_ptr,a_count,a_haslo_count);
 }

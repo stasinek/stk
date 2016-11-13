@@ -8,43 +8,43 @@
 #include "./../io/tsoft_file_lzss_header.h"
 /*
 //FOR DEBUGING, STATISTICS OF USE LENGHT CODES
-extern __int32 *hist_l_dict;
-extern __int32 hist_l_dup_max;
-extern __int32 *hist_o_dict;
-extern __int32 hist_o_dup_max;
-extern __int32 *hist_l_brun;
-extern __int32 hist_l_pattern_max;
-extern __int32 *hist_e_brun;
-extern __int32 hist_e_pattern_max;
-extern __int32 *hist_l_pass;
-extern __int32 hist_l_plain_max;
+extern uint32_t *hist_l_dict;
+extern uint32_t hist_l_dup_max;
+extern uint32_t *hist_o_dict;
+extern uint32_t hist_o_dup_max;
+extern uint32_t *hist_l_brun;
+extern uint32_t hist_l_pattern_max;
+extern uint32_t *hist_e_brun;
+extern uint32_t hist_e_pattern_max;
+extern uint32_t *hist_l_pass;
+extern uint32_t hist_l_plain_max;
 */
 //---------------------------------------------------------------------------
 namespace ts { namespace compression {
 void __stdcall test(void);
 //---------------------------------------------------------------------------
 #ifdef LZSSv4_HEAD
-#define LZS_WASTE_BPB(buffsize,dictsize) (__int32)(buffsize/1)
+#define LZS_WASTE_BPB(buffsize,dictsize) (uint32_t)(buffsize/1)
 #endif
-__int32 __stdcall compress_LZS(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const __int32 ablock);
+uint32_t __stdcall compress_LZS(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const uint32_t ablock);
 void __stdcall  uncompress_LZS(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
 #ifdef LZSSv4_HEAD
-#define HUF_WASTE_BPB(buffsize) (__int32)(buffsize/1)
+#define HUF_WASTE_BPB(buffsize) (uint32_t)(buffsize/1)
 #endif
-__int32 __stdcall compress_HUF(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const __int32 ablock);
+uint32_t __stdcall compress_HUF(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const uint32_t ablock);
 void __stdcall  uncompress_HUF(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
 #ifdef LZSSv4_HEAD
-#define ARI_WASTE_BPB(buffsize) (__int32)(buffsize/1)
+#define ARI_WASTE_BPB(buffsize) (uint32_t)(buffsize/1)
 #endif
-__int32 __stdcall compress_ARI(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const __int32 ablock);
+uint32_t __stdcall compress_ARI(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const uint32_t ablock);
 void __stdcall  uncompress_ARI(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
 #ifdef LZSSv4_HEAD
-#define BWT_WASTE_BPB(buffsize,bwt_block) (__int32)(2 + 2 + ((buffsize/bwt_block)+1))
+#define BWT_WASTE_BPB(buffsize,bwt_block) (uint32_t)(2 + 2 + ((buffsize/bwt_block)+1))
 #endif
-__int32 __stdcall compress_BWT(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const __int32 ablock);
+uint32_t __stdcall compress_BWT(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const uint32_t ablock);
 void __stdcall  uncompress_BWT(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
 }}
@@ -61,33 +61,33 @@ void __stdcall  uncompress_BWT(void *a_dst_ptr, const uint32_t a_count, const vo
 #define MAX32_RLE_SIZE 0x1FFFFFFFL
 #define TAG32_RLE_BIT  0x04L
 #define TAG32_RLE_SIZE 3
-#define RLE_WASTE_BPB(bufsize) (__int32)(8)
-__int32 __stdcall compress_RLE(void *a_dst_ptr, void *a_src_ptr, uint32_t a_count);
+#define RLE_WASTE_BPB(bufsize) (uint32_t)(8)
+uint32_t __stdcall compress_RLE(void *a_dst_ptr, void *a_src_ptr, uint32_t a_count);
 void __stdcall uncompress_RLE(void *a_dst_ptr, uint32_t a_count, void *a_src_ptr);
 //---------------------------------------------------------------------------
 */
 //---------------------------------------------------------------------------
 /*
-typedef __int8 __intRLE;
+typedef int8_t intRLE;
 //---------------------------------------------------------------------------
 
-__int32 __stdcall compress_RLE(void *a_dst_ptr,void *a_src_ptr,uint32_t a_count)
+uint32_t __stdcall compress_RLE(void *a_dst_ptr,void *a_src_ptr,uint32_t a_count)
 {
-__int32	 ptrs = (__int32)a_src_ptr;
-__int32 ptrs_end = (__int32)a_src_ptr + size_t(a_count);
-__int32	 ptrd = (__int32)a_dst_ptr;
+uint32_t	 ptrs = (uint32_t)a_src_ptr;
+uint32_t ptrs_end = (uint32_t)a_src_ptr + size_t(a_count);
+uint32_t	 ptrd = (uint32_t)a_dst_ptr;
 
-__int32 iP,iL; bool exit = false;
-register __intRLE *acc;
+uint32_t iP,iL; bool exit = false;
+register intRLE *acc;
 //
 for (;exit==false;)
 	{
 	iL=0,iP=0;
 
 	for (;;iL++)
-	 if (ptrs + (iL+8)*sizeof(__intRLE) <= ptrs_end)
+	 if (ptrs + (iL+8)*sizeof(intRLE) <= ptrs_end)
 		{
-			acc = &((__intRLE*)ptrs)[iL];
+			acc = &((intRLE*)ptrs)[iL];
 		if (acc[0]==acc[1])
 		if (acc[0]==acc[2])
 		if (acc[0]==acc[3])
@@ -104,34 +104,34 @@ for (;exit==false;)
 		continue;
 	   }
 	else
-	   {  iL = (ptrs_end-ptrs) / sizeof(__intRLE);
+	   {  iL = (ptrs_end-ptrs) / sizeof(intRLE);
 		exit = true;
 		break;
 	   }
 #define SAVE_DIFRENT()\
 		if (iL <=MAX08_RLE_SIZE)\
-		   {*((__intTAG08*)ptrd) = (iL<<TAG08_RLE_SIZE);\
-			ptrd+=sizeof(__intTAG08);\
+		   {*((intTAG08*)ptrd) = (iL<<TAG08_RLE_SIZE);\
+			ptrd+=sizeof(intTAG08);\
 		   }\
 		else\
 		if (iL <=MAX16_RLE_SIZE)\
-		   {*((__intTAG16*)ptrd) = (iL<<TAG16_RLE_SIZE) | TAG16_RLE_BIT;\
-			ptrd+=sizeof(__intTAG16);\
+		   {*((intTAG16*)ptrd) = (iL<<TAG16_RLE_SIZE) | TAG16_RLE_BIT;\
+			ptrd+=sizeof(intTAG16);\
 		   }\
 		else\
-		   {*((__intTAG32*)ptrd) = (iL<<TAG32_RLE_SIZE) | TAG16_RLE_BIT | TAG32_RLE_BIT;\
-			ptrd+=sizeof(__intTAG32);\
+		   {*((intTAG32*)ptrd) = (iL<<TAG32_RLE_SIZE) | TAG16_RLE_BIT | TAG32_RLE_BIT;\
+			ptrd+=sizeof(intTAG32);\
 			}\
-		ts::mem32::cpy((char*)ptrd,(char*)ptrs,iL*sizeof(__intRLE));\
-		ptrd+=sizeof(__intRLE)*iL;\
-		ptrs+=sizeof(__intRLE)*iL;
+		ts::mem32::cpy((char*)ptrd,(char*)ptrs,iL*sizeof(intRLE));\
+		ptrd+=sizeof(intRLE)*iL;\
+		ptrs+=sizeof(intRLE)*iL;
 	if (iL!=0)
 	   {SAVE_DIFRENT();
 	   }
    for (;;iP++)
-	if (ptrs + (iP+2)*sizeof(__intRLE) <= ptrs_end)
+	if (ptrs + (iP+2)*sizeof(intRLE) <= ptrs_end)
 	   {
-			acc = &((__intRLE*)ptrs)[iP];
+			acc = &((intRLE*)ptrs)[iP];
 		if (acc[0]!=acc[1])
 		   {iP++; break;}
 		continue;
@@ -143,87 +143,87 @@ for (;exit==false;)
 	   }
 #define SAVE_SAME()\
 		if (iP <=MAX08_RLE_SIZE)\
-		   {((__intTAG08*)ptrd)[0] = (iP<<TAG08_RLE_SIZE) | XPATTERN_RLE_BIT;\
-			ptrd+=sizeof(__intTAG08);}\
+		   {((intTAG08*)ptrd)[0] = (iP<<TAG08_RLE_SIZE) | XPATTERN_RLE_BIT;\
+			ptrd+=sizeof(intTAG08);}\
 		else\
 		if (iP <=MAX16_RLE_SIZE)\
-		   {((__intTAG16*)ptrd)[0] = (iP<<TAG16_RLE_SIZE) | XPATTERN_RLE_BIT | TAG16_RLE_BIT;\
-			ptrd+=sizeof(__intTAG16);\
+		   {((intTAG16*)ptrd)[0] = (iP<<TAG16_RLE_SIZE) | XPATTERN_RLE_BIT | TAG16_RLE_BIT;\
+			ptrd+=sizeof(intTAG16);\
 			}\
 		else\
-		   {((__intTAG32*)ptrd)[0] = (iP<<TAG32_RLE_SIZE) | XPATTERN_RLE_BIT | TAG16_RLE_BIT | TAG32_RLE_BIT;\
-			ptrd+=sizeof(__intTAG32);\
+		   {((intTAG32*)ptrd)[0] = (iP<<TAG32_RLE_SIZE) | XPATTERN_RLE_BIT | TAG16_RLE_BIT | TAG32_RLE_BIT;\
+			ptrd+=sizeof(intTAG32);\
 		   }\
-		((__intRLE*)ptrd)[0]=((__intRLE*)ptrs)[0];\
-		ptrd+=sizeof(__intRLE);\
-		ptrs+=sizeof(__intRLE)*iP;
+		((intRLE*)ptrd)[0]=((intRLE*)ptrs)[0];\
+		ptrd+=sizeof(intRLE);\
+		ptrs+=sizeof(intRLE)*iP;
 	if (iP >1)
 	   {SAVE_SAME();
 	   }
 	}
 for (;ptrs < ptrs_end;)
 	{
-	 *((__int8*)ptrd++) = *((__int8*)ptrs++);
+	 *((int8_t*)ptrd++) = *((int8_t*)ptrs++);
 	}
-return (__int32)ptrd - (__int32)a_dst_ptr;
+return (uint32_t)ptrd - (uint32_t)a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
 void __stdcall uncompress_RLE(void *a_dst_ptr,uint32_t a_count, void *a_src_ptr)
 {
-__int32	 ptrs = (__int32)a_src_ptr;
-__int32	 ptrd = (__int32)a_dst_ptr;
-__int32 ptrd_end = (__int32)a_dst_ptr + size_t(a_count);
+uint32_t	 ptrs = (uint32_t)a_src_ptr;
+uint32_t	 ptrd = (uint32_t)a_dst_ptr;
+uint32_t ptrd_end = (uint32_t)a_dst_ptr + size_t(a_count);
 //
-register __int32 iX;
+register uint32_t iX;
 
-for (;ptrd <= ptrd_end - sizeof(__intRLE);)
+for (;ptrd <= ptrd_end - sizeof(intRLE);)
 	{
-	if ((((__intTAG08*)ptrs)[0] & XPATTERN_RLE_BIT)==0x00L)
+	if ((((intTAG08*)ptrs)[0] & XPATTERN_RLE_BIT)==0x00L)
 	   {goto RLE_LOADDIFFRENT;
 	   }
 RLE_LOADSAME:
-	if ((((__intTAG08*)ptrs)[0] & TAG16_RLE_BIT)==0x00L)
-	   {iX =*((__intTAG08*)ptrs)>>TAG08_RLE_SIZE;
-		ptrs+=sizeof(__intTAG08);
+	if ((((intTAG08*)ptrs)[0] & TAG16_RLE_BIT)==0x00L)
+	   {iX =*((intTAG08*)ptrs)>>TAG08_RLE_SIZE;
+		ptrs+=sizeof(intTAG08);
 	   }
 	else
-	if ((((__intTAG08*)ptrs)[0] & TAG32_RLE_BIT)==0x00L)
-	   {iX =*((__intTAG16*)ptrs)>>TAG16_RLE_SIZE;
-		ptrs+=sizeof(__intTAG16);
+	if ((((intTAG08*)ptrs)[0] & TAG32_RLE_BIT)==0x00L)
+	   {iX =*((intTAG16*)ptrs)>>TAG16_RLE_SIZE;
+		ptrs+=sizeof(intTAG16);
 	   }
 	else
-	   {iX =*((__intTAG32*)ptrs)>>TAG32_RLE_SIZE;
-		ptrs+=sizeof(__intTAG32);
+	   {iX =*((intTAG32*)ptrs)>>TAG32_RLE_SIZE;
+		ptrs+=sizeof(intTAG32);
 		}
-	ts::mem32::set((char*)ptrd,iX,((__intRLE*)ptrs)[0],sizeof(__intRLE));
-	ptrd+=sizeof(__intRLE)*iX;
-	ptrs+=sizeof(__intRLE);
+	ts::mem32::set((char*)ptrd,iX,((intRLE*)ptrs)[0],sizeof(intRLE));
+	ptrd+=sizeof(intRLE)*iX;
+	ptrs+=sizeof(intRLE);
 	continue;
 
 RLE_LOADDIFFRENT:
-	if ((((__intTAG08*)ptrs)[0] & TAG16_RLE_BIT)==0x00L)
-	   {iX =*((__intTAG08*)ptrs)>>TAG08_RLE_SIZE;
-		ptrs+=sizeof(__intTAG08);
+	if ((((intTAG08*)ptrs)[0] & TAG16_RLE_BIT)==0x00L)
+	   {iX =*((intTAG08*)ptrs)>>TAG08_RLE_SIZE;
+		ptrs+=sizeof(intTAG08);
 		}
 	else
-	if ((((__intTAG08*)ptrs)[0] & TAG32_RLE_BIT)==0x00L)
-	   {iX =*((__intTAG16*)ptrs)>>TAG16_RLE_SIZE;
-		ptrs+=sizeof(__intTAG16);
+	if ((((intTAG08*)ptrs)[0] & TAG32_RLE_BIT)==0x00L)
+	   {iX =*((intTAG16*)ptrs)>>TAG16_RLE_SIZE;
+		ptrs+=sizeof(intTAG16);
 	   }
 	else
-	   {iX =*((__intTAG32*)ptrs)>>TAG32_RLE_SIZE;
-		ptrs+=sizeof(__intTAG32);
+	   {iX =*((intTAG32*)ptrs)>>TAG32_RLE_SIZE;
+		ptrs+=sizeof(intTAG32);
 	   }
 
-	ts::mem32::cpy((char*)ptrd,(char*)ptrs,iX*sizeof(__intRLE));
-	ptrd+=sizeof(__intRLE)*iX;
-	ptrs+=sizeof(__intRLE)*iX;
+	ts::mem32::cpy((char*)ptrd,(char*)ptrs,iX*sizeof(intRLE));
+	ptrd+=sizeof(intRLE)*iX;
+	ptrs+=sizeof(intRLE)*iX;
 	continue;
 	}
 for (;ptrd < ptrd_end;)
 	{
-	*((__int8*)ptrd++) = *((__int8*)ptrs++);
+	*((int8_t*)ptrd++) = *((int8_t*)ptrs++);
 	}
 }*/
 #endif

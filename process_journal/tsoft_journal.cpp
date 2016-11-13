@@ -1,12 +1,12 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_journal.h"
 //---------------------------------------------------------------------------
 #include "./../io/tsoft_console.h"
 #include "./../text/tsoft_cstr_manipulation.h"
-#include "./../mem/tsoft_mem32.h"
-#include "./../threads/tsoft_threads.h"
+#include "./../mem/tsoft_mem.h"
+#include "./../ssthreads/tsoft_threads.h"
 //---------------------------------------------------------------------------
 #include <time.h>
 #include  <dos.h>
@@ -16,7 +16,7 @@
 __stdcall ts::__journal:: __journal()
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     f_write_buffer = new char[VA_DEFAULT_SIZE];
     f_buffer_size = VA_DEFAULT_SIZE;
@@ -29,10 +29,10 @@ __DEBUG_FUNC_CALLED__
 const FILE *__stdcall ts::__journal::create()
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     char *module_name = new char[MAX_PATH];
-    __int32 s = ::GetModuleFileNameA( NULL, module_name, MAX_PATH);
+    int32_t s = ::GetModuleFileNameA( NULL, module_name, MAX_PATH);
     if (s!=0) {
         ts::cstr::mov(f_stream_name,module_name);
         strcat(f_stream_name,"_");
@@ -58,18 +58,18 @@ __DEBUG_FUNC_CALLED__
 const FILE	*__stdcall ts::__journal::get_stream(void)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     return f_stream;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__journal::write_line(char *aline)
+int32_t __stdcall ts::__journal::write_line(const char *aline)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-    __int32 line_len = ts::cstr::len(aline);
+    int32_t line_len = ts::cstr::len(aline);
     if (line_len==0) return 0;
     ::time(&f_current_time);
     f_current_time_info = localtime (&f_current_time);
@@ -83,10 +83,10 @@ __DEBUG_FUNC_CALLED__
 #include <stdarg.h>
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__journal::write_formated_line(const char* __restrict__ a_format, ...)
+int32_t __stdcall ts::__journal::write_formated_line(const char* __restrict__ a_format, ...)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 do {
 va_list  param;
@@ -104,28 +104,28 @@ return this->write_line(f_write_buffer);
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__journal::get_first_line(time_t attime)
+int32_t __stdcall ts::__journal::get_first_line(const time_t attime)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     return -1;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__journal::get_next_line(void)
+int32_t __stdcall ts::__journal::get_next_line(void)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     return -1;
 }
 //---------------------------------------------------------------------------
 
-const char *__stdcall ts::__journal::read_line(__int32 aline_number)
+const char *__stdcall ts::__journal::read_line(const uint32_t aline_number)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return "";
 }
@@ -134,7 +134,7 @@ return "";
 void __stdcall ts::__journal::close()
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     if (f_stream!=NULL) fclose(f_stream);
     f_stream = NULL;
@@ -145,7 +145,7 @@ __DEBUG_FUNC_CALLED__
 __stdcall ts::__journal::~__journal()
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     if (f_stream!=NULL) this->close();
     delete f_write_buffer;

@@ -10,9 +10,9 @@
 #include "./../io/tsoft_file_lzss_header.h"
 #include "./../io/tsoft_file_io.h"
 #include "./../io/tsoft_console.h"
-#include "./../threads/tsoft_threads.h"
+#include "./../ssthreads/tsoft_threads.h"
 //---------------------------------------------------------------------------
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 #include "./../text/tsoft_cstr_manipulation.h"
 #include "./../time/tsoft_time.h"
 //---------------------------------------------------------------------------
@@ -48,22 +48,18 @@ __stdcall ts::__kop32_class::__kop32_class()
         default_progress(this)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
-#endif
-#ifdef __DEBUG_KOP32_CLASS__
-ts::con::prints("__kop32_class:__kop32_class()");
-ts::con::print("\r\n");
+__DEBUG_FUNC_CALLED("__kop32_class:__kop32_class()")
 #endif
         options = new __kop32_class_options();
-        options->mask_list->set_alias("OPTIONS_MASKS.clst");
-        options->src_init_list->set_alias("SOURCE_INIT.rlst");
-        options->dst_init_list->set_alias("DESTINATION_INIT.rlst");
-        options->output_arguments_list->set_alias("OPTIONS_ARGTS.clst");
+        options->mask_list->set_alias("OPTIONS_MASKS.mlst");
+        options->src_init_list->set_alias("SOURCE_INIT.islst");
+        options->dst_init_list->set_alias("DESTINATION_INIT.idlst");
+        options->output_arguments_list->set_alias("OPTIONS_ARGTS.alst");
         list = new __kop32_class_list();
-        list->src_main_list->set_alias("SOURCE_MAIN.rlst");
-        list->dst_main_list->set_alias("DESTINATION_MAIN.rlst");
+        list->src_main_list->set_alias("SOURCE_MAIN.slst");
+        list->dst_main_list->set_alias("DESTINATION_MAIN.dlst");
         list->output_formated_list->set_alias("OUT_FORMATED_LIST.flst");
-        list->sync_op_list->set_alias("SYNC_OP_LIST.slst");
+        list->sync_op_list->set_alias("SYNC_OP_LIST.olst");
 
         progress = &default_progress;
         f_file_seeker = new __kop32_search(this);
@@ -75,7 +71,7 @@ ts::con::print("\r\n");
 void __stdcall ts::__kop32_class::reset(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class:reset()");
@@ -85,9 +81,9 @@ ts::con::print("\r\n");
         this->progress->reset();
         options->reset();
         list->output_formated_list->clear();
-        mem32::set(&f_src_file,(__int8)NULL,sizeof(file::__file_open_struct));
+        mem32::set(&f_src_file,(int8_t)NULL,sizeof(file::__file_open_struct));
         list->src_main_list->clear();
-        mem32::set(&f_dst_file,(__int8)NULL,sizeof(file::__file_open_struct));
+        mem32::set(&f_dst_file,(int8_t)NULL,sizeof(file::__file_open_struct));
         list->dst_main_list->clear();
         do_event(ON_RESETED,EMPTY,EMPTY);
 }
@@ -96,7 +92,7 @@ ts::con::print("\r\n");
 void __stdcall ts::__kop32_class::abort(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class:abort()");
@@ -107,10 +103,10 @@ ts::con::print("\r\n");
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class::prepare_options(const char *alpCommand)
+int32_t __stdcall ts::__kop32_class::prepare_options(const char *alpCommand)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class::prepare_options(alpCommand)\r\nalpCommand:%s",alpCommand);
@@ -347,10 +343,10 @@ return 1;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class::prepare_list(void)
+int32_t __stdcall ts::__kop32_class::prepare_list(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 ts::__cstr_class  *temp_lpDestination = new ts::__cstr_class(512);
 ts::__cstr_class  *temp_lpSource = new ts::__cstr_class(512);
@@ -464,7 +460,7 @@ if (options->operation==OPERATION_CHECKSUM || options->operation==OPERATION_COPY
                  goto GOTO_prepare_EXIT_ERROR;
                 }
          //jesli ok, sprawdŸ wolne miejsce, stan urzadzenia itd.
-         if (f_check_free_space(ts::cstr::extract_file_root(temp_lpDestination->data(),options->dst_init_list->items()->get_text(d)),progress->src->all->size,progress->dst->all->size,true,true) < 0)
+         if (f_check_free_space(ts::cstr::get_file_root(temp_lpDestination->data(),options->dst_init_list->items()->get_text(d)),progress->src->all->size,progress->dst->all->size,true,true) < 0)
                 {progress->cancel = true;
                          goto GOTO_prepare_EXIT_ERROR;
                 }
@@ -495,10 +491,10 @@ do_event(ON_SEARCH_END,OK,EMPTY);
 return 0;
 }
 //---------------------------------------------------------------------------
-__int32 __stdcall ts::__kop32_class::exec_one(__int32 a_item)
+int32_t __stdcall ts::__kop32_class::exec_one(const uint32_t a_item)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class::execute_selected(a_item:%d)",a_item);
@@ -508,10 +504,10 @@ return f_exec_one(a_item, options->operation);
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class::exec_all(void)
+int32_t __stdcall ts::__kop32_class::exec_all(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::print("__kop32_class::execute_all()");
@@ -544,7 +540,7 @@ f_write_file_thread_handle = CreateThread(NULL,0,&ts::__kop32_class::f_write_fil
 if (f_write_file_thread_handle==NULL)
         {abort();goto GOTO_distribute_EXIT;
         }
-for (d = 0; list->cur_i >= 0 && list->cur_i < (__int32)list->src_main_list->items()->count() && progress->cancel==0; list->cur_i+=list->inc_i)
+for (d = 0; list->cur_i >= 0 && list->cur_i < (int32_t)list->src_main_list->items()->count() && progress->cancel==0; list->cur_i+=list->inc_i)
         {
          /// CHECK SRC
          if (list->src_main_list->items()->get_number(list->cur_i,IS)!=EXISTS)
@@ -591,7 +587,7 @@ for (d = 0; list->cur_i >= 0 && list->cur_i < (__int32)list->src_main_list->item
                  }
          else
                  {
-                  if ((__int32)d > ts::cstr::chrr(list->src_main_list->items()->get_text(list->cur_i),'\\'))
+                  if ((int32_t)d > ts::cstr::chrr(list->src_main_list->items()->get_text(list->cur_i),'\\'))
                          {list->cur_i-=list->inc_i;
                           options->ask_at_break =ASK_USER;
                           continue;
@@ -649,7 +645,7 @@ if (options->operation==OPERATION_MOVE)
 else
 if (options->operation==OPERATION_LIST) // save list to file
    {
-        for (list->cur_i = list->start_i; progress->cancel==0 && list->cur_i < (__int32)options->dst_init_list->items()->count(); list->cur_i+=list->inc_i)
+        for (list->cur_i = list->start_i; progress->cancel==0 && list->cur_i < (int32_t)options->dst_init_list->items()->count(); list->cur_i+=list->inc_i)
                 {
                          ts::cstr::mov(templp->data(), options->dst_init_list->items()->get_text(list->cur_i));
                          ts::cstr::upr(templp->data());
@@ -683,7 +679,7 @@ f_write_file_thread_handle = NULL;
 ts::cstr::free(ret);
 delete templp;
 #ifdef __DEBUG_KOP32_CLASS__
-ts::con::prints("__kop32_class::execute_all, return %d",(__int32)progress->cancel);
+ts::con::prints("__kop32_class::execute_all, return %d",(int32_t)progress->cancel);
 ts::con::print("\r\n");
 #endif
 progress->freeze_timer();
@@ -698,10 +694,10 @@ else {
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class::f_create_destination_list(const char *alpDestination)
+int32_t __stdcall ts::__kop32_class::f_create_destination_list(const char *alpDestination)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class::f_create_destination_list(alpDestination:%s)",alpDestination);
@@ -740,10 +736,10 @@ return 1;
 }
 //----------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class::f_skip_one(const uint32_t aindex, const uint32_t a_skip_items_at_same_level)
+int32_t __stdcall ts::__kop32_class::f_skip_one(const uint32_t aindex, const uint32_t a_skip_items_at_same_level)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class::f_skip_one(aindex:%d,a_skip_items_at_same_level:%d)",aindex,a_skip_items_at_same_level);
@@ -761,7 +757,7 @@ do_event(ON_BEFORE_SKIP_ONE,OK,EMPTY);
 //
 ts::cstr::mov(templp->data(),list->src_main_list->items()->get_text(aindex));
  if (a_skip_items_at_same_level==true)
-         {ts::cstr::extract_file_path(templp->data(),templp->c_str());
+         {ts::cstr::get_file_path(templp->data(),templp->c_str());
          }
 for (crt = aindex; crt < list->src_main_list->items()->count(); crt++) {
  if (ts::cstr::pos(list->src_main_list->items()->get_text(crt),0,templp->c_str())==-1)
@@ -778,7 +774,7 @@ goto GOTO_execute_cleanup_OK;
 //
 ts::cstr::mov(templp->data(),list->dst_main_list->items()->get_text(aindex));
  if (a_skip_items_at_same_level==true)
-         {ts::cstr::extract_file_path(templp->data(),templp->c_str());
+         {ts::cstr::get_file_path(templp->data(),templp->c_str());
          }
 for (crt = aindex; crt < list->dst_main_list->items()->count(); crt++) {
  if (ts::cstr::pos(list->dst_main_list->items()->get_text(crt),0,templp->c_str())==-1)
@@ -800,10 +796,10 @@ return 1;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class::f_exec_one(uint32_t aindex, uint32_t anaction)
+int32_t __stdcall ts::__kop32_class::f_exec_one(uint32_t aindex, uint32_t anaction)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class::f_exec_one(aindex:%d,anaction:%d)",aindex,anaction);
@@ -921,9 +917,9 @@ progress->src->one->size  = list->src_main_list->items()->get_number(aindex,SIZE
 progress->dst->one->readed  = 0;
 progress->dst->one->size  = options->output_arguments_list->items()->count();
 do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
-__int32 iT;
+int32_t iT;
 
-for (iT = 0; iT < (__int32)options->output_arguments_list->items()->count(); iT++)
+for (iT = 0; iT < (int32_t)options->output_arguments_list->items()->count(); iT++)
          {
          ts::cstr::mov(templpStr1->data(),options->output_arguments_list->items()->get_text(iT));
 
@@ -932,13 +928,13 @@ for (iT = 0; iT < (__int32)options->output_arguments_list->items()->count(); iT+
          ts::cstr::replace(templpStr1->data(),"#base_file_path",
                                         ts::cstr::mov_max(templpStr2->data(),list->src_main_list->items()->get_text(aindex),list->src_main_list->items()->get_number(aindex,FILENAME_BASE_PATH_LEN)));
          ts::cstr::replace(templpStr1->data(),"#file_path",
-                                        ts::cstr::extract_file_path(templpStr2->data(),list->src_main_list->items()->get_text(aindex)));
+                                        ts::cstr::get_file_path(templpStr2->data(),list->src_main_list->items()->get_text(aindex)));
          ts::cstr::replace(templpStr1->data(),"#file_path_and_name",
                                         list->src_main_list->items()->get_text(aindex));
          ts::cstr::replace(templpStr1->data(),"#relative_file_path_and_name",
                                         ts::cstr::substr_end(templpStr2->data(),list->src_main_list->items()->get_text(aindex),list->src_main_list->items()->get_number(aindex,FILENAME_BASE_PATH_LEN)+1,strlen(list->src_main_list->items()->get_text(aindex))));
          ts::cstr::replace(templpStr1->data(),"#file_name",
-                                        ts::cstr::extract_file_name(templpStr2->data(),list->src_main_list->items()->get_text(aindex)));
+                                        ts::cstr::get_file_name(templpStr2->data(),list->src_main_list->items()->get_text(aindex)));
          ts::cstr::replace(templpStr1->data(),"#file_creation_time_t",
                                         ts::cstr::itoa(list->src_main_list->items()->get_number(aindex,FILE_CREATION_DATE)));
          ts::cstr::replace(templpStr1->data(),"#file_modified_time_t",
@@ -1204,7 +1200,7 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
                 f_mem_buffer_map.index=0;
 
                 if (options->checksum & CHECKSUM_SSC1024)
-                                                {f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = (void*)ts::hash::ssc1::calc_SSC1((void*)((__int8*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size,1024);
+                                                {f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = (void*)ts::hash::ssc1::calc_SSC1((void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size,1024);
                                  f_mem_buffer_map.map[f_mem_buffer_map.index].size = 1024/8;
                                 }
                 f_dst_file.buffer.size = f_mem_buffer_map.map[f_mem_buffer_map.index].size;
@@ -1214,12 +1210,12 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
                 if (f_dst_file.buffer.ptr==NULL)
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
-                ts::mem32::mov((void*)((__int8*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset), f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset), f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                 f_src_file.readed += f_src_file.buffer.size;
                 ts::file::close_map_view(f_src_file.buffer.ptr);
                 f_dst_file.readed += f_dst_file.buffer.size;
                 if (options->block_is_cached==0)
-                ts::file::flush_map_view((void*)((__int8*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size);
+                ts::file::flush_map_view((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size);
                 ts::file::close_map_view(f_dst_file.buffer.ptr);
 
                 progress->src->one->readed  = f_src_file.readed;
@@ -1250,7 +1246,7 @@ else
                         }
                 f_mem_buffer_map.map[f_mem_buffer_map.index].size = f_src_file.buffer.size;
                 f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
-                ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((__int8*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
+                ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
                 f_src_file.readed += f_src_file.buffer.size;
                 ts::file::close_map_view(f_src_file.buffer.ptr);
                 progress->src->one->readed  = f_src_file.readed;
@@ -1286,11 +1282,11 @@ else
                 if (f_dst_file.buffer.ptr==NULL)
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
-                ts::mem32::mov((void*)((__int8*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset), (void*)f_mem_buffer_map.map[f_mem_buffer_map.previous_index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.previous_index].size);
+                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset), (void*)f_mem_buffer_map.map[f_mem_buffer_map.previous_index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.previous_index].size);
                 ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.previous_index].ptr);
                 f_dst_file.readed += f_dst_file.buffer.size;
                 if (options->block_is_cached==0)
-                ts::file::flush_map_view((void*)((__int8*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size);
+                ts::file::flush_map_view((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size);
                 ts::file::close_map_view(f_dst_file.buffer.ptr);
                 progress->dst->one->readed = f_dst_file.readed;
                 progress->dst->one->size = f_dst_file.size;
@@ -1316,7 +1312,7 @@ else
                 f_mem_buffer_map.index=0;
                 f_mem_buffer_map.map[f_mem_buffer_map.index].size = f_src_file.buffer.size;
                 f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
-                ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((__int8*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
+                ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
                 f_mem_buffer_map.count=1;
 
                 if (options->coder & LZSS_CODER_BWT) {
@@ -1398,17 +1394,17 @@ else
                 b_hdr.data_range = f_src_file.readed;
                 b_hdr.data_coder = options->coder;
                                 b_hdr.size_count = f_mem_buffer_map.count;
-                for (__int32 i = 0; i < f_mem_buffer_map.count; i++) {b_hdr.size[i] = (__int32)f_mem_buffer_map.map[i].size;
+                for (int32_t i = 0; i < f_mem_buffer_map.count; i++) {b_hdr.size[i] = (int32_t)f_mem_buffer_map.map[i].size;
                          }
-                ts::mem32::mov((void*)((__int8*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),(void*)&b_hdr,sizeof(file_header::__eno_block_header_struct));
+                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),(void*)&b_hdr,sizeof(file_header::__eno_block_header_struct));
                 f_dst_file.readed += sizeof(file_header::__eno_block_header_struct);
-                ts::mem32::mov((void*)((__int8*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset + sizeof(file_header::__eno_block_header_struct)),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset + sizeof(file_header::__eno_block_header_struct)),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                 f_src_file.readed += f_src_file.buffer.size;
 //		if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                         ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                 ts::file::close_map_view((void*)f_src_file.buffer.ptr);
                 f_dst_file.readed += f_dst_file.buffer.size;
-                                if (options->block_is_cached==0) ts::file::flush_map_view((void*)((__int8*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size + sizeof(file_header::__eno_block_header_struct));
+                                if (options->block_is_cached==0) ts::file::flush_map_view((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size + sizeof(file_header::__eno_block_header_struct));
                 ts::file::close_map_view((void*)f_dst_file.buffer.ptr);
 
                 progress->src->one->readed  = f_src_file.readed;
@@ -1431,7 +1427,7 @@ else
                 f_src_file.buffer.offset = f_src_file.readed % 65536;
                 f_src_file.buffer.ptr = ts::file::create_map_view(f_src_file.hand_map, FILE_MAP_READ, 0,
                                 f_src_file.readed - f_src_file.buffer.offset,sizeof(file_header::__eno_block_header_struct) + f_src_file.buffer.offset);
-                ts::mem32::mov((void*)&b_hdr,(void*)((__int8*)f_src_file.buffer.ptr + f_src_file.buffer.offset),sizeof(file_header::__eno_block_header_struct));
+                ts::mem32::mov((void*)&b_hdr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),sizeof(file_header::__eno_block_header_struct));
                 f_src_file.readed += sizeof(file_header::__eno_block_header_struct);
                 f_mem_buffer_map.count=1;
                 //
@@ -1449,7 +1445,7 @@ else
                 {f_mem_buffer_map.count++;}
 
 //				f_mem_buffer_map.count = b_hdr.s_count;
-                for (__int32 i = 0; i < f_mem_buffer_map.count; i++)
+                for (int32_t i = 0; i < f_mem_buffer_map.count; i++)
                 {f_mem_buffer_map.map[i].size = b_hdr.size[i];
                         }
                 ts::file::close_map_view((void*)f_src_file.buffer.ptr);
@@ -1468,7 +1464,7 @@ else
                         }
                 f_mem_buffer_map.map[f_mem_buffer_map.index].size = f_src_file.buffer.size;
                 f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
-                ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((__int8*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
+                ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
 
                 if (b_hdr.data_coder & LZSS_CODER_SSC) {
                 if (b_hdr.data_protection_code!=ts::hash::ssc1::calc_SSC1(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,32)[0])
@@ -1534,13 +1530,13 @@ else
                 if (f_dst_file.buffer.ptr==NULL)
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
-                ts::mem32::mov((void*)((__int8*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                 f_src_file.readed += f_src_file.buffer.size;
                 ts::file::close_map_view(f_src_file.buffer.ptr);
 //		if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                 ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                 if (options->block_is_cached==0)
-                ts::file::flush_map_view((void*)((__int8*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size);
+                ts::file::flush_map_view((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size);
                 ts::file::close_map_view(f_dst_file.buffer.ptr);
                 f_dst_file.readed += f_dst_file.buffer.size;
 
@@ -1643,10 +1639,10 @@ return 0;
 
 DWORD WINAPI ts::__kop32_class::f_write_file_thread(LPVOID a_caller) {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-ts::con::prints("__kop32_class::f_write_file_thread(a_caller=%d)",(__int32)a_caller);
+ts::con::prints("__kop32_class::f_write_file_thread(a_caller=%d)",(int32_t)a_caller);
 ts::con::print("\r\n");
 #endif
 register ts::__kop32_class *caller_kop32 = (ts::__kop32_class*)a_caller;
@@ -1655,7 +1651,7 @@ register ts::__kop32_class *caller_kop32 = (ts::__kop32_class*)a_caller;
         if ((caller_kop32->f_write_file_thread_control & 1) != 0) {
 
 #ifdef __DEBUG_KOP32_CLASS__
-ts::con::prints("__kop32_class::f_write_file_thread, thread_control=%d)",1/*(__int32)caller_kop32->f_write_file_thread_control*/);
+ts::con::prints("__kop32_class::f_write_file_thread, thread_control=%d)",1/*(int32_t)caller_kop32->f_write_file_thread_control*/);
 ts::con::print("\r\n");
 #endif
                 //int i =  caller_kop32->f_mem_buffer_map.previous_index;
@@ -1667,11 +1663,11 @@ ts::con::print("\r\n");
                 if (caller_kop32->f_dst_file.buffer.ptr==NULL)
                    {caller_kop32->f_write_file_thread_control = 4;
                    }
-                ts::mem32::mov((void*)((__int8*)caller_kop32->f_dst_file.buffer.ptr + caller_kop32->f_dst_file.buffer.offset), (void*)caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].ptr,caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].size);
+                ts::mem32::mov((void*)((int8_t*)caller_kop32->f_dst_file.buffer.ptr + caller_kop32->f_dst_file.buffer.offset), (void*)caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].ptr,caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].size);
                 ts::mem32::free(caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].ptr);
                 caller_kop32->f_dst_file.readed += caller_kop32->f_dst_file.buffer.size;
                 if (caller_kop32->options->block_is_cached==0)
-                ts::file::flush_map_view((void*)((__int8*)caller_kop32->f_dst_file.buffer.ptr + caller_kop32->f_dst_file.buffer.offset),caller_kop32->f_dst_file.buffer.size);
+                ts::file::flush_map_view((void*)((int8_t*)caller_kop32->f_dst_file.buffer.ptr + caller_kop32->f_dst_file.buffer.offset),caller_kop32->f_dst_file.buffer.size);
                 ts::file::close_map_view(caller_kop32->f_dst_file.buffer.ptr);
                 caller_kop32->progress->dst->one->readed = caller_kop32->f_dst_file.readed;
                 caller_kop32->progress->dst->one->size = caller_kop32->f_dst_file.size;
@@ -1680,7 +1676,7 @@ ts::con::print("\r\n");
                 caller_kop32->f_write_file_thread_control = 0;
                                 SwitchToThread();
 #ifdef __DEBUG_KOP32_CLASS__
-ts::con::prints("__kop32_class::f_write_file_thread, thread_control=%d)",(__int32)caller_kop32->f_write_file_thread_control);
+ts::con::prints("__kop32_class::f_write_file_thread, thread_control=%d)",(int32_t)caller_kop32->f_write_file_thread_control);
 ts::con::print("\r\n");
 #endif
                 }
@@ -1693,19 +1689,19 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-__int64 __stdcall ts::__kop32_class::f_check_free_space(const char *avolume_name, const __int64 anumber_of_source_bytes, const __int64 anumber_of_destination_bytes, const bool acheck_until_positive, const bool auser_could_ignore)
+int64_t __stdcall ts::__kop32_class::f_check_free_space(const char *avolume_name, const int64_t anumber_of_source_bytes, const int64_t anumber_of_destination_bytes, const bool acheck_until_positive, const bool auser_could_ignore)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class::f_check_free_space(avolume_name:%s)",avolume_name);
 ts::con::print("\r\n");
 #endif
 ULARGE_INTEGER disk_UInt;
-__int64 disk_real_free_space = 0;
+int64_t disk_real_free_space = 0;
 do_event(ON_FREE_SPACE,EMPTY,EMPTY);
-__int32 user_decision_dword;
+int32_t user_decision_dword;
 //
 // CHECK IS IT DISK OR UNC NAME AND ADD TRAILING BACKSLASH "\" AT END of directory because GetDiskFreeSpaceEx needs it in UNC path!
 //
@@ -1751,7 +1747,7 @@ return disk_real_free_space;
 const char* __stdcall ts::__kop32_class::do_event(const char *a_event, const char *a_code, const char *a_code_ex)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class_progress_controler::do_event(a_event,a_code,a_code_ex)\r\n");
@@ -1765,7 +1761,7 @@ return progress->do_event(a_event,a_code,a_code_ex);
 __stdcall ts::__kop32_class::~__kop32_class(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 ts::con::prints("__kop32_class:~__kop32_class()");

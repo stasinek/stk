@@ -1,46 +1,46 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_compression_lzssv4.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 #include "./../text/tsoft_cstr_manipulation.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 // tym wiï¿½cej bitï¿½w im wiï¿½ksze slide window, 12 dla 4096   wyniki dla AMD Athlon X2 3800 Dual Core 939 2.2GHz 512kB cache LZS CalgaryCorpus
 // 64kB (cache ~L2)
-//#define HASH_SIZE (__int32)(256<<8)
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])^(((__int16)ptr[1])<<3)^(((__int16)ptr[2])<<5)^(((__int16)ptr[3])<<8)) //4.20MB
+//#define HASH_SIZE (int32_t)(256<<8)
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<3)^(((int16_t)ptr[2])<<5)^(((int16_t)ptr[3])<<8)) //4.20MB
 // 32kB (cache ~L1-L2)
-//#define HASH_SIZE (__int32)(256<<7)
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])^(((__int16)ptr[1])<<3)^(((__int16)ptr[2])<<5)^(((__int16)ptr[3])<<7)) //5.1MB
+//#define HASH_SIZE (int32_t)(256<<7)
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<3)^(((int16_t)ptr[2])<<5)^(((int16_t)ptr[3])<<7)) //5.1MB
 // 16kB (for sure cached in ~L1)
-//#define HASH_SIZE (__int32)(256<<6)
-//#define HASH(ptr) (__int32)(__int32((__int16)ptr[0])^(__int32((__int16)ptr[1])<<2)^(__int32((__int16)ptr[2])<<4)^(__int32((__int16)ptr[3])<<6)) //5.1MB
-#define HASH_SIZE (__int32)(256<<6)
-#define HASH(ptr) (__int32)(__int32((__int16)ptr[0])^(__int32((__int16)ptr[1])<<2)^(__int32((__int16)ptr[2])<<4)^(__int32((__int16)ptr[3])<<6)) //5.1MB
-//#define HASH_SIZE (__int32)(256<<6)
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])^(((__int16)ptr[1])<<2)^(((__int16)ptr[2])<<4)^(((__int16)ptr[3])<<6)) //4.9MB
-//#define HASH_SIZE (__int32)(256<<5)
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])^(((__int16)ptr[1])<<2)^(((__int16)ptr[2])<<3)^(((__int16)ptr[3])<<5)) //4.40MB
-//#define HASH_SIZE (__int32)(256<<4)
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])^(((__int16)ptr[1])<<2)^(((__int16)ptr[2])<<3)^(((__int16)ptr[3])<<4)) //4.20MB
-//#define HASH_SIZE (__int32)(256<<3)
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])^(((__int16)ptr[1])<<1)^(((__int16)ptr[2])<<2)^(((__int16)ptr[3])<<3)) //3.40MB
-//#define HASH_SIZE (__int32)(256<<2)
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])^(((__int16)ptr[1])<<1)^(((__int16)ptr[2])<<2)) //2.20MB
-//#define HASH_SIZE (__int32)(256<<1)
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])^(((__int16)ptr[1])<<1)) //0.95MB
-//#define HASH_SIZE (__int32)256
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])) // 1__int8 SLOW 0.29MB
+//#define HASH_SIZE (int32_t)(256<<6)
+//#define HASH(ptr) (int32_t)(int32_t((int16_t)ptr[0])^(int32_t((int16_t)ptr[1])<<2)^(int32_t((int16_t)ptr[2])<<4)^(int32_t((int16_t)ptr[3])<<6)) //5.1MB
+#define HASH_SIZE (int32_t)(256<<6)
+#define HASH(ptr) (int32_t)(int32_t((int16_t)ptr[0])^(int32_t((int16_t)ptr[1])<<2)^(int32_t((int16_t)ptr[2])<<4)^(int32_t((int16_t)ptr[3])<<6)) //5.1MB
+//#define HASH_SIZE (int32_t)(256<<6)
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<2)^(((int16_t)ptr[2])<<4)^(((int16_t)ptr[3])<<6)) //4.9MB
+//#define HASH_SIZE (int32_t)(256<<5)
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<2)^(((int16_t)ptr[2])<<3)^(((int16_t)ptr[3])<<5)) //4.40MB
+//#define HASH_SIZE (int32_t)(256<<4)
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<2)^(((int16_t)ptr[2])<<3)^(((int16_t)ptr[3])<<4)) //4.20MB
+//#define HASH_SIZE (int32_t)(256<<3)
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<1)^(((int16_t)ptr[2])<<2)^(((int16_t)ptr[3])<<3)) //3.40MB
+//#define HASH_SIZE (int32_t)(256<<2)
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<1)^(((int16_t)ptr[2])<<2)) //2.20MB
+//#define HASH_SIZE (int32_t)(256<<1)
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<1)) //0.95MB
+//#define HASH_SIZE (int32_t)256
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])) // 1__int8 SLOW 0.29MB
 
 // proste i 100% trafiania, ale powolne
-//#define HASH_SIZE (__int32)(256<<8)
-//#define HASH(ptr) (__int32)(((__int16)ptr[0])|(((__int16)ptr[1])<<8)) //1.40MB
+//#define HASH_SIZE (int32_t)(256<<8)
+//#define HASH(ptr) (int32_t)(((int16_t)ptr[0])|(((int16_t)ptr[1])<<8)) //1.40MB
 //wersje ksiaï¿½kowe powolne
-//#define HASH_SIZE (__int32)(256<<8)
-//#define HASH(ptr) (__int32)(((((ptr[0]<<5)+ptr[1])<<5)+ptr[2])) //2.95MB
-//#define HASH_SIZE (__int32)(256<<4)
-//#define HASH(ptr) (__int32)((40543*((((ptr[0]<<4)^ptr[1])<<4)^ptr[2])>>4) & 0xFFFL) //4.20MB
+//#define HASH_SIZE (int32_t)(256<<8)
+//#define HASH(ptr) (int32_t)(((((ptr[0]<<5)+ptr[1])<<5)+ptr[2])) //2.95MB
+//#define HASH_SIZE (int32_t)(256<<4)
+//#define HASH(ptr) (int32_t)((40543*((((ptr[0]<<4)^ptr[1])<<4)^ptr[2])>>4) & 0xFFFL) //4.20MB
 //---------------------------------------------------------------------------
 
 // This structure contains binary tree constructed around ring_ptr witch is pointer to
@@ -54,7 +54,7 @@
 ts::compression::__lzss_compressor::__lzss_compressor(const uint32_t adict, const uint32_t asize)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //------------------------------------------
@@ -69,14 +69,14 @@ __DEBUG_FUNC_CALLED__
 //------------------------------------------
 		/*
 		son_hash  								   HHHHHHHHH -> POINTS to SSSSSSS, double level hash, could be faster for pararell search?
-		dad		  DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD|		  __int32 x offset
-		son		  SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS|SSSSSSSSS __int32 x offset + HASH_SIZE
-		ring_ptr  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|XXXXXXXXXXXXXXX|X char x offset + char x max_len + sizeof(int64) for QWORD cmp pruposses - access violation of full __int32 comparision)
+		dad		  DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD|		  int32_t x offset
+		son		  SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS|SSSSSSSSS int32_t x offset + HASH_SIZE
+		ring_ptr  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|XXXXXXXXXXXXXXX|X char x offset + char x max_len + sizeof(int64) for QWORD cmp pruposses - access violation of full int32_t comparision)
 		*/
-		dad = (__int32*)ts::mem32::alloc(sizeof(__int32)*(backward_max_offset));
-		son = (__int32*)ts::mem32::alloc(sizeof(__int32)*(backward_max_offset + HASH_SIZE));
+        dad = (uint32_t*)ts::mem32::alloc(sizeof(int32_t)*(backward_max_offset));
+        son = (uint32_t*)ts::mem32::alloc(sizeof(int32_t)*(backward_max_offset + HASH_SIZE));
 //------------------------------------------
-		ring_ptr =	(char*)ts::mem32::alloc(backward_max_offset + backward_max_len + 2*sizeof(__int32)); // search_forward minimum match 4 bytes -> __int32 mode(8 bytes ahead)
+		ring_ptr =	(char*)ts::mem32::alloc(backward_max_offset + backward_max_len + 2*sizeof(int32_t)); // search_forward minimum match 4 bytes -> int32_t mode(8 bytes ahead)
 //------------------------------------------
 		small_offset = 0;
 }
@@ -85,7 +85,7 @@ __DEBUG_FUNC_CALLED__
 ts::compression::__lzss_compressor::~__lzss_compressor(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		ts::mem32::free(dad);
@@ -101,7 +101,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__lzss_compressor::initialize(const char *aptr)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //------------------------------------------
@@ -136,7 +136,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__lzss_compressor::insert(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //insert from RIGHT to LEFT on RING BUFFER! (reverse order in dictionary vs buffer ocurances reality)
@@ -158,7 +158,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__lzss_compressor::skip(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		register uint32_t  skp = ring_insert;
@@ -171,7 +171,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__lzss_compressor::cut(const uint32_t choosen_ring_delete)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		register uint32_t del;
@@ -197,7 +197,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__lzss_compressor::update(const char *aadd_ptr, const uint32_t aupdate_count, const bool a_insert)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //------------------------------------------
@@ -241,7 +241,7 @@ __DEBUG_FUNC_CALLED__
 uint32_t __stdcall ts::compression::__lzss_compressor::search_backward(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //----------------------
@@ -280,7 +280,7 @@ COMPARE:
 				ref_ptr = &ring_ptr[ref];
 //----------------------
 // CHECK MINIMUM LEN MATCH 4 - MISMATCH OF HASH CHECK
-				if (((__int32*)cur_ptr)[0]!=((__int32*)ref_ptr)[0])
+				if (((int32_t*)cur_ptr)[0]!=((int32_t*)ref_ptr)[0])
 				continue;
 //----------------------
 // START COMPARING FROM 4 BYTES - ALREADY FILTERED IN FIRST LOOP FROM HASH CHAIN
@@ -307,7 +307,7 @@ COMPARE:
 				//----------------------
 				// COMPARING LOOP QWORD
 				while (1) {
-				  if (((__int64*)cur_ptr)[0]!=((__int64*)ref_ptr)[0])
+				  if (((int64_t*)cur_ptr)[0]!=((int64_t*)ref_ptr)[0])
 				  break;
 
 				  cur_len+=8;
@@ -321,7 +321,7 @@ COMPARE:
 				//----------------------
 				// COMPARING LOOP BYTES
 				while (1) {
-				  if (((__int8*)cur_ptr)[0]!=((__int8*)ref_ptr)[0])
+				  if (((int8_t*)cur_ptr)[0]!=((int8_t*)ref_ptr)[0])
 				  break;
 
 				  cur_len+=1;
@@ -373,7 +373,7 @@ EXIT:
 void __stdcall  ts::compression::__lzss_compressor::clear_backward_result(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		backward_len = 0;
@@ -385,16 +385,16 @@ __DEBUG_FUNC_CALLED__
 uint32_t __stdcall ts::compression::__lzss_compressor::search_forward(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		register char  *cur_ref = &((char*)ring_ptr)[ring_insert];
 		register char  *cur_ptr = NULL;
-		register __int8 cur_els = 0;
-		register __int8 cur_els_max = 0;
+		register int8_t cur_els = 0;
+		register int8_t cur_els_max = 0;
 //------------------------------------------
 // calculate optimal (biggest) RLE element size
-		if (*((__int32*)cur_ref)==*((__int32*)(cur_ref+4))) {
+		if (*((int32_t*)cur_ref)==*((int32_t*)(cur_ref+4))) {
 				if (cur_els_max==0)
 					{
 					cur_els_max =4;
@@ -402,7 +402,7 @@ __DEBUG_FUNC_CALLED__
 					}
 				cur_els =4;
 		}
-		if (*((__int16*)cur_ref)==*((__int16*)(cur_ref+3)) ? *((__int8*)(cur_ref+2))==*((__int8*)(cur_ref+5)) : false) {
+		if (*((int16_t*)cur_ref)==*((int16_t*)(cur_ref+3)) ? *((int8_t*)(cur_ref+2))==*((int8_t*)(cur_ref+5)) : false) {
 				if (cur_els_max==0)
 					{
 					cur_els_max =3;
@@ -410,7 +410,7 @@ __DEBUG_FUNC_CALLED__
 					}
 				cur_els =3;
 		}
-		if (*((__int16*)cur_ref)==*((__int16*)(cur_ref+2))) {
+		if (*((int16_t*)cur_ref)==*((int16_t*)(cur_ref+2))) {
 				if (cur_els_max==0)
 					{
 					cur_els_max =2;
@@ -444,19 +444,19 @@ __DEBUG_FUNC_CALLED__
 		else cur_ptr_end = cur_ref + PATTERN_LEN_MAX;
 		if (cur_els_max>=4 ? cur_els<=4 : false)
 				while (cur_ptr <= cur_ptr_end -4) {
-						if (((__int32*)cur_ref)[0]!=((__int32*)cur_ptr)[0])
+						if (((int32_t*)cur_ref)[0]!=((int32_t*)cur_ptr)[0])
 								break;
 						cur_ptr+=4;
 				}
 		if (cur_els_max==3 ? cur_els==3 : false)
 				while (cur_ptr <= cur_ptr_end -3) {
-						if (((__int16*)cur_ref)[0]!=((__int16*)cur_ptr)[0] || ((__int8*)(cur_ref+2))[0]!=((__int8*)(cur_ptr+2))[0])
+						if (((int16_t*)cur_ref)[0]!=((int16_t*)cur_ptr)[0] || ((int8_t*)(cur_ref+2))[0]!=((int8_t*)(cur_ptr+2))[0])
 								break;
 						cur_ptr+=3;
 				}
 		if (cur_els_max>=2 ? cur_els<=2 : false)
 				while (cur_ptr <= cur_ptr_end -2) {
-						if (((__int16*)cur_ref)[0]!=((__int16*)cur_ptr)[0])
+						if (((int16_t*)cur_ref)[0]!=((int16_t*)cur_ptr)[0])
 								break;
 						cur_ptr+=2;
 				}
@@ -481,7 +481,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall  ts::compression::__lzss_compressor::clear_forward_result(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		forward_len =0;

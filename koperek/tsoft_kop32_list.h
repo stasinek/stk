@@ -30,7 +30,7 @@ class  __kop32_class_list {
 						start_i = 0; cur_i = 0; inc_i = +1;
 
 				}
-				__int32 start_i, cur_i, inc_i;
+				uint32_t start_i, cur_i, inc_i;
 				__database *src_main_list, *dst_main_list;
 				__database *output_formated_list;
 				__database *sync_op_list;

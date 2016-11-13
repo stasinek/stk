@@ -13,60 +13,60 @@ namespace ts { namespace file_header {
 
 #define LZSSv4_HDR // define used HDR (less compilation time)
 
-#define ENO_HEADER_SIG (__int32)(('.'<<24) | ('E'<<16) | ('N'<<8) | 'O')
+#define ENO_HEADER_SIG (int32_t)(('.'<<24) | ('E'<<16) | ('N'<<8) | 'O')
 typedef struct {
-	__int32 signature;
-	__int32 signature_version;
-	__int32 reserved_1;
-		__int32 o;
-		__int32 o_h;
-		__int32 size;
-		__int32 size_h;
-	__int32 attribute;
-	__int32 attribute_ex;
-	__int32 time_t;
-	__int32 time_t_h;
-	__int32 reserved_2;
+	int32_t signature;
+	int32_t signature_version;
+	int32_t reserved_1;
+		int32_t o;
+		int32_t o_h;
+		int32_t size;
+		int32_t size_h;
+	int32_t attribute;
+	int32_t attribute_ex;
+	int32_t time_t;
+	int32_t time_t_h;
+	int32_t reserved_2;
 } __eno_header_struct;
 
-#define ENO_BLOCK_HEADER_SIG (__int16)(('B'<<8) | 'H')
+#define ENO_BLOCK_HEADER_SIG (int16_t)(('B'<<8) | 'H')
 
-#define ENO_CODER_LZS	 (__int16)0x0001
-#define ENO_CODER_HUF	 (__int16)0x0002
-#define ENO_CODER_ARI	 (__int16)0x0004
-#define ENO_CODER_BWT	 (__int16)0x0010
-#define ENO_CODER_MTF	 (__int16)0x0020
-#define ENO_CODER_ROT	 (__int16)0x0040
-#define ENO_CODER_XOR	 (__int16)0x0080
+#define ENO_CODER_LZS	 (int16_t)0x0001
+#define ENO_CODER_HUF	 (int16_t)0x0002
+#define ENO_CODER_ARI	 (int16_t)0x0004
+#define ENO_CODER_BWT	 (int16_t)0x0010
+#define ENO_CODER_MTF	 (int16_t)0x0020
+#define ENO_CODER_ROT	 (int16_t)0x0040
+#define ENO_CODER_XOR	 (int16_t)0x0080
 
-#define ENO_CODER_CRC	 (__int16)0x0100
-#define ENO_CODER_SSC	 (__int16)0x0200
+#define ENO_CODER_CRC	 (int16_t)0x0100
+#define ENO_CODER_SSC	 (int16_t)0x0200
 
-#define ENO_CODER_DEFAULT (__int16)ENO_CODER_CRC | ENO_CODER_LZS
+#define ENO_CODER_DEFAULT (int16_t)ENO_CODER_CRC | ENO_CODER_LZS
 
 typedef struct {
-	__int16 signature;
-	__int16 signature_version;
-	__int16 data_compression_coder;
-	__int16 reserved_1;
-		__int32 data_range_offset;
-		__int32 data_range;
+	int16_t signature;
+	int16_t signature_version;
+	int16_t data_compression_coder;
+	int16_t reserved_1;
+		int32_t data_range_offset;
+		int32_t data_range;
 		uint32_t data_protection_code;
-	__int16 reserved_2;
-	__int16 s_count;
-		__int32 size[8];
+	int16_t reserved_2;
+	int16_t s_count;
+		int32_t size[8];
 } __eno_block_header_struct;
 
-#define ENO_AID_HEADER_SIG (__int16)(('S'<<8) | 'C')
+#define ENO_AID_HEADER_SIG (int16_t)(('S'<<8) | 'C')
 typedef struct {
-	__int16 signature;
-	__int16 signature_version;
-	__int16 aid_data_coder;
-	__int16 reserved_1;
-		__int32 data_range;
+	int16_t signature;
+	int16_t signature_version;
+	int16_t aid_data_coder;
+	int16_t reserved_1;
+		int32_t data_range;
 		uint32_t data_protection_code;
-	__int16 reserved_2;
-	__int16 ssc_bits_count;
+	int16_t reserved_2;
+	int16_t ssc_bits_count;
 		uint32_t ssc1024[32];
 } __eno_aid_header_struct;
 
@@ -93,42 +93,42 @@ typedef struct {
 //@unknown, mostly extended(8bits=whole byte) & reserved for future use
 #define R_MOST_RESERVED_CODE		 R_CODE_MASK
 
-#define PASS_LEN_MIN		(__int32)(0x00000001)
-#define PASS_LEN_1		(__int32)(0x0000000F)
-#define PASS_LEN_2		(__int32)(0x000003FF)
+#define PASS_LEN_MIN		(int32_t)(0x00000001)
+#define PASS_LEN_1		(int32_t)(0x0000000F)
+#define PASS_LEN_2		(int32_t)(0x000003FF)
 #define PASS_LEN_MAX		PASS_LEN_2
 
-#define BRUN_LEN_MIN		(__int32)(0x00000002)
-#define BRUN_LEN_1		(__int32)(0x0000000F)
-#define BRUN_LEN_2		(__int32)(0x000003FF)
+#define BRUN_LEN_MIN		(int32_t)(0x00000002)
+#define BRUN_LEN_1		(int32_t)(0x0000000F)
+#define BRUN_LEN_2		(int32_t)(0x000003FF)
 #define BRUN_LEN_MAX		BRUN_LEN_2
 
-#define DICT_LEN_MIN		(__int32)(0x00000004)
-#define DICT_LEN_1		(__int32)(0x0000000F)
-#define DICT_LEN_2		(__int32)(0x000003FF)
+#define DICT_LEN_MIN		(int32_t)(0x00000004)
+#define DICT_LEN_1		(int32_t)(0x0000000F)
+#define DICT_LEN_2		(int32_t)(0x000003FF)
 #define DICT_LEN_MAX		DICT_LEN_2
-#define DICT_OFFSET_MIN		(__int32)(0x00000004)
-#define DICT_OFFSET_1  		(__int32)(0x000000FF)
-#define DICT_OFFSET_2		(__int32)(0x0000FFFF)
-#define DICT_OFFSET_3		(__int32)(0x00FFFFFF)
+#define DICT_OFFSET_MIN		(int32_t)(0x00000004)
+#define DICT_OFFSET_1  		(int32_t)(0x000000FF)
+#define DICT_OFFSET_2		(int32_t)(0x0000FFFF)
+#define DICT_OFFSET_3		(int32_t)(0x00FFFFFF)
 #define DICT_OFFSET_MAX		DICT_OFFSET_3
 
 class __lzssv4_header_coder {
 public:
-		static unsigned __int8 __stdcall pass_encode(void *a_code_ptr,__int32 axdata_uncoded_len);
-		static unsigned __int8 __stdcall pass_decode(__int32 *a_data_uncoded_len,void *a_code_ptr);
-		static unsigned __int8 __stdcall pass_Price(__int32 axdata_uncoded_len);
+		static unsigned int8_t __stdcall pass_encode(void *a_code_ptr,int32_t axdata_uncoded_len);
+		static unsigned int8_t __stdcall pass_decode(int32_t *a_data_uncoded_len,void *a_code_ptr);
+		static unsigned int8_t __stdcall pass_Price(int32_t axdata_uncoded_len);
 
-		static unsigned __int8 __stdcall brun_encode(void *a_code_ptr,__int32 axdata_uncoded_counte, __int32 axdata_uncoded_elsize);
-		static unsigned __int8 __stdcall brun_decode(__int32 *a_data_uncoded_counte,__int32 *a_data_uncoded_elsize,void *a_code_ptr);
-		static unsigned __int8 __stdcall brun_Price(__int32 axdata_uncoded_counte,__int32 axdata_uncoded_elsizes);
+		static unsigned int8_t __stdcall brun_encode(void *a_code_ptr,int32_t axdata_uncoded_counte, int32_t axdata_uncoded_elsize);
+		static unsigned int8_t __stdcall brun_decode(int32_t *a_data_uncoded_counte,int32_t *a_data_uncoded_elsize,void *a_code_ptr);
+		static unsigned int8_t __stdcall brun_Price(int32_t axdata_uncoded_counte,int32_t axdata_uncoded_elsizes);
 
-		static unsigned __int8 __stdcall dict_encode(void *a_code_ptr,__int32 axdata_uncoded_len,__int32 axdata_uncoded_offset);
-		static unsigned __int8 __stdcall dict_decode(__int32 *a_data_uncoded_len,__int32 *a_data_uncoded_offset,void *a_code_ptr);
-		static unsigned __int8 __stdcall dict_Price(__int32 axdata_uncoded_len,__int32 axdata_uncoded_offset);
+		static unsigned int8_t __stdcall dict_encode(void *a_code_ptr,int32_t axdata_uncoded_len,int32_t axdata_uncoded_offset);
+		static unsigned int8_t __stdcall dict_decode(int32_t *a_data_uncoded_len,int32_t *a_data_uncoded_offset,void *a_code_ptr);
+		static unsigned int8_t __stdcall dict_Price(int32_t axdata_uncoded_len,int32_t axdata_uncoded_offset);
 
-		static __int32 __stdcall  check_dict_Match_Cost(__int32 apass_len,__int32 adict_len,__int32 adict_offset);
-		static __int32 __stdcall  check_brun_Match_Cost(__int32 apass_len,__int32 abrun_counte,__int32 abrun_elsize);
+		static int32_t __stdcall  check_dict_Match_Cost(int32_t apass_len,int32_t adict_len,int32_t adict_offset);
+		static int32_t __stdcall  check_brun_Match_Cost(int32_t apass_len,int32_t abrun_counte,int32_t abrun_elsize);
 
 };
 #endif

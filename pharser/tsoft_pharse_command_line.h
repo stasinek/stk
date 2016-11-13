@@ -19,11 +19,11 @@ public:
 		//example find_phase("name.exe -m --normal /alternate --withsuboption[some othe including,"" {}()[]]
 		//	--another(suboptions here)","-o", "--opt", "/opt", suboptionstore);
 		// if suboptions are found result positions[1] and [2] will index them and suboption char will be filled with
-		__int32 __stdcall find(const char *lpsrc, const char *lpparameter_min, const char *lpparameter_normal, const char *lpparameter_alternative, char *r_lpsuboption);
-		void __stdcall delete_found(char *lpdst);
+        int32_t __stdcall find(const char *lpsrc, const char *lpparameter_min, const char *lpparameter_normal, const char *lpparameter_alternative, char *r_lpsuboption);
+        void    __stdcall delete_found(char *lpdst);
 private:
-		__int32 f_result_positions[4];
-		  char *f_result_base;
+        int32_t  f_result_positions[4];
+        char    *f_result_base;
 		};
 //---------------------------------------------------------------------------
 }

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "koperek32_main.h"
 #if defined(_MSCVER)
@@ -229,7 +229,6 @@ return 0;
 
 int main(int argc, char *argv[])
 {
-static char sx[] = { " test" };
 //incbine(x,"D:/prc++/x86_libraries/SSTSOFT/test.txt")
 
         atexit(&main_before_exit);
@@ -238,13 +237,14 @@ static char sx[] = { " test" };
         ts::__kop32::set_console_handlers(&main_ConsoleGetchHandler, &main_ConsolePrintHandler,NULL);
         char *args = new char[4096];
         args[0] = '\0';
-    	delete args;
-        char a[] = {
-#include "./test.txt"
-};
-ts::thread::ssthread_t t2;
+        delete args;
+ts::test::start(argc,argv);
+//ts::thread::ssthread_t t2;
 //ts::thread::create(&t2,thread2,"Czeœæ");
 //ts::thread::run(&t2);
+char a[] = {
+#include "./test.txt"
+};
 printf("%s",a);
 //ts::thread::join(&t2);
 system("pause");
@@ -252,7 +252,6 @@ system("pause");
 #else
         return Qt_app_main(argc,argv);
 #endif
-        //    ts::test::test_main(argc,argv);
 }
 //---------------------------------------------------------------------------
 

@@ -1,9 +1,9 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "./../io/tsoft_console.h"
 #include "./../text/tsoft_cstr_manipulation.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 //---------------------------------------------------------------------------
 #include "tsoft_database.h"
 //---------------------------------------------------------------------------
@@ -18,7 +18,7 @@ __stdcall  ts::__database_items::__database_items(void)
         f_atom_matrix_count(0)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     f_temp_atom = new __atom();
 }
@@ -29,7 +29,7 @@ __stdcall  ts::__database_items::__database_items(const ts::__database *a_owner)
         f_atom_matrix_count(0)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     f_temp_atom = new __atom();
 }
@@ -38,7 +38,7 @@ __DEBUG_FUNC_CALLED__
 __stdcall ts::__database_items::~__database_items()
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
     delete f_temp_atom;
 }
@@ -60,7 +60,7 @@ return f_atom_matrix[count()];
 uint32_t __stdcall ts::__database_items::set_count(const uint32_t a_count)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         if (f_atom_matrix_count==a_count) return a_count;
         if (f_atom_matrix_count< a_count) {
@@ -92,7 +92,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::__database_items::set(const uint32_t a_index_S, const ts::__database_items::__atom *a_atom)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         for (register uint32_t x = 0; x < ATOM_NUMBERS_COUNT; x++) {
                 f_atom_matrix[a_index_S]->number[x] = a_atom->number[x];
@@ -105,7 +105,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::__database_items::set_text(const uint32_t a_index_S, const char *a_text)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
 ts::con::prints("__database_items::set_text(a_index_S:%d,a_text)\r\na_text:%s)",a_index_S,a_text);
@@ -125,7 +125,7 @@ ts::con::print("\r\n\r\n");
 void    __stdcall ts::__database_items::set_text_size(const uint32_t a_index_S, const uint32_t a_text_size)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         f_atom_matrix[a_index_S]->text = ts::cstr::realloc(f_atom_matrix[a_index_S]->text,a_text_size + 1);
 }
@@ -134,7 +134,7 @@ __DEBUG_FUNC_CALLED__
 void    __stdcall ts::__database_items::set_number(const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_value)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
 ts::con::prints("__database_items::set_number(a_index_S:%d,a_column_Y:%d,a_value:%d)",a_index_S,a_column_Y,a_value);
@@ -147,7 +147,7 @@ ts::con::print("\r\n\r\n");
 void    __stdcall ts::__database_items::set_data_chunk(const uint32_t a_index_S, const uint32_t a_column_Y, void *a_pointer)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
 ts::con::prints("__database_items::set_data_chunk(a_index_S:%d,a_column_Y:%d,a_pointer:%d)",a_index_S,a_column_Y,(uint32_t)a_pointer);
@@ -157,10 +157,10 @@ ts::con::print("\r\n\r\n");
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::search_data_chunk_ex(const uint32_t a_istart, const uint32_t a_column_Y, const void *a_pointer) const
+int32_t __stdcall ts::__database_items::search_data_chunk_ex(const uint32_t a_istart, const uint32_t a_column_Y, const void *a_pointer) const
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         for (uint32_t iT = a_istart; iT < count(); iT++) {
                 if (f_atom_matrix[iT]->data_chunk[a_column_Y]==a_pointer) {
@@ -171,10 +171,10 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::search_number_ex(const uint32_t a_istart, const uint32_t a_column_Y, uint32_t a_number) const
+int32_t __stdcall ts::__database_items::search_number_ex(const uint32_t a_istart, const uint32_t a_column_Y, uint32_t a_number) const
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         for (uint32_t iT = a_istart; iT < count(); iT++) {
                 if (f_atom_matrix[iT]->number[a_column_Y]==a_number) {
@@ -185,10 +185,10 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::search_text_ex(const uint32_t a_istart, const char* __restrict__ a_Char) const
+int32_t __stdcall ts::__database_items::search_text_ex(const uint32_t a_istart, const char* __restrict__ a_Char) const
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         for (uint32_t iT = a_istart; iT < count(); iT++)  {
                 if (ts::cstr::compare(f_atom_matrix[iT]->text,a_Char)==0) {
@@ -202,7 +202,7 @@ __DEBUG_FUNC_CALLED__
 uint32_t __stdcall ts::__database_items::add(const ts::__database_items::__atom * __restrict__ a_atom)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
 if (a_atom->text!=NULL) ts::con::prints("__database_items::add_atom(a_atom)\r\na_atom->text:%s)",a_atom->text);
@@ -220,7 +220,7 @@ ts::con::print("\r\n\r\n");
 uint32_t __stdcall ts::__database_items::add_text(const char* __restrict__ a_text)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
 ts::con::prints("__database_items::add_text(a_text)\r\na_text:%s",a_text);
@@ -234,7 +234,7 @@ ts::con::print("\r\n\r\n");
 uint32_t __stdcall ts::__database_items::insert(const uint32_t a_index, const ts::__database_items::__atom *a_atom)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
 if (a_atom->text!=NULL) ts::con::prints("__database_items::insert(a_index:%d,a_atom)\r\na_atom->text:%s",a_index,a_atom->text);
@@ -258,7 +258,7 @@ ts::con::print("\r\n\r\n");
 uint32_t __stdcall ts::__database_items::cut(const uint32_t a_index)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
 ts::con::prints("__database_items::cut(a_index:%d)\r\ntext[a_index]:%s",a_index,f_atom_matrix[a_index]->text);
@@ -274,7 +274,7 @@ ts::con::print("\r\n\r\n");
 void __stdcall ts::__database_items::swap(const uint32_t a_index_1, const uint32_t a_index_2)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         ts::__database_items::__atom  *t_atom = f_atom_matrix[a_index_1];
         f_atom_matrix[a_index_1] = f_atom_matrix[a_index_2];
@@ -285,7 +285,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::__database_items::sort_text()
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         // simple slowest, bubble sort
         for (uint32_t index1 = 0; index1 < count(); index1++)
@@ -300,7 +300,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::__database_items::sort_number(const uint32_t a_column)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         register uint32_t column = a_column;
         for (uint32_t index1 = 0; index1 < count(); index1++)
@@ -315,7 +315,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::__database_items::sort_data_chunk(const uint32_t a_column)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         register uint32_t column = a_column;
         for (uint32_t index1 = 0; index1 < count(); index1++)

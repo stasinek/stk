@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_file_ini.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 #include "./../text/tsoft_cstr_manipulation.h"
 //---------------------------------------------------------------------------
 #include "tsoft_console.h"
@@ -13,7 +13,7 @@ DWORD __cdecl ts::file::get_wchar_value_at_ini_section(wchar_t *lpSection, wchar
 									   wchar_t *lpdefault, wchar_t *lpBuffer, DWORD dwBufSize, wchar_t *szPathAndFile)
 {
 #ifdef __DEBUG_FILE_INI__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 //As far as I know the corrent UNICODE line ending on windows platform is \r\n,
 //that is 0x000D000AL and ansii 0x0D0AL
@@ -95,7 +95,7 @@ DWORD __cdecl get_value_at_ini_section(wchar_t *lpSection, wchar_t *lpValue,
 	   wchar_t *lpdefault, wchar_t *lpBuffer, DWORD dwBufSize, wchar_t *szPathAndFile)
 {
 #ifdef __DEBUG_FILE_INI__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return 0;
 }

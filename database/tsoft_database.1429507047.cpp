@@ -81,14 +81,14 @@ return f_owner;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database::set(ts::__database* __restrict__ a_database)
+int32_t __stdcall ts::__database::set(ts::__database* __restrict__ a_database)
 {
 		if (a_database==NULL) {
 				items()->set_count(0);
 				return 0;
 		}
 		else {
-				__int32  iT = 0, iX = a_database->items()->count();
+				int32_t  iT = 0, iX = a_database->items()->count();
 				items()->set_count(iX);
 				for (; iT < iX; iT++)
 						items()->set(iT,a_database->items()->get(iT));
@@ -97,13 +97,13 @@ __int32 __stdcall ts::__database::set(ts::__database* __restrict__ a_database)
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database::load(const char* __restrict__ a_format)
+int32_t __stdcall ts::__database::load(const char* __restrict__ a_format)
 {
 		int f_hand = open(this->alias(),_O_BINARY|_O_RDONLY,_S_IREAD);
 		if (f_hand==-1) {
 				return -1;
 		}
-		__int32 size = filelength(f_hand);
+		int32_t size = filelength(f_hand);
 		char *lptemp = ts::cstr::alloc(size);
 		size = _read(f_hand,lptemp,size);
 		if (size==-1) {
@@ -116,7 +116,7 @@ __int32 __stdcall ts::__database::load(const char* __restrict__ a_format)
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database::save(const char* __restrict__ a_format) const
+int32_t __stdcall ts::__database::save(const char* __restrict__ a_format) const
 {
 		int f_hand = _sopen(this->alias(),_O_BINARY|_O_CREAT|_O_WRONLY,_S_IWRITE);
 		if (f_hand==-1) {
@@ -124,7 +124,7 @@ __int32 __stdcall ts::__database::save(const char* __restrict__ a_format) const
 		}
 		ts::__cstr_class *lptemp = new ts::__cstr_class(1024);
 		TEXT_C_FROM_DATA(lptemp, a_format, this);
-		__int32 size = lptemp->len();
+		int32_t size = lptemp->len();
 		size = _write(f_hand,lptemp->c_str(),size);
 		if (size==-1) {
 				return -1;
@@ -133,7 +133,7 @@ __int32 __stdcall ts::__database::save(const char* __restrict__ a_format) const
 		return size;
 }
 //---------------------------------------------------------------------------
-__int32 __stdcall ts::__database::export_to(char *a_data, const char* __restrict__ a_format) const
+int32_t __stdcall ts::__database::export_to(char *a_data, const char* __restrict__ a_format) const
 {
 		ts::__cstr_class *x = new ts::__cstr_class(32 * this->items()->count());
 		TEXT_C_FROM_DATA(x, a_format, this);
@@ -142,15 +142,15 @@ __int32 __stdcall ts::__database::export_to(char *a_data, const char* __restrict
 		return ts::cstr::len(a_format);
 }
 //---------------------------------------------------------------------------
-__int32 __stdcall ts::__database::import_from(const char* __restrict__ a_data, const char* __restrict__ a_format)
+int32_t __stdcall ts::__database::import_from(const char* __restrict__ a_data, const char* __restrict__ a_format)
 {
 		DATA_FROM_C(this, a_format, a_data);
 		return items()->count();
 }
 //---------------------------------------------------------------------------
-__int32 __stdcall ts::__database::add(ts::__database* __restrict__ a_database)
+int32_t __stdcall ts::__database::add(ts::__database* __restrict__ a_database)
 {
-		for (__int32 i = 0, j = a_database->items()->count(); i < j; i++) {
+		for (int32_t i = 0, j = a_database->items()->count(); i < j; i++) {
 				items()->add(a_database->items()->get(i));
 		}
 		return items()->count();
@@ -171,11 +171,11 @@ ts::__cstr_class *__stdcall ts::TEXT_C_FROM_DATA(ts::__cstr_class *a_text, const
 		if (text==NULL) text = new ts::__cstr_class(256);
 		else
 		if (text->size() < 256) text->reserve(256);
-		register __int32 tlen = 256;
+		register int32_t tlen = 256;
 
 		if (a_database->items()->count()==0) text->data()[0] = '\0';
 		else if (a_format[0]=='C') {
-				for (__int32 t_pos = 0, srclen, iT = 0; ;) {
+				for (int32_t t_pos = 0, srclen, iT = 0; ;) {
 						srclen = ts::cstr::len(a_database->items()->get_text(iT));
 						if (t_pos + 1 + srclen + 3 + 1 >= tlen) {
 								tlen = t_pos + 1 + srclen + 3 + 1 + 256;
@@ -193,15 +193,15 @@ ts::__cstr_class *__stdcall ts::TEXT_C_FROM_DATA(ts::__cstr_class *a_text, const
 						}
 				}
 		} else if (a_format[0]=='L') {
-				for (__int32 t_pos = 0, srclen, iT = 0; ;) {
+				for (int32_t t_pos = 0, srclen, iT = 0; ;) {
 						srclen = ts::cstr::len(a_database->items()->get_text(iT));
 						if (t_pos + srclen + 2 + 1 >= tlen) {
 								tlen = t_pos + srclen + 2 + 1 + 256;
 								text->reserve(tlen);
 						}
-						ts::mem32::mov((char*)((__int32)text+t_pos), a_database->items()->get_text(iT), srclen);
+						ts::mem32::mov((char*)((int32_t)text+t_pos), a_database->items()->get_text(iT), srclen);
 						t_pos += srclen;
-						ts::mem32::mov((char*)((__int32)text+t_pos), (void*)"\r\n", 2);
+						ts::mem32::mov((char*)((int32_t)text+t_pos), (void*)"\r\n", 2);
 						t_pos += 2;
 						if (++iT>=a_database->items()->count()) { // ucinam 2
 								text->data()[t_pos-2] = '\0';
@@ -215,14 +215,14 @@ ts::__cstr_class *__stdcall ts::TEXT_C_FROM_DATA(ts::__cstr_class *a_text, const
 
 ts::__database *__stdcall ts::DATA_FROM_C(ts::__database *a_data, const char* __restrict__ a_format, const char* __restrict__ a_text)
 {
-		__int32 pos, pos_chk, pos_end = ts::cstr::len(a_text);
-		__int32 sep, t_pos, t_posend = 256;
+		int32_t pos, pos_chk, pos_end = ts::cstr::len(a_text);
+		int32_t sep, t_pos, t_posend = 256;
 		char *t_text = ts::cstr::alloc(256);
 		a_data->items()->set_count(0);
 		if (a_format[0]=='C') {
 				for (pos = 0; pos < pos_end; pos += sep) {
 						for (; pos < pos_end && a_text[pos]==' '; pos++);
-						sep  = (__int32)(a_text[pos]=='\"');
+						sep  = (int32_t)(a_text[pos]=='\"');
 						pos += sep;
 						for (t_pos = 0; pos < pos_end;) {
 								if (sep==0) {
@@ -254,7 +254,7 @@ ts::__database *__stdcall ts::DATA_FROM_C(ts::__database *a_data, const char* __
 						if (pos_chk-pos+1 >= t_posend) {
 								t_text = ts::cstr::realloc(t_text, t_posend+=256);
 						}
-						ts::mem32::mov(t_text, (char*)((__int32)a_text + pos), pos_chk - pos);
+						ts::mem32::mov(t_text, (char*)((int32_t)a_text + pos), pos_chk - pos);
 						t_text[pos_chk - pos] = '\0';
 						a_data->items()->add(CHAR_TO_DATABASE_ATOM(t_text));
 						if (pos_chk==pos_end) {

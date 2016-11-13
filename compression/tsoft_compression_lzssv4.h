@@ -1,21 +1,21 @@
 //---------------------------------------------------------------------------
 //----------------- "tsoft, where?" 2001-2002 -------------------------------
 //---------------------------------------------------------------------------
-#ifndef __tsoft_bin_tree_H__
-#define __tsoft_bin_tree_H__
+#ifndef tsoft_bin_tree_h
+#define tsoft_bin_tree_h
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 //---------------------------------------------------------------------------
 #include "./../io/tsoft_file_lzss_header.h"
 //---------------------------------------------------------------------------
-#define DUP_NULL			 (__int32)0x0F000000L
+#define DUP_NULL			 (uint32_t)0x0F000000L
 //---------------------------------------------------------------------------
 namespace ts { namespace compression {
 //---------------------------------------------------------------------------
 class  __lzss_compressor {
 private:
 //---------------------------------------------------------------------------
-		__int32  *son,*dad;
+		uint32_t  *son,*dad;
 //---------------------------------------------------------------------------
 public:
 		uint32_t ring_delete, ring_insert;
@@ -54,10 +54,10 @@ public:
 //---------------------------------------------------------------------------
 
 /* cpx1_bgn =&ring_ptr[p]; cpx2_ptr =find_ptr;
- if (((__int32*)cpx1_bgn)[0]!=((__int32*)cpx2_ptr)[0]) // warunek konieczny
+ if (((uint32_t*)cpx1_bgn)[0]!=((uint32_t*)cpx2_ptr)[0]) // warunek konieczny
  continue;
-				cpx1_ptr =cpx1_bgn+sizeof(__int32);
-				cpx2_ptr+=+sizeof(__int32);
+				cpx1_ptr =cpx1_bgn+sizeof(uint32_t);
+				cpx2_ptr+=+sizeof(uint32_t);
 		  cpx1_ptr_end = cpx1_bgn + find_max_len-1;
  while (cpx1_ptr <= cpx1_ptr_end) {
 		 if (cpx1_ptr[0]!=cpx2_ptr[0])

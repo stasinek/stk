@@ -1,28 +1,26 @@
 //---------------------------------------------------------------------------
-#ifndef __list_CLASS_H
-#define __list_CLASS_H
+#ifndef __list_h
+#define __list_h
 //---------------------------------------------------------------------------
-#include "./mem/tsoft_mem32.h"
+#include "./mem/tsoft_mem.h"
 #include "./io/tsoft_console.h"
 #include "./tsoft_main.h"
 //---------------------------------------------------------------------------
 //implementation of std::list ;)
 //---------------------------------------------------------------------------
-namespace ts {
-//---------------------------------------------------------------------------
-template <class a_element_T> class __list {
+namespace ts { template <class T> class __list {
 private:
-	a_element_T *ptrs; uint32_t f_ptrs_size;
+	T *ptrs; uint32_t f_ptrs_size;
 	uint32_t f_front,f_back;
 	bool f_full;
 public:
 //---------------------------------------------------------------------------
-	__list(uint32_t a_count = (4096/sizeof(a_element_T*)))
+	__list(uint32_t a_count = (4096 / sizeof(T*)))
 	: ptrs(NULL),f_ptrs_size(0),f_front(0),f_back(0),
 	  f_full(false)
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::__list()")
 #endif
 		this->resize(a_count);
 	}
@@ -30,15 +28,15 @@ __DEBUG_FUNC_CALLED__
 	~__list(void)
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::~__list")
 #endif
 		this->resize(0);
 	}
 //---------------------------------------------------------------------------
-	bool __stdcall push_back(a_element_T a_new)
+	bool __stdcall push_back(T a_new)
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::push_back()")
 #endif
 		if (f_full) {
 			this->overflowed(); return false;
@@ -52,15 +50,15 @@ __DEBUG_FUNC_CALLED__
 		return true;
 	};
 //---------------------------------------------------------------------------
-	a_element_T __stdcall pop_front(void)
+	T __stdcall pop_front(void)
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::pop_front()")
 #endif
 		 if (f_front==f_back && f_full==false) {
 			 return NULL;
 		 }
-		a_element_T ret = ptrs[f_front];
+		T ret = ptrs[f_front];
 		f_full=false;
 		f_front+=1;
 		 if (f_front >=f_ptrs_size) {
@@ -70,10 +68,10 @@ __DEBUG_FUNC_CALLED__
 		return ret;
 	};
 //---------------------------------------------------------------------------
-	a_element_T __stdcall front(void) const
+	T __stdcall front(void) const
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::front() const")
 #endif
 		 if (f_front==f_back && f_full==false) {
 			 return 0;
@@ -81,10 +79,10 @@ __DEBUG_FUNC_CALLED__
 	return ptrs[f_front];
 }
 //---------------------------------------------------------------------------
-	a_element_T __stdcall back(void) const
+	T __stdcall back(void) const
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::back() const")
 #endif
 		 if (f_front==f_back && f_full==false) {
 			 return 0;
@@ -95,7 +93,7 @@ __DEBUG_FUNC_CALLED__
 	uint32_t __stdcall count(void)  const
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::count() const")
 #endif
 		if (f_full) return f_ptrs_size;
 		if (f_back >=f_front) return (f_back - f_front);
@@ -105,7 +103,7 @@ __DEBUG_FUNC_CALLED__
 	uint32_t __stdcall size(void)  const
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		return f_ptrs_size;
 	}
@@ -113,7 +111,7 @@ __DEBUG_FUNC_CALLED__
 	virtual void __stdcall overflowed(void)
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::overflowed()")
 #endif
 
 	}
@@ -121,7 +119,7 @@ __DEBUG_FUNC_CALLED__
 	virtual void __stdcall cleared(void)
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::cleared()")
 #endif
 
 	}
@@ -129,7 +127,7 @@ __DEBUG_FUNC_CALLED__
 	bool __stdcall is_full(void) const
 	{
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::is_full()")
 #endif
 	return f_full;
 	}
@@ -137,7 +135,7 @@ __DEBUG_FUNC_CALLED__
 	void __stdcall resize(uint32_t a_new_size)
 	 {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("ts::__list::resize()")
 #endif
 		if (f_ptrs_size==a_new_size)
 		{
@@ -147,11 +145,11 @@ __DEBUG_FUNC_CALLED__
 		{
 			if (f_ptrs_size==0)
 				{
-				ptrs = (a_element_T*)ts::mem32::alloc(a_new_size * sizeof(a_element_T));
+				ptrs = (T*)ts::mem32::alloc(a_new_size * sizeof(T));
 				}
 			else
 				{
-				ptrs = (a_element_T*)ts::mem32::realloc(ptrs, a_new_size * sizeof(a_element_T));
+				ptrs = (T*)ts::mem32::realloc(ptrs, a_new_size * sizeof(T));
 				}
 		}
 		else
@@ -162,14 +160,13 @@ __DEBUG_FUNC_CALLED__
 				}
 			else
 				{
-				ptrs = (a_element_T*)ts::mem32::realloc(ptrs, a_new_size * sizeof(a_element_T));
+				ptrs = (T*)ts::mem32::realloc(ptrs, a_new_size * sizeof(T));
 				}
 		}
 			f_ptrs_size = a_new_size;
 			return;
 	}
 //---------------------------------------------------------------------------
-};
-}
+}; }
 //---------------------------------------------------------------------------
 #endif // __list_CLASS_H

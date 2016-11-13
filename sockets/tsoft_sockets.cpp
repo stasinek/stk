@@ -1,19 +1,19 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_sockets.h"
 //---------------------------------------------------------------------------
 #include "./../io/tsoft_file_mime_types.h"
 #include "./../io/tsoft_console.h"
-#include "./../mem/tsoft_mem32.h"
-#include "./../threads/tsoft_threads.h"
+#include "./../mem/tsoft_mem.h"
+#include "./../ssthreads/tsoft_threads.h"
 #include "./../time/tsoft_time.h"
 //---------------------------------------------------------------------------
 
 SOCKET __stdcall ts::socket::create_server_socket(const char *aipv4_port_s, const int atimeout_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         return create_server_socket("0.0.0.0",aipv4_port_s,atimeout_s);
 }
@@ -23,14 +23,14 @@ __DEBUG_FUNC_CALLED__
 SOCKET __stdcall ts::socket::create_server_socket(const char *aipv4_addr_s, const char *aipv4_port_s, const int atimeout_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         SOCKET socket;
         SOCKET main_socket, accepted_socket;
         SOCKET_BUFFER_CLASS buffer;
         sockaddr_in main_service;
         struct timeval tv;
-#ifdef WIN32
+#ifdef __WIN32__
         WSADATA wsadata;
         int result = WSAStartup( MAKEWORD( 2, 2 ), & wsadata );
         if( result!= NO_ERROR ) {
@@ -81,14 +81,14 @@ NEW_GOTO_ERROR_SOCKET:
 SOCKET __stdcall ts::socket::create_client_socket(const char *aipv4_addr_s, const char *aipv4_port_s, const int atimeout_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         SOCKET socket;
         SOCKET main_socket, accepted_socket;
         SOCKET_BUFFER_CLASS buffer;
         sockaddr_in main_service;
         struct timeval tv;
-#ifdef WIN32
+#ifdef __WIN32__
         WSADATA wsadata;
         int result = WSAStartup( MAKEWORD( 2, 2 ), & wsadata );
         if( result!= NO_ERROR ) {
@@ -120,27 +120,27 @@ NEW_GOTO_ERROR_SOCKET:
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::socket::close_socket(SOCKET amain_socket)
+int32_t __stdcall ts::socket::close_socket(SOCKET amain_socket)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         register int ret = closesocket( amain_socket );
-#ifdef WIN32
+#ifdef __WIN32__
         WSACleanup();
 #endif
         return ret;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::socket::send_for_sure(SOCKET amain_socket,const char *asend_lp, const __int32 alen, const __int32 ax)
+int32_t __stdcall ts::socket::send_for_sure(SOCKET amain_socket,const char *asend_lp, const int32_t alen, const int32_t ax)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-        register __int32 s = 0;
-        register __int32 s_sum = 0;
-        register __int32 to_s = alen;
+        register int32_t s = 0;
+        register int32_t s_sum = 0;
+        register int32_t to_s = alen;
         while(s_sum<to_s) {
         s =  send(amain_socket,&asend_lp[s_sum],to_s-s_sum,0);
         if (s<0) break;
@@ -157,14 +157,14 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::socket::recv_for_sure(SOCKET amain_socket, char *arecv_lp, const __int32 alen, const __int32 ax)
+int32_t __stdcall ts::socket::recv_for_sure(SOCKET amain_socket, char *arecv_lp, const int32_t alen, const int32_t ax)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-        register __int32 r = 0;
-        register __int32 r_sum = 0;
-        register __int32 to_r = alen;
+        register int32_t r = 0;
+        register int32_t r_sum = 0;
+        register int32_t to_r = alen;
         ts::mem32::set(arecv_lp,0,to_r);
         do {
         r = recv(amain_socket,&arecv_lp[r_sum], to_r-r_sum, 0);
@@ -182,10 +182,10 @@ __DEBUG_FUNC_CALLED__
 //---------------------------------------------------------------------------
 
 
-__int32 __stdcall ts::socket::start_tftp_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
+int32_t __stdcall ts::socket::start_tftp_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         SOCKET main_socket;
         SOCKET_BUFFER_CLASS buffer;
@@ -538,10 +538,10 @@ HTTP_GOTO_ERROR_SOCKET:
 
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::socket::start_http_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
+int32_t __stdcall ts::socket::start_http_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         SOCKET main_socket;
         SOCKET_BUFFER_CLASS buffer;
@@ -603,10 +603,10 @@ HTTP_GOTO_ERROR_SOCKET:
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::socket::get_file_size(const char* path)
+int32_t __stdcall ts::socket::get_file_size(const char* path)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         static struct _stat statbuf;
         _stat(path, &statbuf);
@@ -617,7 +617,7 @@ __DEBUG_FUNC_CALLED__
 const char *__stdcall ts::socket::get_file_size_ansi(const char* path)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         static char a[12] = "";
         static struct _stat statbuf;
@@ -626,13 +626,13 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::socket::get_file_content(const char* path, char *filecontent, const __int32 max_size)
+int32_t __stdcall ts::socket::get_file_content(const char* path, char *filecontent, const int32_t max_size)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
         struct _stat statbuf;
-        register __int32 t, filesize, filehandle = open(path, O_RDONLY|O_BINARY);
+        register int32_t t, filesize, filehandle = open(path, O_RDONLY|O_BINARY);
         if (filehandle== -1)
         return -1;
         if (_fstat(filehandle, &statbuf)==-1) {
@@ -654,9 +654,9 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::socket::print_socket_error()
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-#ifdef WIN32
+#ifdef __WIN32__
         int serrorno = WSAGetLastError();
 #else
         int serrorno = errno();

@@ -11,12 +11,12 @@ namespace ts { namespace file {
 //---------------------------------------------------------------------------
 #define SSC_CHECKSUM_SIG "SSC1"
 typedef struct {
-		__int8 s[4];
-		__int8 s_data_range_from[10], s_data_range_to[10];
-		__int8 s_unix_time_t[8];
-		__int8 s_crc32[8];
-		__int8 ssc_bits_count[4];
-		__int8 ssc1024_itoa_in_hex[32];
+		int8_t s[4];
+		int8_t s_data_range_from[10], s_data_range_to[10];
+		int8_t s_unix_time_t[8];
+		int8_t s_crc32[8];
+		int8_t ssc_bits_count[4];
+		int8_t ssc1024_itoa_in_hex[32];
 } __ssc_readable_checksum_struct;
 
 //------------------------------------
@@ -30,7 +30,7 @@ typedef struct {
 		__find_data_struct find_data;
 		HANDLE hand, hand_map;
 		ts::file::__file_buffer_struct map;
-		__int32 readed, size;
+		int32_t readed, size;
 } __open_file_struct;
 //------------------------------------
 time_t __stdcall FILETIME_to_time_t(FILETIME const& ft);

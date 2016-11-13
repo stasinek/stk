@@ -13,14 +13,14 @@ namespace ts {
 class __password_text {
 //---------------------------------------------------------------------------
 		private:
-		__int32 f_size;
+		int32_t f_size;
 		char *f_lp_hash_str, *f_lp_plain_str;
 		public:
 				   __stdcall  __password_text();
 				   __stdcall ~__password_text();
 				   __stdcall operator const char* ();
 		void   __stdcall operator= (const char *a_user_password);
-		__int8 __stdcall size();
+		int8_t __stdcall size();
 		const char  *__stdcall get_hash(void);
 		const char  *__stdcall get(void);
 		void   __stdcall set(const char *a_user_password);

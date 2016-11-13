@@ -1,9 +1,9 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_pharse_command_line.h"
 #include "./../text/tsoft_cstr_manipulation.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 #ifndef __DEBUG_PHARSER__
@@ -13,24 +13,24 @@
 __stdcall ts::__pharser:: __pharser(void)
 {
 #ifdef __DEBUG_PHARSER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-		for (register __int32 x = 0; x < 4; x++) f_result_positions[x]=-1;
+        for (register int32_t x = 0; x < 4; x++) f_result_positions[x]=-1;
 }
 //---------------------------------------------------------------------------
 
 __stdcall ts::__pharser::~__pharser(void)
 {
 #ifdef __DEBUG_PHARSER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__pharser::find(const char *lpsrc, const char *lpparameter_min, const char *lpparameter_normal, const char *lpparameter_alternative, char *r_lpsuboption)
+int32_t __stdcall ts::__pharser::find(const char *lpsrc, const char *lpparameter_min, const char *lpparameter_normal, const char *lpparameter_alternative, char *r_lpsuboption)
 {
 #ifdef __DEBUG_PHARSER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_PHARSER__
 ts::con::prints("__pharser::find(a_src_ptr:%s,lpparameter_min:%s,lpparameter_normal:%s,lpparameter_alternative:%s,",lpsrc,lpparameter_min,lpparameter_normal,lpparameter_alternative);
@@ -44,16 +44,16 @@ ts::con::print("\n");
 		ts::cstr::upr(lpsrc_upr);
 /// illegal char in file name \ / : * ? " < > |
 
-		register __int32 initiator = -1;
-		register __int32 srclen = ts::cstr::len(lpsrc_upr), parameterlen;
+        register int32_t initiator = -1;
+        register int32_t srclen = ts::cstr::len(lpsrc_upr), parameterlen;
 
-//	register __int32 comma_separator1 = ts::cstr::delimiter(lpsrc_upr,'\"',0), comma_separator2 = -1;
+//	register int32_t comma_separator1 = ts::cstr::delimiter(lpsrc_upr,'\"',0), comma_separator2 = -1;
 //	while (comma_separator1!=-1)
 //	{ comma_separator2 = ts::cstr::delimiter(lpsrc_upr,'\"',comma_separator1);
 //	  if (comma_separator2!=-1) comma_separator1 = comma_separator2;
 //		  continue;
 //	}
-//	register __int32 first_file_delimiter = ts::cstr::delimiter(lpsrc_upr,DELIMITER,+1);
+//	register int32_t first_file_delimiter = ts::cstr::delimiter(lpsrc_upr,DELIMITER,+1);
 //	lpsrc_upr[first_file_delimiter] = '\0';
 //	if (first_file_delimiter > 0) {
 //}
@@ -95,8 +95,8 @@ ts::con::print("\n");
 				return 0;
 		}
 //----------------
-		register __int32 start = initiator + parameterlen + 1;
-		register __int32 end = -1;
+        register int32_t start = initiator + parameterlen + 1;
+        register int32_t end = -1;
 //----------------
 		if (lpsrc[start-1]=='-' || lpsrc[start-1]==' ' || start+2 > srclen ? true : lpsrc[start-1]!='(' && lpsrc[start-1]!='[' && lpsrc[start-1]!='<') {
 				if (r_lpsuboption!=NULL) r_lpsuboption[0] = '\0';
@@ -143,7 +143,7 @@ ts::con::print("\n");
 void __stdcall ts::__pharser::delete_found(char *lpsrc)
 {
 #ifdef __DEBUG_PHARSER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		if (lpsrc!=f_result_base) return;
 #ifdef __DEBUG_PHARSER__

@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 //---------------------------------------------------------------------------
 #include "tsoft_hash_md5.h"
 //---------------------------------------------------------------------------
@@ -39,25 +39,25 @@ static uint32_t  h[4];
 void __stdcall ts::hash::md5::reset_MD5(void)
 {
 #ifdef __DEBUG_HASH_MD5__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 }
 //---------------------------------------------------------------------------
 
-const uint32_t*  __stdcall ts::hash::md5::calc_MD5(const char *a_data, __int32 a_len)
+const uint32_t*  __stdcall ts::hash::md5::calc_MD5(const char *a_data, const uint32_t a_len)
 {
 #ifdef __DEBUG_HASH_MD5__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-                __int8 *data_chunk = NULL;
-                __int8 *last_data_chunk = NULL;
-                __int32 final_len = 512;
-                __int32 bits_len;
-                __int32 offset, last_data_chunk_offset = 0;
-                __int32 *w;
-                __int32 a, b, c, d, i, f, g, temp;
+                int8_t *data_chunk = NULL;
+                int8_t *last_data_chunk = NULL;
+                int32_t final_len = 512;
+                int32_t bits_len;
+                int32_t offset, last_data_chunk_offset = 0;
+                int32_t *w;
+                int32_t a, b, c, d, i, f, g, temp;
                 // per-round shift amounts
-                const __int32 r[] = {   7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
+                const int32_t r[] = {   7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
                                                         5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20,
                                                         4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
                                                         6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
@@ -74,7 +74,7 @@ __DEBUG_FUNC_CALLED__
                 // Pre-processing: padding with zeros
                 // append "0" bit until message length in bit ? 448 (mod 512)
                 // append length mod (2 pow 64) to message
-                data_chunk = (__int8*)calloc(final_len + 64, 1); // also appends "0" bits
+                data_chunk = (int8_t*)calloc(final_len + 64, 1); // also appends "0" bits
                 // (we alloc also 64 extra bytes...)
                 ts::mem32::mov(last_data_chunk, a_data, a_len);
                 data_chunk[a_len] = 0x10L; // write the "1" bit
@@ -84,8 +84,8 @@ __DEBUG_FUNC_CALLED__
                 //for each 512-bit chunk of message:
                 for(offset=0; offset < final_len; offset += (512/8)) {
                                 // break chunk into sixteen 32-bit words w[j], 0 ? j ? 15
-                                if (offset!=last_data_chunk_offset) w = (__int32 *) (data_chunk + offset);
-                                else w = (__int32*)(last_data_chunk);
+                                if (offset!=last_data_chunk_offset) w = (int32_t *) (data_chunk + offset);
+                                else w = (int32_t*)(last_data_chunk);
                                 // initialize hash value for this chunk:
                                 a = h[0];
                                 b = h[1];

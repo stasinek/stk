@@ -32,7 +32,7 @@ __stdcall ts::__database_items::~__database_items()
 }
 //---------------------------------------------------------------------------
 /*
-const ts::__database_items::__atom* __stdcall ts::__database_items::operator [] (const __int32 a_index)
+const ts::__database_items::__atom* __stdcall ts::__database_items::operator [] (const int32_t a_index)
 {
 // instead of placeing static __atom there, and double the code for setting it, use special +count reserved object on list for const protected version of this function
 // class destructor would delete it anyway after class cleanup, static object wouldnt?
@@ -45,25 +45,25 @@ return f_atom_matrix[count()];
 */
 //---------------------------------------------------------------------------
 
-const ts::__database_items::__atom* __stdcall ts::__database_items::operator [] (__int32 a_index) const
+const ts::__database_items::__atom* __stdcall ts::__database_items::operator [] (int32_t a_index) const
 {
 		return f_atom_matrix[a_index];
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::count() const
+int32_t __stdcall ts::__database_items::count() const
 {
 		return f_atom_matrix_count;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::set_count(const uint32_t a_count)
+int32_t __stdcall ts::__database_items::set_count(const uint32_t a_count)
 {
 		if (f_atom_matrix_count==a_count) return a_count;
 		if (f_atom_matrix_count< a_count) {
 				if (f_atom_matrix_count==0 && a_count>0) f_atom_matrix = (ts::__database_items::__atom**)ts::mem32::alloc(a_count * sizeof(ts::__database_items::__atom*));
 		   else f_atom_matrix =(ts::__database_items::__atom**)ts::mem32::realloc((void*)f_atom_matrix,a_count * sizeof(ts::__database_items::__atom*));
-		   for (__int32 iT = f_atom_matrix_count; iT < a_count; iT++)
+		   for (int32_t iT = f_atom_matrix_count; iT < a_count; iT++)
 				   {
 						f_atom_matrix[iT] = (ts::__database_items::__atom*)ts::mem32::alloc(sizeof(ts::__database_items::__atom));
 						f_atom_matrix[iT]->text_size = 32;
@@ -73,7 +73,7 @@ __int32 __stdcall ts::__database_items::set_count(const uint32_t a_count)
 				f_atom_matrix_count =a_count;
 				return a_count;
 		} else {
-		   for (__int32 iT = a_count; iT < f_atom_matrix_count; iT++)
+		   for (int32_t iT = a_count; iT < f_atom_matrix_count; iT++)
 				   {
 						ts::cstr::free(f_atom_matrix[iT]->text); //kasowanie atoma
 						f_atom_matrix[iT]->text = NULL;
@@ -92,9 +92,9 @@ __int32 __stdcall ts::__database_items::set_count(const uint32_t a_count)
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::__database_items::set(const __int32 a_index_S, const ts::__database_items::__atom *a_atom)
+void __stdcall ts::__database_items::set(const int32_t a_index_S, const ts::__database_items::__atom *a_atom)
 {
-		for (register __int32 x = 0; x < ATOM_ELEMENT_SIZE; x++) {
+		for (register int32_t x = 0; x < ATOM_ELEMENT_SIZE; x++) {
 				f_atom_matrix[a_index_S]->number[x] = a_atom->number[x];
 				f_atom_matrix[a_index_S]->data[x]   = a_atom->data[x];
 		}
@@ -102,9 +102,9 @@ void __stdcall ts::__database_items::set(const __int32 a_index_S, const ts::__da
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::__database_items::set_text(const __int32 a_index_S, const char *a_text)
+void __stdcall ts::__database_items::set_text(const int32_t a_index_S, const char *a_text)
 {
-		register __int32 a_size = ts::cstr::len(a_text);
+		register int32_t a_size = ts::cstr::len(a_text);
 
 		if(a_size > f_atom_matrix[a_index_S]->text_size || a_size < f_atom_matrix[a_index_S]->text_size) {
 		   f_atom_matrix[a_index_S]->text_size = a_size;
@@ -114,57 +114,57 @@ void __stdcall ts::__database_items::set_text(const __int32 a_index_S, const cha
 }
 //---------------------------------------------------------------------------
 
-void	__stdcall ts::__database_items::set_text_size(const __int32 a_index_S, const __int32 a_text_size)
+void	__stdcall ts::__database_items::set_text_size(const int32_t a_index_S, const int32_t a_text_size)
 {
 		f_atom_matrix[a_index_S]->text = ts::cstr::realloc(f_atom_matrix[a_index_S]->text,a_text_size + 1);
 }
 //---------------------------------------------------------------------------
 
-void	__stdcall ts::__database_items::set_number(const __int32 a_index_S, const __int32 a_column_Y, const __int32 a_value)
+void	__stdcall ts::__database_items::set_number(const int32_t a_index_S, const int32_t a_column_Y, const int32_t a_value)
 {
 		f_atom_matrix[a_index_S]->number[a_column_Y] = a_value;
 }
 //---------------------------------------------------------------------------
 
-void	__stdcall ts::__database_items::set_data(const __int32 a_index_S, const __int32 a_column_Y, void *a_pointer)
+void	__stdcall ts::__database_items::set_data(const int32_t a_index_S, const int32_t a_column_Y, void *a_pointer)
 {
 		f_atom_matrix[a_index_S]->data[a_column_Y] = a_pointer;
 }
 //---------------------------------------------------------------------------
 
-const ts::__database_items::__atom *__stdcall ts::__database_items::get(const __int32 a_index_G) const
+const ts::__database_items::__atom *__stdcall ts::__database_items::get(const int32_t a_index_G) const
 {
 		return f_atom_matrix[a_index_G];
 }
 //---------------------------------------------------------------------------
 
-const char *__stdcall ts::__database_items::get_text(const __int32 a_index_G) const
+const char *__stdcall ts::__database_items::get_text(const int32_t a_index_G) const
 {
 		return f_atom_matrix[a_index_G]->text;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::get_text_size(const __int32 a_index_G) const
+int32_t __stdcall ts::__database_items::get_text_size(const int32_t a_index_G) const
 {
 		return  f_atom_matrix[a_index_G]->text_size;
 }
 //---------------------------------------------------------------------------
 
-void   *__stdcall ts::__database_items::get_data(const __int32 a_index_G, const __int32 a_column_Y) const
+void   *__stdcall ts::__database_items::get_data(const int32_t a_index_G, const int32_t a_column_Y) const
 {
 		return  f_atom_matrix[a_index_G]->data[a_column_Y];
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::get_number(const __int32 a_index_G, const __int32 a_column_Y) const
+int32_t __stdcall ts::__database_items::get_number(const int32_t a_index_G, const int32_t a_column_Y) const
 {
 		return f_atom_matrix[a_index_G]->number[a_column_Y];
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::search_data(const __int32 a_istart, const __int32 a_column_Y, const void *a_pointer) const
+int32_t __stdcall ts::__database_items::search_data(const int32_t a_istart, const int32_t a_column_Y, const void *a_pointer) const
 {
-		for (__int32 iT = a_istart; iT < count(); iT++) {
+		for (int32_t iT = a_istart; iT < count(); iT++) {
 				if (f_atom_matrix[iT]->data[a_column_Y]==a_pointer) {
 						return iT;
 				}
@@ -173,9 +173,9 @@ __int32 __stdcall ts::__database_items::search_data(const __int32 a_istart, cons
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::search_number(const __int32 a_istart, const __int32 a_column_Y, __int32 a_number) const
+int32_t __stdcall ts::__database_items::search_number(const int32_t a_istart, const int32_t a_column_Y, int32_t a_number) const
 {
-		for (__int32 iT = a_istart; iT < count(); iT++) {
+		for (int32_t iT = a_istart; iT < count(); iT++) {
 				if (f_atom_matrix[iT]->number[a_column_Y]==a_number) {
 						return iT;
 				}
@@ -184,9 +184,9 @@ __int32 __stdcall ts::__database_items::search_number(const __int32 a_istart, co
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::search_text(const __int32 a_istart, const char* __restrict__ a_Char) const
+int32_t __stdcall ts::__database_items::search_text(const int32_t a_istart, const char* __restrict__ a_Char) const
 {
-		for (__int32 iT = a_istart; iT < count(); iT++)  {
+		for (int32_t iT = a_istart; iT < count(); iT++)  {
 				if (ts::cstr::cmpex(f_atom_matrix[iT]->text,a_Char)==0) {
 						return iT;
 				}
@@ -195,7 +195,7 @@ __int32 __stdcall ts::__database_items::search_text(const __int32 a_istart, cons
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::add(const ts::__database_items::__atom * __restrict__ a_atom)
+int32_t __stdcall ts::__database_items::add(const ts::__database_items::__atom * __restrict__ a_atom)
 {
 		set_count(count()+1);
 		set(count()-1, a_atom);
@@ -203,7 +203,7 @@ __int32 __stdcall ts::__database_items::add(const ts::__database_items::__atom *
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::add_text(const char* __restrict__ a_text)
+int32_t __stdcall ts::__database_items::add_text(const char* __restrict__ a_text)
 {
 		set_count(count()+1);
 		set_text(count()-1, a_text);
@@ -211,12 +211,12 @@ __int32 __stdcall ts::__database_items::add_text(const char* __restrict__ a_text
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::insert(const __int32 a_index, const ts::__database_items::__atom *a_atom)
+int32_t __stdcall ts::__database_items::insert(const int32_t a_index, const ts::__database_items::__atom *a_atom)
 {
 		set_count(count()+1);
 		static ts::__database_items::__atom c_atom;
 		ts::mem32::mov(&c_atom,f_atom_matrix[count()-1],sizeof(ts::__database_items::__atom));
-		for (__int32 iT = count()-1; iT > a_index; iT--) {
+		for (int32_t iT = count()-1; iT > a_index; iT--) {
 				ts::mem32::mov(f_atom_matrix[iT],f_atom_matrix[iT-1], sizeof(ts::__database_items::__atom));
 		}
 		ts::mem32::mov(f_atom_matrix[a_index],&c_atom,sizeof(ts::__database_items::__atom));
@@ -225,10 +225,10 @@ __int32 __stdcall ts::__database_items::insert(const __int32 a_index, const ts::
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__database_items::cut(const __int32 a_index)
+int32_t __stdcall ts::__database_items::cut(const int32_t a_index)
 {
 		ts::__database_items::__atom *d_atom = f_atom_matrix[a_index];
-		for (__int32 iT = a_index; iT < count()-1; iT++) {
+		for (int32_t iT = a_index; iT < count()-1; iT++) {
 				ts::mem32::mov(f_atom_matrix[iT],f_atom_matrix[iT+1], sizeof(ts::__database_items::__atom));
 		}
 		ts::mem32::mov(f_atom_matrix[count()-1],&d_atom[0], sizeof(ts::__database_items::__atom));
@@ -237,7 +237,7 @@ __int32 __stdcall ts::__database_items::cut(const __int32 a_index)
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::__database_items::swap(const __int32 a_index_1, const __int32 a_index_2)
+void __stdcall ts::__database_items::swap(const int32_t a_index_1, const int32_t a_index_2)
 {
 		ts::__database_items::__atom  *e_atom = f_atom_matrix[a_index_1];
 		ts::mem32::mov(f_atom_matrix[a_index_1],f_atom_matrix[a_index_2], sizeof(ts::__database_items::__atom));
@@ -247,8 +247,8 @@ void __stdcall ts::__database_items::swap(const __int32 a_index_1, const __int32
 
 void __stdcall ts::__database_items::sort_text()
 {
-		for (__int32 index1 = 0; index1 < count(); index1++)
-		for (__int32 index2 = index1 + 1; index2 < count(); index2++) {
+		for (int32_t index1 = 0; index1 < count(); index1++)
+		for (int32_t index2 = index1 + 1; index2 < count(); index2++) {
 				if (ts::cstr::cmpex(f_atom_matrix[index1]->text,f_atom_matrix[index2]->text) > 0) {
 						swap(index1, index2);
 				}
@@ -256,11 +256,11 @@ void __stdcall ts::__database_items::sort_text()
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::__database_items::sort_number(const __int32 a_column)
+void __stdcall ts::__database_items::sort_number(const int32_t a_column)
 {
-		register __int32 column = a_column;
-		for (__int32 index1 = 0; index1 < count(); index1++)
-		for (__int32 index2 = index1 + 1; index2 < count(); index2++) {
+		register int32_t column = a_column;
+		for (int32_t index1 = 0; index1 < count(); index1++)
+		for (int32_t index2 = index1 + 1; index2 < count(); index2++) {
 				if (f_atom_matrix[index1]->number[column] > f_atom_matrix[index2]->number[column]) {
 						swap(index1, index2);
 				}
@@ -268,11 +268,11 @@ void __stdcall ts::__database_items::sort_number(const __int32 a_column)
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::__database_items::sort_data(const __int32 a_column)
+void __stdcall ts::__database_items::sort_data(const int32_t a_column)
 {
-		register __int32 column = a_column;
-		for (__int32 index1 = 0; index1 < count(); index1++)
-		for (__int32 index2 = index1 + 1; index2 < count(); index2++) {
+		register int32_t column = a_column;
+		for (int32_t index1 = 0; index1 < count(); index1++)
+		for (int32_t index2 = index1 + 1; index2 < count(); index2++) {
 				if (f_atom_matrix[index1]->data[column] > f_atom_matrix[index2]->data[column]) {
 						swap(index1, index2);
 				}
@@ -330,13 +330,13 @@ return text_FROM_DATA(&fcsv,Owner,CSV);
 }
 
 
-__int32 __stdcall ts::__database::Include(ts::__database *a_database)
+int32_t __stdcall ts::__database::Include(ts::__database *a_database)
 {
  if (a_database==NULL)
 		 {return count();
 		 }
 else
-		 {__int32  iT = count(), iX = iT + a_database->count(); this->count() = iX;
+		 {int32_t  iT = count(), iX = iT + a_database->count(); this->count() = iX;
 		  for (;iT < iX; iT++)
 						{Items[iT]=a_database->items[iT];
 						}

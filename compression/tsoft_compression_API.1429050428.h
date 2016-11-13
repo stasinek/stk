@@ -8,43 +8,43 @@
 #include "./../io/tsoft_file_eno_header.h"
 /*
 //FOR DEBUGING, STATISTICS OF USE LENGHT CODES
-extern __int32 *hist_l_dict;
-extern __int32 hist_l_dict_max;
-extern __int32 *hist_o_dict;
-extern __int32 hist_o_dict_max;
-extern __int32 *hist_l_brun;
-extern __int32 hist_l_brun_max;
-extern __int32 *hist_e_brun;
-extern __int32 hist_e_brun_max;
-extern __int32 *hist_l_pass;
-extern __int32 hist_l_pass_max;
+extern int32_t *hist_l_dict;
+extern int32_t hist_l_dict_max;
+extern int32_t *hist_o_dict;
+extern int32_t hist_o_dict_max;
+extern int32_t *hist_l_brun;
+extern int32_t hist_l_brun_max;
+extern int32_t *hist_e_brun;
+extern int32_t hist_e_brun_max;
+extern int32_t *hist_l_pass;
+extern int32_t hist_l_pass_max;
 */
 //---------------------------------------------------------------------------
 namespace ts { namespace compression {
 void __stdcall test(void);
 //---------------------------------------------------------------------------
 #ifdef LZSSv4_HDR
-#define LZS_TRASH_BPB(bufsize,block) (__int32)(bufsize/1)
+#define LZS_TRASH_BPB(bufsize,block) (int32_t)(bufsize/1)
 #endif
-__int32 __stdcall   compress_LZS(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const __int32 adict);
+int32_t __stdcall   compress_LZS(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const int32_t adict);
 void __stdcall uncompress_LZS(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
 #ifdef LZSSv4_HDR
-#define HUF_TRASH_BPB(bufsize) (__int32)(bufsize/1)
+#define HUF_TRASH_BPB(bufsize) (int32_t)(bufsize/1)
 #endif
-__int32 __stdcall   compress_HUF(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const __int32 ablock);
+int32_t __stdcall   compress_HUF(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const int32_t ablock);
 void __stdcall uncompress_HUF(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
 #ifdef LZSSv4_HDR
-#define ARI_TRASH_BPB(bufsize) (__int32)(bufsize/1)
+#define ARI_TRASH_BPB(bufsize) (int32_t)(bufsize/1)
 #endif
-__int32 __stdcall   compress_ARI(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const __int32 ablock);
+int32_t __stdcall   compress_ARI(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const int32_t ablock);
 void __stdcall uncompress_ARI(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
 #ifdef LZSSv4_HDR
-#define BWT_TRASH_BPB(bufsize,block) (__int32)(2+2+(2*bufsize)/block)
+#define BWT_TRASH_BPB(bufsize,block) (int32_t)(2+2+(2*bufsize)/block)
 #endif
-__int32 __stdcall   compress_BWT(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const __int32 ablock);
+int32_t __stdcall   compress_BWT(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const int32_t ablock);
 void __stdcall uncompress_BWT(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
 }}
@@ -58,23 +58,23 @@ void __stdcall uncompress_BWT(void *a_dst_ptr, const uint32_t a_count, const voi
 #define MAX32_RLE_SIZE 0x1FFFFFFFL
 #define TAG32_RLE_BIT  0x04L
 #define TAG32_RLE_SIZE 3
-#define RLE_TRASH_BPB(bufsize) (__int32)(8)
-__int32 __stdcall compress_RLE(void *a_dst_ptr, void *a_src_ptr, uint32_t a_count);
+#define RLE_TRASH_BPB(bufsize) (int32_t)(8)
+int32_t __stdcall compress_RLE(void *a_dst_ptr, void *a_src_ptr, uint32_t a_count);
 void __stdcall uncompress_RLE(void *a_dst_ptr, uint32_t a_count, void *a_src_ptr);
 //---------------------------------------------------------------------------
 */
 //---------------------------------------------------------------------------
 /*
-typedef __int8 __intRLE;
+typedef int8_t __intRLE;
 //---------------------------------------------------------------------------
 
-__int32 __stdcall compress_RLE(void *a_dst_ptr,void *a_src_ptr,uint32_t a_count)
+int32_t __stdcall compress_RLE(void *a_dst_ptr,void *a_src_ptr,uint32_t a_count)
 {
-__int32	 ptrs = (__int32)a_src_ptr;
-__int32 ptrs_end = (__int32)a_src_ptr + size_t(a_count);
-__int32	 ptrd = (__int32)a_dst_ptr;
+int32_t	 ptrs = (int32_t)a_src_ptr;
+int32_t ptrs_end = (int32_t)a_src_ptr + size_t(a_count);
+int32_t	 ptrd = (int32_t)a_dst_ptr;
 
-__int32 iP,iL; bool exit = false;
+int32_t iP,iL; bool exit = false;
 register __intRLE *acc;
 //
 for (;exit==false;)
@@ -160,19 +160,19 @@ for (;exit==false;)
 	}
 for (;ptrs < ptrs_end;)
 	{
-	 *((__int8*)ptrd++) = *((__int8*)ptrs++);
+	 *((int8_t*)ptrd++) = *((int8_t*)ptrs++);
 	}
-return (__int32)ptrd - (__int32)a_dst_ptr;
+return (int32_t)ptrd - (int32_t)a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
 void __stdcall uncompress_RLE(void *a_dst_ptr,uint32_t a_count, void *a_src_ptr)
 {
-__int32	 ptrs = (__int32)a_src_ptr;
-__int32	 ptrd = (__int32)a_dst_ptr;
-__int32 ptrd_end = (__int32)a_dst_ptr + size_t(a_count);
+int32_t	 ptrs = (int32_t)a_src_ptr;
+int32_t	 ptrd = (int32_t)a_dst_ptr;
+int32_t ptrd_end = (int32_t)a_dst_ptr + size_t(a_count);
 //
-register __int32 iX;
+register int32_t iX;
 
 for (;ptrd <= ptrd_end - sizeof(__intRLE);)
 	{
@@ -220,7 +220,7 @@ RLE_LOADDIFFRENT:
 	}
 for (;ptrd < ptrd_end;)
 	{
-	*((__int8*)ptrd++) = *((__int8*)ptrs++);
+	*((int8_t*)ptrd++) = *((int8_t*)ptrs++);
 	}
 }*/
 #endif

@@ -33,16 +33,16 @@
 ts::__kop32_class *kop32;
 static ts::__kop32_class_progress_controler console_progress(kop32);
 
-/*__int32 *hist_l_dict;
-__int32 hist_l_dup_max;
-__int32 *hist_l_brun;
-__int32 hist_l_pattern_max;
-__int32 *hist_l_pass;
-__int32 hist_l_plain_max;
-__int32 *hist_o_dict;
-__int32 hist_o_dup_max;
-__int32 *hist_e_brun;
-__int32 hist_e_pattern_max;
+/*int32_t *hist_l_dict;
+int32_t hist_l_dup_max;
+int32_t *hist_l_brun;
+int32_t hist_l_pattern_max;
+int32_t *hist_l_pass;
+int32_t hist_l_plain_max;
+int32_t *hist_o_dict;
+int32_t hist_o_dup_max;
+int32_t *hist_e_brun;
+int32_t hist_e_pattern_max;
 */
 
 static uint32_t rdtsc_b;
@@ -98,7 +98,7 @@ int __stdcall classic_monitor_proc()
                                                           1024);
 // FILE NAME "?????.???"
 //kop32->list->src_main_list->items[kop32->list->cur_i];
-        ts::cstr::extract_file_name(szTmp, kop32->list->src_main_list->items()->get_text(kop32->list->cur_i));
+        ts::cstr::get_file_name(szTmp, kop32->list->src_main_list->items()->get_text(kop32->list->cur_i));
         if (ts::cstr::len(szTmp) > 30-3) {
                 szTmp[30] = 0;
                 strcat(szTmp, "...");
@@ -139,7 +139,7 @@ int __stdcall start_kop32_in_text_mode(char *args, ts::__kop32_class_progress_co
         journal.create();
         char *c_temp = new char[1024];
         ts::cstr::mov(c_temp, "\0");
-        //__int32 s = ::GetModuleFileNameA(NULL, c_temp, MAX_PATH);
+        //int32_t s = ::GetModuleFileNameA(NULL, c_temp, MAX_PATH);
         if (ts::cstr::len(args) <=8) {
                 if (strstr(args, "-L") != NULL || strstr(args, "--LICENSE") != NULL ||
                                 strstr(args, "/LICENSE") != NULL) {
@@ -213,14 +213,14 @@ int __stdcall start_kop32_in_text_mode(char *args, ts::__kop32_class_progress_co
                 ts::con::prints("============================================================================\n");
                 ts::con::prints("\n");
         } else {
-                ts::con::prints("size in                    :  %uB\n", (__int32)console_progress.src->all->readed);
+                ts::con::prints("size in                    :  %uB\n", (int32_t)console_progress.src->all->readed);
                 if (kop32->options->operation == OPERATION_ENCODE
                                 &&  console_progress.src->all->readed!=0) {
                         ts::con::prints("compression ratio  :  ");
                         ratio = double(console_progress.dst->all->readed) / double(console_progress.src->all->readed);
                         ts::con::prints("%.2lf%%, %.2lf bit/B vs 8 bit/B\n", 100 *(ratio), 8 *ratio);
                 }
-                ts::con::prints("size out              :  %uB\n", (__int32)console_progress.dst->all->readed);
+                ts::con::prints("size out              :  %uB\n", (int32_t)console_progress.dst->all->readed);
                 ts::con::prints("============================================================================\n");
                 ts::con::prints("Time                          :  %.2lfs\n", (double)(console_progress.elapsed()));
                 if (console_progress.elapsed()!=0)
@@ -335,10 +335,10 @@ return  mon->error_handler(a,b);
 /*
 #include <time.h>
 #include <dos.h>
-__int64 GetCPUClocks()
+int64_t GetCPUClocks()
 {
 // Counter
-__int32 low, high;
+int32_t low, high;
 // Use RDTSC instruction to get clocks count
 __asm push EAX
 __asm push EDX
@@ -368,7 +368,7 @@ return 0;
 
 
 /*/// testy bibliotek po zmianie wstawek assemblera x86 na czyste C
-        __int8 bla[8], d[8];
+        int8_t bla[8], d[8];
         for (int x = 0; x < 8; x++)
                 {
                 bla[x] = x;
@@ -392,24 +392,24 @@ return 0;
         hist_l_pattern_max = 1;
         hist_e_pattern_max = 1;
         hist_l_plain_max = 1;
-        __int32 i, x;
-        hist_o_dict = new __int32[DUP_OFFSET_MAX / 256+1];
+        int32_t i, x;
+        hist_o_dict = new int32_t[DUP_OFFSET_MAX / 256+1];
         for (i = 0, x = 0; i <= DUP_OFFSET_MAX / 256 && hist_o_dup_max == 1; i++)
                 hist_o_dict[i] = 0;
 // for debuging,statistics
-        hist_l_dict = new __int32[DUP_LEN_MAX + 1];
+        hist_l_dict = new int32_t[DUP_LEN_MAX + 1];
         for (i = 0, x = 0; i <= DUP_LEN_MAX && hist_l_dup_max == 1; i++)
                 hist_l_dict[i] = 0;
 // for debuging,statistics
-        hist_e_brun = new __int32[4+1];
+        hist_e_brun = new int32_t[4+1];
         for (i = 0, x = 0; i <= 4 && hist_e_pattern_max == 1; i++)
                 hist_e_brun[i] = 0;
 // for debuging,statistics
-        hist_l_brun = new __int32[PATTERN_LEN_MAX + 1];
+        hist_l_brun = new int32_t[PATTERN_LEN_MAX + 1];
         for (i = 0, x = 0; i <= PATTERN_LEN_MAX && hist_l_pattern_max == 1; i++)
                 hist_l_brun[i] = 0;
 // for debuging,statistics
-        hist_l_pass = new __int32[PLAIN_LEN_MAX + 1];
+        hist_l_pass = new int32_t[PLAIN_LEN_MAX + 1];
         for (i = 0, x = 0; i <= PLAIN_LEN_MAX && hist_l_plain_max == 1; i++)
                 hist_l_pass[i] = 0;
 // for debuging,statistics
@@ -421,9 +421,9 @@ return 0;
                 {
 //-------------------------------------------------------------------
                 fprintf(journal.get_stream(),
-                        "TOTAL BYTES IN:%d\nTOTAL BYTES OUT:%d\nRATIO:%.2lf%%, %.2lf bit/B\nTIME: %.2lfs\nSPEED %.2lfkB/s\n", (__int32)console_progress.src->all->readed, (__int32)console_progress.dst->all->readed, 100 *(ratio), 8 *ratio, (double)(console_progress.T2 - console_progress.T1 + 1) / 1000.0, (double)console_progress.src->all->readed / (double)(console_progress.T2 - console_progress.T1 + 1) / 1024);
+                        "TOTAL BYTES IN:%d\nTOTAL BYTES OUT:%d\nRATIO:%.2lf%%, %.2lf bit/B\nTIME: %.2lfs\nSPEED %.2lfkB/s\n", (int32_t)console_progress.src->all->readed, (int32_t)console_progress.dst->all->readed, 100 *(ratio), 8 *ratio, (double)(console_progress.T2 - console_progress.T1 + 1) / 1000.0, (double)console_progress.src->all->readed / (double)(console_progress.T2 - console_progress.T1 + 1) / 1024);
 //-------------------------------------------------------------------
-                __int32 l, h;
+                int32_t l, h;
 //-------------------------------------------------------------------
                 l = 0, h = 0;
                 fprintf(journal.get_stream(), "GLOBALLY NORMAL DUP LENGHTS\n");

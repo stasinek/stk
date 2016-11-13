@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 //
 // CONSOLE APP
@@ -20,25 +20,25 @@
 //---------------------------------------------------------------------------
 // The main class
 //---------------------------------------------------------------------------
-/*__int32 *hist_l_dict;
-__int32 hist_l_dup_max;
-__int32 *hist_l_brun;
-__int32 hist_l_pattern_max;
-__int32 *hist_l_pass;
-__int32 hist_l_plain_max;
-__int32 *hist_o_dict;
-__int32 hist_o_dup_max;
-__int32 *hist_e_brun;
-__int32 hist_e_pattern_max;
+/*int32_t *hist_l_dict;
+int32_t hist_l_dup_max;
+int32_t *hist_l_brun;
+int32_t hist_l_pattern_max;
+int32_t *hist_l_pass;
+int32_t hist_l_plain_max;
+int32_t *hist_o_dict;
+int32_t hist_o_dup_max;
+int32_t *hist_e_brun;
+int32_t hist_e_pattern_max;
 */
 
 //---------------------------------------------------------------------------
 // The callback function
 //---------------------------------------------------------------------------
-__int32 __stdcall ts::__kop32::console_monitor_proc(ts::__kop32_class *akop)
+int32_t __stdcall ts::__kop32::console_monitor_proc(ts::__kop32_class *akop)
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("console_monitor_proc(this*)")
 #endif
 		static char szPrb[13] = "[				  ]";
 		static UINT nPos = 0;
@@ -68,7 +68,7 @@ __DEBUG_FUNC_CALLED__
 				ts::con::prints("%.2lfkB/s> ", double(akop->progress->src->all->readed) / double(akop->progress->elapsed()) /
 														  1024);
 // FILE NAME "?????.???"
-		ts::cstr::extract_file_name(szTmp, akop->list->src_main_list->items()->get_text(akop->list->cur_i));
+		ts::cstr::get_file_name(szTmp, akop->list->src_main_list->items()->get_text(akop->list->cur_i));
 		if (ts::cstr::len(szTmp) > 30-3) {
 				szTmp[30] = 0;
 				strcat(szTmp, "...");
@@ -86,7 +86,7 @@ __DEBUG_FUNC_CALLED__
 const char *__stdcall ts::__kop32::console_event_handler(ts::__kop32_class *akop,const char *aevent, const char *acode, const char *acode_ex)
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("console_event_handler(...)")
 #endif
 		if (ts::cstr::compare(aevent,"PROGRESS")==0)
 		{
@@ -167,14 +167,14 @@ __DEBUG_FUNC_CALLED__
 				ts::con::print("\r\n");
 				ts::con::prints("Operation finished!\r\n");
 				ts::con::printr("==========",8);
-				ts::con::prints("Size in\t\t\t%uB\r\n",(__int32)akop->progress->src->all->readed);
+				ts::con::prints("Size in\t\t\t%uB\r\n",(int32_t)akop->progress->src->all->readed);
 				if (akop->options->operation == OPERATION_ENCODE
 				&&  akop->progress->src->all->readed!=0) {
 						ts::con::prints("Compression ratio\t");
 						ratio = double(akop->progress->dst->all->readed) / double(akop->progress->src->all->readed);
 						ts::con::prints("%.2lf%%, %.2lf bit/B vs 8 bit/B\r\n", 100 *(ratio), 8 *ratio);
 				}
-				ts::con::prints("Size out\t\t%uB\r\n", (__int32)akop->progress->dst->all->readed);
+				ts::con::prints("Size out\t\t%uB\r\n", (int32_t)akop->progress->dst->all->readed);
 				ts::con::printr("----------",8);
 				ts::con::prints("Time\t\t\t%.2lfs\r\n", (double)(akop->progress->elapsed()));
 				if (akop->progress->elapsed()!=0)
@@ -207,26 +207,26 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::__kop32::set_console_handlers(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*))
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("set_console_handlers()")
 #endif
 ts::con::set_console_handlers(a_getch_event_handler,a_print_event_handler,a_error_event_handler);
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32::start_in_console_mode(const char *args)
+int32_t __stdcall ts::__kop32::start_in_console_mode(const char *args)
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("start_in_console_mode()")
 #endif
-		__int32 ret = start(args,&ts::__kop32::console_event_handler);
+		int32_t ret = start(args,&ts::__kop32::console_event_handler);
 		 return ret;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32::start(const char *args, const char* (__stdcall *a_kop32_event_handler)(ts::__kop32_class*,const char*,const char*,const char*))
+int32_t __stdcall ts::__kop32::start(const char *args, const char* (__stdcall *a_kop32_event_handler)(ts::__kop32_class*,const char*,const char*,const char*))
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("start()")
 #endif
 		ts::__kop32_class *kop32 = new ts::__kop32_class;
 		if (a_kop32_event_handler!=NULL) kop32->progress->callback_event_handler = a_kop32_event_handler;
@@ -234,7 +234,7 @@ __DEBUG_FUNC_CALLED__
 		journal->create();
 		char *c_temp = new char[1024];
 		ts::cstr::mov(c_temp, "\0");
-		//__int32 s = ::GetModuleFileNameA(NULL, c_temp, MAX_PATH);
+		//int32_t s = ::GetModuleFileNameA(NULL, c_temp, MAX_PATH);
 		if (ts::cstr::len(args) <=8)
 		{
 				if (strstr(args, "-L") != NULL || strstr(args, "--LICENSE") != NULL || strstr(args, "/LICENSE") != NULL)
@@ -359,10 +359,10 @@ return	mon->error_handler(a,b);
 /*
 #include <time.h>
 #include <dos.h>
-__int64 GetCPUClocks()
+int64_t GetCPUClocks()
 {
 // Counter
-__int32 low, high;
+int32_t low, high;
 // Use RDTSC instruction to get clocks count
 __asm push EAX
 __asm push EDX
@@ -392,7 +392,7 @@ return 0;
 
 
 /*/// testy bibliotek po zmianie wstawek assemblera x86 na czyste C
-		__int8 bla[8], d[8];
+		int8_t bla[8], d[8];
 		for (int x = 0; x < 8; x++)
 				{
 				bla[x] = x;
@@ -416,24 +416,24 @@ return 0;
 		hist_l_pattern_max = 1;
 		hist_e_pattern_max = 1;
 		hist_l_plain_max = 1;
-		__int32 i, x;
-		hist_o_dict = new __int32[DUP_OFFSET_MAX / 256+1];
+		int32_t i, x;
+		hist_o_dict = new int32_t[DUP_OFFSET_MAX / 256+1];
 		for (i = 0, x = 0; i <= DUP_OFFSET_MAX / 256 && hist_o_dup_max == 1; i++)
 				hist_o_dict[i] = 0;
 // for debuging,statistics
-		hist_l_dict = new __int32[DUP_LEN_MAX + 1];
+		hist_l_dict = new int32_t[DUP_LEN_MAX + 1];
 		for (i = 0, x = 0; i <= DUP_LEN_MAX && hist_l_dup_max == 1; i++)
 				hist_l_dict[i] = 0;
 // for debuging,statistics
-		hist_e_brun = new __int32[4+1];
+		hist_e_brun = new int32_t[4+1];
 		for (i = 0, x = 0; i <= 4 && hist_e_pattern_max == 1; i++)
 				hist_e_brun[i] = 0;
 // for debuging,statistics
-		hist_l_brun = new __int32[PATTERN_LEN_MAX + 1];
+		hist_l_brun = new int32_t[PATTERN_LEN_MAX + 1];
 		for (i = 0, x = 0; i <= PATTERN_LEN_MAX && hist_l_pattern_max == 1; i++)
 				hist_l_brun[i] = 0;
 // for debuging,statistics
-		hist_l_pass = new __int32[PLAIN_LEN_MAX + 1];
+		hist_l_pass = new int32_t[PLAIN_LEN_MAX + 1];
 		for (i = 0, x = 0; i <= PLAIN_LEN_MAX && hist_l_plain_max == 1; i++)
 				hist_l_pass[i] = 0;
 // for debuging,statistics
@@ -445,9 +445,9 @@ return 0;
 				{
 //-------------------------------------------------------------------
 				fprintf(journal.get_stream(),
-						"TOTAL BYTES IN:%d\nTOTAL BYTES OUT:%d\nRATIO:%.2lf%%, %.2lf bit/B\nTIME: %.2lfs\nSPEED %.2lfkB/s\n", (__int32)kop32->progress->src->all->readed, (__int32)kop32->progress->dst->all->readed, 100 *(ratio), 8 *ratio, (double)(kop32->progress->T2 - kop32->progress->T1 + 1) / 1000.0, (double)kop32->progress->src->all->readed / (double)(kop32->progress->T2 - kop32->progress->T1 + 1) / 1024);
+						"TOTAL BYTES IN:%d\nTOTAL BYTES OUT:%d\nRATIO:%.2lf%%, %.2lf bit/B\nTIME: %.2lfs\nSPEED %.2lfkB/s\n", (int32_t)kop32->progress->src->all->readed, (int32_t)kop32->progress->dst->all->readed, 100 *(ratio), 8 *ratio, (double)(kop32->progress->T2 - kop32->progress->T1 + 1) / 1000.0, (double)kop32->progress->src->all->readed / (double)(kop32->progress->T2 - kop32->progress->T1 + 1) / 1024);
 //-------------------------------------------------------------------
-				__int32 l, h;
+				int32_t l, h;
 //-------------------------------------------------------------------
 				l = 0, h = 0;
 				fprintf(journal.get_stream(), "GLOBALLY NORMAL DUP LENGHTS\n");

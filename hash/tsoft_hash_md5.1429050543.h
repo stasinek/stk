@@ -9,7 +9,7 @@ namespace ts { namespace hash { namespace md5 {
 extern const uint32_t k[64];
 extern uint32_t h[4];
 extern void __stdcall init_MD5(void);
-extern uint32_t *__stdcall calc_MD5(const char *initial_msg, const __int32 initial_len);
+extern uint32_t *__stdcall calc_MD5(const char *initial_msg, const int32_t initial_len);
 //---------------------------------------------------------------------------
 }}}
 //---------------------------------------------------------------------------

@@ -1,9 +1,9 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_cipher_mtf.h"
 //---------------------------------------------------------------------------
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 #include "./../text/tsoft_cstr_manipulation.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
@@ -11,7 +11,7 @@
 ts::cipher::__mtf_cipher::__mtf_cipher(void)
 {
 #ifdef __DEBUG_MTF_CIPHER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 	order = (uint8_t*)ts::mem32::alloc(256*sizeof(uint8_t));
 	this->initialize();
@@ -21,7 +21,7 @@ __DEBUG_FUNC_CALLED__
 ts::cipher::__mtf_cipher::~__mtf_cipher(void)
 {
 #ifdef __DEBUG_MTF_CIPHER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 	ts::mem32::free(order);
 }
@@ -30,7 +30,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::cipher::__mtf_cipher::initialize(void)
 {
 #ifdef __DEBUG_MTF_CIPHER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 	for (uint8_t i = 0;; i++) {
 		order[i]=i;
@@ -43,7 +43,7 @@ __DEBUG_FUNC_CALLED__
 char __stdcall ts::cipher::__mtf_cipher::encode(const char a_ch)
 {
 #ifdef __DEBUG_MTF_CIPHER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 	register uint8_t l_ch = (uint8_t)a_ch, r = ts::mem32::chr(order,l_ch,256);
 	ts::mem32::ror(order,r);
@@ -55,7 +55,7 @@ __DEBUG_FUNC_CALLED__
 char __stdcall ts::cipher::__mtf_cipher::decode(const char a_ch)
 {
 #ifdef __DEBUG_MTF_CIPHER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 	register uint8_t r = order[(uint8_t)a_ch];
 	ts::mem32::ror(order,r);

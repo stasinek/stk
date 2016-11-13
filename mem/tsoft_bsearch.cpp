@@ -11,13 +11,13 @@ void* __cdecl ts::bsearch(const void *k, const void *base, size_t number_of_elem
 		 while (istart < icount) {
 				 imid = istart + ((icount - istart) >> 1); // >>1 faster than /2	
 				 imid_times_size = imid * size;
-				 compare_result = compare(k, &(((__int8*)base)[imid_times_size]));
+				 compare_result = compare(k, &(((int8_t*)base)[imid_times_size]));
 				 
 				 if (compare_result < 0) icount = imid;
 				 else 
 				 if (compare_result > 0) istart = imid + 1;
 				 else
-					 return (void*)&(((__int8*)base)[imid_times_size]);
+					 return (void*)&(((int8_t*)base)[imid_times_size]);
 		 }
 
 		 return NULL;

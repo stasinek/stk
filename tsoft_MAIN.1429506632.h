@@ -29,14 +29,14 @@
 // ...
 // ...
 #include <inttypes.h>
-#ifndef __int32
-typedef __int32 LONG;
-typedef __int32 ULONG;
+#ifndef int32_t
+typedef int32_t LONG;
+typedef int32_t ULONG;
 #endif
 
-#ifndef __int64
-typedef __int64 LONGLONG;
-typedef unsigned __int64 ULONGLONG; //Portable unsigned long integer 8 bytes
+#ifndef int64_t
+typedef int64_t LONGLONG;
+typedef unsigned int64_t ULONGLONG; //Portable unsigned long integer 8 bytes
 #endif
 
 #include <omp.h>

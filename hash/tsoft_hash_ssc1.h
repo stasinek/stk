@@ -9,7 +9,7 @@
 namespace ts { namespace hash { namespace ssc1 {
 //---------------------------------------------------------------------------
 extern void __stdcall reset_SSC1(void);
-const uint32_t*  __stdcall calc_SSC1(const void *a_data, const __int32 a_len, const __int32 a_bits);
+const uint32_t*  __stdcall calc_SSC1(const void *a_data, const uint32_t a_len, const uint32_t a_bits);
 extern void __stdcall print_SSC1(void);
 //---------------------------------------------------------------------------
 }}}

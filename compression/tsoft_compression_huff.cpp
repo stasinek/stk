@@ -1,13 +1,13 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_compression_huff.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 #include "./../text/tsoft_cstr_manipulation.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
-#define BIT_COMBINATIONS_PER_BYTE	(__int32)(256) 								   /* kinds of characters (character code = 0..BIT_COMBINATIONS_PER_BYTE-1) */
-#define TREE_SIZE 					(__int32)((BIT_COMBINATIONS_PER_BYTE*2) - 1)	  /* size of table */
+#define BIT_COMBINATIONS_PER_BYTE	(int32_t)(256) 								   /* kinds of characters (character code = 0..BIT_COMBINATIONS_PER_BYTE-1) */
+#define TREE_SIZE 					(int32_t)((BIT_COMBINATIONS_PER_BYTE*2) - 1)	  /* size of table */
 
 
 // if BIT COMBINATION EQUALS 8
@@ -21,20 +21,20 @@
 // aaaaaaaabbbbccd -> SUM OF 8 + 4 + 2 + 1 EQUALS (8 x 2) - 1
 // ROOT POS of d ^ is 8+4+2(because first is 0)
 
-#define MAXIMUM_FREQENCY		(__int32)(0x08000000L)  /* 8*chars encoded so max size 2^28=250MB updates TREE_SIZE when the ROOT_POS frequency comes to this value. */
-#define ROOT_NODE				   (__int32)(TREE_SIZE-1)	  /* position of ROOT_POS */
-#define TOPMOST_NODE				(__int32)(0x1FFFFFFFL)
+#define MAXIMUM_FREQENCY		(int32_t)(0x08000000L)  /* 8*chars encoded so max size 2^28=250MB updates TREE_SIZE when the ROOT_POS frequency comes to this value. */
+#define ROOT_NODE				   (int32_t)(TREE_SIZE-1)	  /* position of ROOT_POS */
+#define TOPMOST_NODE				(int32_t)(0x1FFFFFFFL)
 //---------------------------------------------------------------------------
 
 __stdcall ts::compression::__huff_compressor::__huff_compressor(void)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-		son = (__int32*)::ts::mem32::alloc(sizeof(__int32)*(TREE_SIZE));
-		freq_values = (__int32*)::ts::mem32::alloc(sizeof(__int32)*(TREE_SIZE + 1));
-		dad = (__int32*)::ts::mem32::alloc(sizeof(__int32)*(TREE_SIZE + BIT_COMBINATIONS_PER_BYTE));
+        son = (uint32_t*)::ts::mem32::alloc(sizeof(int32_t)*(TREE_SIZE));
+        freq_values = (uint32_t*)::ts::mem32::alloc(sizeof(int32_t)*(TREE_SIZE + 1));
+        dad = (uint32_t*)::ts::mem32::alloc(sizeof(int32_t)*(TREE_SIZE + BIT_COMBINATIONS_PER_BYTE));
 		this->initialize();
 }
 //---------------------------------------------------------------------------
@@ -42,7 +42,7 @@ __DEBUG_FUNC_CALLED__
 __stdcall ts::compression::__huff_compressor::~__huff_compressor(void)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		ts::mem32::free(dad);
@@ -54,10 +54,10 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__huff_compressor::initialize(void)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-		register __int32  i, e;
+		register int32_t  i, e;
 //----------------------
 		for (i = 0; i < BIT_COMBINATIONS_PER_BYTE; i++) {
 //----------------------
@@ -84,10 +84,10 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::compression::__huff_compressor::update(const char axdata_uncoded)
+void __stdcall ts::compression::__huff_compressor::update(const int8_t axdata_uncoded)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //------------------------------
@@ -96,8 +96,8 @@ __DEBUG_FUNC_CALLED__
 //
 		if (freq_values[ROOT_NODE]>=MAXIMUM_FREQENCY) reconstruct();
 //------------------------------
-		register __int32 son_exg, frq_exg, exg;
-		register __int32 son_cur, frq_cur, cur = TREE_SIZE + (__int32)axdata_uncoded;
+        register uint32_t son_exg, frq_exg, exg;
+        register uint32_t son_cur, frq_cur, cur = TREE_SIZE + (uint32_t)axdata_uncoded;
 //------------------------------
 		for (;;) {
 //------------------------------
@@ -153,15 +153,15 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int8 __stdcall ts::compression::__huff_compressor::encode(__int8 *a_code_ptr, const __int8 a_code_ptr_bit, const __int8 axdata_uncoded)
+int8_t __stdcall ts::compression::__huff_compressor::encode(int8_t *a_code_ptr, const int8_t a_code_ptr_bit, const int8_t axdata_uncoded)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-		register __int32 current_node = dad[TREE_SIZE + (__int32)axdata_uncoded];
-		register __int32 code = 0;
-		register __int8  code_bits = 0;
+		register int32_t current_node = dad[TREE_SIZE + (int32_t)axdata_uncoded];
+		register int32_t code = 0;
+		register int8_t  code_bits = 0;
 //----------------------												/* travel from leaf to ROOT_NODE */
 		do {
 //----------------------												/*  determine position in tree bit by bit */
@@ -173,23 +173,23 @@ __DEBUG_FUNC_CALLED__
 		} while (current_node!=ROOT_NODE);
 //----------------------												/* send bits to output and update model */
 		update(axdata_uncoded);
-		__int32 result = code; // duplicated so "code" variable could be stored in ALU register, and just once passed there as RAM address
+		int32_t result = code; // duplicated so "code" variable could be stored in ALU register, and just once passed there as RAM address
 		ts::mem32::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,code_bits);
 		return code_bits;
 }
 //---------------------------------------------------------------------------
 
-__int8 __stdcall ts::compression::__huff_compressor::decode(__int8 *alpdata_uncoded, const __int8 *a_code_ptr, const __int8 a_code_ptr_bit)
+int8_t __stdcall ts::compression::__huff_compressor::decode(int8_t *alpdata_uncoded, const int8_t *a_code_ptr, const int8_t a_code_ptr_bit)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-		register __int32 current_node = son[ROOT_NODE];				// begin on top of the huffman tree
-		register __int32 code;										 // input bit code to decode
-		register __int32 code_bits = 0;								   // number of bits readed from input stream
+		register int32_t current_node = son[ROOT_NODE];				// begin on top of the huffman tree
+		register int32_t code;										 // input bit code to decode
+		register int32_t code_bits = 0;								   // number of bits readed from input stream
 //------------------------------------------
-		__int32 input_data;
+		int32_t input_data;
 		ts::mem32::bit_mov(&input_data,0,a_code_ptr,a_code_ptr_bit,24);
 		code =  input_data;
 //----------------------												/* travel from ROOT_NODE to leaf */
@@ -205,8 +205,8 @@ __DEBUG_FUNC_CALLED__
 		} while (current_node <TREE_SIZE);
 //----------------------												/* send bits to output and update model */
 		current_node -=TREE_SIZE;
-		((__int8*)alpdata_uncoded)[0] = (__int8)current_node;
-		update((__int8)current_node);
+		((int8_t*)alpdata_uncoded)[0] = (int8_t)current_node;
+		update((int8_t)current_node);
 		return code_bits;
 }
 //---------------------------------------------------------------------------
@@ -214,10 +214,10 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__huff_compressor::reconstruct(void)
 {
 #ifdef __DEBUG_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-		register __int32 i, e, k, f, l;
+		register int32_t i, e, k, f, l;
 //----------------------
 		for (i = 0, e = 0; i < TREE_SIZE; i++) {								/* collect leaf nodes in the first half of the table and replace the freq_values by (freq_values + 1) / 2 */
 //----------------------

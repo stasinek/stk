@@ -28,7 +28,7 @@ class __cstr_class : public __vector<char> {
 inline const char      *__stdcall   set(__cstr_class* __restrict__ a_text_c) {
 return set(a_text_c->c_str());
 }
-inline const char      *__stdcall   set(const __int32 a_i_to_clone) {
+inline const char      *__stdcall   set(const uint32_t a_i_to_clone) {
 return set(ts::cstr::itoa(a_i_to_clone));
 }
 	  const char	   *__stdcall	add(const char* __restrict__ a_c_to_add);
@@ -46,7 +46,7 @@ return ts::cstr::len(&__vector<char>::bottom());
 		void			__stdcall	resize(const uint32_t a_new_len);
 		void			__stdcall	shrink_to_fit();
 		void			__stdcall	clear();
-inline __int32          __stdcall   i(void) const {
+inline uint32_t          __stdcall   i(void) const {
 return ts::cstr::atoi(&__vector<char>::bottom());
 }
 inline const char      *__stdcall   c_str(void) const {
@@ -55,7 +55,7 @@ return (const char*)&__vector<char>::bottom();
 inline                  __stdcall   operator const char* () const {
 return c_str();
 }
-inline                  __stdcall   operator __int32 () const {
+inline                  __stdcall   operator uint32_t () const {
 return i();
 }
 inline const char      *__stdcall   operator= (const char* __restrict__ a_text_to_clone) {
@@ -70,7 +70,7 @@ inline const char      *__stdcall   operator= (const bool a_bool_to_clone) {
 if (a_bool_to_clone) return set("1");
 else return set("0");
 }
-inline const char*		__stdcall	operator= (const __int32 a_i_to_clone) {
+inline const char*		__stdcall	operator= (const uint32_t a_i_to_clone) {
 return set(a_i_to_clone);
 }
 virtual __stdcall  ~__cstr_class(void);

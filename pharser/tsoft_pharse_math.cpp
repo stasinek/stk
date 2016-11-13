@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_pharse_math.h"
 #include "./../text/tsoft_cstr_manipulation.h"
@@ -9,7 +9,7 @@
 __stdcall ts::__math_pharser:: __math_pharser(void)
 {
 #ifdef __DEBUG_MATH_PHARSER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		result = 0;
 		f_expression = NULL;
@@ -21,32 +21,32 @@ __DEBUG_FUNC_CALLED__
 __stdcall ts::__math_pharser::~__math_pharser(void)
 {
 #ifdef __DEBUG_MATH_PHARSER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__math_pharser::f_decode_subexpression(const __int32 a_index)
+int32_t __stdcall ts::__math_pharser::f_decode_subexpression(const uint32_t a_index)
 {
 #ifdef __DEBUG_MATH_PHARSER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 return 0;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__math_pharser::decode(const char *a_expression)
+int32_t __stdcall ts::__math_pharser::decode(const char *a_expression)
 {
 #ifdef __DEBUG_MATH_PHARSER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 
 
 		/*char *lpsrc_upr = strdup(lpsrc); text::upr(lpsrc_upr);
-		register __int32 initiator = -1, start = -1, end = -1, terminator = -1;
-		__int32 srclen = ts::cstr::len(lpsrc_upr), parameterlen = 0;
-		__int32 first_file_delimiter = ts::cstr::delimiter(lpsrc_upr,DELIMITER,+1);
+        register int32_t initiator = -1, start = -1, end = -1, terminator = -1;
+        int32_t srclen = ts::cstr::len(lpsrc_upr), parameterlen = 0;
+        int32_t first_file_delimiter = ts::cstr::delimiter(lpsrc_upr,DELIMITER,+1);
 		if (first_file_delimiter < 0) first_file_delimiter = srclen;
 
 		lpsrc_upr[first_file_delimiter] = '\0';

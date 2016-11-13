@@ -1,7 +1,10 @@
-#include "tsoft_mem32.h"
+//---------------------------------------------------------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
+//---------------------------------------------------------------------------
+#include "tsoft_mem.h"
 #include "./../io/tsoft_console.h"
 #include "tsoft_qsort.h"
-
+//---------------------------------------------------------------------------
 
 void* __cdecl ts::qsort(void *base, size_t number_of_elements, size_t size_of_element,
 			   int (*compare)(const void *k1, const void *k2))
@@ -17,18 +20,18 @@ void* __cdecl ts::qsort(void *base, size_t number_of_elements, size_t size_of_el
 		 while (istart < icount) {
 				 imid = istart + ((icount - istart) >> 1); // >>1 faster than /2
 				 imid_times_size = imid * size;
-				 compare_result = compare(&(((__int8*)base)[0]), &(((__int8*)base)[imid_times_size]));
+				 compare_result = compare(&(((int8_t*)base)[0]), &(((int8_t*)base)[imid_times_size]));
 
 				 if (compare_result < 0) icount = imid;
 				 else
 				 if (compare_result > 0) istart = imid + 1;
 				 else
-					 return (void*)&(((__int8*)base)[imid_times_size]);
+					 return (void*)&(((int8_t*)base)[imid_times_size]);
 		 }
 
 		 return NULL;
 }
-
+//---------------------------------------------------------------------------
 
 void* __cdecl ts::isort(void *a, size_t number_of_elements, size_t size_of_element,int (*compare)(const void *k1, const void *k2))
 {

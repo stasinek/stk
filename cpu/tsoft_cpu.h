@@ -12,16 +12,16 @@ extern uint32_t	 __cdecl	cpuidex(uint32_t *a_eax,uint32_t *a_ebx,uint32_t *a_ecx
 extern void		 __cdecl	cpu_print_info(void);
 extern void		 __cdecl	cpu_test(void);
 //---------------------------------------------------------------------------
-extern char		*__cdecl	cpu_vendor(void);
-extern char		*__cdecl	cpu_name(void);
+extern char		*__cdecl    	cpu_vendor(void);
+extern char		*__cdecl    cpu_name(void);
 extern uint32_t  __cdecl	cpu_num_cores(void);
 extern uint32_t  __cdecl	cpu_num_threads(void);
 extern uint32_t  __cdecl	cpu_num_mhz(bool a_constant_update);
-extern uint32_t *__cdecl	cpu_psn(void);
+extern uint32_t *__cdecl    cpu_psn(void);
 extern uint32_t  __cdecl	cpu_cache_size(uint8_t a_level);
 extern uint32_t  __cdecl	cpu_cache_line_size(uint8_t a_level);
 //---------------------------------------------------------------------------
-#if defined(__i386__)
+#if defined(__i386__) | defined(__x86_64__)
 extern bool 	 __cdecl	cpu_has_x87(void);
 extern bool 	 __cdecl	cpu_has_cmov(void);
 extern uint32_t	 __cdecl	cpu_has_cmpxchg(void);
@@ -83,17 +83,18 @@ extern bool		 __cdecl	cpu_has_psn(void);
 20-27	Extended Family Number*/
 //---------------------------------------------------------------------------
 #if !defined(__BORLANDC__) && !defined(__WATCOMC__)
-extern uint64_t  __cdecl    rdtscp(__int32 *a_chip, __int32 *a_core);
+extern uint64_t  __cdecl    rdtscp(uint32_t *a_chip, uint32_t *a_core);
 #endif
 extern uint64_t  __cdecl    rdtsc(void);
 extern uint64_t	 __cdecl	rdtscex(void);
 //---------------------------------------------------------------------------
+extern uint64_t  __cdecl	tsc_init(void);
 extern uint64_t	 __cdecl	tsc_start(void);
 extern uint64_t  __cdecl	tsc_pause(void);
 extern uint64_t  __cdecl	tsc_start_paused(void);
+extern uint64_t  __cdecl	tsc_resume(void);
 extern uint64_t  __cdecl	tsc_checkpoint(void);
 extern uint64_t  __cdecl	tsc_elapsed(void);
-extern uint64_t  __cdecl	tsc_overhead(void);
 //---------------------------------------------------------------------------
 }}
 //---------------------------------------------------------------------------

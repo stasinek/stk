@@ -10,28 +10,28 @@
 //---------------------------------------------------------------------------
 namespace ts { namespace text {
 //---------------------------------------------------------------------------
-#define STACKCNT	(__int32)512
-#define STACKSTR	(__int32)512  // 64*1024=64kB ONE MEMORY SEGMENT
+#define STACKCNT	(int32_t)512
+#define STACKSTR	(int32_t)512  // 64*1024=64kB ONE MEMORY SEGMENT
 class  __cstr_stack {
 private:
-		__int32  f_initial_count;
-		__int32  f_count;
-		__int32  f_initial_text_class_size;
+		int32_t  f_initial_count;
+		int32_t  f_count;
+		int32_t  f_initial_text_class_size;
 		__cstr_class **f_text_c;
 public:
 						  __stdcall  __cstr_stack   ();
-						  __stdcall  __cstr_stack   (__int32 a_initial_count, __int32 a_initial_ptr_size);
-		__int32   __stdcall set_count		   (__int32 a_initial_count, __int32 a_initial_ptr_size);
-		__int32   __stdcall get_count				(void);
-		__cstr_class *__stdcall push						(__int32 a_text_class_size);
-		__cstr_class *__stdcall push						(__int32 a_text_class_size, char *a_text_to_clone);
+						  __stdcall  __cstr_stack   (int32_t a_initial_count, int32_t a_initial_ptr_size);
+		int32_t   __stdcall set_count		   (int32_t a_initial_count, int32_t a_initial_ptr_size);
+		int32_t   __stdcall get_count				(void);
+		__cstr_class *__stdcall push						(int32_t a_text_class_size);
+		__cstr_class *__stdcall push						(int32_t a_text_class_size, char *a_text_to_clone);
 		__cstr_class *__stdcall push						(char *a_text_to_clone);
 		__cstr_class *__stdcall push						(void);
 		__cstr_class *__stdcall push						(__cstr_class *a_text_c);
 		void		  __stdcall pop						 (void);
-		void		  __stdcall pop						 (__int32 a_cnt);
+		void		  __stdcall pop						 (int32_t a_cnt);
 		void		  __stdcall pop_all				 ();
-		void		  __stdcall swap						(__int32 i1,__int32 i2);
+		void		  __stdcall swap						(int32_t i1,int32_t i2);
 						  __stdcall ~__cstr_stack   ();
 };
 //---------------------------------------------------------------------------

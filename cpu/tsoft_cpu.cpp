@@ -1,22 +1,22 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 #include "./../text/tsoft_cstr_manipulation.h"
-#include "./../threads/tsoft_threads.h"
+#include "./../ssthreads/tsoft_threads.h"
 #include "./../time/tsoft_time.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 #include "tsoft_cpu.h"
 //---------------------------------------------------------------------------
 static uint64_t tsc_STARTED = 0, tsc_PAUSED = 0, tsc_LAST_MEASURED = 0;
-static uint64_t tsc_ADJ = ts::cpu::tsc_overhead();
+static uint64_t tsc_ADJ = ts::cpu::tsc_init();
 static uint64_t tsc_ELAPSED = 0;
 //---------------------------------------------------------------------------
 #if !defined(__BORLANDC__) && !defined(__WATCOMC__)
-uint64_t __cdecl ts::cpu::rdtscp(__int32 *a_chip, __int32 *a_core)
+uint64_t __cdecl ts::cpu::rdtscp(uint32_t *a_chip, uint32_t *a_core)
 {
-unsigned __int32 HI, LO, CC;
+uint32_t HI, LO, CC;
 #if defined(__GNUC__) || defined(__clang__)
 asm volatile("rdtscp" : "=a" (LO), "=d" (HI), "=c" (CC));
 #else
@@ -28,7 +28,7 @@ asm volatile("rdtscp" : "=a" (LO), "=d" (HI), "=c" (CC));
 #endif
 if (a_chip!=NULL) *a_chip = (CC & 0x00FFF000)>>12;
 if (a_core!=NULL) *a_core =  CC & 0x00000FFF;
-    register unsigned __int64 r = HI;
+    register uint64_t r = HI;
     r = r << 32;
     r = r  | LO;
     return r; //( (unsigned long long)lo)|( ((unsigned long long)hi)<<32 );
@@ -37,7 +37,7 @@ if (a_core!=NULL) *a_core =  CC & 0x00000FFF;
 
 uint64_t __cdecl ts::cpu::rdtsc(void)
 {
-unsigned __int32 HI, LO;
+uint32_t HI, LO;
 #if defined(__GNUC__) || defined(__clang__)
     asm volatile ("rdtsc" : "=a"(LO), "=d"(HI));
 #else
@@ -46,7 +46,7 @@ unsigned __int32 HI, LO;
             mov [HI], edx;
     }
 #endif
-    register unsigned __int64 r = HI;
+    register uint64_t r = HI;
     r = r << 32;
     r = r  | LO;
     return r; //( (unsigned long long)lo)|( ((unsigned long long)hi)<<32 );
@@ -55,7 +55,7 @@ unsigned __int32 HI, LO;
 uint64_t __cdecl ts::cpu::rdtscex(void)
 {
 #if defined(__ARM__) && (defined (__GNUC__) || defined(__clang__))
-unsigned __int32 r;
+uint32_t r;
     asm volatile ("mcr p15,  0, %0, c15,  c9, 0\n" : : "r" (1));
     asm volatile ("mrc p15,  0, %0, c15, c12, 1" : "=r" (r));
 return r;
@@ -162,12 +162,30 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
+uint64_t __cdecl ts::cpu::tsc_init(void)
+{
+ATOMIC(1)
+ATOMIC_LOCK(1)
+    register uint64_t m0, m1;
+    tsc_ADJ = 0; // static variable is initialized with this function so it MUST be set to 0 there, especially before first run ;)
+    m0 = tsc_start();
+    m1 = tsc_checkpoint();
+    if (m1 > m0)
+    tsc_ADJ = m1 - m0;
+register uint64_t r = tsc_ADJ;
+ATOMIC_UNLOCK(1)
+return r;
+}
+//---------------------------------------------------------------------------
+
 uint64_t __cdecl ts::cpu::tsc_start(void)
 {
 ATOMIC(1)
 ATOMIC_LOCK(1)
     register uint64_t r = ts::cpu::rdtsc();
     tsc_STARTED = r;
+    tsc_LAST_MEASURED = r;
+    tsc_PAUSED = 0; tsc_ELAPSED = 0;
 ATOMIC_UNLOCK(1)
     return r;
 }
@@ -177,17 +195,21 @@ uint64_t __cdecl ts::cpu::tsc_checkpoint(void)
 {
 ATOMIC(1)
 ATOMIC_LOCK(1)
-    register uint64_t r = ts::cpu::rdtsc();
-    register uint64_t x = tsc_STARTED - tsc_ADJ;
-    register uint64_t e;
-    if (r > x) e = r - x;
-    else {
-    e = 0;
+        register uint64_t n = tsc_PAUSED;
+        register uint64_t x;
+        register uint64_t e;
+    if (n==0) {
+        n = ts::cpu::rdtsc();
     }
-    tsc_LAST_MEASURED = r;
+    x = tsc_STARTED - tsc_ADJ;
+    if (n > x) e = n - x;
+    else {
+          e = 0;
+    }
+    tsc_LAST_MEASURED = n;
     tsc_ELAPSED = e;
 ATOMIC_UNLOCK(1)
-    return e;
+    return n;
 }
 //---------------------------------------------------------------------------
 
@@ -208,38 +230,30 @@ ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 
-uint64_t __cdecl ts::cpu::tsc_start_paused(void)
+uint64_t __cdecl ts::cpu::tsc_resume(void)
 {
 ATOMIC(1)
 ATOMIC_LOCK(1)
     register uint64_t s = tsc_STARTED;
+    register uint64_t p = tsc_PAUSED;
     register uint64_t n = ts::cpu::rdtsc();
-    register uint64_t x = (tsc_PAUSED - s);
-    if  (n > x)
-        {s = n - x;
-        }
-    register uint64_t e = n - s;
-    tsc_LAST_MEASURED = n;
-    tsc_STARTED = s;
-    tsc_ELAPSED = e;
+    register uint64_t x = n - p + s;
+    tsc_STARTED = x; tsc_PAUSED = 0;
 ATOMIC_UNLOCK(1)
-    return e;
+    return n;
 }
 //---------------------------------------------------------------------------
 
-uint64_t __cdecl ts::cpu::tsc_overhead(void)
+uint64_t __cdecl ts::cpu::tsc_start_paused(void)
 {
 ATOMIC(1)
 ATOMIC_LOCK(1)
-    register uint64_t m0, m1;
-    tsc_ADJ = 0; // static variable is initialized with this function so it MUST be set to 0 there, especially before first run ;)
-    m0 = tsc_start();
-    m1 = tsc_checkpoint();
-    if (m1 > m0)
-    tsc_ADJ = m1 - m0;
-register uint64_t r = tsc_ADJ;
+    register uint64_t n = ts::cpu::rdtsc();
+    tsc_LAST_MEASURED = n;
+    tsc_STARTED = n;
+    tsc_ELAPSED = 0; tsc_PAUSED = n;
 ATOMIC_UNLOCK(1)
-return r;
+    return n;
 }
 //---------------------------------------------------------------------------
 
@@ -493,22 +507,22 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     if (a_level==2) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000002L,0);
-    if ((f_edx && 0xFFL) == 0x40L)
+    if ((f_edx & 0xFFL) == 0x40L)
        s_answer = 0;
     else
-    if ((f_edx && 0xFFL) == 0x41L)
+    if ((f_edx & 0xFFL) == 0x41L)
        s_answer = 128;
     else
-    if ((f_edx && 0xFFL) == 0x42L)
+    if ((f_edx & 0xFFL) == 0x42L)
        s_answer = 256;
     else
-    if ((f_edx && 0xFFL) == 0x43L)
+    if ((f_edx & 0xFFL) == 0x43L)
        s_answer = 512;
     else
-    if ((f_edx && 0xFFL) == 0x44L)
+    if ((f_edx & 0xFFL) == 0x44L)
        s_answer = 1024;
     else
-    if ((f_edx && 0xFFL) == 0x45L)
+    if ((f_edx & 0xFFL) == 0x45L)
        s_answer = 2048;
     else {
 //    cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,a_level);
@@ -605,18 +619,18 @@ ATOMIC_LOCK(1)
         register uint64_t r;
     register uint64_t rcor;
     for (i = 0; i < TIMES;i++) {
-        ts::cpu::tsc_overhead(); //heat up CPU?
-        ts::cpu::tsc_start(); t1 = ts::time::clock_ms(); ts::cpu::tsc_checkpoint();
+        ts::cpu::tsc_init(); //heat up CPU?
+        ts::cpu::tsc_start(); t1 = ts::time::time_ms(); ts::cpu::tsc_checkpoint();
         rcor = (uint64_t)ts::cpu::tsc_elapsed();
-        do {t2 = ts::time::clock_ms();  // SYNC to clock-tick interval
+        do {t2 = ts::time::time_ms();  // SYNC to clock-tick interval
         } while (t2<=t1);
         ts::cpu::tsc_start();
         for (register uint32_t trash1 = INTERVAL_TIME; trash1 > 0; trash1--) //conajmniej raz
         for (register uint32_t trash2 = 0; trash2 < 1000*1000; trash2++) //conajmniej 1000000 mln instrukcji
                     {}
                 //measure time: ~INTERVAL * 1MHz
-        t3 = ts::time::clock_ms();
-        do {t4 = ts::time::clock_ms();  // SYNC to clock-tick interval
+        t3 = ts::time::time_ms();
+        do {t4 = ts::time::time_ms();  // SYNC to clock-tick interval
         } while (t4<=t3);
         ts::cpu::tsc_checkpoint();
         r = (uint64_t)ts::cpu::tsc_elapsed();

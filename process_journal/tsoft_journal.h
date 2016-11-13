@@ -20,21 +20,21 @@ public:
         const FILE	*__stdcall create(void);
         const FILE	*__stdcall open(void);
         const FILE	*__stdcall get_stream(void);
-        __int32 __stdcall write_formated_line(const char* __restrict__ a_format, ...);
-        __int32 __stdcall write_line(char *a_line);
-        __int32 __stdcall get_first_line(time_t a_ttime);
-        __int32 __stdcall get_next_line(void);
-        const char 	*__stdcall read_line(__int32 a_line_number);
+        int32_t __stdcall write_formated_line(const char* __restrict__ a_format, ...);
+        int32_t __stdcall write_line(const char *a_line);
+        int32_t __stdcall get_first_line(const time_t a_ttime);
+        int32_t __stdcall get_next_line(void);
+        const char 	*__stdcall read_line(const uint32_t a_line_number);
         inline void operator << (const char a_char) {
             write_formated_line("%c",a_char);
         }
         inline void operator << (const char * __restrict__ a_text) {
             write_formated_line("%s",a_text);
         }
-        inline void operator << (const __int32 a_int32) {
+        inline void operator << (const uint32_t a_int32) {
             write_formated_line("%d",a_int32);
         }
-        inline void operator << (const __int64 a_int64) {
+        inline void operator << (const int64_t a_int64) {
             write_formated_line("%lld",a_int64);
         }
         inline void operator << (const double a_double) {

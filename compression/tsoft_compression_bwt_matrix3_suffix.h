@@ -14,42 +14,42 @@ private:
 //---------------------------------------------------------------------------
 public:
 //---------------------------------------------------------------------------
-	__bwt_transform(__int32 ablock);
+	__bwt_transform(uint32_t ablock);
 	~__bwt_transform();
 //---------------------------------------------------------------------------
-	__int32 __stdcall generate(char *a_src_ptr, __int32 asrcLen);
-		__int32 __stdcall sort(void);
-	void __stdcall sort_column(__int32 acolumn,__int32 arow_bgn,__int32 arow_end);
-	__int32 __stdcall Flush(char *a_dst_ptr);
+	uint32_t __stdcall generate(char *a_src_ptr, uint32_t asrcLen);
+		uint32_t __stdcall sort(void);
+	void __stdcall sort_column(uint32_t acolumn,uint32_t arow_bgn,uint32_t arow_end);
+	uint32_t __stdcall Flush(char *a_dst_ptr);
 
 	class __bwt_compressor {
 
 	public:
-		__bwt_compressor(__int32 ablock);
+		__bwt_compressor(uint32_t ablock);
 		~__bwt_compressor();
 
 		char **table_ptr;
 		char  *table_row_ptr;
 		char **result_table_ptr;
 
-		__int32 **index_ptr;
-		__int32  *index_row_ptr;
-		__int32  *index_of_first_row_ptr;
-		__int32 **result_index_ptr;
+		uint32_t **index_ptr;
+		uint32_t  *index_row_ptr;
+		uint32_t  *index_of_first_row_ptr;
+		uint32_t **result_index_ptr;
 
-		__int32 dim;
+		uint32_t dim;
 
 		class __bwt_tree {
 		public:
 #define NOT_EXIST_IN_TREE 0xFFFF0000L
 
-			__bwt_tree(__int32 ablock);
+			__bwt_tree(uint32_t ablock);
 			~__bwt_tree();
 
-			__int32  *root_ptr;
-			__int32 dim;
-			__int32  *last_inserted_ptr;
-			__int32  *leaf_count_ptr;
+			uint32_t  *root_ptr;
+			uint32_t dim;
+			uint32_t  *last_inserted_ptr;
+			uint32_t  *leaf_count_ptr;
 
 		} *tree;
 	} *matrix;
@@ -57,8 +57,8 @@ public:
 
 #define BGN 0
 #define END 1
-	void __stdcall find_groups(__int32 acolumn,__int32 arow_bgn,__int32 arow_end,__int32 *alist_bgn,__int32 *alist_end);
-	__int32 *groups_bgn[2], *groups_end[2];
+	void __stdcall find_groups(uint32_t acolumn,uint32_t arow_bgn,uint32_t arow_end,uint32_t *alist_bgn,uint32_t *alist_end);
+	uint32_t *groups_bgn[2], *groups_end[2];
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------

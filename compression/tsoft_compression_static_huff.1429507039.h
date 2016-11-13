@@ -14,10 +14,10 @@ namespace ts { namespace compression {
 class __static_huff_class {
 //---------------------------------------------------------------------------
 public:
-		__int32 *son; // pointers to child nodes (son[], son[] + 1)
-		__int32 *dad; // pointers to parent nodes, except for the
+		int32_t *son; // pointers to child nodes (son[], son[] + 1)
+		int32_t *dad; // pointers to parent nodes, except for the
 	// elements [TREE..TREE + N_CHAR - 1] which are used to get the positions of leaves corresponding to the codes.
-		__int32 *frq; // frequency table
+		int32_t *frq; // frequency table
 //---------------------------------------------------------------------------
 	__static_huff_class(void);
 	~__static_huff_class();

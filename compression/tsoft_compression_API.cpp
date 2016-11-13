@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_compression_API.h"
 //---------------------------------------------------------------------------
@@ -11,20 +11,20 @@
 #include "./../cipher/tsoft_cipher_mtf.h"
 #include "./../io/tsoft_console.h"
 #include "./../text/tsoft_cstr_manipulation.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 //---------------------------------------------------------------------------
 
 void __stdcall ts::compression::test(void)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-	register __int32 o, i = 0;
+	register int32_t o, i = 0;
 	char *src = ts::cstr::alloc(4096);
 	char *dst = ts::cstr::alloc(4096);
 if (src==NULL || dst==NULL)
 return;
-	ts::con::prints("Adres src: %d\n",(__int8*)src);
+	ts::con::prints("Adres src: %d\n",(int8_t*)src);
 	ts::cstr::mov(src,(char*)"Here the defined words consist of two disjoint classes, sequences of alphanumeric characters and sequences of nonalphanumeric characters.\0");
 	i = ts::cstr::len(src);
 	ts::con::prints("do kompresji %d bajtow\n",i);
@@ -46,15 +46,15 @@ return;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::compression::compress_LZS(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_src_count, const __int32 a_block)
+uint32_t __stdcall ts::compression::compress_LZS(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_src_count, const uint32_t a_block)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-	register __int8* ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register const __int8* ptrs_end = static_cast<__int8*> (const_cast<void*>(a_src_ptr)) + a_src_count;
-	register __int8* ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-	register const __int8* ptrd_start = ptrd;
+	register int8_t* ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
+	register const int8_t* ptrs_end = static_cast<int8_t*> (const_cast<void*>(a_src_ptr)) + a_src_count;
+	register int8_t* ptrd = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
+	register const int8_t* ptrd_start = ptrd;
 //------------------------------------------
 	register uint32_t  plain_text_len = 0;
 	register char *plain_text_ptr = (char*)ptrs;
@@ -167,7 +167,7 @@ __DEBUG_FUNC_CALLED__
 		next_skip_len = chain->forward_len - next_insert_to_dup_len;
 		chain->clear_forward_result();
 		continue;
-		/*for (ptmp = (__int32)ptrs, ptmp_end = ptmp+chain->pattern_elsize; ptmp < ptmp_end; ptmp++) {	\
+		/*for (ptmp = (int32_t)ptrs, ptmp_end = ptmp+chain->pattern_elsize; ptmp < ptmp_end; ptmp++) {	\
 		ptrd_bit+= huff.encode((char*)ptrd,ptrd_bit,((char*)ptmp)[0]);								\
 			 ptrd+= ptrd_bit>>3;																	\
 		ptrd_bit = ptrd_bit & (8-1);																\
@@ -197,21 +197,21 @@ __DEBUG_FUNC_CALLED__
 	}
 	delete chain;
 //------------------------------------------
-	return (__int8*)ptrd - (__int8*)ptrd_start;
+	return (int8_t*)ptrd - (int8_t*)ptrd_start;
 }
 //---------------------------------------------------------------------------
 
 void __stdcall ts::compression::uncompress_LZS(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-	register __int8 *ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register __int8 *ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-	register const  __int8 *ptrd_end = static_cast<__int8*> (const_cast<void*>(a_dst_ptr)) + a_count;
+	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
+	register int8_t *ptrd = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
+	register const  int8_t *ptrd_end = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr)) + a_count;
 //------------------------------------------
-	__int32 siz, cnt, len, ofs;
+    uint32_t siz, cnt, len, ofs;
 	register char hdr;
 //------------------------------------------
 //__huff_compressor huff;
@@ -300,22 +300,22 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::compression::compress_HUF(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const __int32 ablock)
+uint32_t __stdcall ts::compression::compress_HUF(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const uint32_t ablock)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-	register __int8 *ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register __int8 *ptrs_end = static_cast<__int8*> (const_cast<void*>(a_src_ptr)) + a_count;
-	register __int8 *ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-	register __int8 ptrd_bit = 0;
+	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
+	register int8_t *ptrs_end = static_cast<int8_t*> (const_cast<void*>(a_src_ptr)) + a_count;
+	register int8_t *ptrd = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
+	register int8_t ptrd_bit = 0;
 	ts::compression::__huff_compressor* huff = new ts::compression::__huff_compressor();
 	huff->initialize();
 //------------------------------------------
 	for ( ; ptrs < ptrs_end; ptrs++) {
 //------------------------------------------
-		ptrd_bit += huff->encode((__int8*)ptrd,ptrd_bit,((__int8*)ptrs)[0]);
+		ptrd_bit += huff->encode((int8_t*)ptrd,ptrd_bit,((int8_t*)ptrs)[0]);
 		ptrd += ptrd_bit>>3; // wykorzystano tyle pelnych bajtow wyjscia
 		ptrd_bit = ptrd_bit & 0x07L; // numer bitu w ostatnim bajcie ptrd ktory wykorzystano od ktorej to zacznie zapisywac kolejne
 //------------------------------------------
@@ -324,27 +324,27 @@ __DEBUG_FUNC_CALLED__
 	ts::mem32::bit_mov((char*)ptrd,ptrd_bit,(void*)"\0\0\0\0",0,32-ptrd_bit);  // resztka bitow na wyjscie, wyrownana do maximum 32 bitow naddatku
 	ptrd+=4;
 	delete huff;
-	return ptrd - static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
+	return ptrd - static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
 }
 //---------------------------------------------------------------------------
 
 void __stdcall ts::compression::uncompress_HUF(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-	register __int8 *ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register __int8 ptrs_bit = 0;
-	register __int8 *ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-	register const __int8 *ptrd_end = static_cast<__int8*> (const_cast<void*>(a_dst_ptr)) + a_count;
+	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
+	register int8_t ptrs_bit = 0;
+	register int8_t *ptrd = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
+	register const int8_t *ptrd_end = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr)) + a_count;
 //------------------------------------------
 	ts::compression::__huff_compressor* huff = new ts::compression::__huff_compressor();
 	huff->initialize();
 //------------------------------------------
 	for ( ; ptrd < ptrd_end; ptrd++) {
 //------------------------------------------
-		ptrs_bit += huff->decode((char*)ptrd,(char*)ptrs,ptrs_bit);
+        ptrs_bit += huff->decode((int8_t*)ptrd,(int8_t*)ptrs,ptrs_bit);
 		ptrs += ptrs_bit>>3;
 		ptrs_bit = ptrs_bit & 0x07L;
 //------------------------------------------
@@ -354,57 +354,57 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::compression::compress_ARI(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const __int32 ablock)
+uint32_t __stdcall ts::compression::compress_ARI(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const uint32_t ablock)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-	register __int8 *ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register const __int8 *ptrs_end = static_cast<__int8*> (const_cast<void*>(a_src_ptr)) + a_count;
-	register __int8 *ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-	register __int8 ptrd_bit = 0;
+	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
+	register const int8_t *ptrs_end = static_cast<int8_t*> (const_cast<void*>(a_src_ptr)) + a_count;
+	register int8_t *ptrd = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
+	register int8_t ptrd_bit = 0;
 	ts::compression::__ari_compressor *ari = new ts::compression::__ari_compressor();
 	ari->initialize_encoder();
 //------------------------------------------
 	for ( ; ptrs < ptrs_end; ptrs++)	{
 //------------------------------------------
-		ptrd_bit += ari->encode((__int32*)ptrd,ptrd_bit,((char*)ptrs)[0]);
+        ptrd_bit += ari->encode((uint32_t*)ptrd,ptrd_bit,((uint8_t*)ptrs)[0]);
 		ptrd += ptrd_bit>>3;
 		ptrd_bit = ptrd_bit & 0x07L;
 //------------------------------------------
 	}
 //------------------------------------------
-	ptrd_bit += ari->flush_encoder((__int32*)ptrd,ptrd_bit);
+    ptrd_bit += ari->flush_encoder((uint32_t*)ptrd,ptrd_bit);
 	ptrd += ptrd_bit>>3;
 	ptrd_bit = ptrd_bit & 0x07L;
 	ts::mem32::bit_mov((char*)ptrd,ptrd_bit,(void*)"\0\0\0\0",0,32-ptrd_bit);  // resztka bitow na wyjscie, wyrownana do maximum 32 bitow naddatku
 	ptrd+=4;
 	delete ari;
 //------------------------------------------
-	return ptrd - static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
+	return ptrd - static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
 }
 //---------------------------------------------------------------------------
 
 void __stdcall ts::compression::uncompress_ARI(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-	register __int8 *ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register __int8 ptrs_bit = 0;
-	register __int8 *ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-	register const __int8 *ptrd_end = static_cast<__int8*> (const_cast<void*>(a_dst_ptr)) + a_count;
+	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
+	register int8_t ptrs_bit = 0;
+	register int8_t *ptrd = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
+	register const int8_t *ptrd_end = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr)) + a_count;
 //------------------------------------------
 	ts::compression::__ari_compressor *ari = new ts::compression::__ari_compressor();
-	ptrs_bit += ari->initialize_decoder((__int32*)ptrs,ptrs_bit);
+    ptrs_bit += ari->initialize_decoder((uint32_t*)ptrs,ptrs_bit);
 	ptrs += ptrs_bit>>3;
 	ptrs_bit = ptrs_bit & 0x07L;
 //------------------------------------------
 	for ( ; ptrd < ptrd_end; ptrd++) {
 //------------------------------------------
-		ptrs_bit += ari->decode((char*)ptrd,(__int32*)ptrs,ptrs_bit);
+        ptrs_bit += ari->decode((char*)ptrd,(uint32_t*)ptrs,ptrs_bit);
 		ptrs += ptrs_bit>>3;
 		ptrs_bit = ptrs_bit & 0x07L;
 //------------------------------------------
@@ -414,45 +414,45 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::compression::compress_BWT(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const __int32 ablock)
+uint32_t __stdcall ts::compression::compress_BWT(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const uint32_t ablock)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-	register __int8*  ptrs = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register const __int8* ptrs_end = static_cast<__int8*> (const_cast<void*>(a_src_ptr)) + size_t(a_count);
-	register __int8*  ptrd = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
+	register int8_t*  ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
+	register const int8_t* ptrs_end = static_cast<int8_t*> (const_cast<void*>(a_src_ptr)) + size_t(a_count);
+	register int8_t*  ptrd = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
 //------------------------------------------
 	ts::compression::__bwt_compressor *bwt = new ts::compression::__bwt_compressor(ablock);
 //------------------------------------------
-	((__int16*)ptrd)[0] = (__int16)bwt->matrix_dim;
+	((int16_t*)ptrd)[0] = (int16_t)bwt->matrix_dim;
 	ptrd+=2;
 //------------------------------------------
 	while (ptrs < ptrs_end) {
 //------------------------------------------
-		ptrs+=(__int32)bwt->generate((char*)ptrs,(ptrs_end-ptrs));
-		((__int16*)ptrd)[0] = (__int16)bwt->sort();
+		ptrs+=(int32_t)bwt->generate((char*)ptrs,(ptrs_end-ptrs));
+		((int16_t*)ptrd)[0] = (int16_t)bwt->sort();
 		ptrd+=2;
 		ptrd+=bwt->save((char*)ptrd);
 //------------------------------------------
 	}
 //------------------------------------------
 	delete bwt;
-	return (__int8*)ptrd - static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
+	return (int8_t*)ptrd - static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
 }
 //---------------------------------------------------------------------------
 
 void __stdcall ts::compression::uncompress_BWT(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-	register __int8 *ptrs	  = static_cast<__int8*> (const_cast<void*>(a_src_ptr));
-	register __int8 *ptrd	  = static_cast<__int8*> (const_cast<void*>(a_dst_ptr));
-	register __int8 *ptrd_end = static_cast<__int8*> (const_cast<void*>(a_dst_ptr)) + a_count;
+	register int8_t *ptrs	  = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
+	register int8_t *ptrd	  = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
+	register int8_t *ptrd_end = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr)) + a_count;
 	ts::mem32::mov(a_dst_ptr,a_src_ptr,a_count - ((2*a_count)/(1024)) - 2);
-//bwt_decode((char*)a_src_ptr+4,(char*)a_dst_ptr,a_count-4,((__int32*)a_src_ptr)[0]);
+//bwt_decode((char*)a_src_ptr+4,(char*)a_dst_ptr,a_count-4,((int32_t*)a_src_ptr)[0]);
 }
 //-------------------------------THE END-------------------------------------
 

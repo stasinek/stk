@@ -1,32 +1,90 @@
 //---------------------------------------------------------------------------
+// SET DEBUG
+//---------------------------------------------------------------------------
+#if !defined(__DEBUG__)
+     #define __DEBUG__
+     #define __DEBUG
+     #define DEBUG
+#endif
+//---------------------------------------------------------------------------
+// DEBUG OR NOT DEBUG
+//---------------------------------------------------------------------------
+#if defined(__DEBUG__)
+//---------------------------------------------------------------------------
+//#define __DEBUG_MEM32__
+//#define __DEBUG_MEM32_ALLOC__
+//#define __DEBUG_CSTR__
+//#define __DEBUG_CSTR_CLASS__
+//#define __DEBUG_CSTR_STACK__
+#define __DEBUG_DATABASE_ITEMS__
+#define __DEBUG_DATABASE__
+#define __DEBUG_KOP32_CLASS__
+#define __DEBUG_KOP32_CONSOLE__
+#define __DEBUG_KOP32_PROGRESS_CONTROLER__
+#define __DEBUG_PHARSER__
+#define __DEBUG_MATH_PHARSER__
+#define __DEBUG_VECTOR__
+#define __DEBUG_LIST__
+#define __DEBUG_HASH_CHAIN__
+#define __DEBUG_SET__
+#define __DEBUG_LINKED_VECTOR__
+#define __DEBUG_HASHED_LINKED_VECTOR__
+#define __DEBUG_COMPRESSOR_API__
+#define __DEBUG_LZSS_COMPRESSOR__
+#define __DEBUG_HUFF_COMPRESSOR__
+#define __DEBUG_STATIC_HUFF_COMPRESSOR__
+#define __DEBUG_ARI_COMPRESSOR__
+#define __DEBUG_CIPHER_API__
+#define __DEBUG_MTF_CIPHER__
+#define __DEBUG_XOR_CIPHER__
+#define __DEBUG_ROT_CIPHER__
+#define __DEBUG_HASHER_API__
+#define __DEBUG_CRC32_HASHER__
+#define __DEBUG_MD5_HASHER__
+#define __DEBUG_SSC1_HASHER__
+#define __DEBUG_SOCKET__
+#define __DEBUG_RS232__
+#define __DEBUG_FILE_IO__
+#define __DEBUG_FILE_INI__
+//#define __DEBUG_TIME__
+#define __DEBUG_FUNC_ENTER__
+//---------------------------------------------------------------------------
+#endif
+//---------------------------------------------------------------------------
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
+//---------------------------------------------------------------------------
 // SET ENCODING / RUNTIME
 //---------------------------------------------------------------------------
 //#define __STRICT_ANSI__
-#ifndef UNICODE
+#if !defined(UNICODE)
+#define __UNICODE__
+#define __UNICODE
 #define UNICODE
 #endif
 //---------------------------------------------------------------------------
-// DETECT OS
+// OPERATING SYSTEM DETECTION
 //---------------------------------------------------------------------------
 #if !defined(__BSD__) && (defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || \
-	 defined(__APPLE__) || defined(__bsdi__) || defined(__DragonFly__) || defined(BSD))
+	 defined(__bsdi__) || defined(__DragonFly__) || defined(BSD) || defined(__APPLE__))
 	 #define __BSD__
 #endif
 #if !defined(__LINUX__) && (defined(__LINUX) || defined(__ANDROID__) || defined(__gnu_linux__))
 	 #define __LINUX__
 #endif
-#if !defined(__WIN32__) && (defined(WIN32) || defined(_WIN32) || defined(__WINDOWS__))
-	 #define __WIN32__
-#endif
 #if !defined(__WIN64__) && (defined(WIN64) || defined(_WIN64))
 	 #define __WIN64__
 #endif
-#if !defined(WIN32) && (defined(__WIN32__))
+#if !defined(__WIN32__) && (defined(WIN32) || defined(_WIN32) || defined(__WINDOWS__) || defined(__WIN64__))
+	 #define __WIN32__
+#endif
+#if !defined(WIN32) && (defined(__WIN32__) || defined(__WIN64__))
 	 #define WIN32
 	 #define WIN32_LEAN_AND_MEAN
 #endif
 //---------------------------------------------------------------------------
-// DETECT CPU TYPE
+// CPU TYPE DETECTION
 //---------------------------------------------------------------------------
 #if !defined(__i386__) && (defined(__i386) || defined(i386) || defined(_M_IX86) || \
 	 defined(__X86__) || defined(_X86_) || defined(__I86__))
@@ -53,34 +111,45 @@
 #if !defined(__SSE__) & defined(__x86_64__)
      #define __SSE__
 #endif
-#if !defined(__ASM_OPT__)
+#if !defined(__ASM_OPT__) & (defined(__MMX__) & defined(__SSE__))
      #define __ASM_OPT__
 #endif
-#if !defined(__DEBUG__)
-     #define __DEBUG__
-#endif
 //---------------------------------------------------------------------------
-// DETECT MEMORY ORDER
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
 //---------------------------------------------------------------------------
+// MEMORY ORDER DETECTION
+//---------------------------------------------------------------------------
+// LITTLE ENDIAN short HL -> RAM 0x01h Hbyte 0x00h Lbyte
 #define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
+// BIG ENDIAN short HL -> RAM 0x00h Lbyte 0x01h Hbyte
 //#define __BYTE_ORDER__ __ORDER_BIG_ENDIAN__
+// BOTH ^^
 //#define __BYTE_ORDER__ __ORDER_PDP_ENDIAN__
 //---------------------------------------------------------------------------
-
-
-
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
 //---------------------------------------------------------------------------
-// PLATFORM SPECISIC COMMON INCLUDES
+// PLATFORM AND COMPILER SPECIFIC COMMON INCLUDES
 //---------------------------------------------------------------------------
 #ifdef __WIN32__
-#ifdef __WATCOMC__
-#define NOMINMAX
-#endif
+    #ifdef __WATCOMC__
+    #define NOMINMAX
+    #endif
 #include <winsock2.h>
 #include <windows.h>
+#include <conio.h>
+#include <io.h>
+#include <direct.h>
 #endif
 //---------------------------------------------------------------------------
-// STDC COMMON INCLUDES
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
+//---------------------------------------------------------------------------
+// STD_C++ COMMON INCLUDES
 //---------------------------------------------------------------------------
 #include <cstddef>
 #include <stdint.h>
@@ -90,14 +159,14 @@
 #include <time.h>
 //---------------------------------------------------------------------------
 #include <stdio.h>
-#include <conio.h>
 //---------------------------------------------------------------------------
-#include <io.h>
-#include <direct.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 //---------------------------------------------------------------------------
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
 //---------------------------------------------------------------------------
 // COMPILER SPECIFIC DEFINES
 //---------------------------------------------------------------------------
@@ -147,144 +216,117 @@
 //---------------------------------------------------------------------------
 #include <inttypes.h>
 #include <omp.h>
-
-#if !defined(__int8) && defined(int8_t)
-typedef __int8  int8_t;
+#ifndef __GNUC__
+#if !defined(int8_t) & defined(__int8_t)
+#define int8_t  __int8_t
 #endif
-#if !defined(__int16) && defined(CHAR)
-typedef __int8  BYTE;
+#if !defined(int8_t) & defined(__int8)
+#define int8_t  __int8
 #endif
-#if !defined(__int8) && defined(char)
-typedef __int8  char;
+#if !defined(int8_t) & defined(BYTE)
+#define int8_t  BYTE
 #endif
-#ifndef __i8
-#define __i8 __int8
+#if !defined(int8_t) & defined(char)
+#define int8_t  char
 #endif
 #ifndef int8
-#define int8 __int8
+#define int8 int8_t
+#endif
+#ifndef __i8
+#define __i8 int8_t
 #endif
 
-#if !defined(__int16) && defined(int16_t)
-typedef __int16  int16_t;
+#if !defined(int16_t) & defined(__int16_t)
+#define int16_t  __int16_t
 #endif
-#if !defined(__int16) && defined(SHORT)
-typedef __int16  SHORT;
+#if !defined(int16_t) & defined(__int16)
+#define int16_t  __int16
 #endif
-#if !defined(__int16) && defined(short)
-typedef __int16  short;
+#if !defined(int16_t) & defined(SHORT)
+#define int16_t  SHORT
 #endif
-#ifndef __i16
-#define __i16 __int16
+#if !defined(int16_t) & defined(short)
+#define int16_t  short
 #endif
 #ifndef int16
-#define int16 __int16
+#define int16 int16_t
+#endif
+#ifndef __i16
+#define __i16 int16_t
 #endif
 
-#if !defined(__int32) && defined(int32_t)
-typedef __int32  int32_t;
+#if !defined(int32_t) & defined(__int32_t)
+#define int32_t  __int32_t
 #endif
-#if !defined(__int32) && defined(DWORD)
-typedef __int32  DWORD;
+#if !defined(int32_t) & defined(__int32)
+#define int32_t  __int32
 #endif
-#if !defined(__int32) && defined(long)
-typedef __int32  long;
+#if !defined(int32_t) & defined(DWORD)
+#define int32_t  DWORD
 #endif
-#ifndef __i32
-#define __i32 __int32
+#if !defined(int32_t) & defined(long)
+#define int32_t  long
 #endif
 #ifndef int32
-#define int32 __int32
+#define int32 int32_t
+#endif
+#ifndef __i32
+#define __i32 int32_t
 #endif
 
-#if !defined(__int64) && defined(int64_t)
-typedef __int64  int64_t;
+#if !defined(int64_t) & defined(__int64_t)
+#define int64_t  __int64_t
 #endif
-#if !defined(__int64) && defined(LONGLONG)
-typedef __int64  LONGLONG;
+#if !defined(int64_t) & defined(__int64)
+#define int64_t  __int64
 #endif
-#if !defined(__int64) && defined(long)
-typedef __int64 (long long);
+#if !defined(int64_t) & defined(LONGLONG)
+#define int64_t  LONGLONG
 #endif
-#ifndef __i64
-#define __i64 __int64
+#if !defined(int64_t) & defined(long)
+#define int64_t (long long)
 #endif
 #ifndef int64
-#define int64 __int64
+#define int64 int64_t
 #endif
-
-//---------------------------------------------------------------------------
+#ifndef __i64
+#define __i64 int64_t
 #endif
-//---------------------------------------------------------------------------
-// DEBUG OR NOT DEBUG
-//---------------------------------------------------------------------------
-#if defined(__DEBUG__)
-//---------------------------------------------------------------------------
-//#define __DEBUG_MEM32__
-//#define __DEBUG_MEM32_ALLOC__
-//#define __DEBUG_CSTR__
-//#define __DEBUG_CSTR_CLASS__
-//#define __DEBUG_CSTR_STACK__
-#define __DEBUG_DATABASE_ITEMS__
-#define __DEBUG_DATABASE__
-#define __DEBUG_KOP32_CLASS__
-#define __DEBUG_KOP32_CONSOLE__
-#define __DEBUG_KOP32_PROGRESS_CONTROLER__
-#define __DEBUG_PHARSER__
-#define __DEBUG_MATH_PHARSER__
-#define __DEBUG_VECTOR__
-#define __DEBUG_LIST__
-#define __DEBUG_HASH_CHAIN__
-#define __DEBUG_SET__
-#define __DEBUG_LINKED_VECTOR__
-#define __DEBUG_HASHED_LINKED_VECTOR__
-#define __DEBUG_COMPRESSOR_API__
-#define __DEBUG_LZSS_COMPRESSOR__
-#define __DEBUG_HUFF_COMPRESSOR__
-#define __DEBUG_STATIC_HUFF_COMPRESSOR__
-#define __DEBUG_ARI_COMPRESSOR__
-#define __DEBUG_CIPHER_API__
-#define __DEBUG_MTF_CIPHER__
-#define __DEBUG_XOR_CIPHER__
-#define __DEBUG_ROT_CIPHER__
-#define __DEBUG_HASHER_API__
-#define __DEBUG_CRC32_HASHER__
-#define __DEBUG_MD5_HASHER__
-#define __DEBUG_SSC1_HASHER__
-#define __DEBUG_SOCKET__
-#define __DEBUG_RS232__
-#define __DEBUG_FILE_IO__
-#define __DEBUG_FILE_INI__
-//#define __DEBUG_TIME__
-#define __DEBUG_FUNC_ENTER__
+//end __GNUC__
+#endif
 //---------------------------------------------------------------------------
 #endif
+//---------------------------------------------------------------------------
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
 //---------------------------------------------------------------------------
 // DEBUG MACROS
 //---------------------------------------------------------------------------
 #if defined(__DEBUG_FUNC_ENTER__)
 #include "./time/tsoft_time.h"
-#ifndef __func__ // specific to Microsoft Visual Studio
-#define __func__ ""
-#endif
-#define __DEBUG_FUNC_CALLED__\
-        static double __time_1 = ts::time::clock_ms();\
-        static const  int __entered_line = __LINE__;\
+#define __DEBUG_FUNC_CALLED(__func)\
+        static const int __entered_line = __LINE__;\
+        static double __time_1 = ts::time::time_ms();\
         static int __entered_time = 1;\
         char *__file__ = __FILE__;\
-        char *__file_name__ = ::strrchr(__file__,'/');\
-          if (__file_name__==NULL) __file_name__ = ::strrchr(__file__,'\\');\
-          if (__file_name__==NULL) __file_name__ = __file__;\
-        ts::con::prints("DEBUG: %s: Enter function: %s@%d line, time: %lf\n",__file_name__,__func__,__entered_line,double(__entered_time+=1));
+        char *__file_name__ = &(::strrchr(__file__,'/')[1]);\
+          if (__file_name__==&((char*)NULL)[1]) __file_name__ = &(::strrchr(__file__,'\\')[1]);\
+          if (__file_name__==&((char*)NULL)[1]) __file_name__ = __file__;\
+        ts::con::prints("DEBUG: %s: Enter function: %s@%d line, for %d time\n\0",__file_name__,__func,__entered_line,++__entered_time);
 //
-#define RETURN(var)\
-		do {         __int64 __time_2 = ts::time::clock_ms - __time_1;\
-        ts::con::prints("DEBUG: Return from function: %d, at: %d, spent %lfms:\n",__file_name__,__entered_line,__LINE__,double(__time_2));\
-		return var; } while(0); return var;
+#define __DEBUG_RETURN(var)\
+		{double __time_2 = ts::time::time_ms() - __time_1;\
+        ts::con::prints("DEBUG: Return from function: %d, at: %d, spent %lfms:\n\0",__file_name__,__entered_line,__LINE__,__time_2);\
+		} return var;
 #else
-#define __DEBUG_FUNC_CALLED__
-#define RETURN(var) return var;
+#define __DEBUG_FUNC_CALLED("")
+#define __DEBUG_RETURN(var) return var;
 #endif
-
+//---------------------------------------------------------------------------
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
 //---------------------------------------------------------------------------
 // ASM MACROS
 //---------------------------------------------------------------------------
@@ -292,15 +334,19 @@ typedef __int64 (long long);
 #ifdef __BORLANDC__
 #define __builtin_prefetch(x1,x2,x3)   asm { push esi; mov esi,x1; prefetchnta esi+0; pop esi; };
 #define __builtin___clear_cache(x1,x2) asm { SFENCE; };
-#define __PTRDIFF_TYPE__ __int8*
+#define __PTRDIFF_TYPE__ int8_t*
 #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
 #else
 #define __builtin_prefetch(x1,x2,x3)
 #define __builtin___clear_cache(x1,x2)
-#define __PTRDIFF_TYPE__ __int8*
+#define __PTRDIFF_TYPE__ int8_t*
 #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
 #endif
 #endif
+//---------------------------------------------------------------------------
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
 //---------------------------------------------------------------------------
 // C MACROS
 //---------------------------------------------------------------------------
@@ -317,6 +363,10 @@ typedef __int64 (long long);
 #ifndef MAKEWORD
 #define MAKEWORD(a,b)   ((WORD)(((BYTE)(a))|(((WORD)((BYTE)(b)))<<8)))
 #endif
+//---------------------------------------------------------------------------
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
 //---------------------------------------------------------------------------
 // UNICODE MACROS
 //---------------------------------------------------------------------------
@@ -336,6 +386,10 @@ typedef __int64 (long long);
 #define _TEOF EOF
 #endif
 //---------------------------------------------------------------------------
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
+//---------------------------------------------------------------------------
 // OS TYPEDEF TUNE
 //---------------------------------------------------------------------------
 #if defined(__BSD__)
@@ -348,6 +402,10 @@ typedef __int64 (long long);
 #endif
 #if defined(__BEOS__)
 #endif
+//---------------------------------------------------------------------------
+// **************************************************************************
+// **************************************************************************
+// **************************************************************************
 //---------------------------------------------------------------------------
 // SSTSOFT INCLUDES
 //---------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_kop32_search.h"
 #include "../text/tsoft_cstr_manipulation.h"
@@ -11,7 +11,7 @@ __stdcall ts::__kop32_search::__kop32_search(ts::__kop32_class *aowner)
 : f_owner(aowner), options(), default_progress(aowner)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		progress = &default_progress;
@@ -22,7 +22,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::__kop32_search::set_owner(ts::__kop32_class *aowner)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		f_owner = aowner;
@@ -33,16 +33,16 @@ __DEBUG_FUNC_CALLED__
 ts::__kop32_class* __stdcall ts::__kop32_search::owner(void)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		return f_owner;
 }
 //---------------------------------------------------------------------------
-__int32 __stdcall ts::__kop32_search::exec(const char *a_dir, const ts::__database* a_mask_list_ptr, ts::__database* a_output_list_ptr)
+int32_t __stdcall ts::__kop32_search::exec(const char *a_dir, const ts::__database* a_mask_list_ptr, ts::__database* a_output_list_ptr)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		f_external_src_output_list_ptr = a_output_list_ptr;
@@ -96,13 +96,13 @@ __DEBUG_FUNC_CALLED__
 
 #include <stack>
 
-__int32 __stdcall ts::__kop32_search::f_seek_src(const char *a_lpSource)
+int32_t __stdcall ts::__kop32_search::f_seek_src(const char *a_lpSource)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-		register __int32 current;
+		register int32_t current;
 		ts::__cstr_class *currentlpSource = new ts::__cstr_class(1024);
 		currentlpSource->set(a_lpSource);
 		ts::cstr::fix_file_path(currentlpSource->data(),a_lpSource);
@@ -112,20 +112,20 @@ __DEBUG_FUNC_CALLED__
 		struct __seek_stack {
 				std::stack < ts::__cstr_class* > path;
 				std::stack < HANDLE > handle;
-				__int32 base_path_len; // this is corrent if source is DIRECTORY
+				int32_t base_path_len; // this is corrent if source is DIRECTORY
 				 HANDLE base_path_handle;
 
 				bool __stdcall empty(void)
 				{
 						return path.empty();
 				}
-				__int32 __stdcall push(const char *a_path, HANDLE a_handle)
+				int32_t __stdcall push(const char *a_path, HANDLE a_handle)
 				{
 						path.push(new ts::__cstr_class(a_path));
 						handle.push(a_handle);
 						return path.size();
 				}
-				__int32 __stdcall pop(void)
+				int32_t __stdcall pop(void)
 				{
 						delete path.top();
 						path.pop();
@@ -144,7 +144,7 @@ __DEBUG_FUNC_CALLED__
 		}
 
 		if (f_src_file.find_data.next!=0 ? (f_src_file.find_data.data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)==0 : false) {
-				ts::cstr::extract_file_path(templp->data(),currentlpSource->c_str());
+				ts::cstr::get_file_path(templp->data(),currentlpSource->c_str());
 				seek_stack->base_path_len = templp->len(); // but source is FILE, change to corrent values
 				SEEKSRC_FIND_CLOSE();
 				SEEKSRC_FIND_ADD_TO_list_ptr(currentlpSource->c_str(),f_src_file.find_data.next,seek_stack->base_path_len);
@@ -208,10 +208,10 @@ GOTO_seek_src_cleanup_ERROR:
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_search::f_seek_src_file(const char *a_lpSource, const __int32 base_path_len)
+int32_t __stdcall ts::__kop32_search::f_seek_src_file(const char *a_lpSource, const int32_t base_path_len)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		register uint32_t current;
@@ -280,10 +280,10 @@ __DEBUG_FUNC_CALLED__
 				 f_external_dst_output_list_ptr->items()->set_number(current,FILENAME_BASE_PATH_LEN, base_path_len);\
 				}
 
-__int32 __stdcall ts::__kop32_search::create_destination_list(const char *a_lpDestination, const char *a_lpExtension_to_add, const char *a_lpExtension_to_delete, __database* a_output_list_ptr)
+int32_t __stdcall ts::__kop32_search::create_destination_list(const char *a_lpDestination, const char *a_lpExtension_to_add, const char *a_lpExtension_to_delete, __database* a_output_list_ptr)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		f_external_dst_output_list_ptr = a_output_list_ptr;
@@ -291,10 +291,10 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_search::f_seek_dst(const char *a_lpDestination, const char *a_lpExtension_to_add, const char *a_lpExtension_to_delete)
+int32_t __stdcall ts::__kop32_search::f_seek_dst(const char *a_lpDestination, const char *a_lpExtension_to_add, const char *a_lpExtension_to_delete)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		if (f_external_src_output_list_ptr->items()->count()==0)
@@ -305,21 +305,21 @@ __DEBUG_FUNC_CALLED__
 		ts::cstr::fix_file_path(lpSource->data(),f_external_src_output_list_ptr->items()->get_text(f_external_dst_output_list_ptr->items()->count()));
 		ts::__cstr_class *temp_lpDestination = new ts::__cstr_class(1024);
 		ts::__cstr_class *temp_lpSource = new ts::__cstr_class(1024);
-		__int32 len_of_ext_to_add = ts::cstr::len(a_lpExtension_to_add), len_of_ext_to_delete = ts::cstr::len(a_lpExtension_to_delete);
+		int32_t len_of_ext_to_add = ts::cstr::len(a_lpExtension_to_add), len_of_ext_to_delete = ts::cstr::len(a_lpExtension_to_delete);
 		if (lpSource->len() > 3) {
 				lpDestination->add("\\");
-				ts::cstr::extract_file_name(temp_lpSource->data(),lpSource->c_str());
+				ts::cstr::get_file_name(temp_lpSource->data(),lpSource->c_str());
 				lpDestination->add(temp_lpSource->c_str());
 				if (len_of_ext_to_add > 0) {
 						lpDestination->add(a_lpExtension_to_add);
 				}
 				if (len_of_ext_to_delete > 0) {
-						if (*(__int32*)((__int8*)lpDestination+lpDestination->len()-4)==*(__int32*)a_lpExtension_to_delete)
+						if (*(int32_t*)((int8_t*)lpDestination+lpDestination->len()-4)==*(int32_t*)a_lpExtension_to_delete)
 								lpDestination->data()[lpDestination->len()-4] = '\0';
 				}
 		}
-		__int32 current;
-		__int32 base_path_len = lpDestination->len();
+		int32_t current;
+		int32_t base_path_len = lpDestination->len();
 //
 //
 		if (len_of_ext_to_add==0 && len_of_ext_to_delete==0) {
@@ -329,16 +329,16 @@ __DEBUG_FUNC_CALLED__
 				ts::cstr::upr(temp_lpDestination->data());
 				if (ts::cstr::compare(temp_lpSource->c_str(),temp_lpDestination->c_str())==0)
 						for (int nKopii =1; progress->cancel==0; nKopii++) {
-								ts::cstr::extract_file_path(lpDestination->data(),lpDestination->c_str());
+								ts::cstr::get_file_path(lpDestination->data(),lpDestination->c_str());
 								if (nKopii==1) {
 										lpDestination->add("\\Kopia ");
-										ts::cstr::extract_file_name(temp_lpSource->data(),lpSource->c_str());
+										ts::cstr::get_file_name(temp_lpSource->data(),lpSource->c_str());
 										lpDestination->add(temp_lpSource->c_str());
 								} else {
 										lpDestination->add("\\Kopia (");
 										lpDestination->add(ts::cstr::itoa(nKopii));
 										lpDestination->add(") ");
-										ts::cstr::extract_file_name(temp_lpSource->data(),lpSource->c_str());
+										ts::cstr::get_file_name(temp_lpSource->data(),lpSource->c_str());
 										lpDestination->add(temp_lpSource->c_str());
 								}
 								SEEKDST_FIND_FIRST(temp_lpSource->c_str());
@@ -361,7 +361,7 @@ __DEBUG_FUNC_CALLED__
 				if (len_of_ext_to_delete > 0) {
 						for (int p = ts::cstr::len(temp_lpSource->c_str()); p > dstlen_old; p--)
 								if (temp_lpSource->c_str()[p]=='\\' || temp_lpSource->c_str()[p]=='\0')
-										if (*(__int32*)(temp_lpSource->c_str()+p-4)==*(int*)a_lpExtension_to_delete)
+										if (*(int32_t*)(temp_lpSource->c_str()+p-4)==*(int*)a_lpExtension_to_delete)
 												ts::cstr::cut(temp_lpSource->data(),p-=4,4);
 				}
 				// CHECK FOR REAL DESTINATION FREE SPACE BY SUBB USSED BY REPLACED DESTINATION FILES
@@ -380,7 +380,7 @@ __DEBUG_FUNC_CALLED__
 __stdcall ts::__kop32_search::~__kop32_search(void)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 }

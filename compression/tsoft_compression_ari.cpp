@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_compression_ari.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 #include "./../text/tsoft_cstr_manipulation.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
@@ -12,27 +12,27 @@ I. E. Witten, R. M. Neal, and J. G. Cleary,
 Communications of the ACM, Vol. 30, pp. 520-540 (1987),
 from which much have been borrowed.  */
 
-#define M   (__int32)15
+#define M   (int32_t)15
 
 /*	Q1 (= 2 to the M) must be sufficiently large, but not so
-		large as the __int32 4 * Q1 * (Q1 - 1) overflows.  */
+		large as the int32_t 4 * Q1 * (Q1 - 1) overflows.  */
 
-#define Q1  	 (__int32)(1UL << M)
-#define Q2  	 (__int32)(2 * Q1)
-#define Q3  	 (__int32)(3 * Q1)
-#define Q4  	 (__int32)(4 * Q1)
-#define MAX_CUMF (__int32)(Q1 - 1)
+#define Q1  	 (uint32_t)(1UL << M)
+#define Q2  	 (uint32_t)(2 * Q1)
+#define Q3  	 (uint32_t)(3 * Q1)
+#define Q4  	 (uint32_t)(4 * Q1)
+#define MAX_CUMF (uint32_t)(Q1 - 1)
 
-#define CNUM (__int32)256
+#define CNUM (uint32_t)256
 
 #define OUT_BIT_0(code,u,bits)		\
-		{code=((__int32)code>>(u+1)) | ((0x10000000L-((0x10000000L>>u)-1))<<1); \
+		{code=((int32_t)code>>(u+1)) | ((0x10000000L-((0x10000000L>>u)-1))<<1); \
 		 bits+=u+1;						\
 		 u=0;								\
 		}
 
 #define OUT_BIT_1(code,u,bits) \
-		{code=((__int32)code>>(u+1)) | ((0x10000000L>>u));   \
+		{code=((int32_t)code>>(u+1)) | ((0x10000000L>>u));   \
 		 bits+=1+u;						\
 		 u=0;								\
 		}
@@ -40,20 +40,20 @@ from which much have been borrowed.  */
 ts::compression::__ari_compressor::__ari_compressor(void)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-		char_to_symb = (__int32*)::ts::mem32::alloc(sizeof(__int32)*(CNUM));
-		symb_to_char = (__int32*)::ts::mem32::alloc(sizeof(__int32)*(CNUM+1));
-		symb_cumf	 = (__int32*)::ts::mem32::alloc(sizeof(__int32)*(CNUM+1));  /* cumulative freq for symbols */
-		symb_freq	 = (__int32*)::ts::mem32::alloc(sizeof(__int32)*(CNUM+1));  /* frequency for symbols */
+        char_to_symb = (uint32_t*)::ts::mem32::alloc(sizeof(uint32_t)*(CNUM));
+        symb_to_char = (uint32_t*)::ts::mem32::alloc(sizeof(uint32_t)*(CNUM+1));
+        symb_cumf	 = (uint32_t*)::ts::mem32::alloc(sizeof(uint32_t)*(CNUM+1));  /* cumulative freq for symbols */
+        symb_freq	 = (uint32_t*)::ts::mem32::alloc(sizeof(uint32_t)*(CNUM+1));  /* frequency for symbols */
 }
 //---------------------------------------------------------------------------
 
 ts::compression::__ari_compressor::~__ari_compressor(void)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		::ts::mem32::free(char_to_symb);
@@ -66,13 +66,13 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__ari_compressor::initialize()
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //------------------
 		low = 0, high = Q4, value = 0, underflow_bits = 0;
 //------------------
-		register __int32 c, i;
+        register uint32_t c, i;
 //------------------
 		symb_freq[CNUM] = 0;
 		for (i = CNUM; i!=0; i--) {
@@ -87,16 +87,16 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::compression::__ari_compressor::update(const __int32 axdata_uncoded)
+void __stdcall ts::compression::__ari_compressor::update(const uint32_t axdata_uncoded)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //------------------
-		register __int32 symb = axdata_uncoded;
+        register uint32_t symb = axdata_uncoded;
 //------------------
-		register __int32 i, f;
+        register uint32_t i, f;
 //------------------
 		if (symb_cumf[0] >= MAX_CUMF) {
 //------------------
@@ -110,7 +110,7 @@ __DEBUG_FUNC_CALLED__
 //------------------
 		}
 //------------------
-		register __int32 char_i, char_symb;
+        register uint32_t char_i, char_symb;
 		for (i = symb; symb_freq[i]==symb_freq[i-1]; i--);
 		if (i < symb) {
 				char_i = symb_to_char[i];
@@ -127,13 +127,13 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::compression::__ari_compressor::Search(const __int32 x)
+uint32_t __stdcall ts::compression::__ari_compressor::search(const uint32_t x)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
-		register __int32 l, h, c;
+        register uint32_t l, h, c;
 		for (l = 1, h = CNUM; l < h; ) {
 				c = (l + h) >> 1;
 				if (symb_cumf[c] > x) l = c + 1;
@@ -146,30 +146,30 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__ari_compressor::initialize_encoder(void)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		initialize();
 }
 //---------------------------------------------------------------------------
 
-char __stdcall ts::compression::__ari_compressor::encode(__int32 *a_code_ptr, const __int8 a_code_ptr_bit, const char axdata_uncoded)
+uint8_t __stdcall ts::compression::__ari_compressor::encode(uint32_t *a_code_ptr, const uint8_t a_code_ptr_bit, const uint8_t axdata_uncoded)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //------------------
-		register __int32 l = low, h = high;
-		__int32 r = h - l;
-		__int32 symb = char_to_symb[(__int32)axdata_uncoded];
+        register uint32_t l = low, h = high;
+        uint32_t r = h - l;
+        uint32_t symb = char_to_symb[(uint32_t)axdata_uncoded];
 //------------------
 		h = l + ((r * symb_cumf[symb-1]) / symb_cumf[0]);
 		l = l + ((r * symb_cumf[symb-0]) / symb_cumf[0]);
 //------------------
-		register __int32 code = 0;
-		register __int32 u = underflow_bits;
-		register __int32 bits = 0;
+        register uint32_t code = 0;
+        register uint32_t u = underflow_bits;
+        register uint32_t bits = 0;
 //------------------
 		for (;;) {
 //------------------
@@ -194,57 +194,57 @@ __DEBUG_FUNC_CALLED__
 		high = h;
 		underflow_bits = u;
 		update(symb);
-		__int32 result = code;
+        uint32_t result = code;
 		ts::mem32::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,bits);
 		return bits;
 }
 //---------------------------------------------------------------------------
 
-char __stdcall ts::compression::__ari_compressor::flush_encoder(__int32 *a_code_ptr, const char a_code_ptr_bit)
+uint8_t __stdcall ts::compression::__ari_compressor::flush_encoder(uint32_t *a_code_ptr, const uint8_t a_code_ptr_bit)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //------------------
-		register __int32 bits = 0;
-		register __int32 code = 0;
+        register uint32_t bits = 0;
+        register uint32_t code = 0;
 		register char code_bit = a_code_ptr_bit;
 //------------------
-		register __int32 u = ++underflow_bits;
+        register uint32_t u = ++underflow_bits;
 		if (low < Q1) {
 				OUT_BIT_0(code,u,bits)
 		} else {
 				OUT_BIT_1(code,u,bits)
 		}
-		__int32 result = code;
+        uint32_t result = code;
 		ts::mem32::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,bits);
 		code_bit += bits;
 		a_code_ptr += (code_bit>>3);
 		code_bit &= 0x07L;
 		a_code_ptr[0]  &=(0xFFFFFFFFL>>(32-code_bit));
-		return (char)((__int32)32+(__int32)bits-(__int32)code_bit);
+        return (char)((uint32_t)32+(uint32_t)bits-(uint32_t)code_bit);
 }
 //---------------------------------------------------------------------------
 
-char __stdcall ts::compression::__ari_compressor::initialize_decoder(const __int32 *a_code_ptr, const __int8 a_code_ptr_bit)
+uint8_t __stdcall ts::compression::__ari_compressor::initialize_decoder(const uint32_t *a_code_ptr, const uint8_t  a_code_ptr_bit)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		initialize();
 //------------------
-		register __int32 bits = 0;
-		register __int32 code;
+        register uint32_t bits = 0;
+        register uint32_t code;
 //------------------
-		register __int32 v = value;
+        register uint32_t v = value;
 //------------------
-		__int32 indata;
+        uint32_t indata;
 		ts::mem32::bit_mov(&indata,0,a_code_ptr,a_code_ptr_bit,32);
 		code =  indata;
 //------------------
-		register __int8 i;
+		register int8_t i;
 //------------------
 		for (i = 0; i < M + 2; i++) {
 				v = (v<<1) + (code&1);
@@ -256,23 +256,23 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-char __stdcall ts::compression::__ari_compressor::decode(char *alpdata_uncoded, const __int32 *a_code_ptr, const __int8 a_code_ptr_bit)
+uint8_t __stdcall ts::compression::__ari_compressor::decode(char *alpdata_uncoded, const uint32_t *a_code_ptr, const uint8_t a_code_ptr_bit)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 //------------------
-		register __int32 bits = 0;
-		register __int32 code;
-		register __int32 v = value;
-		register __int32 l = low, h = high, r = h - l;
-		register __int32 symb = Search((__int32)(((v - l + 1) * symb_cumf[0] - 1) / r));
+        register uint32_t bits = 0;
+        register uint32_t code;
+        register uint32_t v = value;
+        register uint32_t l = low, h = high, r = h - l;
+        register uint32_t symb = this->search((uint32_t)(((v - l + 1) * symb_cumf[0] - 1) / r));
 //------------------
 		h = l + (r * symb_cumf[symb - 1]) / symb_cumf[0];
 		l = l + (r * symb_cumf[symb - 0]) / symb_cumf[0];
 //------------------
-		__int32 indata;
+        uint32_t indata;
 		ts::mem32::bit_mov(&indata,0,a_code_ptr,a_code_ptr_bit,32);
 		code =  indata;
 //------------------
@@ -309,7 +309,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::compression::__ari_compressor::flush_decoder(void)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 }

@@ -13,10 +13,10 @@ extern ts::__kop32_class *kop32;
 extern void __stdcall set_console_handlers( char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(char*));
 
 extern const char* __stdcall console_event_handler(char *a_event, char *a_code, char *a_code_ex);
-extern __int32 __stdcall console_monitor_proc();
+extern int32_t __stdcall console_monitor_proc();
 
-extern __int32 __stdcall start_in_console_mode(char *args);
-extern __int32 __stdcall start(char *args, const char* (__stdcall *a_kop32_event_handler)(char*,char*,char*));
+extern int32_t __stdcall start_in_console_mode(char *args);
+extern int32_t __stdcall start(char *args, const char* (__stdcall *a_kop32_event_handler)(char*,char*,char*));
 //---------------------------------------------------------------------------
 }}
 //---------------------------------------------------------------------------

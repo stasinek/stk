@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_file_lzss_header.h"
 //---------------------------------------------------------------------------
@@ -8,10 +8,10 @@
 
 // Little Endian 0x03020100L -> [0]:0x00L, [1]:0x01L, [2]:0x02L, [3]:0x03L
 
-uint8_t __stdcall ts::file_header::__lzssv4_header_coder::plain_price(__int32 axdata_uncoded_len)
+int8_t __stdcall ts::file_header::__lzssv4_header_coder::plain_price(const uint32_t axdata_uncoded_len)
 {
 //minimum code size for uncoded data header, just pass throught
-                register __int32 l = axdata_uncoded_len;
+                register uint32_t l = axdata_uncoded_len;
                 if (l<=PLAIN_LEN_N) {
                                 return 1;
                 }
@@ -22,7 +22,7 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-uint8_t __stdcall ts::file_header::__lzssv4_header_coder::plain_encode(void *a_code_ptr,__int32 axdata_uncoded_len)
+int8_t __stdcall ts::file_header::__lzssv4_header_coder::plain_encode(void *a_code_ptr, const uint32_t axdata_uncoded_len)
 {
 // 00LLLLLL
 // <<2
@@ -32,7 +32,7 @@ uint8_t __stdcall ts::file_header::__lzssv4_header_coder::plain_encode(void *a_c
 // LLLLLLXX = 1B
 // or in extended version LLLLLLLL + LLLLLLXX = 2B
 
-                register __int32 l = axdata_uncoded_len;
+                register uint32_t l = axdata_uncoded_len;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
                 if (l<=PLAIN_LEN_N) {
                                 l = l <<N_BITS;
@@ -51,7 +51,7 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-uint8_t __stdcall ts::file_header::__lzssv4_header_coder::plain_decode(__int32 *a_data_uncoded_len,void *a_code_ptr)
+int8_t __stdcall ts::file_header::__lzssv4_header_coder::plain_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr)
 {
 // if N_CODE detected
 // LLLLLLXX
@@ -67,7 +67,7 @@ uint8_t __stdcall ts::file_header::__lzssv4_header_coder::plain_decode(__int32 *
 // =
 // 0000LLLL LLLLLLLL
 //
-                register __int32 l;
+                register uint32_t l;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
                 register uint8_t  c0, c1;
                 c0 = ((uint8_t*)code)[0];
@@ -92,11 +92,11 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-uint8_t __stdcall ts::file_header::__lzssv4_header_coder::pattern_price(__int32 axdata_uncoded_counte,__int32 axdata_uncoded_elsize)
+int8_t __stdcall ts::file_header::__lzssv4_header_coder::pattern_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
 {
 //minimum code size for data header, one byte for lenght and code second byte for RLE-byte
-                register __int32 l = axdata_uncoded_counte;
-                register __int32 e = axdata_uncoded_elsize;
+                register uint32_t l = axdata_uncoded_counte;
+                register uint32_t e = axdata_uncoded_elsize;
                 if (l<=PATTERN_LEN_N) {
                                 return 1;
                 }
@@ -107,14 +107,14 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::file_header::__lzssv4_header_coder::check_pattern_Match_Cost(__int32 alen,__int32 apattern_counte,__int32 apattern_elsize)
+int32_t __stdcall ts::file_header::__lzssv4_header_coder::check_pattern_Match_Cost(const uint32_t alen, const uint32_t apattern_counte, const uint32_t apattern_elsize)
 {
-                register __int32 t;
-                register __int32 pattern_elsize = apattern_elsize;
-                register __int32 pattern_counte = apattern_counte;
-                register __int32 pattern_len = pattern_elsize * pattern_counte;
+                register uint32_t t;
+                register uint32_t pattern_elsize = apattern_elsize;
+                register uint32_t pattern_counte = apattern_counte;
+                register uint32_t pattern_len = pattern_elsize * pattern_counte;
                 t = alen;
-                register __int32 price =t;
+                register uint32_t price =t;
                 while (t > PLAIN_LEN_MAX) {
                                 price+= plain_price(PLAIN_LEN_MAX);
                                 t -= PLAIN_LEN_MAX;
@@ -126,7 +126,7 @@ __int32 __stdcall ts::file_header::__lzssv4_header_coder::check_pattern_Match_Co
                 price+= pattern_elsize;
 //--------------------
                 t = alen + pattern_len;
-                register __int32  repl = t;
+                register uint32_t  repl = t;
                 while (t > PLAIN_LEN_MAX) {
                                 repl+= plain_price(PLAIN_LEN_MAX);
                                 t -= PLAIN_LEN_MAX;
@@ -138,7 +138,7 @@ return repl-price;
 }
 //---------------------------------------------------------------------------
 
-uint8_t __stdcall ts::file_header::__lzssv4_header_coder::pattern_encode(void *a_code_ptr, __int32 axdata_uncoded_counte,__int32 axdata_uncoded_elsize)
+int8_t __stdcall ts::file_header::__lzssv4_header_coder::pattern_encode(void *a_code_ptr, const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
 {
 // L - LENGTH
 // 00LLLLLL
@@ -148,10 +148,10 @@ uint8_t __stdcall ts::file_header::__lzssv4_header_coder::pattern_encode(void *a
 // =
 // LLLLLLXX
 // OUT 1 BYTE LENGTH RLE 1 OF BYTES
-                register __int32 l = axdata_uncoded_counte;
-                register __int32 e = axdata_uncoded_elsize;
+                register uint32_t l = axdata_uncoded_counte;
+                register uint32_t e = axdata_uncoded_elsize;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
-                register __int32 t;
+                register uint32_t t;
                 if (l<= PATTERN_LEN_N) {
                                 t = l;
                                 e = e - 1;
@@ -177,9 +177,9 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-uint8_t __stdcall ts::file_header::__lzssv4_header_coder::pattern_decode(__int32 *a_data_uncoded_counte,__int32 *a_data_uncoded_elsize,void *a_code_ptr)
+int8_t __stdcall ts::file_header::__lzssv4_header_coder::pattern_decode(uint32_t *a_data_uncoded_counte, uint32_t *a_data_uncoded_elsize, const void *a_code_ptr)
 {
-                register __int32 l, e;
+                register uint32_t l, e;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
                 register uint8_t  c0, c1;
                 c0 = ((uint8_t*)code)[0];
@@ -211,10 +211,10 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-uint8_t __stdcall ts::file_header::__lzssv4_header_coder::dup_price(__int32 axdata_uncoded_len,__int32 axdata_uncoded_offset)
+int8_t __stdcall ts::file_header::__lzssv4_header_coder::dup_price(const  uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset)
 {
-                register __int32 l = axdata_uncoded_len;
-                register __int32 o = axdata_uncoded_offset;
+                register uint32_t l = axdata_uncoded_len;
+                register uint32_t o = axdata_uncoded_offset;
                 if (l<=DUP_LEN_N) {
                                 if (o<=DUP_OFFSET_1) return 1+1;
                                 else if (o<=DUP_OFFSET_2) return 1+2;
@@ -229,16 +229,16 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::file_header::__lzssv4_header_coder::check_dup_Match_Cost(__int32 aplain_len,__int32 adup_len,__int32 adup_offset)
+int32_t __stdcall ts::file_header::__lzssv4_header_coder::check_dup_Match_Cost(const uint32_t aplain_len, const uint32_t adup_len, const uint32_t adup_offset)
 {
 //
 // CALCULATE
 //
-                register __int32 t;
-                register __int32 dup_len = adup_len;
-                register __int32 dup_offset = adup_offset;
+                register uint32_t t;
+                register uint32_t dup_len = adup_len;
+                register uint32_t dup_offset = adup_offset;
                 t = aplain_len;
-                register __int32 price =t;
+                register uint32_t price =t;
                 while (t > PLAIN_LEN_MAX) {
                                 price+= plain_price(PLAIN_LEN_MAX);
                                 t -= PLAIN_LEN_MAX;
@@ -249,7 +249,7 @@ __int32 __stdcall ts::file_header::__lzssv4_header_coder::check_dup_Match_Cost(_
                 price+= dup_price(dup_len,dup_offset);
 //--------------------
                 t = aplain_len + dup_len;
-                register __int32 repl = t;
+                register uint32_t repl = t;
                 while (t > PLAIN_LEN_MAX) {
                                 repl+= plain_price(PLAIN_LEN_MAX);
                                 t -= PLAIN_LEN_MAX;
@@ -257,11 +257,11 @@ __int32 __stdcall ts::file_header::__lzssv4_header_coder::check_dup_Match_Cost(_
                 if (t)
                                 repl+= plain_price(t);
 //--------------------
-return repl-price;
+return repl - price;
 }
 //---------------------------------------------------------------------------
 
-uint8_t __stdcall ts::file_header::__lzssv4_header_coder::dup_encode(void *a_code_ptr,__int32 axdata_uncoded_len,__int32 axdata_uncoded_offset)
+int8_t __stdcall ts::file_header::__lzssv4_header_coder::dup_encode(void *a_code_ptr, const uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset)
 {
 // L - LENGTH
 // 0000LLLL
@@ -276,11 +276,11 @@ uint8_t __stdcall ts::file_header::__lzssv4_header_coder::dup_encode(void *a_cod
 // FFFFFFFFFFLLLLXX
 // OUT 1 BYTE HIGH PART OF OFFSET
 
-                register __int32 e;
-                register __int32 o = axdata_uncoded_offset;
-                register __int32 l = axdata_uncoded_len;
+                register uint32_t e;
+                register uint32_t o = axdata_uncoded_offset;
+                register uint32_t l = axdata_uncoded_len;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
-                register __int32 t;
+                register uint32_t t;
                          
                 if (l<= DUP_LEN_N) {
 
@@ -355,15 +355,15 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-uint8_t __stdcall ts::file_header::__lzssv4_header_coder::dup_decode(__int32 *a_data_uncoded_len,__int32 *a_data_uncoded_offset,void *a_code_ptr)
+int8_t __stdcall ts::file_header::__lzssv4_header_coder::dup_decode(uint32_t *a_data_uncoded_len, uint32_t *a_data_uncoded_offset, const void *a_code_ptr)
 {
-                register __int32 l, o;
+                register uint32_t l, o;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
-                register __int32 e;
+                register uint32_t e;
                 register uint8_t  c0, c1;
                 
                                    c0 = ((uint8_t*)code)[0];
-                __int8 h = c0 & N_CODE_MASK;
+                int8_t h = c0 & N_CODE_MASK;
                 
                 if (h==N_DUP_CODE) {
                                 e  = c0  & N_DUP_OFFSET_MASK;

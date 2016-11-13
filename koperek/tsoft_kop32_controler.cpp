@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_kop32_controler.h"
 #include "tsoft_kop32_class.h"
@@ -10,7 +10,7 @@
 : readed(0), size(0)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 	reset();
 }
@@ -19,18 +19,18 @@ __DEBUG_FUNC_CALLED__
 __stdcall ts::__kop32_class_progress_controler::__stat::~__stat()
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class_progress_controler::__stat::percent(void)
+int32_t __stdcall ts::__kop32_class_progress_controler::__stat::percent(void)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-		if (size!=0) return (__int32)((100* readed) / size);
+		if (size!=0) return (int32_t)((100* readed) / size);
 		else return 0;
 }
 //---------------------------------------------------------------------------
@@ -38,7 +38,7 @@ __DEBUG_FUNC_CALLED__
 void   __stdcall ts::__kop32_class_progress_controler::__stat::reset(void)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		readed = size = 0;
 }
@@ -52,7 +52,7 @@ __stdcall  ts::__kop32_class_progress_controler::__kop32_class_progress_controle
 	cancel(false), pause(false)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 
 		src = new __stat_group();
@@ -64,7 +64,7 @@ __DEBUG_FUNC_CALLED__
 __stdcall  ts::__kop32_class_progress_controler::~__kop32_class_progress_controler()
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		delete src;
 		delete dst;
@@ -74,7 +74,7 @@ __DEBUG_FUNC_CALLED__
 void  __stdcall ts::__kop32_class_progress_controler::reset()
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		f_t1 = 0;
 		f_t2 = 0;
@@ -84,13 +84,13 @@ __DEBUG_FUNC_CALLED__
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class_progress_controler::initialize_timer(void)
+uint32_t __stdcall ts::__kop32_class_progress_controler::initialize_timer(void)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		f_timer_freezed = false;
-        f_t1 = ts::time::clock_ms();
+        f_t1 = ts::time::time_ms();
 		f_t2 = f_t1;
 		return f_t1;
 }
@@ -99,7 +99,7 @@ __DEBUG_FUNC_CALLED__
 void	__stdcall ts::__kop32_class_progress_controler::freeze_timer(void)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		f_timer_freezed = true;
 }
@@ -108,32 +108,32 @@ __DEBUG_FUNC_CALLED__
 void	__stdcall ts::__kop32_class_progress_controler::resume_timer(void)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-		__int32 d = f_t2-f_t1;
-        f_t2 = ts::time::clock_ms();
+		int32_t d = f_t2-f_t1;
+        f_t2 = ts::time::time_ms();
 		f_t1 = f_t2-d;
 		f_timer_freezed = false;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class_progress_controler::elapsed(void)
+uint32_t __stdcall ts::__kop32_class_progress_controler::elapsed(void)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
-        if (f_timer_freezed==false) f_t2 = ts::time::clock_ms();
+        if (f_timer_freezed==false) f_t2 = ts::time::time_ms();
 		return f_t2 - f_t1;
 }
 //---------------------------------------------------------------------------
 
-__int32 __stdcall ts::__kop32_class_progress_controler::actual_time(void)
+uint32_t __stdcall ts::__kop32_class_progress_controler::actual_time(void)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		f_timer_freezed = false;
-        f_t2 = ts::time::clock_ms();
+        f_t2 = ts::time::time_ms();
 		return f_t2;
 }
 //---------------------------------------------------------------------------
@@ -141,7 +141,7 @@ __DEBUG_FUNC_CALLED__
 void __stdcall ts::__kop32_class_progress_controler::set_owner(ts::__kop32_class *aowner)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		f_owner = aowner;
 }
@@ -150,7 +150,7 @@ __DEBUG_FUNC_CALLED__
 ts::__kop32_class* __stdcall ts::__kop32_class_progress_controler::owner(void)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 		return f_owner;
 }
@@ -159,7 +159,7 @@ __DEBUG_FUNC_CALLED__
 const char* __stdcall ts::__kop32_class_progress_controler::do_event(const char *a_event, const char *a_code, const char *a_code_ex)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 if (!callback_event_handler) return default_callback_event_handler(this->owner(), a_event,a_code, a_code_ex);
 else return callback_event_handler(this->owner(), a_event,a_code,a_code_ex);

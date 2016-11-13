@@ -16,14 +16,14 @@ public:
 						__stdcall ~__stat	(void);
 		//------------------------------------
 void			__stdcall  reset	(void);
-__int64 readed, size;
-		__int32  __stdcall percent	(void);
+int64_t readed, size;
+        int32_t  __stdcall percent	(void);
 		//------------------------------------
 };
 		//------------------------------------
 private:
 		ts::__kop32_class *f_owner;
-		bool f_timer_freezed; __int32 f_t1, f_t2; time_t f_t;
+		bool f_timer_freezed; uint32_t f_t1, f_t2; time_t f_t;
 public:
 		__stdcall  __kop32_class_progress_controler(ts::__kop32_class *aowner);
 		__stdcall ~__kop32_class_progress_controler();
@@ -41,7 +41,7 @@ public:
 							one->reset();
 								all->reset();
 						}
-						void __stdcall add_readed	(__int32 areaded) {
+						void __stdcall add_readed	(uint32_t areaded) {
 							one->readed+=areaded;
 								all->readed+=areaded;
 						}
@@ -52,11 +52,11 @@ public:
 		//------------------------------------
 		void	__stdcall reset();
 		//------------------------------------
-		__int32 __stdcall initialize_timer		(void);
+		uint32_t __stdcall initialize_timer		(void);
 		void	__stdcall freeze_timer			(void);
 		void	__stdcall resume_timer			(void);
-		__int32 __stdcall elapsed				(void);
-		__int32 __stdcall actual_time			(void);
+		uint32_t __stdcall elapsed				(void);
+		uint32_t __stdcall actual_time			(void);
 		bool cancel, pause;
 		//------------------------------------
 		const char*	__stdcall do_event(const char*, const char*, const char*);

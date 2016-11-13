@@ -16,34 +16,31 @@
 
 namespace ts { namespace con {
 //---------------------------------------------------------------------------
-extern char             __stdcall       getch                   (void);
-extern void             __stdcall       error                   (const char* __restrict__ atext);
-extern void             __stdcall       print                   (const char* __restrict__ atext);
-extern void             __stdcall       debug                   (const char* __restrict__ atext);
+extern char             __stdcall   getch                   (void);
+extern void             __stdcall   print                   (const char* __restrict__ atext);
+extern void             __stdcall   error                   (const char* __restrict__ atext);
 
-extern void             __cdecl         prints  (const char* __restrict__ a_format, ...);
-extern void             __cdecl         printr  (const char* __restrict__ atext, __int8 an_times);
-extern void             __cdecl         printe  (const char* __restrict__ a_format, ...);
+extern void             __cdecl     prints  				(const char* __restrict__ a_format, ...);
+extern void             __cdecl     printe  				(const char* __restrict__ a_format, ...);
+extern void             __cdecl     printr  				(const char* __restrict__ a_text, const char an_times);
 
-typedef char       (__stdcall  __getch_handler) (void);
-typedef void       (__stdcall  __print_handler) (const char* a_text);
-typedef void       (__stdcall  __error_handler) (const char* a_text);
-typedef void       (__stdcall  __debug_handler) (const char* a_text);
+typedef char       		(__stdcall  __getch_handler)		(void);
+typedef void       		(__stdcall  __print_handler)		(const char* a_text);
+typedef void       		(__stdcall  __error_handler)		(const char* a_text);
 
-extern void             __stdcall       set_console_handlers(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*));
 extern __getch_handler *getch_handler;
 extern __print_handler *print_handler;
 extern __error_handler *error_handler;
-extern __debug_handler *debug_handler;
 
-extern char             __stdcall       stdinp_handler  (void);
-extern void             __stdcall       stdout_handler  (const char* a_text);
-extern void             __stdcall       stderr_handler  (const char* a_text);
-extern void             __stdcall       stddbg_handler  (const char* a_text);
+extern void             __stdcall   set_console_handlers	(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*));
+extern char             __stdcall   stdinp_handler  		(void);
+extern void             __stdcall   stdout_handler  		(const char* a_text);
+extern void             __stdcall   stderr_handler  		(const char* a_text);
+
 #ifdef __WATCOMC__
-extern void             atexit    (void);
+extern void                         atexit(void);
 #else
-extern void             __cdecl         atexit(void);
+extern void             __cdecl     atexit(void);
 #endif
 //---------------------------------------------------------------------------
 

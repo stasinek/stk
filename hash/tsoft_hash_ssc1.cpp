@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-// ------ Stanis³aw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "./../text/tsoft_cstr_manipulation.h"
-#include "./../mem/tsoft_mem32.h"
+#include "./../mem/tsoft_mem.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 #include "tsoft_hash_ssc1.h"
@@ -155,35 +155,35 @@ static uint32_t h[32] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 void __stdcall ts::hash::ssc1::reset_SSC1(void)
 {
 #ifdef __DEBUG_HASH_SSC1__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
 for (register uint32_t i = 0; i < 32; i++) h[i] = 0;
 }
 //---------------------------------------------------------------------------
 
-const uint32_t*  __stdcall ts::hash::ssc1::calc_SSC1(const void *a_data, const __int32 a_len, const __int32 a_bits)
+const uint32_t*  __stdcall ts::hash::ssc1::calc_SSC1(const void *a_data, const uint32_t a_len, const uint32_t a_bits)
 {
 #ifdef __DEBUG_HASH_SSC1__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
                 // initialize ALL 32x hash variables - simple count in nibbles:
-                __int32 n = (a_bits>>5) - 1;
+                int32_t n = (a_bits>>5) - 1;
                 for (; n >= 0;  n--) h[n] = 0x00000000L;
                 if (a_len==0) return (const uint32_t*)&h[n];
                 //
                 // Message last chunk (to prepare) & chunk pointer
-                register __int32 B = (a_bits>>3); // count number hash BYTES -> chunk size
-                uint8_t pB = ((__int8*)a_data)[0], cB;
+                register int32_t B = (a_bits>>3); // count number hash BYTES -> chunk size
+                uint8_t pB = ((int8_t*)a_data)[0], cB;
                 char *data_chunk_ptr;
-                register __int32 l, l_len = (a_len % B);
-                static char  last_data_chunk[32 * sizeof(__int32)];
+                register int32_t l, l_len = (a_len % B);
+                static char last_data_chunk[32 * sizeof(int32_t)];
                 // calculate chunk size, number of BYTES and hashes to calculate
-                register __int32 final_len = a_len + B - l_len;
-                register __int32 chunk_offset, H;
-                register __int32 i;
+                register int32_t final_len = a_len + B - l_len;
+                register int32_t chunk_offset, H;
+                register int32_t i;
                 /* Pre-processing last message chunk*/
                 for (l = l_len - 1, i = a_len - 1; l >= 0; l--) {
-                                last_data_chunk[l] = ((__int8*)a_data)[i--];
+                                last_data_chunk[l] = ((int8_t*)a_data)[i--];
                 }
                 /* Fill rest of last chunk with chunk position indexes*/
                 for (l = l_len; l < B; l++) {
@@ -191,7 +191,7 @@ __DEBUG_FUNC_CALLED__
                 }
                 /* Main Loop */
                 for (chunk_offset = 0; chunk_offset < final_len; ) {
-                                data_chunk_ptr = (__int8*)((__int8*)a_data + chunk_offset);
+                                data_chunk_ptr = (char*)((uint8_t*)a_data + chunk_offset);
                                 chunk_offset += B;
                                 if (chunk_offset > a_len) data_chunk_ptr = (char*)&last_data_chunk;
                                 //
@@ -221,10 +221,10 @@ __DEBUG_FUNC_CALLED__
 void  __stdcall ts::hash::ssc1::print_SSC1(void)
 {
 #ifdef __DEBUG_HASH_SSC1__
-__DEBUG_FUNC_CALLED__
+__DEBUG_FUNC_CALLED("")
 #endif
                 ts::con::prints("ssc1 HASH:\n");
-                for (__int32 n = 0; n<32; n++) {
+                for (int32_t n = 0; n<32; n++) {
                                 ts::con::prints("%#010x ", h[n]);
                                 if ((n+1) % 4==0)
                                                 ts::con::prints("\n");
