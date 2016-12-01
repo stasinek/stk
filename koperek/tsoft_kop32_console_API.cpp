@@ -82,7 +82,7 @@ int __stdcall classic_monitor_proc()
                 return 1;
         }
 //PROGRESS BAR
-        nPos = (unsigned int)(10 *double(console_progress.src->all->readed) / double(console_progress.src->all->size));
+        nPos = (uint32_t)(10 *double(console_progress.src->all->readed) / double(console_progress.src->all->size));
         memmove(szPrb, "[                 ]", 12);
         memmove(szPrb, "[����������]", 1+nPos);
         ts::con::prints("\r                                                                                                                                            ");

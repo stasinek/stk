@@ -114,7 +114,7 @@ char *args = new char[4096];
 args[0] = '\0';
 
 ts::con::prints("ALLOCATING VARIABLES...\n");
-TEST_INIT(500000000,10000);
+TEST_INIT(200000000,10000);
 ts::con::prints("RAM buffer size %lldMB\n",TEST_SIZE/1024/1024);
 ts::con::prints("Number of chunks in random mode RANDOM_TIME < %lld\n",RANDOM_TIMES);
 ts::con::prints("RUNNING TESTS:\n");

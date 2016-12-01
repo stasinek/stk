@@ -161,7 +161,7 @@ __DEBUG_FUNC_CALLED("")
                 }
                 CRC32_TAB[n] = c;
         }
-/*for (unsigned int i = 0; i <= 0xFF; i++)
+/*for (uint i = 0; i <= 0xFF; i++)
         {
         // 4 lub 8
         CRC32_TAB[1][i] = (CRC32_TAB[0][i] >> 8) ^ CRC32_TAB[0][CRC32_TAB[0][i] & 0xFF];
