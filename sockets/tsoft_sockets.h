@@ -3,7 +3,7 @@
 #define __tsoft_sockets_H__
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 //---------------------------------------------------------------------------
 #ifndef MAX_REQUEST
 #define MAX_REQUEST 8*1024*1024

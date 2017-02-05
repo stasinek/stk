@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "./../text/tsoft_cstr_manipulation.h"
-#include "./../ssthreads/tsoft_threads.h"
+#include "./../text/tsoft_cstr_utils.h"
+#include "./../sthreads/tsoft_threads.h"
 #include "tsoft_console.h"
 //---------------------------------------------------------------------------
 

@@ -3,7 +3,7 @@
 #define __vector_h
 //---------------------------------------------------------------------------
 #include "./mem/tsoft_mem.h"
-#include "./text/tsoft_cstr_manipulation.h"
+#include "./text/tsoft_cstr_utils.h"
 #include "./io/tsoft_console.h"
 #include "./tsoft_main.h"
 //---------------------------------------------------------------------------

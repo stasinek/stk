@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 #include "tsoft_compression_ari.h"
 #include "./../mem/tsoft_mem.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 

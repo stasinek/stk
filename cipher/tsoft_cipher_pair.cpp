@@ -4,7 +4,7 @@
 #include "tsoft_cipher_pair.h"
 //---------------------------------------------------------------------------
 #include "./../mem/tsoft_mem.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 //---------------------------------------------------------------------------
 
 ts::cipher::__pair_cipher::__pair_cipher(void)

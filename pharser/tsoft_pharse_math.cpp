@@ -2,7 +2,7 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_pharse_math.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 

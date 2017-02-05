@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../mem/tsoft_mem.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
@@ -178,8 +178,8 @@ __DEBUG_FUNC_CALLED("")
                 register int32_t l, l_len = (a_len % B);
                 static char last_data_chunk[32 * sizeof(int32_t)];
                 // calculate chunk size, number of BYTES and hashes to calculate
-                register int32_t final_len = a_len + B - l_len;
-                register int32_t chunk_offset, H;
+                register uint32_t final_len = a_len + B - l_len;
+                register uint32_t chunk_offset, H;
                 register int32_t i;
                 /* Pre-processing last message chunk*/
                 for (l = l_len - 1, i = a_len - 1; l >= 0; l--) {

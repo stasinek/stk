@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 #include "tsoft_cstr_stack.h"
 #include "./../mem/tsoft_mem.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 //---------------------------------------------------------------------------
 
 __stdcall ts::__cstr_stack::__cstr_stack(void)

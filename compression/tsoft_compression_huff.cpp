@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 #include "tsoft_compression_huff.h"
 #include "./../mem/tsoft_mem.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 #define BIT_COMBINATIONS_PER_BYTE	(int32_t)(256) 								   /* kinds of characters (character code = 0..BIT_COMBINATIONS_PER_BYTE-1) */
@@ -217,7 +217,7 @@ void __stdcall ts::compression::__huff_compressor::reconstruct(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		register int32_t i, e, k, f, l;
+        register uint32_t i, e, k, f, l;
 //----------------------
 		for (i = 0, e = 0; i < TREE_SIZE; i++) {								/* collect leaf nodes in the first half of the table and replace the freq_values by (freq_values + 1) / 2 */
 //----------------------

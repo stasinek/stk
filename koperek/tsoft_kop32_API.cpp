@@ -9,9 +9,9 @@
 //---------------------------------------------------------------------------
 #include "./../process_journal/tsoft_journal.h"
 #include "./../hash/tsoft_hash_ssc1.h"
-#include "./../io/tsoft_file_lzss_header.h"
+#include "./../io/tsoft_file_lzst_header.h"
 #include "../io/tsoft_console.h"
-#include "../text/tsoft_cstr_manipulation.h"
+#include "../text/tsoft_cstr_utils.h"
 //---------------------------------------------------------------------------
 #include <wincon.h>
 #include <direct.h>
@@ -35,10 +35,10 @@ int32_t hist_e_pattern_max;
 //---------------------------------------------------------------------------
 // The callback function
 //---------------------------------------------------------------------------
-int32_t __stdcall ts::__kop32::console_monitor_proc(ts::__kop32_class *akop)
+int32_t __stdcall ts::__kop32::text_monitor_proc(ts::__kop32_class *akop)
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED("console_monitor_proc(this*)")
+__DEBUG_FUNC_CALLED("text_monitor_proc(this*)")
 #endif
 		static char szPrb[13] = "[				  ]";
 		static UINT nPos = 0;
@@ -83,14 +83,14 @@ __DEBUG_FUNC_CALLED("console_monitor_proc(this*)")
 }
 //---------------------------------------------------------------------------
 
-const char *__stdcall ts::__kop32::console_event_handler(ts::__kop32_class *akop,const char *aevent, const char *acode, const char *acode_ex)
+const char *__stdcall ts::__kop32::text_event_handler(ts::__kop32_class *akop,const char *aevent, const char *acode, const char *acode_ex)
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
 __DEBUG_FUNC_CALLED("console_event_handler(...)")
 #endif
 		if (ts::cstr::compare(aevent,"PROGRESS")==0)
 		{
-				console_monitor_proc(akop);
+				text_monitor_proc(akop);
 				return "OK";
 		}
 		else
@@ -204,7 +204,7 @@ __DEBUG_FUNC_CALLED("console_event_handler(...)")
 
 }
 //---------------------------------------------------------------------------
-void __stdcall ts::__kop32::set_console_handlers(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*))
+void __stdcall ts::__kop32::set_text_handlers(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*))
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
 __DEBUG_FUNC_CALLED("set_console_handlers()")
@@ -213,12 +213,12 @@ ts::con::set_console_handlers(a_getch_event_handler,a_print_event_handler,a_erro
 }
 //---------------------------------------------------------------------------
 
-int32_t __stdcall ts::__kop32::start_in_console_mode(const char *args)
+int32_t __stdcall ts::__kop32::start_in_text_mode(const char *args)
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
 __DEBUG_FUNC_CALLED("start_in_console_mode()")
 #endif
-		int32_t ret = start(args,&ts::__kop32::console_event_handler);
+		int32_t ret = start(args,&ts::__kop32::text_event_handler);
 		 return ret;
 }
 //---------------------------------------------------------------------------

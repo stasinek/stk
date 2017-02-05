@@ -13,7 +13,7 @@
 #include "tsoft_kop32_API.h"
 
 //---------------------------------------------------------------------------
-#include "./../io/tsoft_file_lzss_header.h"
+#include "./../io/tsoft_file_lzst_header.h"
 #include "./../hash/tsoft_hash_ssc1.h"
 #include "./../process_journal/tsoft_journal.h"
 #include "./../io/tsoft_console.h"
@@ -31,7 +31,7 @@
 // The main class
 //---------------------------------------------------------------------------
 ts::__kop32_class *kop32;
-static ts::__kop32_class_progress_controler console_progress(kop32);
+static ts::__kop32_class_progress_controler text_progress(kop32);
 
 /*int32_t *hist_l_dict;
 int32_t hist_l_dup_max;
@@ -77,24 +77,24 @@ int __stdcall classic_monitor_proc()
                 static UINT nRot = 0;
                 nRot = (nRot+1) &0x0FL;
 // PREVENT DIVISION BY '0'
-        if (console_progress.src->all->readed == 0 || console_progress.src->one->size == 0 || console_progress.src->all->size == 0 || (console_progress.elapsed() == 0)) {
+        if (text_progress.src->all->readed == 0 || text_progress.src->one->size == 0 || text_progress.src->all->size == 0 || (text_progress.elapsed() == 0)) {
                 ts::con::prints("\r[                  ] - <0%% 0kB/s>");
                 return 1;
         }
 //PROGRESS BAR
-        nPos = (uint32_t)(10 *double(console_progress.src->all->readed) / double(console_progress.src->all->size));
+        nPos = (uint32_t)(10 *double(text_progress.src->all->readed) / double(text_progress.src->all->size));
         memmove(szPrb, "[                 ]", 12);
         memmove(szPrb, "[����������]", 1+nPos);
         ts::con::prints("\r                                                                                                                                            ");
-        ts::con::prints("\r%s %.1lf%c <%.2lf%% ", szPrb, 100 *(double(console_progress.src->all->readed) / double(console_progress.src->all->size)),
-                                                  szGfx[(nRot >> 2) &0x03L], 100 *(double(console_progress.dst->all->readed)
-                                                                  / double(console_progress.src->all->readed)));
+        ts::con::prints("\r%s %.1lf%c <%.2lf%% ", szPrb, 100 *(double(text_progress.src->all->readed) / double(text_progress.src->all->size)),
+                                                  szGfx[(nRot >> 2) &0x03L], 100 *(double(text_progress.dst->all->readed)
+                                                                  / double(text_progress.src->all->readed)));
 // SPEED MB/s
         if (kop32->options->operation == OPERATION_ENCODE)
-                ts::con::prints("%.2lfkB/s> ", double(console_progress.src->all->readed) / double(console_progress.elapsed()) /
+                ts::con::prints("%.2lfkB/s> ", double(text_progress.src->all->readed) / double(text_progress.elapsed()) /
                                                           1024);
         if (kop32->options->operation == OPERATION_DECODE)
-                ts::con::prints("%.2lfkB/s> ", double(console_progress.src->all->readed) / double(console_progress.elapsed()) /
+                ts::con::prints("%.2lfkB/s> ", double(text_progress.src->all->readed) / double(text_progress.elapsed()) /
                                                           1024);
 // FILE NAME "?????.???"
 //kop32->list->src_main_list->items[kop32->list->cur_i];
@@ -133,7 +133,7 @@ int __stdcall start_kop32_in_text_mode(char *args, ts::__kop32_class_progress_co
 {
                 kop32 = new ts::__kop32_class;
                 kop32->progress->callback_event_handler = akop32eventhandler;
-                kop32->progress = &console_progress;
+                kop32->progress = &text_progress;
 
                 ts::__journal journal;
         journal.create();
@@ -193,39 +193,39 @@ int __stdcall start_kop32_in_text_mode(char *args, ts::__kop32_class_progress_co
         if (ts::con::getch()=='\r') {
                 if (kop32->prepare_options(args))
                         if (kop32->prepare_list())
-                                console_progress.initialize_timer();
+                                text_progress.initialize_timer();
                 if (kop32->exec_all()) {
                         ts::con::prints("\r                                                                                                                                            ");
                         ts::con::prints("\n");
                         ts::con::prints("Finished!\n");
                         ts::con::prints("\n");
                 }
-                console_progress.freeze_timer();
+                text_progress.freeze_timer();
         } else {
                 ts::con::prints("canceled, please wait...\n");
         }
 //-------------------------------------------------------------------
         double ratio = 0;
 //-------------------------------------------------------------------
-        if (console_progress.cancel == true) {
+        if (text_progress.cancel == true) {
                 ts::con::prints("============================================================================\n");
                 ts::con::prints("\n ESC -> Operation canceled");
                 ts::con::prints("============================================================================\n");
                 ts::con::prints("\n");
         } else {
-                ts::con::prints("size in                    :  %uB\n", (int32_t)console_progress.src->all->readed);
+                ts::con::prints("size in                    :  %uB\n", (int32_t)text_progress.src->all->readed);
                 if (kop32->options->operation == OPERATION_ENCODE
-                                &&  console_progress.src->all->readed!=0) {
+                                &&  text_progress.src->all->readed!=0) {
                         ts::con::prints("compression ratio  :  ");
-                        ratio = double(console_progress.dst->all->readed) / double(console_progress.src->all->readed);
+                        ratio = double(text_progress.dst->all->readed) / double(text_progress.src->all->readed);
                         ts::con::prints("%.2lf%%, %.2lf bit/B vs 8 bit/B\n", 100 *(ratio), 8 *ratio);
                 }
-                ts::con::prints("size out              :  %uB\n", (int32_t)console_progress.dst->all->readed);
+                ts::con::prints("size out              :  %uB\n", (int32_t)text_progress.dst->all->readed);
                 ts::con::prints("============================================================================\n");
-                ts::con::prints("Time                          :  %.2lfs\n", (double)(console_progress.elapsed()));
-                if (console_progress.elapsed()!=0)
+                ts::con::prints("Time                          :  %.2lfs\n", (double)(text_progress.elapsed()));
+                if (text_progress.elapsed()!=0)
                         ts::con::prints("Averange speed      :  %.2lfkB/s\n",
-                                                                  ((double)console_progress.src->all->readed / (double)(console_progress.elapsed())) / 1024);
+                                                                  ((double)text_progress.src->all->readed / (double)(text_progress.elapsed())) / 1024);
                 ts::con::prints("\n");
         }
         delete kop32;
@@ -421,7 +421,7 @@ return 0;
                 {
 //-------------------------------------------------------------------
                 fprintf(journal.get_stream(),
-                        "TOTAL BYTES IN:%d\nTOTAL BYTES OUT:%d\nRATIO:%.2lf%%, %.2lf bit/B\nTIME: %.2lfs\nSPEED %.2lfkB/s\n", (int32_t)console_progress.src->all->readed, (int32_t)console_progress.dst->all->readed, 100 *(ratio), 8 *ratio, (double)(console_progress.T2 - console_progress.T1 + 1) / 1000.0, (double)console_progress.src->all->readed / (double)(console_progress.T2 - console_progress.T1 + 1) / 1024);
+                        "TOTAL BYTES IN:%d\nTOTAL BYTES OUT:%d\nRATIO:%.2lf%%, %.2lf bit/B\nTIME: %.2lfs\nSPEED %.2lfkB/s\n", (int32_t)text_progress.src->all->readed, (int32_t)text_progress.dst->all->readed, 100 *(ratio), 8 *ratio, (double)(text_progress.T2 - text_progress.T1 + 1) / 1000.0, (double)text_progress.src->all->readed / (double)(text_progress.T2 - text_progress.T1 + 1) / 1024);
 //-------------------------------------------------------------------
                 int32_t l, h;
 //-------------------------------------------------------------------

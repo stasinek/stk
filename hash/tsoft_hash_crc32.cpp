@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "../text/tsoft_cstr_manipulation.h"
-#include "../ssthreads/tsoft_threads.h"
+#include "../text/tsoft_cstr_utils.h"
+#include "../sthreads/tsoft_threads.h"
 //---------------------------------------------------------------------------
 #include "tsoft_hash_crc32.h"
 //---------------------------------------------------------------------------
@@ -152,11 +152,11 @@ __DEBUG_FUNC_CALLED("")
         //z POLY_TAM robi np. 0x04C11DB7
         POLY_NOMIAL = 0x00000000L;
         for (n = 0; n < sizeof(POLY_TAB); n++) {
-                 POLY_NOMIAL |= 0x01L << (31-POLY_TAB[n]); // prosta kalkulacja 0x04C11DB7 ^^ na podstawie bitów const POLY_TAB
+                 POLY_NOMIAL |= 0x01L << (31-POLY_TAB[n]); // prosta kalkulacja 0x04C11DB7 ^^ na podstawie bitow const POLY_TAB
         }
         for (n = 0; n <= 0xFF; n++) { // od 0 do 255 poz w TAB
                 for (c = n, k = 0; k < 8; k++) { // od 0 do 7 bitu
-                        if (c & 1) c = (c >> 1) ^ POLY_NOMIAL; // jeœli kolejne LSB c == 1 licz kolejny wynik modulo dzielenia(xoruj) dla bajtu n.
+                        if (c & 1) c = (c >> 1) ^ POLY_NOMIAL; // jesli kolejne LSB c == 1 licz kolejny wynik modulo dzielenia(xoruj) dla bajtu n.
                         else  c >>=1;
                 }
                 CRC32_TAB[n] = c;

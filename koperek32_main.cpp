@@ -11,16 +11,16 @@
 #ifndef _USE_OLD_IOSTREAMS
 using namespace std;
 #endif
+#include "tsoft_test.h"
+//---------------------------------------------------------------------------
+#ifndef QT_GUI
+//---------------------------------------------------------------------------
+#include <iostream>
+#include <stdio.h>
+#include <conio.h>
 //---------------------------------------------------------------------------
 
-#ifndef QT_GUI
-        #include "tsoft_test.h"
-        #include <iostream>
-
-        #include <stdio.h>
-        #include <conio.h>
-
-void main_CreateConsole()
+void text_CreateConsole()
 {
 if (AllocConsole()) {
 int ifd = _open_osfhandle((intptr_t)GetStdHandle(STD_INPUT_HANDLE), _O_TEXT);
@@ -39,22 +39,28 @@ setvbuf( stderr, NULL, _IONBF, 0 );
 }
 //---------------------------------------------------------------------------
 
-void __stdcall main_ConsolePrintHandler(const char *a_text)
+void __stdcall text_PrintEventHandler(const char *a_text)
 {
 fputs(a_text,stdout);
 }
 //---------------------------------------------------------------------------
 
-char __stdcall main_ConsoleGetchHandler(void)
+char __stdcall text_GetchEventHandler(void)
 {
 return (char)getchar();
 }
+
 //---------------------------------------------------------------------------
 
+const char*__stdcall text_Kop32EventHandler(ts::__kop32_class *akop, const char *a_event, const char *a_code, const char *a_code_ex)
+{
+return "";
+}
+//---------------------------------------------------------------------------
 #ifdef __WATCOMC__
-void main_before_exit(void)
+void text_BeforeExit(void)
 #else
-void __cdecl main_before_exit(void)
+void __cdecl text_BeforeExit(void)
 #endif
 {
 #ifndef QT_GUI
@@ -62,15 +68,15 @@ void __cdecl main_before_exit(void)
 system("pause");
 #endif
 #else
-// Before exit Qt
+// Qt >> exit section
+// << Qt
 #endif
 }
 //---------------------------------------------------------------------------
-
 #endif
-
+//---------------------------------------------------------------------------
 #ifdef QT_GUI
-
+//---------------------------------------------------------------------------
 #include <ui_tmain_mini_form.h>
 #include <ui_treplace_form.h>
 #include <ui_twizard_form.h>
@@ -84,11 +90,10 @@ system("pause");
 #include <ui_tselect_form.h>
 #include <ui_twizard_form.h>
 #include <ui_tconsole_form.h>
-
 #include <QMessagebox>
 //---------------------------------------------------------------------------
 
-extern void __stdcall Qt_app_main(const int argc, const char *argv[])
+extern void __stdcall Qt_AppMain(const int argc, const char *argv[])
 {
         Application = new TApplication(argc, argv);
         //-----------------------------------------------
@@ -104,13 +109,13 @@ extern void __stdcall Qt_app_main(const int argc, const char *argv[])
 }
 //---------------------------------------------------------------------------
 
-char __stdcall Qt_console_getch_event_handler(void)
+char __stdcall Qt_GetchEventHandler(void)
 {
         return  '\r';
 }
 //---------------------------------------------------------------------------
 
-void __stdcall Qt_console_print_event_handler(const char *atext)
+void __stdcall Qt_PrintEventHandler(const char *atext)
 {
 QString old_item("");
 
@@ -136,13 +141,13 @@ for (in = 0;in < nl;in++) {
 }
 //---------------------------------------------------------------------------
 
-void __stdcall Qt_console_error_event_handler(const char *atext)
+void __stdcall Qt_ErrorEventHandler(const char *atext)
 {
 // todo redirect errors to file
 }
 //---------------------------------------------------------------------------
 
-const char*__stdcall Qt_kop32_event_handler(ts::__kop32_class *akop, const char *a_event, const char *a_code, const char *a_code_ex)
+const char*__stdcall Qt_Kop32EventHandler(ts::__kop32_class *akop, const char *a_event, const char *a_code, const char *a_code_ex)
 {
 register char *ret = "OK";
 
@@ -219,29 +224,36 @@ ts::__kop32::console_event_handler(akop,a_event,a_code,a_code_ex);
 return  ret;
 }
 //---------------------------------------------------------------------------
+#ifdef __WATCOMC__
+void Qt_BeforeExit(void)
+#else
+void __cdecl Qt_BeforeExit(void)
+#endif
+{
+// Qt >> exit section
+// << Qt
+}
+//---------------------------------------------------------------------------
 #endif
 
 unsigned long __stdcall thread2(const char *arg){
-printf("Thread2! Wo³acz mówi %s",(char*)arg);
+printf("Thread2! %s",(char*)arg);
 ts::time::wait_ms(1000);
 return 0;
 }
-
 int main(int argc, char *argv[])
 {
 //incbine(x,"D:/prc++/x86_libraries/SSTSOFT/test.txt")
 
-        atexit(&main_before_exit);
 #ifndef QT_GUI
+        atexit(&text_BeforeExit);
+        ts::__kop32::set_text_handlers(&text_GetchEventHandler, &text_PrintEventHandler, NULL);
+
         int r = 0;
-        ts::__kop32::set_console_handlers(&main_ConsoleGetchHandler, &main_ConsolePrintHandler,NULL);
         char *args = new char[4096];
         args[0] = '\0';
         delete args;
 ts::test::start(argc,argv);
-//ts::thread::ssthread_t t2;
-//ts::thread::create(&t2,thread2,"Czeœæ");
-//ts::thread::run(&t2);
 char a[] = {
 #include "./test.txt"
 };
@@ -250,120 +262,8 @@ printf("%s",a);
 system("pause");
         return r;
 #else
-        return Qt_app_main(argc,argv);
+        atexit(&Qt_BeforeExit);
+        return Qt_AppMain(argc,argv);
 #endif
 }
 //---------------------------------------------------------------------------
-
-//              #pragma omp parallel for
-//              for (int i = 0; i < argc; i++)  {
-//                               ts::cstr::cat(args," \""); ts::cstr::cat(args,argv[i]);
-//                               ts::cstr::cat(args,"\" ");
-//              }
-//              printf("Argts:\n");
-//              ts::con::prints("%s\n",args);
-//              ts::__kop32::start((char*)args,&ts::__kop32::console_event_handler);
-//              ts::con::prints("\r\n");
-//              char s[100],d[100];
-//              ts::cstr::mov(s,"To jest test movmmx o d³ugoœci kilkudziesiêciu znaków aby zobaczyæ czy dzia³a poprawnie czy nie....");
-//              ts::mem32::mmxmov(d,s,100);
-//              ts::con::prints("d=%s\n", d);
-//      uint64_t end =ts::cpu::tsc_end();
-//      printf("MMX=%d\r\n",ts::cpu::cpuid_have_mmx());
-//      printf("%I64d.end, %I64d.elapsed\r\n",end, ts::cpu::tsc_was());
-//  printf("helloasm2=%d",helloasm2());
-//  helloasm(0);
-/*
-__stasmex(eax,text,
-                mov eax,%[num];
-                )
-__stasmex_end
-*/
-                /*              for (int i = 0; i <= __STASM_MAX_PARARELL;i++)
-                                {
-                                        printf("\n");
-                                        for (int c = 0; c < 4; c++)
-                                                {mx86[i][c] = 10*i + c;
-                                                printf("mx86[%d][%d]=%d\t",i,c,mx86[i][c]);
-                                                }
-                                        printf("\n");
-                                        //sx86 = mx86[i];
-                                        for (int c = 0; c < 4; c++)
-                                                {
-                                                printf("sx86[%d]=%d\t\t",c,sx86[c]);
-                                                }
-                                        printf("\n");
-                                }
-                */
-/*#ifndef __BORLANDC__
-__TINIT(x86,esi,end);
-        printf("\nsx86=%d, sx86[0]=%d\n",(int)sx86,(int)sx86[0]);
-        printf("\nsx86=%d, sx86[0]=%d\n",(int)sx86,(int)sx86[0]);
-        printf("\ntrash=%d\n",(int)trash);
-                __stasm(eax,
-code,
-                mov eax,_trash\n
-                add eax, 777\n
-                mov _trash,eax\n
-                mov esi, mesi\n
-                mov esi, mesi[3]\n
-                mov esi, mesi[2]\n
-                mov esi, mesi[1]\n
-                mov esi, mesi[0]\n
-                mov esi, sesi\n
-                mov esi, sesi[3]\n
-                mov esi, sesi[2]\n
-                mov esi, sesi[1]\n
-                mov esi, sesi[0]\n
-                mov esi, sx86\n
-                mov esi, sx86[3]\n
-                mov esi, sx86[2]\n
-                mov esi, sx86[1]\n
-                mov esi, sx86[0]\n
-                )
-        printf("\ntrash=%d\n\n",(int)trash);
-
-sesi[0] = 1;
-        __stasm(eax,ebx,ecx,edx,esi,code,
-                        lea eax,sesi;
-                        push eax
-
-                )
-                PRINT_UI(sesi[4]);
-#endif
-
-        ts::cpu::tsc_overhead();
-        ts::cpu::tsc_start();
-        int num = 0;
-        int podzielnik = 7;
-        int maxi = 20000;
-        int tmp = 0;
-        for (int i = 0; i<= maxi; i++)
-        { tmp = i;
-                while (tmp>0) { tmp-=podzielnik; if (tmp==0) num++;}
-        }
-        setlocale(LC_ALL,"");
-        printf("w zakresie do %d jest %d liczb podzielnych na %d\n",maxi,num,podzielnik);
-    printf("czas=%dms\n",(int)(ts::time::clock_ms() - time));
-        ts::cpu::tsc_checkpoint();
-        printf("%'lld.cpu ticks elapsed\r\n",ts::cpu::tsc_was());
-//ts::compression::test();
-//TESTUJ(cop = ts::compression::compress_ARI(out,in,TESTUJ_SIZE,1000));
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

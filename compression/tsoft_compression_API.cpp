@@ -3,14 +3,14 @@
 //---------------------------------------------------------------------------
 #include "tsoft_compression_API.h"
 //---------------------------------------------------------------------------
-#include "tsoft_compression_lzssv4.h"
+#include "tsoft_compression_lzstv4.h"
 #include "tsoft_compression_bwt_matrix2.h"
 #include "tsoft_compression_huff.h"
 #include "tsoft_compression_ari.h"
 //---------------------------------------------------------------------------
 #include "./../cipher/tsoft_cipher_mtf.h"
 #include "./../io/tsoft_console.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../mem/tsoft_mem.h"
 //---------------------------------------------------------------------------
 
@@ -97,7 +97,7 @@ __DEBUG_FUNC_CALLED("")
 		LZS_PATTERN:
 //------------------------------------------
 		if (chain->search_forward()>=PATTERN_LEN_MIN) {
-			if (chain->header_coder.check_pattern_Match_Cost(plain_text_len,chain->forward_elcount,chain->forward_elsize) > 0)
+			if (chain->header_coder.check_pattern_match_cost(plain_text_len,chain->forward_elcount,chain->forward_elsize) > 0)
 				goto LZS_SAVE_PLAIN;
 			else chain->clear_forward_result();
 		}
@@ -106,7 +106,7 @@ __DEBUG_FUNC_CALLED("")
 		LZS_DUP:
 //------------------------------------------
 		if (chain->search_backward()>=DUP_LEN_MIN) {
-			if (chain->header_coder.check_dup_Match_Cost(plain_text_len,chain->backward_len,chain->backward_offset) > 0)
+			if (chain->header_coder.check_dup_match_cost(plain_text_len,chain->backward_len,chain->backward_offset) > 0)
 				goto LZS_SAVE_PLAIN;
 			else chain->clear_backward_result();
 		}
@@ -217,7 +217,7 @@ __DEBUG_FUNC_CALLED("")
 //__huff_compressor huff;
 //		 huff.initialize();
 #ifdef LZSSv4_HEAD
-	const file_header::__lzssv4_header_coder header_coder;
+	const file_header::__lzstv4_header_coder header_coder;
 #endif
 //------------------------------------------
 	for (; ptrd < ptrd_end;) {

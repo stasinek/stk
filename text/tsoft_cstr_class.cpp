@@ -2,7 +2,7 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_cstr_class.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 //---------------------------------------------------------------------------
 
 __stdcall ts::__cstr_class::__cstr_class()

@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 #include "tsoft_compression_static_huff.h"
 #include "./../mem/tsoft_mem.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 #define BIT_COMBINATIONS_PER_BYTE	 (256) 		   /* kinds of characters (character code = 0..BIT_COMBINATIONS_PER_BYTE-1) */
@@ -92,8 +92,8 @@ __DEBUG_FUNC_CALLED("")
 //
 		if (frq[ROOT_NODE]>=MAXIMUM_FREQENCY) reconstruct();
 //------------------------------
-		register int32_t son_exg, frq_exg, dad_exg, exg;
-		register int32_t son_cur, frq_cur, dad_cur, cur = TREE_SIZE + axdata_uncoded;
+        register uint32_t son_exg, frq_exg, dad_exg, exg;
+        register uint32_t son_cur, frq_cur, dad_cur, cur = TREE_SIZE + axdata_uncoded;
 //------------------------------
 		for (;;) {
 //------------------------------
@@ -141,7 +141,7 @@ __DEBUG_FUNC_CALLED("")
 
 		register int32_t current_node = dad[TREE_SIZE + axdata_uncoded];
 		register int32_t code = 0;
-		register int8_t  code_bits = 0;
+        register uint8_t code_bits = 0;
 //----------------------												/* travel from leaf to ROOT_NODE */
 		do {
 //----------------------												/*  determine position in tree bit by bit */
@@ -166,7 +166,7 @@ __DEBUG_FUNC_CALLED("")
 
 		register int32_t current_node = son[ROOT_NODE];				// begin on top of the huffman tree
 		register int32_t code;										 // input bit code to decode
-		register int8_t  code_bits = 0;								   // number of bits readed from input stream
+        register uint8_t code_bits = 0;								   // number of bits readed from input stream
 //------------------------------------------
 		int32_t input_data;
 		ts::mem32::bit_mov(&input_data,0,a_code_ptr,a_code_ptr_bit,24);
@@ -194,7 +194,7 @@ void __stdcall ts::compression::__static_huff_compressor::reconstruct(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		register int32_t i, e, k, f, l;
+        register uint32_t i, e, k, f, l;
 //----------------------
 		for (i = 0, e = 0; i < TREE_SIZE; i++) {								/* collect leaf nodes in the first half of the table and replace the frq by (frq + 1) / 2 */
 //----------------------

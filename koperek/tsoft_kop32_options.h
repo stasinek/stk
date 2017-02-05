@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------
 #include "./../database/tsoft_database.h"
 #include "./../hash/tsoft_hash_password.h"
-#include "./../io/tsoft_file_lzss_header.h"
+#include "./../io/tsoft_file_lzst_header.h"
 //---------------------------------------------------------------------------
 namespace ts {
 //---------------------------------------------------------------------------

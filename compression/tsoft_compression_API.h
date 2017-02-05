@@ -5,7 +5,7 @@
 #define __tsoft_koder_H__
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
-#include "./../io/tsoft_file_lzss_header.h"
+#include "./../io/tsoft_file_lzst_header.h"
 /*
 //FOR DEBUGING, STATISTICS OF USE LENGHT CODES
 extern uint32_t *hist_l_dict;

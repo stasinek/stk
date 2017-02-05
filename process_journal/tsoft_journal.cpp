@@ -4,9 +4,9 @@
 #include "tsoft_journal.h"
 //---------------------------------------------------------------------------
 #include "./../io/tsoft_console.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../mem/tsoft_mem.h"
-#include "./../ssthreads/tsoft_threads.h"
+#include "./../sthreads/tsoft_threads.h"
 //---------------------------------------------------------------------------
 #include <time.h>
 #include  <dos.h>

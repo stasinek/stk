@@ -4,7 +4,7 @@
 #include "tsoft_cipher_mtf.h"
 //---------------------------------------------------------------------------
 #include "./../mem/tsoft_mem.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 

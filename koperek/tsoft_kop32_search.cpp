@@ -2,7 +2,7 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_kop32_search.h"
-#include "../text/tsoft_cstr_manipulation.h"
+#include "../text/tsoft_cstr_utils.h"
 #include "../koperek/tsoft_kop32_class.h"
 #include "./../time/tsoft_time.h"
 //---------------------------------------------------------------------------

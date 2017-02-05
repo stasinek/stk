@@ -4,7 +4,7 @@
 #pragma once
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
-#include "./tsoft_cstr_manipulation.h"
+#include "./tsoft_cstr_utils.h"
 #include "./../__vector.h"
 //---------------------------------------------------------------------------
 namespace ts {

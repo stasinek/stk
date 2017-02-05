@@ -2,8 +2,8 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "./../mem/tsoft_mem.h"
-#include "./../text/tsoft_cstr_manipulation.h"
-#include "./../ssthreads/tsoft_threads.h"
+#include "./../text/tsoft_cstr_utils.h"
+#include "./../sthreads/tsoft_threads.h"
 #include "./../time/tsoft_time.h"
 #include "./../io/tsoft_console.h"
 //---------------------------------------------------------------------------
@@ -269,7 +269,7 @@ uint32_t __cdecl ts::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_ec
     "mov %%eax, %2\n"
     "mov %%eax, %3\n"
      : "=m"(a_eax), "=m"(a_ebx), "=m"(a_ecx), "=m"(a_edx) : "m" (a_feature), "m" (a_feature_ecx) : "eax", "ebx", "ecx", "edx", "memory");
-#else
+#elif defined(__BORLANDC_) || defined(__MSVC__)
 asm {   mov eax,a_feature;
         mov ecx,a_feature_ecx;
         and eax,0x80000000;

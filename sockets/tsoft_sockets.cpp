@@ -6,7 +6,7 @@
 #include "./../io/tsoft_file_mime_types.h"
 #include "./../io/tsoft_console.h"
 #include "./../mem/tsoft_mem.h"
-#include "./../ssthreads/tsoft_threads.h"
+#include "./../sthreads/tsoft_threads.h"
 #include "./../time/tsoft_time.h"
 //---------------------------------------------------------------------------
 

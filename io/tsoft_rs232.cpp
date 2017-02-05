@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <errno.h>
 //---------------------------------------------------------------------------
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../io/tsoft_console.h"
 #include "tsoft_rs232.h"
 //---------------------------------------------------------------------------

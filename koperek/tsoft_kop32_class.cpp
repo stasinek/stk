@@ -7,13 +7,13 @@
 #include "./../cipher/tsoft_cipher_API.h"
 #include "./../hash/tsoft_hash_API.h"
 #include "./../pharser/tsoft_pharse_command_line.h"
-#include "./../io/tsoft_file_lzss_header.h"
+#include "./../io/tsoft_file_lzst_header.h"
 #include "./../io/tsoft_file_io.h"
 #include "./../io/tsoft_console.h"
-#include "./../ssthreads/tsoft_threads.h"
+#include "./../sthreads/tsoft_threads.h"
 //---------------------------------------------------------------------------
 #include "./../mem/tsoft_mem.h"
-#include "./../text/tsoft_cstr_manipulation.h"
+#include "./../text/tsoft_cstr_utils.h"
 #include "./../time/tsoft_time.h"
 //---------------------------------------------------------------------------
 #ifndef __DEBUG_KOP32_CLASS__
@@ -454,12 +454,12 @@ if (options->operation==OPERATION_CHECKSUM || options->operation==OPERATION_COPY
                  ret = !f_file_seeker->exec(options->src_init_list->items()->get_text(z),options->mask_list,list->src_main_list);
          if (ret==0)
                  ret = !f_create_destination_list(options->dst_init_list->items()->get_text(d));
-         //zapytaj co dalej, jesli posz³o nie tak
+         //zapytaj co dalej, jesli poszï¿½o nie tak
          if (ret!=0 ? ts::cstr::compare((char*)do_event((char*)ON_ERROR,OKCANCEL,ts::cstr::itoa(GetLastError())),(char*)"CANCEL")==0 : false)
                 {progress->cancel = true;
                  goto GOTO_prepare_EXIT_ERROR;
                 }
-         //jesli ok, sprawdŸ wolne miejsce, stan urzadzenia itd.
+         //jesli ok, sprawdï¿½ wolne miejsce, stan urzadzenia itd.
          if (f_check_free_space(ts::cstr::get_file_root(temp_lpDestination->data(),options->dst_init_list->items()->get_text(d)),progress->src->all->size,progress->dst->all->size,true,true) < 0)
                 {progress->cancel = true;
                          goto GOTO_prepare_EXIT_ERROR;
@@ -517,7 +517,7 @@ ts::con::print("\r\n");
 #endif
 ts::__cstr_class  *templp	= new ts::__cstr_class(512);
 char *ret = ts::cstr::allocex(32,"");
-uint32_t d;
+int32_t d;
 
 if (options->ask_at_break==ASK_USER)
 if (!ts::cstr::test(do_event(ON_BEFORE_IO_ALL,OKCANCEL,EMPTY),OK))
@@ -535,12 +535,12 @@ else
     list->start_i =  0;
     list->cur_i = list->start_i;
    }
-f_write_file_thread_control = 0; //czekaj 1 startuj, 2 zakoñcz
+f_write_file_thread_control = 0; //czekaj 1 startuj, 2 zakoï¿½cz
 f_write_file_thread_handle = CreateThread(NULL,0,&ts::__kop32_class::f_write_file_thread,this,0,&f_write_file_thread_id);
 if (f_write_file_thread_handle==NULL)
         {abort();goto GOTO_distribute_EXIT;
         }
-for (d = 0; list->cur_i >= 0 && list->cur_i < (int32_t)list->src_main_list->items()->count() && progress->cancel==0; list->cur_i+=list->inc_i)
+for (d = 0; list->cur_i >= 0 && list->cur_i < (uint32_t)list->src_main_list->items()->count() && progress->cancel==0; list->cur_i+=list->inc_i)
         {
          /// CHECK SRC
          if (list->src_main_list->items()->get_number(list->cur_i,IS)!=EXISTS)
@@ -645,7 +645,7 @@ if (options->operation==OPERATION_MOVE)
 else
 if (options->operation==OPERATION_LIST) // save list to file
    {
-        for (list->cur_i = list->start_i; progress->cancel==0 && list->cur_i < (int32_t)options->dst_init_list->items()->count(); list->cur_i+=list->inc_i)
+        for (list->cur_i = list->start_i; progress->cancel==0 && list->cur_i < (uint32_t)options->dst_init_list->items()->count(); list->cur_i+=list->inc_i)
                 {
                          ts::cstr::mov(templp->data(), options->dst_init_list->items()->get_text(list->cur_i));
                          ts::cstr::upr(templp->data());
@@ -958,7 +958,7 @@ goto GOTO_execute_cleanup_OK;
 }
 else
 if (anaction==OPERATION_MOVE) {
-if ((((char*)list->src_main_list->items()->get_text(aindex))[0] | 0x20L)==(((char*)list->dst_main_list->items()->get_text(aindex))[0] | 0x20L)) // | 0x20L dla uzyskania ma³ych liter
+if ((((char*)list->src_main_list->items()->get_text(aindex))[0] | 0x20L)==(((char*)list->dst_main_list->items()->get_text(aindex))[0] | 0x20L)) // | 0x20L dla uzyskania maï¿½ych liter
         {
         f_src_file.readed = 0;
         f_src_file.size = list->src_main_list->items()->get_number(aindex,SIZE);
@@ -1262,16 +1262,16 @@ else
                 if (GetExitCodeThread(f_write_file_thread_handle,&x)==0) goto GOTO_execute_io_cleanup_ERROR;
                 if (x!=STILL_ACTIVE) goto GOTO_execute_io_cleanup_ERROR; // jesli nie to przerwij natychmiast
 
-                while (f_write_file_thread_control & 1) { time::wait_ms(1); do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY); } // dopuki system nie zakoñczy poprzedniej procedury zapisu czekaj
-                   if (f_write_file_thread_control & 4) goto GOTO_execute_io_cleanup_ERROR; // zapisywanie zakoñczone ale niepoprawnie
+                while (f_write_file_thread_control & 1) { time::wait_ms(1); do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY); } // dopuki system nie zakoï¿½czy poprzedniej procedury zapisu czekaj
+                   if (f_write_file_thread_control & 4) goto GOTO_execute_io_cleanup_ERROR; // zapisywanie zakoï¿½czone ale niepoprawnie
                                 f_mem_buffer_map.previous_index = f_mem_buffer_map.index;
                 if (f_mem_buffer_map.index==f_mem_buffer_map.count-1) f_mem_buffer_map.index =0;
                 else f_mem_buffer_map.index++;
 
                 f_write_file_thread_control = 1; //startuj kolejny zapis
                 SwitchToThread();
-                // doputy czekaj, pusci na jej starcie, a dalej sobie bedzie leciala równolegle,
-                // wtedy dokona kolejnego odczytu w kolejnej petli i poczeka na zakoñczenie zapisu po jej zakoczeniu
+                // doputy czekaj, pusci na jej starcie, a dalej sobie bedzie leciala rï¿½wnolegle,
+                // wtedy dokona kolejnego odczytu w kolejnej petli i poczeka na zakoï¿½czenie zapisu po jej zakoczeniu
 
 
 
@@ -1374,11 +1374,11 @@ else
                         }
                                 // FILE INTEGRITY PROTECTION 32bit CHECKSUM
                                 if (options->coder & LZSS_CODER_SSC)
-                        {b_hdr.data_protection_code = ts::hash::ssc1::calc_SSC1(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,32)[0];
+                        {b_hdr.crc = ts::hash::ssc1::calc_SSC1(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,32)[0];
                         }
                                 else
                                 if (options->coder & LZSS_CODER_CRC)
-                        {b_hdr.data_protection_code = ts::hash::crc32::calc_CRC32(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                        {b_hdr.crc = ts::hash::crc32::calc_CRC32(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                         }
                 // naglowek
                 f_dst_file.buffer.size = f_mem_buffer_map.map[f_mem_buffer_map.index].size;
@@ -1394,7 +1394,7 @@ else
                 b_hdr.data_range = f_src_file.readed;
                 b_hdr.data_coder = options->coder;
                                 b_hdr.size_count = f_mem_buffer_map.count;
-                for (int32_t i = 0; i < f_mem_buffer_map.count; i++) {b_hdr.size[i] = (int32_t)f_mem_buffer_map.map[i].size;
+                for (uint32_t i = 0; i < f_mem_buffer_map.count; i++) {b_hdr.size[i] = (uint32_t)f_mem_buffer_map.map[i].size;
                          }
                 ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),(void*)&b_hdr,sizeof(file_header::__eno_block_header_struct));
                 f_dst_file.readed += sizeof(file_header::__eno_block_header_struct);
@@ -1445,7 +1445,7 @@ else
                 {f_mem_buffer_map.count++;}
 
 //				f_mem_buffer_map.count = b_hdr.s_count;
-                for (int32_t i = 0; i < f_mem_buffer_map.count; i++)
+                for (uint32_t i = 0; i < f_mem_buffer_map.count; i++)
                 {f_mem_buffer_map.map[i].size = b_hdr.size[i];
                         }
                 ts::file::close_map_view((void*)f_src_file.buffer.ptr);
@@ -1467,14 +1467,14 @@ else
                 ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
 
                 if (b_hdr.data_coder & LZSS_CODER_SSC) {
-                if (b_hdr.data_protection_code!=ts::hash::ssc1::calc_SSC1(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,32)[0])
+                if (b_hdr.crc!=ts::hash::ssc1::calc_SSC1(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,32)[0])
                         {SetLastError(ERROR_CRC);
                          goto GOTO_execute_io_cleanup_ERROR;
                         }
                 }
                 else {
                 if (b_hdr.data_coder & LZSS_CODER_CRC) {
-                if (b_hdr.data_protection_code!=ts::hash::crc32::calc_CRC32(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size))
+                if (b_hdr.crc!=ts::hash::crc32::calc_CRC32(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size))
                         {SetLastError(ERROR_CRC);
                          goto GOTO_execute_io_cleanup_ERROR;
                         }
@@ -1553,7 +1553,7 @@ else
 //------------------------------------------
         GOTO_execute_IO_DONE:
 //------------------------------------------
-        while (f_write_file_thread_control & 1) { time::wait_ms(1); do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY); } // dopuki system nie zakoñczy poprzedniej procedury zapisu czekaj
+        while (f_write_file_thread_control & 1) { time::wait_ms(1); do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY); } // dopuki system nie zakoï¿½czy poprzedniej procedury zapisu czekaj
         f_write_file_thread_control = 0;
 
         ts::file::close_map(f_src_file.hand_map);
@@ -1583,7 +1583,7 @@ goto GOTO_execute_cleanup_OK;
 //------------------------------------------
 GOTO_execute_io_cleanup_ERROR:
 //------------------------------------------
-        while (f_write_file_thread_control & 1) { time::wait_ms(1); do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY); } // dopuki system nie zakoñczy poprzedniej procedury zapisu czekaj
+        while (f_write_file_thread_control & 1) { time::wait_ms(1); do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY); } // dopuki system nie zakoï¿½czy poprzedniej procedury zapisu czekaj
         f_write_file_thread_control = 0;
 
                 if (f_src_file.hand_map!=INVALID_HANDLE_VALUE)

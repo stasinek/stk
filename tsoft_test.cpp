@@ -160,11 +160,6 @@ TEST(ts::hash::adler32::calc_ADLER32(test_in,TEST_SIZE);)
 //TEST(ts::mem32::setex(test_out,(const void*)&"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",(int8_t)64,(uint32_t)TEST_SIZE/64);)
 
 //ts::con::prints("[  %d]\t",__LINE__);
-#if !defined(__BORLANDC__)
-apex::autotune();
-TEST(apex_memmove(test_out,test_in,TEST_SIZE);)
-TEST_RANDOM(apex_memmove(&test_out[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],&test_in[((RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES)],TEST_SIZE/RANDOM_TIMES);)
-#endif
 TEST(memmove(test_out,test_in,TEST_SIZE);)
 TEST(ts::mem32::mov(test_out,test_in,TEST_SIZE);)
 TEST_RANDOM(memmove(&test_out[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],&test_in[((RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES)],TEST_SIZE/RANDOM_TIMES);)

@@ -2,7 +2,7 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "./../cpu/tsoft_cpu.h"
-#include "./../ssthreads/tsoft_threads.h"
+#include "./../sthreads/tsoft_threads.h"
 #include "./../io/tsoft_console.h"
 #include "./../__vector.h"
 #include "tsoft_mem.h"
@@ -20,16 +20,18 @@ static int32_t g_mem_pointer_align = 16;
 #define MAGIC_TAIL ((uint32_t)(0xCCCCCCCCL))
 #pragma pack(push, 1)
 struct __mem_chunk {
-uint64_t ptr_reserved_data[1];
+uint64_t ptr_reserved_header[1];
 uint64_t ptr_size; // size of user data
 uint64_t ptr; // points to head of user data
-uint64_t chunk_reserved_data[1];
+uint64_t chunk_reserved_header[1];
 uint64_t chunk_ptr_size;
 uint64_t chunk_ptr;  //points to head of this structure, pointer should be pass to ::malloc, ::realloc, ::free()
-};
+} __attribute__((packed,aligned (8)));
+
 struct __mem_tail {
 	uint32_t f_magic_tail[1];
 	uint32_t f_null[1];
+
 	inline void __stdcall add()
 	{ 	 f_magic_tail[0] = MAGIC_TAIL;
 		 f_null[0] = 0;
@@ -153,7 +155,7 @@ ATOMIC_UNLOCK(1)
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
 	printf("returned, now allocated sum is=%lldB\n",(int64_t)g_mem_allocated);
 	if (g_mem_allocated<0)
-	printf("WARNING! allocated sum is below 0, check out double free()\n");
+	printf("WARNING! allocated sum is below 0, You should check for double: free(ptr)\n");
 #endif
 }
 //---------------------------------------------------------------------------
@@ -294,8 +296,7 @@ if (a_element_size >= 1 ? a_element_size <= 8 : false) {
 		 }
 return a_dst_ptr;
 }
-else
-if (a_element_size > 8) {
+else if (a_element_size > 8) {
 	for (register size_t c = a_count, e_size = a_element_size; c != 0; c--) {
 		 a_dst_ptr = (char*)ts::mem32::mov(a_dst_ptr,a_src_ptr,e_size) + e_size;
 		}
@@ -663,10 +664,10 @@ __DEBUG_FUNC_CALLED("")
 //---------------------------------------------------------------------------
 
 /*MMX
- * Funkcja oblicza d³ugo¶æ ³añcucha znaków zakoñczonego zerem, z powodzeniem mo¿e byæ wykorzystana jako strchr, wystarczy wype³niæ mm1 szukanym znakiem.
+ * Funkcja oblicza dlugo¶æ lancucha znakow zakonczonego zerem, z powodzeniem moze byæ wykorzystana jako strchr, wystarczy wypelniæ mm1 szukanym znakiem.
 
 ; edi - pierwszy znak
-; ecx - wynik: d³ugo¶æ ³añcucha
+; ecx - wynik: dlugo¶æ lancucha
 
 mmx_strlen:
 
@@ -679,11 +680,11 @@ mmx_strlen:
 
 	pmovmskb eax, mm0   ; eax = 10100000b (0xa0)
 	test      al, al
-	jnz      .founded   ; w wyniku s± ustawione bity, znaleziono koñcz±ce zero
+	jnz      .founded   ; w wyniku s± ustawione bity, znaleziono koncz±ce zero
 						; w przeciwny przypadku...
 
-	add      edi, 8     ; nastêpne 8 bajtów
-	add      ecx, 8     ; zwiêksz o 8 d³ugo¶æ
+	add      edi, 8     ; nastepne 8 bajtow
+	add      ecx, 8     ; zwieksz o 8 dlugo¶æ
 
 	jmp .count
 
@@ -1003,9 +1004,8 @@ __DEBUG_FUNC_CALLED("")
 intmax_t __stdcall ts::mem32::pos_kmp(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size)
 {
     // Allocate variables
-	size_t *T;
-	int64_t i, j;
-	int64_t r_result = 0;
+	size_t *T, i;
+    int64_t d, r_result = 0;
     register const char *r_pattern = (const char*)a_pattern_ptr;
     register const char *r_text = (const char*)a_src_ptr;
     // Check empty pattern
@@ -1022,15 +1022,15 @@ intmax_t __stdcall ts::mem32::pos_kmp(const void *a_src_ptr, const size_t a_src_
 	}
 
 	// Search
-	for (i=j=0; (char)r_text[i] != (char)'\0'; ) {
-		if (j < 0 || r_text[i] == r_pattern[j]) {
-			++i, ++j;
-			if (r_pattern[j] == (char)'\0') {
-				r_result = i-j;
+	for (i=0, d=0; (char)r_text[i] != (char)'\0'; ) {
+		if (d < 0 ? true : r_text[i] == r_pattern[d]) {
+			++i, ++d;
+			if (r_pattern[d] == (char)'\0') {
+				r_result = i-d;
 				break;
 			}
 		}
-		else j = (char)T[j];
+		else d = (char)T[d];
 	}
     // Cleanup & Result
 	ts::mem32::free(T);
