@@ -148,7 +148,7 @@ void SHA1_Final(sha1_byte digest[SHA1_DIGEST_LENGTH], SHA_CTX *context) {
 	}
 	/* Wipe variables */
 	i = j = 0;
-	memset(context->buffer, 0, SHA1_BLOCK_LENGTH);
+    memset(context->buffer, 0, SHA1_BLOCK_LENGTH);
 	memset(context->state, 0, SHA1_DIGEST_LENGTH);
 	memset(context->count, 0, 8);
 	memset(&finalcount, 0, 8);

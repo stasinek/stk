@@ -32,9 +32,9 @@ __stdcall ts::compression::__huff_compressor::__huff_compressor(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-        son = (uint32_t*)::ts::mem32::alloc(sizeof(int32_t)*(TREE_SIZE));
-        freq_values = (uint32_t*)::ts::mem32::alloc(sizeof(int32_t)*(TREE_SIZE + 1));
-        dad = (uint32_t*)::ts::mem32::alloc(sizeof(int32_t)*(TREE_SIZE + BIT_COMBINATIONS_PER_BYTE));
+        son = (uint32_t*)::ts::mem::alloc(sizeof(int32_t)*(TREE_SIZE));
+        freq_values = (uint32_t*)::ts::mem::alloc(sizeof(int32_t)*(TREE_SIZE + 1));
+        dad = (uint32_t*)::ts::mem::alloc(sizeof(int32_t)*(TREE_SIZE + BIT_COMBINATIONS_PER_BYTE));
 		this->initialize();
 }
 //---------------------------------------------------------------------------
@@ -45,9 +45,9 @@ __stdcall ts::compression::__huff_compressor::~__huff_compressor(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		ts::mem32::free(dad);
-		ts::mem32::free(son);
-		ts::mem32::free(freq_values);
+		ts::mem::free(dad);
+		ts::mem::free(son);
+		ts::mem::free(freq_values);
 }
 //---------------------------------------------------------------------------
 
@@ -174,7 +174,7 @@ __DEBUG_FUNC_CALLED("")
 //----------------------												/* send bits to output and update model */
 		update(axdata_uncoded);
 		int32_t result = code; // duplicated so "code" variable could be stored in ALU register, and just once passed there as RAM address
-		ts::mem32::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,code_bits);
+		ts::mem::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,code_bits);
 		return code_bits;
 }
 //---------------------------------------------------------------------------
@@ -190,7 +190,7 @@ __DEBUG_FUNC_CALLED("")
 		register int32_t code_bits = 0;								   // number of bits readed from input stream
 //------------------------------------------
 		int32_t input_data;
-		ts::mem32::bit_mov(&input_data,0,a_code_ptr,a_code_ptr_bit,24);
+		ts::mem::bit_mov(&input_data,0,a_code_ptr,a_code_ptr_bit,24);
 		code =  input_data;
 //----------------------												/* travel from ROOT_NODE to leaf */
 		do {
@@ -238,9 +238,9 @@ __DEBUG_FUNC_CALLED("")
 				l=(e-k)<<1;
 				if (l==0)
 						continue;
-				ts::mem32::mov(&freq_values[k + 1],&freq_values[k],l);
+				ts::mem::mov(&freq_values[k + 1],&freq_values[k],l);
 				freq_values[k] = f;
-				ts::mem32::mov(&son[k + 1],&son[k],l);
+				ts::mem::mov(&son[k + 1],&son[k],l);
 				son[k] = i;
 		}
 //----------------------												/* conect leaf sons /\ to upper */

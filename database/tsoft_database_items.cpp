@@ -65,8 +65,8 @@ __DEBUG_FUNC_CALLED("")
         if (f_atom_matrix_count==a_count) return a_count;
         if (f_atom_matrix_count< a_count) {
                 if (f_atom_matrix_count==0 && a_count>0)
-                        f_atom_matrix = (ts::__database_items::__atom**)ts::mem32::alloc(a_count * sizeof(ts::__database_items::__atom*));
-           else f_atom_matrix = (ts::__database_items::__atom**)ts::mem32::realloc((void*)f_atom_matrix,a_count * sizeof(ts::__database_items::__atom*));
+                        f_atom_matrix = (ts::__database_items::__atom**)ts::mem::alloc(a_count * sizeof(ts::__database_items::__atom*));
+           else f_atom_matrix = (ts::__database_items::__atom**)ts::mem::realloc((void*)f_atom_matrix,a_count * sizeof(ts::__database_items::__atom*));
            for (uint32_t iT = f_atom_matrix_count; iT < a_count; iT++)
                         {
                         f_atom_matrix[iT] = new ts::__database_items::__atom();
@@ -78,12 +78,12 @@ __DEBUG_FUNC_CALLED("")
                    {
                         delete f_atom_matrix[iT]; //kasowanie atoma
                         }
-                f_atom_matrix =(ts::__database_items::__atom**)ts::mem32::realloc((void*)f_atom_matrix,a_count * sizeof(ts::__database_items::__atom*));
+                f_atom_matrix =(ts::__database_items::__atom**)ts::mem::realloc((void*)f_atom_matrix,a_count * sizeof(ts::__database_items::__atom*));
                 f_atom_matrix_count =a_count;
         }
         if (f_atom_matrix_count==0 && f_atom_matrix!=NULL)
                 {
-                ts::mem32::free((void*)f_atom_matrix);
+                ts::mem::free((void*)f_atom_matrix);
                 }
                 return a_count;
 }
@@ -118,7 +118,7 @@ ts::con::print("\r\n\r\n");
            f_atom_matrix[a_index_S]->text_size = a_size;
            f_atom_matrix[a_index_S]->text = ts::cstr::realloc(f_atom_matrix[a_index_S]->text, f_atom_matrix[a_index_S]->text_size + 1);
         }
-        ts::mem32::mov(f_atom_matrix[a_index_S]->text,a_text,a_size + 1);
+        ts::mem::mov(f_atom_matrix[a_index_S]->text,a_text,a_size + 1);
 }
 //---------------------------------------------------------------------------
 
@@ -245,11 +245,11 @@ ts::con::print("\r\n\r\n");
 
         set_count(count()+1);
         static ts::__database_items::__atom c_atom;
-        ts::mem32::mov(&c_atom,f_atom_matrix[count()-1],sizeof(ts::__database_items::__atom));
+        ts::mem::mov(&c_atom,f_atom_matrix[count()-1],sizeof(ts::__database_items::__atom));
         for (uint32_t iT = count()-1; iT > a_index; iT--) {
-                ts::mem32::mov(f_atom_matrix[iT],f_atom_matrix[iT-1], sizeof(ts::__database_items::__atom));
+                ts::mem::mov(f_atom_matrix[iT],f_atom_matrix[iT-1], sizeof(ts::__database_items::__atom));
         }
-        ts::mem32::mov(f_atom_matrix[a_index],&c_atom,sizeof(ts::__database_items::__atom));
+        ts::mem::mov(f_atom_matrix[a_index],&c_atom,sizeof(ts::__database_items::__atom));
         set(a_index, a_atom);
         return count();
 }

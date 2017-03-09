@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_file_ini_h__
-#define __tsoft_file_ini_h__
+#ifndef tsoft_file_ini_h
+#define tsoft_file_ini_h
 //---------------------------------------------------------------------------
-#include "./../tsoft_main.h"
+#include "./../../tsoft_main.h"
 //---------------------------------------------------------------------------
 namespace ts { namespace file {
 extern DWORD __cdecl get_wchar_value_at_ini_section(wchar_t *lpSection, wchar_t *lpValue,

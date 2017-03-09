@@ -208,11 +208,11 @@ __DEBUG_FUNC_CALLED("C_FROM_DATA(char*,const char*,const this*)")
                                         text = ts::cstr::realloc(text,text_alloc_size);
                                         }
                         }
-                        ts::mem32::mov(&(text[t_pos]), (void*)"\"", 1);
+                        ts::mem::mov(&(text[t_pos]), (void*)"\"", 1);
                         t_pos += 1;
-                        ts::mem32::mov(&(text[t_pos]), a_database->items()->get_text(iT), srclen);
+                        ts::mem::mov(&(text[t_pos]), a_database->items()->get_text(iT), srclen);
                         t_pos += srclen;
-                        ts::mem32::mov(&(text[t_pos]), (void*)"\", ", 3);
+                        ts::mem::mov(&(text[t_pos]), (void*)"\", ", 3);
                         t_pos += 3;
                         if ((uint32_t)++iT>=a_database->items()->count()) { // ucinam 2
                                 text[t_pos-2] = '\0';
@@ -229,9 +229,9 @@ __DEBUG_FUNC_CALLED("C_FROM_DATA(char*,const char*,const this*)")
                                         text = ts::cstr::realloc(text,text_alloc_size);
                                         }
                         }
-                        ts::mem32::mov((char*)(text+t_pos), a_database->items()->get_text(iT), srclen);
+                        ts::mem::mov((char*)(text+t_pos), a_database->items()->get_text(iT), srclen);
                         t_pos += srclen;
-                        ts::mem32::mov((char*)(text+t_pos), (void*)"\r\n", 2);
+                        ts::mem::mov((char*)(text+t_pos), (void*)"\r\n", 2);
                         t_pos += 2;
                         if ((uint32_t)++iT>=a_database->items()->count()) { // ucinam 2
                                 text[t_pos-2] = '\0';
@@ -287,7 +287,7 @@ __DEBUG_FUNC_CALLED("DATA_FROM_C(this*,const char*,const char*)")
                         if (pos_chk-pos+1 >= t_posend) {
                                 t_text = ts::cstr::realloc(t_text, t_posend+=256);
                         }
-                        ts::mem32::mov(t_text, (char*)(a_text + pos), pos_chk - pos);
+                        ts::mem::mov(t_text, (char*)(a_text + pos), pos_chk - pos);
                         t_text[pos_chk - pos] = '\0';
                         a_data->items()->add_text(t_text);
                         if (pos_chk==pos_end) {

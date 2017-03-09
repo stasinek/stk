@@ -140,8 +140,8 @@ TEST(ts::hash::adler32::calc_ADLER32(test_in,TEST_SIZE);)
 //TEST(ts::cstr::chr_sum(test_in,'A');)
 //TEST(memchr(test_in,'\0',TEST_SIZE);)
 //TEST_RANDOM(memchr(&test_in[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],'\0',TEST_SIZE/RANDOM_TIMES);)
-//TEST(ts::mem32::chr(test_in,'\0',TEST_SIZE);)
-//TEST_RANDOM(ts::mem32::chr(&test_in[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],'\0',TEST_SIZE/RANDOM_TIMES);)
+//TEST(ts::mem::chr(test_in,'\0',TEST_SIZE);)
+//TEST_RANDOM(ts::mem::chr(&test_in[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],'\0',TEST_SIZE/RANDOM_TIMES);)
 
 //ts::con::prints("[  %d]\t",__LINE__);
 //TEST(::strcpy(test_out,test_in);)
@@ -150,20 +150,20 @@ TEST(ts::hash::adler32::calc_ADLER32(test_in,TEST_SIZE);)
 //ts::con::prints("[  %d]\t",__LINE__);
 //TEST(memset(test_out,'A',TEST_SIZE);)
 //TEST_RANDOM(memset(&test_out[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],'A',TEST_SIZE/RANDOM_TIMES);)
-//TEST(ts::mem32::set(test_out,'A',TEST_SIZE);)
-//TEST_RANDOM(ts::mem32::set(&test_out[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],'A',TEST_SIZE/RANDOM_TIMES);)
+//TEST(ts::mem::set(test_out,'A',TEST_SIZE);)
+//TEST_RANDOM(ts::mem::set(&test_out[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],'A',TEST_SIZE/RANDOM_TIMES);)
 
 //ts::con::prints("[  %d]\t",__LINE__);
-//TEST(ts::mem32::setex(test_out,(const void*)&"AA",(int8_t)2,(uint32_t)TEST_SIZE/2);)
-//TEST(ts::mem32::setex(test_out,(const void*)&"AAAAAAAA",(int8_t)8,(uint32_t)TEST_SIZE/8);)
-//TEST(ts::mem32::setex(test_out,(const void*)&"AAAAAAAAAAAAAAAA",(int8_t)16,(uint32_t)TEST_SIZE/16);)
-//TEST(ts::mem32::setex(test_out,(const void*)&"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",(int8_t)64,(uint32_t)TEST_SIZE/64);)
+//TEST(ts::mem::setex(test_out,(const void*)&"AA",(int8_t)2,(uint32_t)TEST_SIZE/2);)
+//TEST(ts::mem::setex(test_out,(const void*)&"AAAAAAAA",(int8_t)8,(uint32_t)TEST_SIZE/8);)
+//TEST(ts::mem::setex(test_out,(const void*)&"AAAAAAAAAAAAAAAA",(int8_t)16,(uint32_t)TEST_SIZE/16);)
+//TEST(ts::mem::setex(test_out,(const void*)&"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",(int8_t)64,(uint32_t)TEST_SIZE/64);)
 
 //ts::con::prints("[  %d]\t",__LINE__);
 TEST(memmove(test_out,test_in,TEST_SIZE);)
-TEST(ts::mem32::mov(test_out,test_in,TEST_SIZE);)
+TEST(ts::mem::mov(test_out,test_in,TEST_SIZE);)
 TEST_RANDOM(memmove(&test_out[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],&test_in[((RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES)],TEST_SIZE/RANDOM_TIMES);)
-TEST_RANDOM(ts::mem32::mov(&test_out[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],&test_in[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],TEST_SIZE/RANDOM_TIMES);)
+TEST_RANDOM(ts::mem::mov(&test_out[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],&test_in[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],TEST_SIZE/RANDOM_TIMES);)
 
 //ts::con::prints("[  %d]\t",__LINE__);
 //TEST(r = ts::compression::compress_LZS(test_out,test_in,TEST_SIZE,1000));

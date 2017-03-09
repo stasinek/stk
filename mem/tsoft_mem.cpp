@@ -43,34 +43,34 @@ struct __mem_tail {
 #pragma pack(pop)
 
 //---------------------------------------------------------------------------
-int64_t __stdcall ts::mem32::allocated(void)
+int64_t __stdcall ts::mem::allocated(void)
 {
 return g_mem_allocated;
 }
 //---------------------------------------------------------------------------
-size_t __stdcall ts::mem32::size(const void *a_ptr)
+size_t __stdcall ts::mem::size(const void *a_ptr)
 {
 return ::_msize((void*)a_ptr);
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::alloc(const size_t a_count)
+void *__stdcall ts::mem::alloc(const size_t a_count)
 {
 	register size_t l_n_tailed_count;
 	register __mem_tail *n_t;
 	register void *r;
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("ts::mem32::alloc(size_t)")
+__DEBUG_FUNC_CALLED("ts::mem::alloc(size_t)")
 #endif
 	l_n_tailed_count  = a_count;
 	l_n_tailed_count += sizeof(__mem_tail);
 	l_n_tailed_count += l_n_tailed_count % g_mem_size_align;
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
-	printf("ts::mem32::alloc(%u+%d(ALIGNED_TO %d)+%u(MAGIC_TAIL))\n", a_count, (int32_t)sizeof(__mem_tail),(int32_t)(l_n_tailed_count - a_count - sizeof(__mem_tail)),(int32_t)g_mem_size_align);
+	printf("ts::mem::alloc(%u+%d(ALIGNED_TO %d)+%u(MAGIC_TAIL))\n", a_count, (int32_t)sizeof(__mem_tail),(int32_t)(l_n_tailed_count - a_count - sizeof(__mem_tail)),(int32_t)g_mem_size_align);
 #endif
 		r = ::malloc(l_n_tailed_count);
 	if (r==NULL)
-	    throw "ts::mem32::alloc::ERROR! OUT OF MEMORY?";
+	    throw "ts::mem::alloc::ERROR! OUT OF MEMORY?";
 	n_t = (__mem_tail*)((size_t)r + (size_t)l_n_tailed_count - sizeof(__mem_tail)) ;
 	n_t->add();
 ATOMIC(1)
@@ -78,14 +78,14 @@ ATOMIC_LOCK(1)
 	g_mem_allocated += l_n_tailed_count;
 ATOMIC_UNLOCK(1)
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
-	printf("ts::mem32::alloc::return address=0x%08hu, allocated=%lldB\n",(size_t)r,(int64_t)g_mem_allocated);
+	printf("ts::mem::alloc::return address=0x%08hu, allocated=%lldB\n",(size_t)r,(int64_t)g_mem_allocated);
 #endif
 	__builtin_prefetch(r,1,3);
 	return r;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::realloc(void *a_dst_ptr,const size_t a_count)
+void *__stdcall ts::mem::realloc(void *a_dst_ptr,const size_t a_count)
 {
 	register size_t l_p_tailed_count;
 	register size_t l_n_tailed_count;
@@ -96,13 +96,13 @@ void *__stdcall ts::mem32::realloc(void *a_dst_ptr,const size_t a_count)
  __DEBUG_FUNC_CALLED("realloc(void*,const size_t)")
 #endif
 ATOMIC(1)
-	l_p_tailed_count  = ts::mem32::size(a_dst_ptr);
+	l_p_tailed_count  = ts::mem::size(a_dst_ptr);
 	l_n_tailed_count  = a_count;
 	l_n_tailed_count += sizeof(__mem_tail);
 	l_n_tailed_count += l_n_tailed_count % g_mem_size_align;
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
 	o_t = (__mem_tail*)(((size_t)a_dst_ptr + (size_t)l_p_tailed_count) - (size_t)sizeof(__mem_tail)) ;
-    printf("mem32::realloc(adress=0x%08hu,%u+%d(ALIGNED_TO %d)+%u(MAGIC_TAIL))\n",(size_t)a_dst_ptr, a_count,(size_t)sizeof(__mem_tail),l_n_tailed_count - a_count - sizeof(__mem_tail),g_mem_size_align);
+    printf("mem::realloc(adress=0x%08hu,%u+%d(ALIGNED_TO %d)+%u(MAGIC_TAIL))\n",(size_t)a_dst_ptr, a_count,(size_t)sizeof(__mem_tail),l_n_tailed_count - a_count - sizeof(__mem_tail),g_mem_size_align);
 	if (l_p_tailed_count > sizeof(__mem_tail))
 	if (!o_t->check()) {
 	printf("WARNING! detected out of bound access 0x%08hu(@MAGIC_TAIL)\n",(size_t)a_dst_ptr);
@@ -113,7 +113,7 @@ ATOMIC_LOCK(1)
 ATOMIC_UNLOCK(1)
 		r = (void*)::realloc(a_dst_ptr,l_n_tailed_count);
 	if (r==NULL)
-	throw "mem32::realloc FAIL! OUT OF MEMORY";
+	throw "mem::realloc FAIL! OUT OF MEMORY";
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
 	n_t = (__mem_tail*)(((size_t)r + (size_t)l_n_tailed_count) - (size_t)sizeof(__mem_tail)) ;
 	n_t->add();
@@ -129,7 +129,7 @@ ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::mem32::free(void *a_dst_ptr)
+void __stdcall ts::mem::free(void *a_dst_ptr)
 {
 	register size_t l_p_tailed_count;
 	register __mem_tail *o_t;
@@ -137,10 +137,10 @@ void __stdcall ts::mem32::free(void *a_dst_ptr)
 __DEBUG_FUNC_CALLED("")
 #endif
 ATOMIC(1)
-	l_p_tailed_count = ts::mem32::size(a_dst_ptr);
+	l_p_tailed_count = ts::mem::size(a_dst_ptr);
 	o_t = (__mem_tail*)(((size_t)a_dst_ptr + (size_t)l_p_tailed_count) - (size_t)sizeof(__mem_tail)) ;
 #if defined(__DEBUG_MEM32__) | defined(__DEBUG_MEM32_ALLOC__)
-	printf("mem32::free(address=0x%08hu)\n",(size_t)a_dst_ptr);
+	printf("mem::free(address=0x%08hu)\n",(size_t)a_dst_ptr);
 #endif
 	if (l_p_tailed_count > sizeof(__mem_tail))
 	if (!o_t->check())
@@ -160,13 +160,13 @@ ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::set(void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count)
+void *__stdcall ts::mem::set(void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
 #if defined(__BORLANDC__) & defined (__ASM_OPT__)
-return ts::mem32::setex(a_dst_ptr,&a_znak_B,1,a_count);
+return ts::mem::setex(a_dst_ptr,&a_znak_B,1,a_count);
 #else
 ::memset(a_dst_ptr,a_znak_B,a_count);
 return a_dst_ptr;
@@ -174,7 +174,7 @@ return a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::setex(void *a_dst_ptr, const void *a_src_ptr, const int8_t a_element_size, const size_t a_count)
+void *__stdcall ts::mem::setex(void *a_dst_ptr, const void *a_src_ptr, const int8_t a_element_size, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -298,7 +298,7 @@ return a_dst_ptr;
 }
 else if (a_element_size > 8) {
 	for (register size_t c = a_count, e_size = a_element_size; c != 0; c--) {
-		 a_dst_ptr = (char*)ts::mem32::mov(a_dst_ptr,a_src_ptr,e_size) + e_size;
+		 a_dst_ptr = (char*)ts::mem::mov(a_dst_ptr,a_src_ptr,e_size) + e_size;
 		}
 return a_dst_ptr;
 }
@@ -306,7 +306,7 @@ return NULL;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::mov(void *a_dst_ptr,const void *a_src_ptr, const size_t a_count)
+void *__stdcall ts::mem::mov(void *a_dst_ptr,const void *a_src_ptr, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -525,55 +525,55 @@ return a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::shl(void *a_dst_ptr, size_t a_count)
+void *__stdcall ts::mem::shl(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
 	register size_t r_cmo = a_count-1;
-	ts::mem32::mov(a_dst_ptr,(void*)((int8_t*)a_dst_ptr+1),r_cmo);
+	ts::mem::mov(a_dst_ptr,(void*)((int8_t*)a_dst_ptr+1),r_cmo);
 		   ((int8_t*)a_dst_ptr)[r_cmo] = 0;
 	return a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::shr(void *a_dst_ptr, size_t a_count)
+void *__stdcall ts::mem::shr(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
 	register size_t r_cmo = a_count-1;
-	ts::mem32::mov((void*)((int8_t*)a_dst_ptr+1),a_dst_ptr,r_cmo);
+	ts::mem::mov((void*)((int8_t*)a_dst_ptr+1),a_dst_ptr,r_cmo);
 		   ((int8_t*)a_dst_ptr)[0] = 0;
 	return a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::ror(void *a_dst_ptr, size_t a_count)
+void *__stdcall ts::mem::ror(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
 	register char dE = ((char*)a_dst_ptr)[a_count-1];
-	ts::mem32::shr(a_dst_ptr,a_count);
+	ts::mem::shr(a_dst_ptr,a_count);
 		   ((char*)a_dst_ptr)[0] = dE;
 	return a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::rol(void *a_dst_ptr, size_t a_count)
+void *__stdcall ts::mem::rol(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
 	register char d0 = ((char*)a_dst_ptr)[0];
-	ts::mem32::shl(a_dst_ptr,a_count);
+	ts::mem::shl(a_dst_ptr,a_count);
 		   ((char*)a_dst_ptr)[a_count-1] = d0;
 	return a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall ts::mem32::rev(void  *a_dst_ptr, const void *a_src_ptr, const size_t a_count)
+void *__stdcall ts::mem::rev(void  *a_dst_ptr, const void *a_src_ptr, const size_t a_count)
 {
 	  register char *r_src_start = (char*)a_src_ptr;
 	  register char *r_src_end = r_src_start + a_count - 1;
@@ -600,16 +600,16 @@ return a_dst_ptr;
  *     |.................. tail .................|...... head .......|
  */
 
-void *__stdcall ts::mem32::swap(void *a_ptr, const size_t a_head_count, const size_t a_tail_count)
+void *__stdcall ts::mem::swap(void *a_ptr, const size_t a_head_count, const size_t a_tail_count)
 {
-	  ts::mem32::rev(a_ptr,a_ptr, a_head_count);
-	  ts::mem32::rev((char*)a_ptr+a_head_count,(char*)a_ptr+a_head_count, a_tail_count);
-	  ts::mem32::rev(a_ptr,a_ptr, a_head_count + a_tail_count);
+	  ts::mem::rev(a_ptr,a_ptr, a_head_count);
+	  ts::mem::rev((char*)a_ptr+a_head_count,(char*)a_ptr+a_head_count, a_tail_count);
+	  ts::mem::rev(a_ptr,a_ptr, a_head_count + a_tail_count);
 return a_ptr;
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall ts::mem32::cmp(const void *a_ptr1, const void *a_ptr2, const size_t a_count)
+intmax_t __stdcall ts::mem::cmp(const void *a_ptr1, const void *a_ptr2, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -696,7 +696,7 @@ ret*/
 
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall ts::mem32::chr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
+intmax_t __stdcall ts::mem::chr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -784,7 +784,7 @@ ptrchr_RETURN:
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall ts::mem32::chrr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
+intmax_t __stdcall ts::mem::chrr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -812,7 +812,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall ts::mem32::pos(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
+intmax_t __stdcall ts::mem::pos(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -887,12 +887,12 @@ size_t r;
 			static size_t ret_i,*lpret_i=&ret_i;
 			static uint8_t  shift[0x0100L],*lpshift=&shift[0];
 			if (a_search_size>0xFFL) {
-				ts::mem32::set(&shift,0x0100L,0xFFL);
+				ts::mem::set(&shift,0x0100L,0xFFL);
 				for (size_t i=a_search_size-0x0100L,ic=0x0100L; i < a_search_size; i++,ic--) {
 					shift[ ((char*)a_search_ptr)[i] ]=(uint8_t)(ic-1);
 				}
 			} else {
-				ts::mem32::set(&shift,0x0100L,a_search_size);
+				ts::mem::set(&shift,0x0100L,a_search_size);
 				for (size_t i=0,ic=a_search_size; i < a_search_size; i++,ic--) {
 					shift[ ((char*)a_search_ptr)[i] ]=(uint8_t)(ic-1);
 				}
@@ -985,14 +985,14 @@ size_t r;
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall ts::mem32::posr(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
+intmax_t __stdcall ts::mem::posr(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
 	register int32_t x = a_start, r = -1;
 	do {
-	x = ts::mem32::pos(a_src_ptr, a_src_size, x, a_search_ptr, a_search_size);
+	x = ts::mem::pos(a_src_ptr, a_src_size, x, a_search_ptr, a_search_size);
 	if (x!=-1) r = x;
 	else break;
 	x += a_search_size;
@@ -1001,7 +1001,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall ts::mem32::pos_kmp(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size)
+intmax_t __stdcall ts::mem::pos_kmp(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size)
 {
     // Allocate variables
 	size_t *T, i;
@@ -1013,7 +1013,7 @@ intmax_t __stdcall ts::mem32::pos_kmp(const void *a_src_ptr, const size_t a_src_
 		return -1;
 
 	// Lookup table
-	T = (size_t*)ts::mem32::alloc((strlen(r_pattern)+1) * sizeof(int64_t));
+	T = (size_t*)ts::mem::alloc((strlen(r_pattern)+1) * sizeof(int64_t));
 	T[0] = -1;
 	for (i=0; (char)r_pattern[i] != (char)'\0'; i++) {
 		T[i+1] = T[i] + 1;
@@ -1033,11 +1033,11 @@ intmax_t __stdcall ts::mem32::pos_kmp(const void *a_src_ptr, const size_t a_src_
 		else d = (char)T[d];
 	}
     // Cleanup & Result
-	ts::mem32::free(T);
+	ts::mem::free(T);
 	return r_result;
 }
 
-void __stdcall ts::mem32::bit_mov(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const size_t a_bits_num)
+void __stdcall ts::mem::bit_mov(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const size_t a_bits_num)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -1196,7 +1196,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-void __stdcall ts::mem32::bit_setex(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const uint8_t a_src_elsize, const size_t a_dst_count)
+void __stdcall ts::mem::bit_setex(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const uint8_t a_src_elsize, const size_t a_dst_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")

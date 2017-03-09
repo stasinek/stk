@@ -25,7 +25,7 @@ if (x>=0) buffer.send_done_count += x;
 
 do {
 time(&czas);
-ts::mem32::set(buffer.recv_lp,0,MAX_REQUEST);
+ts::mem::set(buffer.recv_lp,0,MAX_REQUEST);
 		buffer.recv_done_count = recv( server,buffer.recv_lp,buffer.recv_size,0 );
 if (buffer.recv_done_count == 0 || buffer.recv_done_count == WSAECONNRESET || buffer.recv_done_count  < 0 || buffer.recv_done_count == SOCKET_ERROR)
 break;

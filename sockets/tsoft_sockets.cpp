@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 #include "tsoft_sockets.h"
 //---------------------------------------------------------------------------
-#include "./../io/tsoft_file_mime_types.h"
+#include "./../file/tsoft_file_mime_types.h"
 #include "./../io/tsoft_console.h"
 #include "./../mem/tsoft_mem.h"
 #include "./../sthreads/tsoft_threads.h"
@@ -68,7 +68,7 @@ ts::time::wait_ms(500);
         main_socket = accepted_socket;
         buffer.recv_done_count = SOCKET_ERROR;
         ts::cstr::mov(buffer.recv_lp,"");
-        ts::mem32::mov(&socket, &main_socket, sizeof(SOCKET));
+        ts::mem::mov(&socket, &main_socket, sizeof(SOCKET));
         ts::con::prints("SOCKET %d Connection established.\n",socket );
         return socket;
 NEW_GOTO_ERROR_SOCKET:
@@ -111,7 +111,7 @@ __DEBUG_FUNC_CALLED("")
         tv.tv_usec = 0;
         setsockopt(main_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv,sizeof(struct timeval));
         }
-        ts::mem32::mov(&socket, &main_socket, sizeof(SOCKET));
+        ts::mem::mov(&socket, &main_socket, sizeof(SOCKET));
         ts::con::prints("SOCKET %d Connection established.\n",socket );
         return socket;
 NEW_GOTO_ERROR_SOCKET:
@@ -165,7 +165,7 @@ __DEBUG_FUNC_CALLED("")
         register int32_t r = 0;
         register int32_t r_sum = 0;
         register int32_t to_r = alen;
-        ts::mem32::set(arecv_lp,0,to_r);
+        ts::mem::set(arecv_lp,0,to_r);
         do {
         r = recv(amain_socket,&arecv_lp[r_sum], to_r-r_sum, 0);
         if (r <0 || r==WSAECONNRESET || r==SOCKET_ERROR) break;
@@ -200,7 +200,7 @@ __DEBUG_FUNC_CALLED("")
         buffer.send_done_count += send( main_socket, &buffer.send_lp[buffer.send_done_count], buffer.send_count, 0 );
         }
         while(true) {
-        ts::mem32::set(buffer.recv_lp,0,MAX_REQUEST);
+        ts::mem::set(buffer.recv_lp,0,MAX_REQUEST);
         buffer.recv_done_count = recv( main_socket,buffer.recv_lp,MAX_REQUEST,0 );
         if (buffer.recv_done_count == 0 || buffer.recv_done_count == WSAECONNRESET || buffer.recv_done_count  < 0 || buffer.recv_done_count == SOCKET_ERROR)
         break;
@@ -554,7 +554,7 @@ __DEBUG_FUNC_CALLED("")
         ts::cstr::mov(buffer.send_lp,"HTTP/1.1 200 OK\r\n");
         buffer.send_done_count = send( main_socket, buffer.send_lp, ts::cstr::len(buffer.send_lp) + 1, 0 );
         while(true) {
-        ts::mem32::set(buffer.recv_lp,0,MAX_REQUEST);
+        ts::mem::set(buffer.recv_lp,0,MAX_REQUEST);
         buffer.recv_done_count = recv( main_socket,buffer.recv_lp,MAX_REQUEST,0 );
         if (buffer.recv_done_count == 0 || buffer.recv_done_count == WSAECONNRESET || buffer.recv_done_count  < 0 || buffer.recv_done_count == SOCKET_ERROR)
         break;

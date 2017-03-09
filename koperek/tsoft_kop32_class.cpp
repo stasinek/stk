@@ -7,7 +7,7 @@
 #include "./../cipher/tsoft_cipher_API.h"
 #include "./../hash/tsoft_hash_API.h"
 #include "./../pharser/tsoft_pharse_command_line.h"
-#include "./../io/tsoft_file_lzst_header.h"
+#include "./../file/eno/tsoft_file_lzst_header.h"
 #include "./../io/tsoft_file_io.h"
 #include "./../io/tsoft_console.h"
 #include "./../sthreads/tsoft_threads.h"
@@ -81,9 +81,9 @@ ts::con::print("\r\n");
         this->progress->reset();
         options->reset();
         list->output_formated_list->clear();
-        mem32::set(&f_src_file,(int8_t)NULL,sizeof(file::__file_open_struct));
+        mem::set(&f_src_file,(int8_t)NULL,sizeof(file::__file_open_struct));
         list->src_main_list->clear();
-        mem32::set(&f_dst_file,(int8_t)NULL,sizeof(file::__file_open_struct));
+        mem::set(&f_dst_file,(int8_t)NULL,sizeof(file::__file_open_struct));
         list->dst_main_list->clear();
         do_event(ON_RESETED,EMPTY,EMPTY);
 }
@@ -540,7 +540,7 @@ f_write_file_thread_handle = CreateThread(NULL,0,&ts::__kop32_class::f_write_fil
 if (f_write_file_thread_handle==NULL)
         {abort();goto GOTO_distribute_EXIT;
         }
-for (d = 0; list->cur_i >= 0 && list->cur_i < (uint32_t)list->src_main_list->items()->count() && progress->cancel==0; list->cur_i+=list->inc_i)
+for (d = 0; list->cur_i >= 0 && list->cur_i < (int32_t)list->src_main_list->items()->count() && progress->cancel==0; list->cur_i+=list->inc_i)
         {
          /// CHECK SRC
          if (list->src_main_list->items()->get_number(list->cur_i,IS)!=EXISTS)
@@ -645,7 +645,7 @@ if (options->operation==OPERATION_MOVE)
 else
 if (options->operation==OPERATION_LIST) // save list to file
    {
-        for (list->cur_i = list->start_i; progress->cancel==0 && list->cur_i < (uint32_t)options->dst_init_list->items()->count(); list->cur_i+=list->inc_i)
+        for (list->cur_i = list->start_i; progress->cancel==0 && list->cur_i < (int32_t)options->dst_init_list->items()->count(); list->cur_i+=list->inc_i)
                 {
                          ts::cstr::mov(templp->data(), options->dst_init_list->items()->get_text(list->cur_i));
                          ts::cstr::upr(templp->data());
@@ -1118,7 +1118,7 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
                         }
                 hdr.signature  = LZSS_HEADER_SIG;
                 hdr.size = f_src_file.size;
-                ts::mem32::mov(f_dst_file.buffer.ptr,(void*)&hdr,sizeof(file_header::__eno_header_struct));
+                ts::mem::mov(f_dst_file.buffer.ptr,(void*)&hdr,sizeof(file_header::__eno_header_struct));
                 f_dst_file.readed += sizeof(file_header::__eno_header_struct);
                 if (options->block_is_cached==0)
                 ts::file::flush_map_view(f_dst_file.buffer.ptr,sizeof(file_header::__eno_block_header_struct));
@@ -1144,7 +1144,7 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
                 if (f_src_file.buffer.ptr==NULL)
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
-                ts::mem32::mov((void*)&hdr,f_src_file.buffer.ptr,sizeof(file_header::__eno_header_struct));
+                ts::mem::mov((void*)&hdr,f_src_file.buffer.ptr,sizeof(file_header::__eno_header_struct));
                 f_src_file.readed += sizeof(file_header::__eno_header_struct);
                 ts::file::close_map_view(f_src_file.buffer.ptr);
                 ts::file::close_map(f_src_file.hand_map);
@@ -1210,7 +1210,7 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
                 if (f_dst_file.buffer.ptr==NULL)
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
-                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset), f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                ts::mem::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset), f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                 f_src_file.readed += f_src_file.buffer.size;
                 ts::file::close_map_view(f_src_file.buffer.ptr);
                 f_dst_file.readed += f_dst_file.buffer.size;
@@ -1245,8 +1245,8 @@ else
                 if (f_src_file.buffer.ptr==NULL) {goto GOTO_execute_io_cleanup_ERROR;
                         }
                 f_mem_buffer_map.map[f_mem_buffer_map.index].size = f_src_file.buffer.size;
-                f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
-                ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
+                f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                ts::mem::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
                 f_src_file.readed += f_src_file.buffer.size;
                 ts::file::close_map_view(f_src_file.buffer.ptr);
                 progress->src->one->readed  = f_src_file.readed;
@@ -1282,8 +1282,8 @@ else
                 if (f_dst_file.buffer.ptr==NULL)
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
-                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset), (void*)f_mem_buffer_map.map[f_mem_buffer_map.previous_index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.previous_index].size);
-                ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.previous_index].ptr);
+                ts::mem::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset), (void*)f_mem_buffer_map.map[f_mem_buffer_map.previous_index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.previous_index].size);
+                ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.previous_index].ptr);
                 f_dst_file.readed += f_dst_file.buffer.size;
                 if (options->block_is_cached==0)
                 ts::file::flush_map_view((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size);
@@ -1311,8 +1311,8 @@ else
                         }
                 f_mem_buffer_map.index=0;
                 f_mem_buffer_map.map[f_mem_buffer_map.index].size = f_src_file.buffer.size;
-                f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
-                ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
+                f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                ts::mem::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
                 f_mem_buffer_map.count=1;
 
                 if (options->coder & LZSS_CODER_BWT) {
@@ -1330,18 +1330,18 @@ else
                 //
                 // transformacja Burrowsa-Wheelra
                 if (options->coder & LZSS_CODER_BWT)
-                        {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
+                        {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
                          f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_BWT(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
-//			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                         ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//			 if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                         ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
                 // kompresja LZS
                 if (options->coder & LZSS_CODER_LZS)
-                        {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
+                        {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
                          f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_LZS(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
-//			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                         ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//			 if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                         ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
                 // kodowanie MTF
@@ -1350,18 +1350,18 @@ else
                         }
                 // kompresja HUFFMANA
                 if (options->coder & LZSS_CODER_HUF)
-                        {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
+                        {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
                          f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_HUF(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
-//			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                         ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//			 if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                         ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
                                 // kompresja ARYTMETYCZNA
                 if (options->coder & LZSS_CODER_ARI)
-                        {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
+                        {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
                          f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = ts::compression::compress_ARI(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
-//			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                         ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//			 if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                         ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
                 // QDRowanie
@@ -1388,7 +1388,7 @@ else
                 if (f_dst_file.buffer.ptr==NULL)
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
-                ts::mem32::set((void*)&b_hdr.size,0,sizeof(b_hdr.size));
+                ts::mem::set((void*)&b_hdr.size,0,sizeof(b_hdr.size));
                 b_hdr.signature = LZSS_BLOCK_HEADER_SIG;
                 b_hdr.signature_version = 0x0001L;
                 b_hdr.data_range = f_src_file.readed;
@@ -1396,12 +1396,12 @@ else
                                 b_hdr.size_count = f_mem_buffer_map.count;
                 for (uint32_t i = 0; i < f_mem_buffer_map.count; i++) {b_hdr.size[i] = (uint32_t)f_mem_buffer_map.map[i].size;
                          }
-                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),(void*)&b_hdr,sizeof(file_header::__eno_block_header_struct));
+                ts::mem::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),(void*)&b_hdr,sizeof(file_header::__eno_block_header_struct));
                 f_dst_file.readed += sizeof(file_header::__eno_block_header_struct);
-                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset + sizeof(file_header::__eno_block_header_struct)),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                ts::mem::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset + sizeof(file_header::__eno_block_header_struct)),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                 f_src_file.readed += f_src_file.buffer.size;
-//		if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                        ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//		if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                        ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                 ts::file::close_map_view((void*)f_src_file.buffer.ptr);
                 f_dst_file.readed += f_dst_file.buffer.size;
                                 if (options->block_is_cached==0) ts::file::flush_map_view((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size + sizeof(file_header::__eno_block_header_struct));
@@ -1427,7 +1427,7 @@ else
                 f_src_file.buffer.offset = f_src_file.readed % 65536;
                 f_src_file.buffer.ptr = ts::file::create_map_view(f_src_file.hand_map, FILE_MAP_READ, 0,
                                 f_src_file.readed - f_src_file.buffer.offset,sizeof(file_header::__eno_block_header_struct) + f_src_file.buffer.offset);
-                ts::mem32::mov((void*)&b_hdr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),sizeof(file_header::__eno_block_header_struct));
+                ts::mem::mov((void*)&b_hdr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),sizeof(file_header::__eno_block_header_struct));
                 f_src_file.readed += sizeof(file_header::__eno_block_header_struct);
                 f_mem_buffer_map.count=1;
                 //
@@ -1463,8 +1463,8 @@ else
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
                 f_mem_buffer_map.map[f_mem_buffer_map.index].size = f_src_file.buffer.size;
-                f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
-                ts::mem32::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
+                f_mem_buffer_map.map[f_mem_buffer_map.index].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                ts::mem::mov(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,(void*)((int8_t*)f_src_file.buffer.ptr + f_src_file.buffer.offset),f_src_file.buffer.size);
 
                 if (b_hdr.data_coder & LZSS_CODER_SSC) {
                 if (b_hdr.crc!=ts::hash::ssc1::calc_SSC1(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,32)[0])
@@ -1489,18 +1489,18 @@ else
                         }
                 // DEkompresja ARI
                 if (b_hdr.data_coder & LZSS_CODER_ARI)
-                        {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
+                        {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          ts::compression::uncompress_ARI(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-//			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                         ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//			 if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                         ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index--;
                          }
                 // DEkompresja HUF
                 if (b_hdr.data_coder & LZSS_CODER_HUF)
-                        {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
+                        {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          ts::compression::uncompress_HUF(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-//			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                         ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//			 if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                         ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index--;
                          }
                 // DEkodowanie MTF
@@ -1509,18 +1509,18 @@ else
                         }
                 // DEkompresja LZS
                 if (b_hdr.data_coder & LZSS_CODER_LZS)
-                        {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
+                        {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          ts::compression::uncompress_LZS(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-//			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                         ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//			 if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                         ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index--;
                          }
                 // DEkompresja Burrowsa-Wheelra
                 if (b_hdr.data_coder & LZSS_CODER_BWT)
-                        {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem32::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
+                        {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = ts::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          ts::compression::uncompress_BWT(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-//			 if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                         ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//			 if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                         ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index--;
                         }
                 f_dst_file.buffer.size = f_mem_buffer_map.map[f_mem_buffer_map.index].size;
@@ -1530,11 +1530,11 @@ else
                 if (f_dst_file.buffer.ptr==NULL)
                         {goto GOTO_execute_io_cleanup_ERROR;
                         }
-                ts::mem32::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
+                ts::mem::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                 f_src_file.readed += f_src_file.buffer.size;
                 ts::file::close_map_view(f_src_file.buffer.ptr);
-//		if (f_mem_buffer_map.index!=0) ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-                ts::mem32::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//		if (f_mem_buffer_map.index!=0) ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+                ts::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                 if (options->block_is_cached==0)
                 ts::file::flush_map_view((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size);
                 ts::file::close_map_view(f_dst_file.buffer.ptr);
@@ -1663,8 +1663,8 @@ ts::con::print("\r\n");
                 if (caller_kop32->f_dst_file.buffer.ptr==NULL)
                    {caller_kop32->f_write_file_thread_control = 4;
                    }
-                ts::mem32::mov((void*)((int8_t*)caller_kop32->f_dst_file.buffer.ptr + caller_kop32->f_dst_file.buffer.offset), (void*)caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].ptr,caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].size);
-                ts::mem32::free(caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].ptr);
+                ts::mem::mov((void*)((int8_t*)caller_kop32->f_dst_file.buffer.ptr + caller_kop32->f_dst_file.buffer.offset), (void*)caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].ptr,caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].size);
+                ts::mem::free(caller_kop32->f_mem_buffer_map.map[caller_kop32->f_mem_buffer_map.previous_index].ptr);
                 caller_kop32->f_dst_file.readed += caller_kop32->f_dst_file.buffer.size;
                 if (caller_kop32->options->block_is_cached==0)
                 ts::file::flush_map_view((void*)((int8_t*)caller_kop32->f_dst_file.buffer.ptr + caller_kop32->f_dst_file.buffer.offset),caller_kop32->f_dst_file.buffer.size);

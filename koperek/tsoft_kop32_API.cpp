@@ -9,9 +9,9 @@
 //---------------------------------------------------------------------------
 #include "./../process_journal/tsoft_journal.h"
 #include "./../hash/tsoft_hash_ssc1.h"
-#include "./../io/tsoft_file_lzst_header.h"
-#include "../io/tsoft_console.h"
-#include "../text/tsoft_cstr_utils.h"
+#include "./../file/eno/tsoft_file_lzst_header.h"
+#include "./../io/tsoft_console.h"
+#include "./../text/tsoft_cstr_utils.h"
 //---------------------------------------------------------------------------
 #include <wincon.h>
 #include <direct.h>
@@ -398,7 +398,7 @@ return 0;
 				bla[x] = x;
 				d[x] = 0;
 				}
-		ts::mem32::bit_mov(d, 0, bla, 0, 8 *32);
+		ts::mem::bit_mov(d, 0, bla, 0, 8 *32);
 		ts::con::prints("src\n");
 		for (int i = 0; i < 8; i++)
 		{ts::con::prints("%d\n", bla[i]);}

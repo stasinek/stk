@@ -84,54 +84,13 @@ XML_OPTIONAL_IMPORTRKEY
 // http://ootips.org/yonat/4dev/
 #ifndef MIME_CODES_H
 #define MIME_CODES_H
-/******************************************************************************
- * MimeCoder -  Abstract base class for MIME filters.
- ******************************************************************************/
-template <class InIter, class OutIter>
-class MimeCoder
-{
-public:
-	 virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd ) = 0;
-    virtual OutIter Finish( OutIter out ) = 0;
-};
-
-/******************************************************************************
- * Base64
- ******************************************************************************/
-template <class InIter, class OutIter>
-class Base64Encoder : public MimeCoder<InIter, OutIter>
-{
-public:
-    Base64Encoder() : its3Len(0), itsLinePos(0) {}
-    virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd );
-	 virtual OutIter Finish( OutIter out );
-private:
-    int             itsLinePos;
-	 unsigned char   itsCurr3[3];
-    int             its3Len;
-    void EncodeCurr3( OutIter& out );
-};
-
-template <class InIter, class OutIter>
-class Base64Decoder : public MimeCoder<InIter, OutIter>
-{
-public:
-    Base64Decoder() : its4Len(0), itsEnded(0) {}
-    virtual OutIter Filter( OutIter out, InIter inBeg, InIter inEnd );
-	 virtual OutIter Finish( OutIter out );
-private:
-    int             itsEnded;
-    unsigned char   itsCurr4[4];
-    int             its4Len;
-	 int             itsErrNum;
-    void DecodeCurr4( OutIter& out );
-};
+#include "./../../cipher/tsoft_base64.h"
 
 /******************************************************************************
  * Quoted-Printable
  ******************************************************************************/
 template <class InIter, class OutIter>
-class QpEncoder : public MimeCoder<InIter, OutIter>
+class QpEncoder : public ts::cipher::__mime_coder<InIter, OutIter>
 {
 public:
     QpEncoder() : itsLinePos(0), itsPrevCh('x') {}
@@ -143,7 +102,7 @@ private:
 };
 
 template <class InIter, class OutIter>
-class QpDecoder : public MimeCoder<InIter, OutIter>
+class QpDecoder : public ts::cipher::__mime_coder<InIter, OutIter>
 {
 public:
 	 QpDecoder() : itsHexLen(0) {}
@@ -154,157 +113,6 @@ private:
     unsigned char   itsHex[2];
 };
 #endif // MIME_CODES_H
-#define TEST_MIME_CODES
-#define ___
-static const int cLineLen = 72;
-
-/******************************************************************************
- * Base64Encoder
- ******************************************************************************/
-static const char cBase64Codes[] =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-static const char CR = 13;
-static const char LF = 10;
-
-template <class InIter, class OutIter>
-OutIter Base64Encoder<InIter, OutIter>::Filter(
-	 OutIter out,
-    InIter inBeg,
-    InIter inEnd )
-{
-    for(;;) {
-        for(; itsLinePos < cLineLen; itsLinePos += 4) {
-            for (; its3Len < 3; its3Len++) {
-                if (inBeg == inEnd)
-___ ___ ___ ___ ___ return out;
-                itsCurr3[its3Len] = *inBeg;
-                ++inBeg;
-            }
-            EncodeCurr3(out);
-            its3Len = 0;
-		  } // for loop until end of line
-        *out++ = CR;
-        *out++ = LF;
-        itsLinePos = 0;
-    } // for (;;)
-//    return out;
-}
-
-template <class InIter, class OutIter>
-OutIter Base64Encoder<InIter, OutIter>::Finish( OutIter out )
-{
-    if (its3Len)
-        EncodeCurr3(out);
-	 its3Len = 0;
-    itsLinePos = 0;
-
-    return out;
-}
-
-template <class InIter, class OutIter>
-void Base64Encoder<InIter, OutIter>::EncodeCurr3( OutIter& out )
-{
-    if (its3Len < 3) itsCurr3[its3Len] = 0;
-
-    *out++ = cBase64Codes[ itsCurr3[0] >> 2 ];
-    *out++ = cBase64Codes[ ((itsCurr3[0] & 0x3)<< 4) |
-                           ((itsCurr3[1] & 0xF0) >> 4) ];
-	 if (its3Len == 1) *out++ = '=';
-    else
-        *out++ = cBase64Codes[ ((itsCurr3[1] & 0xF) << 2) |
-                               ((itsCurr3[2] & 0xC0) >>6) ];
-    if (its3Len < 3) *out++ = '=';
-    else
-        *out++ = cBase64Codes[ itsCurr3[2] & 0x3F ];
-}
-
-/******************************************************************************
- * Base64Decoder
- ******************************************************************************/
-#define XX 127
-
-static const unsigned char cIndex64[256] = {
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,62, XX,XX,XX,63,
-    52,53,54,55, 56,57,58,59, 60,61,XX,XX, XX,XX,XX,XX,
-    XX, 0, 1, 2,  3, 4, 5, 6,  7, 8, 9,10, 11,12,13,14,
-    15,16,17,18, 19,20,21,22, 23,24,25,XX, XX,XX,XX,XX,
-    XX,26,27,28, 29,30,31,32, 33,34,35,36, 37,38,39,40,
-    41,42,43,44, 45,46,47,48, 49,50,51,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-	 XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-    XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
-};
-
-template <class InIter, class OutIter>
-OutIter Base64Decoder<InIter, OutIter>::Filter(
-    OutIter out,
-    InIter inBeg, 
-    InIter inEnd )
-{
-    unsigned char c;
-    itsErrNum = 0;
-
-	 for (;;) {
-        while (its4Len < 4) {
-            if (inBeg == inEnd)
-___ ___ ___ ___ return out;
-            c = *inBeg;
-            if ((cIndex64[c] != XX) || (c == '='))
-                itsCurr4[its4Len++] = c;
-            else if ((c != CR) && (c != LF)) ++itsErrNum; // error
-            ++inBeg;
-        } // while (its4Len < 4)
-        DecodeCurr4(out);
-        its4Len = 0;
-    } // for (;;)
-    
-//	 return out;
-}
-
-template <class InIter, class OutIter>
-OutIter Base64Decoder<InIter, OutIter>::Finish( OutIter out )
-{
-    its4Len = 0;
-    if (itsEnded) return out;
-    else { // error
-        itsEnded = 0;
-        return out;
-    }
-}
-
-template <class InIter, class OutIter>
-void Base64Decoder<InIter, OutIter>::DecodeCurr4( OutIter& out )
-{
-    if (itsEnded) {
-        ++itsErrNum;
-        itsEnded = 0;
-    }
-
-    for (int i = 0; i < 2; i++)
-        if (itsCurr4[i] == '=') {
-            ++itsErrNum; // error
-___ ___ ___ return;
-        }
-        else itsCurr4[i] = cIndex64[itsCurr4[i]];
-
-    *out++ = (itsCurr4[0] << 2) | ((itsCurr4[1] & 0x30) >> 4);
-    if (itsCurr4[2] == '=') {
-        if (itsCurr4[3] == '=') itsEnded = 1;
-        else ++itsErrNum;
-    } else {
-        itsCurr4[2] = cIndex64[itsCurr4[2]];
-        *out++ = ((itsCurr4[1] & 0x0F) << 4) | ((itsCurr4[2] & 0x3C) >> 2);
-        if (itsCurr4[3] == '=') itsEnded = 1;
-        else *out++ = ((itsCurr4[2] & 0x03) << 6) | cIndex64[itsCurr4[3]];
-    }
-}
 
 /******************************************************************************
  * QpEncoder
@@ -354,7 +162,7 @@ OutIter QpEncoder<InIter, OutIter>::Filter(
             ++itsLinePos;
         }
 
-        if (itsLinePos > cLineLen) {
+        if (itsLinePos > ts::cipher::cLineLen) {
             *out++ = '=';
             *out++ = itsPrevCh = '\n';
             itsLinePos = 0;
@@ -670,31 +478,6 @@ void BDC :: AddResize(unsigned long long More)
 	}
 
 	
-size_t XML :: Char2Base64(char *Z, int s, char *out)
-	{
-		int L = s;
-		char *oo;
-		Base64Encoder<char*,char*>e;
-		oo = e.Filter(out, Z, Z + L);
-		oo = e.Finish(oo);
-		*oo = 0;                     // Put a zero to the end
-		return strlen(out);
-	}
-	
-int XML :: Base642Char(char *Z, int s, char *out)
-	{
-		if (s == -1)
-		s = (int)strlen(Z);
-		int L = s;
-		char *oo;
-		Base64Decoder<char*,char*>e;
-		oo = e.Filter(out, Z, Z + L);
-		oo = e.Finish(oo);
-		*oo = 0;                     // Put a zero to the end
-		return (oo - out);
-	}
-	
-
 int XML :: DoMatch(const char *text, char *p, bool IsCaseSensitive)
 	{
 	// Thanks to BitchX for copying this function
@@ -7210,7 +6993,7 @@ bool XMLContent :: GetBinaryValue(char**o,unsigned int* len)
 	memset(a,0,ll*5 + 1000);
 
 	char *oo;
-	Base64Decoder<char*,char*> e;
+    ts::cipher::__base64_decoder<char*,char*> e;
 	oo = e.Filter(a, (char*)d, (char*)d + ll);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end
@@ -7312,7 +7095,7 @@ void XMLContent :: SetValue(const char* VV,int NoDecode,int BinarySize)
 		memset(a,0,BinarySize*5 + 1000);
 
 		char *oo;
-		Base64Encoder<char*,char*> e;
+        ts::cipher::__base64_encoder<char*,char*> e;
 		oo = e.Filter(a, (char*)VV, (char*)VV + BinarySize);
 		oo = e.Finish(oo);
 		*oo = 0;                  // Put a zero to the end
@@ -8142,7 +7925,7 @@ size_t XMLVariable :: SetBinaryValue(char* data,int len)
 	memset(a,0,len*5 + 1000);
 
 	char *oo;
-	Base64Encoder<char*,char*> e;
+    ts::cipher::__base64_encoder<char*,char*> e;
 	oo = e.Filter(a, data, data + len);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end
@@ -8198,7 +7981,7 @@ size_t XMLVariable :: GetBinaryValue(char* data)
 
 
 	char *oo;
-	Base64Decoder<char*,char*> e;
+    ts::cipher::__base64_decoder<char*,char*> e;
 	oo = e.Filter(oout, bdata.operator char*(), bdata.operator char*() + aL);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end
@@ -9978,7 +9761,7 @@ size_t XMLGetBinaryData(const char* item,const char* attr,const char* defv,char*
 	Z<char> oout(maxlen*5 + 5000);
 
 	char *oo;
-	Base64Decoder<char*,char*> e;
+    ts::cipher::__base64_decoder<char*,char*> e;
 	oo = e.Filter(oout, bdata.operator char*(), bdata.operator char*() + len);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end
@@ -10048,7 +9831,7 @@ int    XMLSetBinaryData(const char* section,const char* attr,char* data,int len,
 	memset(a,0,len*5 + 1000);
 
 	char *oo;
-	Base64Encoder<char*,char*> e;
+    ts::cipher::__base64_encoder<char*,char*> e;
 	oo = e.Filter(a, data, data + len);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end

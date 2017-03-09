@@ -29,9 +29,9 @@ __stdcall  ts::__password_text::__password_text()
 __DEBUG_FUNC_CALLED("")
 #endif
         f_lp_hash_str = ts::cstr::alloc(256);
-        ts::mem32::set((void*)f_lp_hash_str,'\0',256);
+        ts::mem::set((void*)f_lp_hash_str,'\0',256);
         f_lp_plain_str = ts::cstr::alloc(256);
-        ts::mem32::set((void*)f_lp_plain_str,'\0',256);
+        ts::mem::set((void*)f_lp_plain_str,'\0',256);
         f_size = 0;
 }
 //---------------------------------------------------------------------------
@@ -78,7 +78,7 @@ void __stdcall ts::__password_text::set(const char *a_user_password)
 __DEBUG_FUNC_CALLED("")
 #endif
         f_size = ts::cstr::len(a_user_password) + 1;
-        ts::mem32::mov(f_lp_plain_str, a_user_password, f_size);
+        ts::mem::mov(f_lp_plain_str, a_user_password, f_size);
         register int64_t kod = 0;
         register int32_t i;
         if (size() > 0) {

@@ -31,9 +31,9 @@ ts::compression::__static_huff_compressor::__static_huff_compressor(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-        son = (uint32_t*)ts::mem32::alloc(sizeof(int32_t)*(TREE_SIZE));
-        dad = (uint32_t*)ts::mem32::alloc(sizeof(int32_t)*(TREE_SIZE + BIT_COMBINATIONS_PER_BYTE));
-        frq = (uint32_t*)ts::mem32::alloc(sizeof(int32_t)*(TREE_SIZE + 1));
+        son = (uint32_t*)ts::mem::alloc(sizeof(int32_t)*(TREE_SIZE));
+        dad = (uint32_t*)ts::mem::alloc(sizeof(int32_t)*(TREE_SIZE + BIT_COMBINATIONS_PER_BYTE));
+        frq = (uint32_t*)ts::mem::alloc(sizeof(int32_t)*(TREE_SIZE + 1));
 }
 //---------------------------------------------------------------------------
 
@@ -43,9 +43,9 @@ ts::compression::__static_huff_compressor::~__static_huff_compressor(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		ts::mem32::free(frq);
-		ts::mem32::free(dad);
-		ts::mem32::free(son);
+		ts::mem::free(frq);
+		ts::mem::free(dad);
+		ts::mem::free(son);
 }
 //---------------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ __DEBUG_FUNC_CALLED("")
 //----------------------												/* send bits to output and update model */
 		update(axdata_uncoded);
 		int32_t result = code; // so code could be stored in ALU register, result shared as RAM address
-		ts::mem32::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,code_bits);
+		ts::mem::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,code_bits);
 		return code_bits;
 }
 //---------------------------------------------------------------------------
@@ -169,7 +169,7 @@ __DEBUG_FUNC_CALLED("")
         register uint8_t code_bits = 0;								   // number of bits readed from input stream
 //------------------------------------------
 		int32_t input_data;
-		ts::mem32::bit_mov(&input_data,0,a_code_ptr,a_code_ptr_bit,24);
+		ts::mem::bit_mov(&input_data,0,a_code_ptr,a_code_ptr_bit,24);
 		code =  input_data;
 //----------------------												/* travel from ROOT_NODE to leaf */
 		do {
@@ -215,9 +215,9 @@ __DEBUG_FUNC_CALLED("")
 				l=(e-k)<<1;
 				if (l==0)
 						continue;
-				ts::mem32::mov(&frq[k + 1],&frq[k],l);
+				ts::mem::mov(&frq[k + 1],&frq[k],l);
 				frq[k] = f;
-				ts::mem32::mov(&son[k + 1],&son[k],l);
+				ts::mem::mov(&son[k + 1],&son[k],l);
 				son[k] = i;
 		}
 //----------------------												/* conect leaf sons /\ to upper */

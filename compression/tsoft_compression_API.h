@@ -1,11 +1,11 @@
 //---------------------------------------------------------------------------
 //----------------- "tsoft, where?" 2001-2002 -------------------------------
 //---------------------------------------------------------------------------
-#ifndef __tsoft_koder_H__
-#define __tsoft_koder_H__
+#ifndef tsoft_compression_API_h
+#define tsoft_compression_API_h
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
-#include "./../io/tsoft_file_lzst_header.h"
+#include "./../file/eno/tsoft_file_lzst_header.h"
 /*
 //FOR DEBUGING, STATISTICS OF USE LENGHT CODES
 extern uint32_t *hist_l_dict;
@@ -122,7 +122,7 @@ for (;exit==false;)
 		   {*((intTAG32*)ptrd) = (iL<<TAG32_RLE_SIZE) | TAG16_RLE_BIT | TAG32_RLE_BIT;\
 			ptrd+=sizeof(intTAG32);\
 			}\
-		ts::mem32::cpy((char*)ptrd,(char*)ptrs,iL*sizeof(intRLE));\
+		ts::mem::cpy((char*)ptrd,(char*)ptrs,iL*sizeof(intRLE));\
 		ptrd+=sizeof(intRLE)*iL;\
 		ptrs+=sizeof(intRLE)*iL;
 	if (iL!=0)
@@ -196,7 +196,7 @@ RLE_LOADSAME:
 	   {iX =*((intTAG32*)ptrs)>>TAG32_RLE_SIZE;
 		ptrs+=sizeof(intTAG32);
 		}
-	ts::mem32::set((char*)ptrd,iX,((intRLE*)ptrs)[0],sizeof(intRLE));
+	ts::mem::set((char*)ptrd,iX,((intRLE*)ptrs)[0],sizeof(intRLE));
 	ptrd+=sizeof(intRLE)*iX;
 	ptrs+=sizeof(intRLE);
 	continue;
@@ -216,7 +216,7 @@ RLE_LOADDIFFRENT:
 		ptrs+=sizeof(intTAG32);
 	   }
 
-	ts::mem32::cpy((char*)ptrd,(char*)ptrs,iX*sizeof(intRLE));
+	ts::mem::cpy((char*)ptrd,(char*)ptrs,iX*sizeof(intRLE));
 	ptrd+=sizeof(intRLE)*iX;
 	ptrs+=sizeof(intRLE)*iX;
 	continue;

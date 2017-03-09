@@ -2,10 +2,10 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "tsoft_file_ini.h"
-#include "./../mem/tsoft_mem.h"
-#include "./../text/tsoft_cstr_utils.h"
+#include "./../../mem/tsoft_mem.h"
+#include "./../../text/tsoft_cstr_utils.h"
 //---------------------------------------------------------------------------
-#include "tsoft_console.h"
+#include "./../../io/tsoft_console.h"
 //---------------------------------------------------------------------------
 
 // equivalent to GetPrivateProfileStringW from WinAPI
@@ -25,8 +25,8 @@ __DEBUG_FUNC_CALLED("")
 		return 1;
 	}
 	unsigned long i = 0,b = GetFileSize(hfile,NULL), e = b/2, br, l = 0;
-	wchar_t* lpbuffer = (wchar_t*)ts::mem32::alloc((e+1)*sizeof(wchar_t));
-	wchar_t* linia = (wchar_t*)ts::mem32::alloc(100*sizeof(wchar_t));
+	wchar_t* lpbuffer = (wchar_t*)ts::mem::alloc((e+1)*sizeof(wchar_t));
+	wchar_t* linia = (wchar_t*)ts::mem::alloc(100*sizeof(wchar_t));
 	bool found = false, foundsection = false;
 	if (e<=2) {
 		ts::con::prints(".ini file too small?! %s",szPathAndFile);
@@ -82,7 +82,7 @@ __DEBUG_FUNC_CALLED("")
 		l++;
 	}
 	CloseHandle(hfile);
-	ts::mem32::free(lpbuffer); ts::mem32::free(linia);
+	ts::mem::free(lpbuffer); ts::mem::free(linia);
 	if (found==false) {
 		wcscpy(lpBuffer,lpdefault);
 		return 1;

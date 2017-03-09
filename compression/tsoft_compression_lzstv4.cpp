@@ -73,10 +73,10 @@ __DEBUG_FUNC_CALLED("")
 		son		  SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS|SSSSSSSSS int32_t x offset + HASH_SIZE
 		ring_ptr  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|XXXXXXXXXXXXXXX|X char x offset + char x max_len + sizeof(int64) for QWORD cmp pruposses - access violation of full int32_t comparision)
 		*/
-        dad = (uint32_t*)ts::mem32::alloc(sizeof(int32_t)*(backward_max_offset));
-        son = (uint32_t*)ts::mem32::alloc(sizeof(int32_t)*(backward_max_offset + HASH_SIZE));
+        dad = (uint32_t*)ts::mem::alloc(sizeof(int32_t)*(backward_max_offset));
+        son = (uint32_t*)ts::mem::alloc(sizeof(int32_t)*(backward_max_offset + HASH_SIZE));
 //------------------------------------------
-		ring_ptr =	(char*)ts::mem32::alloc(backward_max_offset + backward_max_len + 2*sizeof(int32_t)); // search_forward minimum match 4 bytes -> int32_t mode(8 bytes ahead)
+		ring_ptr =	(char*)ts::mem::alloc(backward_max_offset + backward_max_len + 2*sizeof(int32_t)); // search_forward minimum match 4 bytes -> int32_t mode(8 bytes ahead)
 //------------------------------------------
 		small_offset = 0;
 }
@@ -88,9 +88,9 @@ ts::compression::__lzss_compressor::~__lzss_compressor(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		ts::mem32::free(dad);
-		ts::mem32::free(son);
-		ts::mem32::free(ring_ptr);
+		ts::mem::free(dad);
+		ts::mem::free(son);
+		ts::mem::free(ring_ptr);
 //ts::con::prints"%d\n",pmmcmax);
 //cos nadpisuje na pozycji dalej i przy usuwaniu access voliation!  rozszerzam ring_ptr+1
 }
@@ -113,7 +113,7 @@ __DEBUG_FUNC_CALLED("")
 //------------------------------------------
 		ring_insert = backward_max_offset - backward_max_len;
 		ring_delete = 0;
-		ts::mem32::mov((char*)&ring_ptr[ring_insert],aptr,backward_max_len);
+		ts::mem::mov((char*)&ring_ptr[ring_insert],aptr,backward_max_len);
 //------------------------------------------
 		uint32_t  i;
 		for (i=0; i <= backward_max_offset + HASH_SIZE;) {

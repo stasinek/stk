@@ -32,7 +32,7 @@ struct __set_tree {
 	for (uint32_t c = 1; c <= a_level; c++) {
 		 f_ptrs_size = f_ptrs_size * 256;
 		}
-	ptrs = (__set_tree_node**)ts::mem32::alloc(f_ptrs_size*sizeof(ts::__set_tree_node*));
+	ptrs = (__set_tree_node**)ts::mem::alloc(f_ptrs_size*sizeof(ts::__set_tree_node*));
 	for (uint32_t i = 0; i < f_ptrs_size; i++) {
 		 ptrs[i] = new ts::__set_tree_node(NULL);
 		}

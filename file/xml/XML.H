@@ -37,8 +37,8 @@
 
 #ifdef __GNUC__
 #define _USERENTRY
-#define strcpy_s(a,b,c) strcpy(a,c)
-#define strncat_s(a,b,c,d) strncat(a,c,d)
+//#define strcpy_s(a,b,c) strcpy(a,c)
+//#define strncat_s(a,b,c,d) strncat(a,c,d)
 #endif
 
 #define CRYPT_OID_INFO_HAS_EXTRA_FIELDS
@@ -1051,8 +1051,6 @@ class XML
 #endif
 		int PhantomElement(FILE*fp,class XMLElement* r,unsigned long long StartP,unsigned long long EndP);
 
-		static size_t Char2Base64(char *Z, int s, char *out);
-		static int Base642Char(char *Z, int s, char *out);
 		static int DoMatch(const char *text, char *p, bool IsCaseSensitive = false);
 		static bool VMatching(const char *text, char *p, bool IsCaseSensitive = false);
 		static bool TestMatch(const char* item1,const char* comp,const char* item2);

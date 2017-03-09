@@ -137,7 +137,7 @@ else
 s_print_buffer_size = (an_times *a_text_len) + 1;
 }
 s_print_buffer[0]='\0';
-for (int i = 0; i < f_buffer_needed; i+=a_text_len) { ts::mem32::mov((void*)&s_print_buffer[i],(void*)a_text,a_text_len);
+for (int i = 0; i < f_buffer_needed; i+=a_text_len) { ts::mem::mov((void*)&s_print_buffer[i],(void*)a_text,a_text_len);
     }
 s_print_buffer[f_buffer_needed-1]='\0';
 ts::con::print(s_print_buffer);

@@ -145,22 +145,22 @@ __DEBUG_FUNC_CALLED("ts::__list::resize()")
 		{
 			if (f_ptrs_size==0)
 				{
-				ptrs = (T*)ts::mem32::alloc(a_new_size * sizeof(T));
+				ptrs = (T*)ts::mem::alloc(a_new_size * sizeof(T));
 				}
 			else
 				{
-				ptrs = (T*)ts::mem32::realloc(ptrs, a_new_size * sizeof(T));
+				ptrs = (T*)ts::mem::realloc(ptrs, a_new_size * sizeof(T));
 				}
 		}
 		else
 		{
 			 if (a_new_size==0)
 				{
-				ts::mem32::free(ptrs);
+				ts::mem::free(ptrs);
 				}
 			else
 				{
-				ptrs = (T*)ts::mem32::realloc(ptrs, a_new_size * sizeof(T));
+				ptrs = (T*)ts::mem::realloc(ptrs, a_new_size * sizeof(T));
 				}
 		}
 			f_ptrs_size = a_new_size;

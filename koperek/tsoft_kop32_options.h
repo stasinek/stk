@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_kop32_options_H__
-#define __tsoft_kop32_options_H__
+#ifndef tsoft_kop32_options_h
+#define tsoft_kop32_options_h
 //---------------------------------------------------------------------------
 #include "./../database/tsoft_database.h"
 #include "./../hash/tsoft_hash_password.h"
-#include "./../io/tsoft_file_lzst_header.h"
+#include "./../file/eno/tsoft_file_lzst_header.h"
 //---------------------------------------------------------------------------
 namespace ts {
 //---------------------------------------------------------------------------

@@ -43,10 +43,10 @@ ts::compression::__ari_compressor::__ari_compressor(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-        char_to_symb = (uint32_t*)::ts::mem32::alloc(sizeof(uint32_t)*(CNUM));
-        symb_to_char = (uint32_t*)::ts::mem32::alloc(sizeof(uint32_t)*(CNUM+1));
-        symb_cumf	 = (uint32_t*)::ts::mem32::alloc(sizeof(uint32_t)*(CNUM+1));  /* cumulative freq for symbols */
-        symb_freq	 = (uint32_t*)::ts::mem32::alloc(sizeof(uint32_t)*(CNUM+1));  /* frequency for symbols */
+        char_to_symb = (uint32_t*)::ts::mem::alloc(sizeof(uint32_t)*(CNUM));
+        symb_to_char = (uint32_t*)::ts::mem::alloc(sizeof(uint32_t)*(CNUM+1));
+        symb_cumf	 = (uint32_t*)::ts::mem::alloc(sizeof(uint32_t)*(CNUM+1));  /* cumulative freq for symbols */
+        symb_freq	 = (uint32_t*)::ts::mem::alloc(sizeof(uint32_t)*(CNUM+1));  /* frequency for symbols */
 }
 //---------------------------------------------------------------------------
 
@@ -56,10 +56,10 @@ ts::compression::__ari_compressor::~__ari_compressor(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		::ts::mem32::free(char_to_symb);
-		::ts::mem32::free(symb_freq);
-		::ts::mem32::free(symb_to_char);
-		::ts::mem32::free(symb_cumf);
+		::ts::mem::free(char_to_symb);
+		::ts::mem::free(symb_freq);
+		::ts::mem::free(symb_to_char);
+		::ts::mem::free(symb_cumf);
 }
 //---------------------------------------------------------------------------
 
@@ -195,7 +195,7 @@ __DEBUG_FUNC_CALLED("")
 		underflow_bits = u;
 		update(symb);
         uint32_t result = code;
-		ts::mem32::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,bits);
+		ts::mem::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,bits);
 		return bits;
 }
 //---------------------------------------------------------------------------
@@ -218,7 +218,7 @@ __DEBUG_FUNC_CALLED("")
 				OUT_BIT_1(code,u,bits)
 		}
         uint32_t result = code;
-		ts::mem32::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,bits);
+		ts::mem::bit_mov(a_code_ptr,a_code_ptr_bit,&result,0,bits);
 		code_bit += bits;
 		a_code_ptr += (code_bit>>3);
 		code_bit &= 0x07L;
@@ -241,7 +241,7 @@ __DEBUG_FUNC_CALLED("")
         register uint32_t v = value;
 //------------------
         uint32_t indata;
-		ts::mem32::bit_mov(&indata,0,a_code_ptr,a_code_ptr_bit,32);
+		ts::mem::bit_mov(&indata,0,a_code_ptr,a_code_ptr_bit,32);
 		code =  indata;
 //------------------
 		register int8_t i;
@@ -273,7 +273,7 @@ __DEBUG_FUNC_CALLED("")
 		l = l + (r * symb_cumf[symb - 0]) / symb_cumf[0];
 //------------------
         uint32_t indata;
-		ts::mem32::bit_mov(&indata,0,a_code_ptr,a_code_ptr_bit,32);
+		ts::mem::bit_mov(&indata,0,a_code_ptr,a_code_ptr_bit,32);
 		code =  indata;
 //------------------
 		for (;;) {

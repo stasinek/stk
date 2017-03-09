@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-#ifndef tsoft_file_lzst_hdr_H
-#define tsoft_file_lzst_hdr_H
+#ifndef tsoft_file_lzst_header_H
+#define tsoft_file_lzst_header_H
 //---------------------------------------------------------------------------
-#include "./../tsoft_main.h"
+#include "./../../tsoft_main.h"
 //---------------------------------------------------------------------------
 namespace ts { namespace file_header {
 //---------------------------------------------------------------------------

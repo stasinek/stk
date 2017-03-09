@@ -13,7 +13,7 @@
 #include "tsoft_kop32_API.h"
 
 //---------------------------------------------------------------------------
-#include "./../io/tsoft_file_lzst_header.h"
+#include "./../file/eno/tsoft_file_lzst_header.h"
 #include "./../hash/tsoft_hash_ssc1.h"
 #include "./../process_journal/tsoft_journal.h"
 #include "./../io/tsoft_console.h"

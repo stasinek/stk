@@ -437,7 +437,7 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 if (cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000000,0)<0x80000004) {
     ATOMIC_UNLOCK(1)
-    return (char*)ts::mem32::mov(&n,"Unsupported\0",12);
+    return (char*)ts::mem::mov(&n,"Unsupported\0",12);
 }
 for (register uint32_t f = (0x80000002), i = 0; i < 12; f++, i+=4)
     {
@@ -476,14 +476,14 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
+if (ts::mem::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     // Get DCP cache info
        cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,0);
        s_answer = ((f_eax >> 26) & 0x3FL) + 1;
     // eax[31:26] + 1
 }
 else
-if (ts::mem32::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
+if (ts::mem::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
     // Get NC: Number of CPU cores - 1
        cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
        s_answer = ((f_ecx & 0x000000FFL)) + 1;
@@ -504,7 +504,7 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
+if (ts::mem::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     if (a_level==2) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000002L,0);
     if ((f_edx & 0xFFL) == 0x40L)
@@ -533,7 +533,7 @@ if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     else s_answer = 0;
 }
 else
-if (ts::mem32::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
+if (ts::mem::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
     if (a_level==0) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
     s_answer = (f_edx>>24) & 0x000000FFL; //L1i, uops etc, dla mnie 0 ;)
@@ -569,12 +569,12 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-if (ts::mem32::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
+if (ts::mem::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,0);
     s_answer = (f_ebx & 0x00000FFFL) + 1;
 }
 else
-if (ts::mem32::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
+if (ts::mem::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
 if (a_level==0) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
     s_answer = (f_edx & 0x000000FFL);

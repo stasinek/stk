@@ -13,12 +13,12 @@ __DEBUG_FUNC_CALLED("")
 #endif
 
 		matrix_dim = ablock;
-        matrix_idx_ptr = (uint32_t*)ts::mem32::alloc(matrix_dim*(sizeof(uint32_t)));
-		matrix_ptr	   =		(char*)ts::mem32::alloc(matrix_dim*2);
-        groups_bgn[0]  = (uint32_t*)ts::mem32::alloc(matrix_dim*(sizeof(uint32_t)/2));
-        groups_bgn[1]  = (uint32_t*)ts::mem32::alloc(matrix_dim*(sizeof(uint32_t)/2));
-        groups_end[0]  = (uint32_t*)ts::mem32::alloc(matrix_dim*(sizeof(uint32_t)/2));
-        groups_end[1]  = (uint32_t*)ts::mem32::alloc(matrix_dim*(sizeof(uint32_t)/2));
+        matrix_idx_ptr = (uint32_t*)ts::mem::alloc(matrix_dim*(sizeof(uint32_t)));
+		matrix_ptr	   =		(char*)ts::mem::alloc(matrix_dim*2);
+        groups_bgn[0]  = (uint32_t*)ts::mem::alloc(matrix_dim*(sizeof(uint32_t)/2));
+        groups_bgn[1]  = (uint32_t*)ts::mem::alloc(matrix_dim*(sizeof(uint32_t)/2));
+        groups_end[0]  = (uint32_t*)ts::mem::alloc(matrix_dim*(sizeof(uint32_t)/2));
+        groups_end[1]  = (uint32_t*)ts::mem::alloc(matrix_dim*(sizeof(uint32_t)/2));
 }
 //---------------------------------------------------------------------------
 
@@ -33,9 +33,9 @@ __DEBUG_FUNC_CALLED("")
         uint8_t *idx;
         uint8_t *idx_end;
 		// reverse copying BARBAKAN->>NAKABRAB for int32_t suffix sorting
-		ts::mem32::rev(matrix_ptr,a_src_ptr,row_max);
+		ts::mem::rev(matrix_ptr,a_src_ptr,row_max);
 		// NAKABRAB->NAKABRABNAKABRAB
-		ts::mem32::mov(matrix_ptr+row_max,matrix_ptr,row_max);
+		ts::mem::mov(matrix_ptr+row_max,matrix_ptr,row_max);
 		// matrix_row_ptr addresing
 //------------------------------------------
         idx = (uint8_t*)matrix_idx_ptr;
@@ -191,12 +191,12 @@ ts::compression::__bwt_compressor::~__bwt_compressor(void)
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		ts::mem32::free(groups_bgn[0]);
-		ts::mem32::free(groups_bgn[1]);
-		ts::mem32::free(groups_end[0]);
-		ts::mem32::free(groups_end[1]);
-		ts::mem32::free(matrix_ptr);
-		ts::mem32::free(matrix_idx_ptr);
+		ts::mem::free(groups_bgn[0]);
+		ts::mem::free(groups_bgn[1]);
+		ts::mem::free(groups_end[0]);
+		ts::mem::free(groups_end[1]);
+		ts::mem::free(matrix_ptr);
+		ts::mem::free(matrix_idx_ptr);
 }
 //-------------------------------THE END-------------------------------------
 

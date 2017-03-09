@@ -109,7 +109,7 @@ __DEBUG_FUNC_CALLED("")
 		//----------------
 				terminator = end + 1;
 		//----------------
-				if (lpdst!=NULL) { mem32::mov(lpdst,&(lpsrc[start]),end-start+1); lpdst[end-start+1] = '\0'; }
+				if (lpdst!=NULL) { mem::mov(lpdst,&(lpsrc[start]),end-start+1); lpdst[end-start+1] = '\0'; }
 				result_positions[PHASE_INITIATOR_POS]=initiator;
 				result_positions[PHASE_START_POS]=start;
 				result_positions[PHASE_END_POS]=end;

@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __tsoft_sockets_H__
-#define __tsoft_sockets_H__
+#ifndef tsoft_sockets_h
+#define tsoft_sockets_h
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 #include "./../text/tsoft_cstr_utils.h"

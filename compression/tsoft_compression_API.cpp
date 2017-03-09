@@ -129,13 +129,13 @@ __DEBUG_FUNC_CALLED("")
 #define SAVE_PLAIN(d,s,l)								\
 	for (;l> PLAIN_LEN_MAX; l-=PLAIN_LEN_MAX) {					\
 		 d+=chain->header_coder.plain_encode((void*)d,PLAIN_LEN_MAX);		\
-		 ts::mem32::mov((char*)d,(char*)s,PLAIN_LEN_MAX);			\
+		 ts::mem::mov((char*)d,(char*)s,PLAIN_LEN_MAX);			\
 		 d+=PLAIN_LEN_MAX;							\
 		 s+=PLAIN_LEN_MAX; 							\
 		}									\
 	if  (l> 0) {									\
 		 d+=chain->header_coder.plain_encode((void*)d,l);			\
-		 ts::mem32::mov((char*)d,(char*)s,l);					\
+		 ts::mem::mov((char*)d,(char*)s,l);					\
 		 d+=l;									\
 		 s+=l;									\
 		}
@@ -151,7 +151,7 @@ __DEBUG_FUNC_CALLED("")
 			goto LZS_SAVE_DUP;
 #define SAVE_PATTERN(d,s,c,e)												\
 	d+=chain->header_coder.pattern_encode((void*)d,c,e);						\
-	 ts::mem32::mov((char*)d,(char*)s,e);		\
+	 ts::mem::mov((char*)d,(char*)s,e);		\
 	d+=e;
 		SAVE_PATTERN(ptrd,ptrs,chain->forward_elcount,chain->forward_elsize);
 //	hist_l_brun[chain->pattern_counte]++;
@@ -255,7 +255,7 @@ __DEBUG_FUNC_CALLED("")
 		GOTO_LZS_LOAD_PLAIN_EX:
 //------------------------------------------
 		ptrs+= header_coder.plain_decode(&len,(void*)ptrs);
-		ts::mem32::mov((char*)ptrd, (char*)ptrs, len);
+		ts::mem::mov((char*)ptrd, (char*)ptrs, len);
 		ptrs+= len;
 		ptrd+= len;
 		/*for (; len!=0; len--) {
@@ -269,7 +269,7 @@ __DEBUG_FUNC_CALLED("")
 		GOTO_LZS_LOAD_PATTERN_EX:
 //------------------------------------------
 		ptrs+= header_coder.pattern_decode(&cnt,&siz,(void*)ptrs);
-		ts::mem32::setex((char*)ptrd, (char*)ptrs, siz, cnt);
+		ts::mem::setex((char*)ptrd, (char*)ptrs, siz, cnt);
 		ptrs+= siz;
 		ptrd+= siz * cnt;
 		continue;
@@ -278,14 +278,14 @@ __DEBUG_FUNC_CALLED("")
 			  ptrs+= ptrs_bit>>3;
 		 ptrs_bit = ptrs_bit & 0x07L;
 		 }
-		 ts::mem32::bitset((char*)ptmp_end,(char*)ptmp,0,siz,cnt-1);
+		 ts::mem::bitset((char*)ptmp_end,(char*)ptmp,0,siz,cnt-1);
 			  ptrd+= siz*cnt;  */
 //------------------------------------------
 		GOTO_LZS_LOAD_DUP:
 		GOTO_LZS_LOAD_DUP_EX:
 //------------------------------------------
 		ptrs+= header_coder.dup_decode(&len,&ofs,(void*)ptrs);
-		ts::mem32::mov((char*)ptrd, (char*)(ptrd-ofs), len);
+		ts::mem::mov((char*)ptrd, (char*)(ptrd-ofs), len);
 		ptrd+= len;
 		continue;
 //------------------------------------------
@@ -321,7 +321,7 @@ __DEBUG_FUNC_CALLED("")
 //------------------------------------------
 	}
 //------------------------------------------
-	ts::mem32::bit_mov((char*)ptrd,ptrd_bit,(void*)"\0\0\0\0",0,32-ptrd_bit);  // resztka bitow na wyjscie, wyrownana do maximum 32 bitow naddatku
+	ts::mem::bit_mov((char*)ptrd,ptrd_bit,(void*)"\0\0\0\0",0,32-ptrd_bit);  // resztka bitow na wyjscie, wyrownana do maximum 32 bitow naddatku
 	ptrd+=4;
 	delete huff;
 	return ptrd - static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
@@ -378,7 +378,7 @@ __DEBUG_FUNC_CALLED("")
     ptrd_bit += ari->flush_encoder((uint32_t*)ptrd,ptrd_bit);
 	ptrd += ptrd_bit>>3;
 	ptrd_bit = ptrd_bit & 0x07L;
-	ts::mem32::bit_mov((char*)ptrd,ptrd_bit,(void*)"\0\0\0\0",0,32-ptrd_bit);  // resztka bitow na wyjscie, wyrownana do maximum 32 bitow naddatku
+	ts::mem::bit_mov((char*)ptrd,ptrd_bit,(void*)"\0\0\0\0",0,32-ptrd_bit);  // resztka bitow na wyjscie, wyrownana do maximum 32 bitow naddatku
 	ptrd+=4;
 	delete ari;
 //------------------------------------------
@@ -451,7 +451,7 @@ __DEBUG_FUNC_CALLED("")
 	register int8_t *ptrs	  = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
 	register int8_t *ptrd	  = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
 	register int8_t *ptrd_end = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr)) + a_count;
-	ts::mem32::mov(a_dst_ptr,a_src_ptr,a_count - ((2*a_count)/(1024)) - 2);
+	ts::mem::mov(a_dst_ptr,a_src_ptr,a_count - ((2*a_count)/(1024)) - 2);
 //bwt_decode((char*)a_src_ptr+4,(char*)a_dst_ptr,a_count-4,((int32_t*)a_src_ptr)[0]);
 }
 //-------------------------------THE END-------------------------------------

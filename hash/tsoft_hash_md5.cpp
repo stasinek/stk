@@ -76,10 +76,10 @@ __DEBUG_FUNC_CALLED("")
                 // append length mod (2 pow 64) to message
                 data_chunk = (int8_t*)calloc(final_len + 64, 1); // also appends "0" bits
                 // (we alloc also 64 extra bytes...)
-                ts::mem32::mov(last_data_chunk, a_data, a_len);
+                ts::mem::mov(last_data_chunk, a_data, a_len);
                 data_chunk[a_len] = 0x10L; // write the "1" bit
                 bits_len = 8 * a_len; // note, we append the len
-                ts::mem32::mov(data_chunk + final_len, &bits_len, 4);              // in bits at the end of the buffer
+                ts::mem::mov(data_chunk + final_len, &bits_len, 4);              // in bits at the end of the buffer
                 // Process the message in successive 512-bit chunks:
                 //for each 512-bit chunk of message:
                 for(offset=0; offset < final_len; offset += (512/8)) {

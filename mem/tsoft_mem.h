@@ -1,11 +1,11 @@
 //---------------------------------------------------------------------------
-#ifndef tsoft_mem32_h
-#define tsoft_mem32_h
+#ifndef tsoft_mem_h
+#define tsoft_mem_h
 #pragma once
 //---------------------------------------------------------------------------
 #include "./../tsoft_main.h"
 //---------------------------------------------------------------------------
-namespace ts { namespace mem32 {
+namespace ts { namespace mem {
 //---------------------------------------------------------------------------
         extern intmax_t       __stdcall allocated           (void);
 // must be SIGNED for mem leak detection ;)
@@ -60,42 +60,42 @@ inline uint8_t bitcount(uint32_t i)
 //---------------------------------------------------------------------------
 #if defined(__clang__)
 inline void* __cdecl operator new (const size_t a_count)
-{	return ts::mem32::alloc(a_count); }
+{	return ts::mem::alloc(a_count); }
 inline void* __cdecl operator new [] (const size_t a_count)
-{	return ts::mem32::alloc(a_count); }
+{	return ts::mem::alloc(a_count); }
 inline void __cdecl operator delete (void *a_ptr)
-{	ts::mem32::free(a_ptr); }
+{	ts::mem::free(a_ptr); }
 inline void __cdecl operator delete[] (void *a_ptr)
-{	ts::mem32::free(a_ptr); }
+{	ts::mem::free(a_ptr); }
 #else
 #if defined (__GNUC__)
 #include <new>
 inline void* __cdecl operator new(const size_t a_count) _GLIBCXX_THROW (std::bad_alloc)
-  {	return ts::mem32::alloc(a_count); }
+  {	return ts::mem::alloc(a_count); }
 inline void* __cdecl operator new(const size_t a_count, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
-  {	return ts::mem32::alloc(a_count); }
+  {	return ts::mem::alloc(a_count); }
 inline void* __cdecl operator new [](const size_t a_count) _GLIBCXX_THROW (std::bad_alloc)
-  {	return ts::mem32::alloc(a_count); }
+  {	return ts::mem::alloc(a_count); }
 inline void* __cdecl operator new [](const size_t a_count, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
-  {	return ts::mem32::alloc(a_count); }
+  {	return ts::mem::alloc(a_count); }
 
 inline void __cdecl operator delete (void *a_ptr) _GLIBCXX_USE_NOEXCEPT
-  {  ts::mem32::free(a_ptr); }
+  {  ts::mem::free(a_ptr); }
 inline void __cdecl operator delete (void *a_ptr, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
-  {  ts::mem32::free(a_ptr); }
+  {  ts::mem::free(a_ptr); }
 inline void __cdecl operator delete[] (void *a_ptr) _GLIBCXX_USE_NOEXCEPT
-  {  ts::mem32::free(a_ptr); }
+  {  ts::mem::free(a_ptr); }
 inline void __cdecl operator delete[] (void *a_ptr, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
-  {  ts::mem32::free(a_ptr); }
+  {  ts::mem::free(a_ptr); }
 #else
 inline void* __cdecl operator new (const size_t a_count)
-{	return ts::mem32::alloc(a_count); }
+{	return ts::mem::alloc(a_count); }
 inline void* __cdecl operator new [] (const size_t a_count)
-{	return ts::mem32::alloc(a_count); }
+{	return ts::mem::alloc(a_count); }
 inline void __cdecl operator delete (void *a_ptr)
-{	ts::mem32::free(a_ptr); }
+{	ts::mem::free(a_ptr); }
 inline void __cdecl operator delete[] (void *a_ptr)
-{	ts::mem32::free(a_ptr); }
+{	ts::mem::free(a_ptr); }
 #endif
 #endif
 //---------------------------------------------------------------------------

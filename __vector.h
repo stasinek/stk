@@ -71,7 +71,7 @@ __DEBUG_FUNC_CALLED("")
         T ret = f_ptrs[a_index];
         f_ptrs_ocupied--;
         if (f_ptrs_ocupied!=0 ? f_ptrs_ocupied-a_index > 0 : false) {
-        ts::mem32::mov((void*)&f_ptrs[a_index],(void*)&f_ptrs[a_index+1],f_ptrs_ocupied-a_index);
+        ts::mem::mov((void*)&f_ptrs[a_index],(void*)&f_ptrs[a_index+1],f_ptrs_ocupied-a_index);
         }
         else this->cleared();
         return ret;
@@ -84,7 +84,7 @@ __DEBUG_FUNC_CALLED("")
 #endif
         this->add(a_new);
         if (f_ptrs_ocupied > 1) {
-        ts::mem32::mov((void*)&f_ptrs[a_index+1],(void*)&f_ptrs[a_index],f_ptrs_ocupied-a_index-1);
+        ts::mem::mov((void*)&f_ptrs[a_index+1],(void*)&f_ptrs[a_index],f_ptrs_ocupied-a_index-1);
         T tmp = f_ptrs[a_index];
         f_ptrs[f_ptrs_ocupied-1] = tmp;
         }
@@ -198,17 +198,17 @@ __DEBUG_FUNC_CALLED("")
     else
     if (f_ptrs_reserved==0)
     {
-    f_ptrs = (T*)ts::mem32::alloc(a_new_size * sizeof(T));
+    f_ptrs = (T*)ts::mem::alloc(a_new_size * sizeof(T));
     }
     else
     if (a_new_size==0)
     {
-    ts::mem32::free(f_ptrs);
+    ts::mem::free(f_ptrs);
     f_ptrs = NULL;
     }
     else
     {
-    f_ptrs = (T*)ts::mem32::realloc(f_ptrs, a_new_size * sizeof(T));
+    f_ptrs = (T*)ts::mem::realloc(f_ptrs, a_new_size * sizeof(T));
     }
 	f_ptrs_reserved = a_new_size;
 	return a_new_size;

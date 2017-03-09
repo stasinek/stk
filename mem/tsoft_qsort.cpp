@@ -42,15 +42,15 @@ void* __cdecl ts::isort(void *a, size_t number_of_elements, size_t size_of_eleme
     void *value = malloc(size);
 
     for (i = 1; i < count; ++i) {
-        ts::mem32::mov((void*)value,(void*)((size_t)a+i),size);
+        ts::mem::mov((void*)value,(void*)((size_t)a+i),size);
         for (j = i - 1; j >= 0 && compare((void*)((size_t)a+j),value); --j)
-            ts::mem32::mov((void*)((size_t)a+j + 1),(void*)((size_t)a+j),size);
-	ts::mem32::mov((void*)((size_t)a+ j + 1),value,size);
+            ts::mem::mov((void*)((size_t)a+j + 1),(void*)((size_t)a+j),size);
+	ts::mem::mov((void*)((size_t)a+ j + 1),value,size);
     }
 
     free(value);    return NULL;
 }
-#define swap(k1,k2,size) do { ts::mem32::mov(k2,k1,size); ts::mem32::mov(k1,k2,size); } while(0);
+#define swap(k1,k2,size) do { ts::mem::mov(k2,k1,size); ts::mem::mov(k1,k2,size); } while(0);
 
 void* __cdecl ts::ssort(void *a, size_t number_of_elements, size_t size_of_element,int (*compare)(const void *k1, const void *k2))
 {

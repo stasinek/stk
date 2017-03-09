@@ -132,7 +132,7 @@ ts::con::print("\n");
 		f_result_positions[PHASE_END_POS]=end;
 		f_result_positions[PHASE_TERMINATOR_POS]=end + 1;
 		if (r_lpsuboption!=NULL) {
-				mem32::mov(r_lpsuboption,&(lpsrc[start]),end-start+1);
+				mem::mov(r_lpsuboption,&(lpsrc[start]),end-start+1);
 				r_lpsuboption[end-start+1] = '\0';
 		}
 		ts::cstr::free(lpsrc_upr);

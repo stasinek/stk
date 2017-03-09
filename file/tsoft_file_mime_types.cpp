@@ -22,7 +22,7 @@ void ts::file::mime::atexit(void)
 void __cdecl  ts::file::mime::atexit(void)
 #endif
 {
-if (filecontent!=NULL) ts::mem32::free(filecontent);
+if (filecontent!=NULL) ts::mem::free(filecontent);
 filecontent_size = 0;
 }
 //---------------------------------------------------------------------------
@@ -58,11 +58,11 @@ char *__stdcall ts::file::mime::decode(char* a_file_name)
         }
         if (filesize > (int32_t)filecontent_size) {
                 filecontent_size = filesize;
-                filecontent = (char*)ts::mem32::realloc(filecontent,filecontent_size);
+                filecontent = (char*)ts::mem::realloc(filecontent,filecontent_size);
         }
         file_c = _read(filehandle, filecontent, filesize);
 //---------------------------------------------------------------------------
-        eb = ts::mem32::pos((void*)filecontent,file_c, 0, e, el);
+        eb = ts::mem::pos((void*)filecontent,file_c, 0, e, el);
         if (eb > 0) {
                 for (tb = eb + el; tb < file_c; tb++)
                         if (filecontent[tb]!='\t')
@@ -71,14 +71,14 @@ char *__stdcall ts::file::mime::decode(char* a_file_name)
                         if (filecontent[te]=='\n' || filecontent[te]=='\r')
                                 break;
                 if (te-tb < 20) {
-                        ts::mem32::mov(t,&filecontent[tb],te-tb);
+                        ts::mem::mov(t,&filecontent[tb],te-tb);
                         t[te-tb]='\0';
                 }
         }
 //---------------------------------------------------------------------------
         if (filecontent_size > 64*1024) {
                 filecontent_size = 64*1024;
-                filecontent = (char*)ts::mem32::realloc(filecontent,filecontent_size);
+                filecontent = (char*)ts::mem::realloc(filecontent,filecontent_size);
         }
         close(filehandle);
         return  t;
