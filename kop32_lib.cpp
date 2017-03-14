@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 //----------------- "tsoft, where?" 2001-2002 -------------------------------
 //---------------------------------------------------------------------------
-#include "tsoft_kop32_console.h"
+#include "stk_kop32_console.h"
 #include <windows.h>
 //---------------------------------------------------------------------------
 //   Important note about DLL memory management when your DLL uses the
@@ -23,12 +23,12 @@
 //   If your DLL uses the dynamic version of the RTL, you do not need to
 //   explicitly add MEMMGR.LIB as this will be done implicitly for you
 //---------------------------------------------------------------------------
-ts::__kop32_class *kop;
+stk::__kop32_class *kop;
 //---------------------------------------------------------------------------
 
 int WINAPI DllEntryPoint(HINSTANCE, unsigned long reason, void*)
 {
-	if (reason==DLL_PROCESS_ATTACH) kop = new ts::__kop32_class;
+	if (reason==DLL_PROCESS_ATTACH) kop = new stk::__kop32_class;
 	else if (reason==DLL_PROCESS_DETACH) {
 		if (kop!=NULL) {
 			delete kop;

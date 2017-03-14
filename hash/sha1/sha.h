@@ -24,8 +24,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef __SHA1_H__
-#define __SHA1_H__
+#ifndef __SHA1_H
+#define __SHA1_H
 
 #ifdef __cplusplus
 extern "C" {

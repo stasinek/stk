@@ -18,7 +18,7 @@ QMAKE_CXX = clang++
 #FASM.commands = c:/fasm/fasm  ${PWD}${QMAKE_FILE_NAME} ${QMAKE_FILE_OUT}
 #FASM.input = ASM_SOURCES
 #QMAKE_EXTRA_COMPILERS += YASM
-#ASM_SOURCES += 	../STK/cpu/tsoft_cpu_nasm.asm
+#ASM_SOURCES += 	../STK/cpu/stk_cpu_nasm.asm
 
 CONFIG += windows shared dll lib_bundle staticlib
 CONFIG -= app_bundle
@@ -32,7 +32,7 @@ contains(DEFINES, STK_BUILD_LIBRARY) {
 TARGET = stk
 }
 else {
-TARGET = stk_test
+TARGET = stk
 CONFIG += console
 }
 
@@ -42,10 +42,8 @@ CONFIG += debug
 CONFIG += warn_on exceptions
 CONFIG += c++11
 
-#LIBS += L"../STK/objs/debug" -libstk
 #LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
 #LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
-
 
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
 QMAKE_CXXFLAGS += -Wno-write-strings -Wno-multichar
@@ -116,133 +114,138 @@ QMAKE_CXXFLAGS += /arch:SSE2
 }
 
 SOURCES += \
-        ../STK/cpu/tsoft_cpu.cpp\
-        ../STK/time/tsoft_time.cpp\
-        ../STK/text/tsoft_cstr_class.cpp\
-        ../STK/text/tsoft_cstr_stack.cpp\
-        ../STK/io/tsoft_file_io.cpp\
-        ../STK/io/tsoft_rs232.cpp\
-        ../STK/file/tsoft_file_mime_types.cpp\
-        ../STK/file/ini/tsoft_file_ini.cpp\
-        ../STK/file/eno/tsoft_file_lzst_header.cpp\
-        ../STK/io/tsoft_console.cpp\
-        ../STK/database/tsoft_database_items.cpp\
-        ../STK/database/tsoft_database.cpp\
-        ../STK/process_journal/tsoft_journal.cpp\
-        ../STK/pharser/tsoft_pharse_command_line.cpp\
-        ../STK/pharser/tsoft_pharse_math.cpp\
-        ../STK/sockets/tsoft_sockets.cpp\
-        ../STK/compression/tsoft_compression_ari.cpp\
-        ../STK/compression/tsoft_compression_bwt_matrix2.cpp\
-        ../STK/compression/tsoft_compression_huff.cpp\
-        ../STK/compression/tsoft_compression_lzstv4.cpp\
-        ../STK/compression/tsoft_compression_static_huff.cpp\
-        ../STK/compression/tsoft_compression_API.cpp\
-        ../STK/hash/tsoft_hash_crc32.cpp\
-        ../STK/hash/tsoft_hash_md5.cpp\
-        ../STK/hash/tsoft_hash_password.cpp\
-        ../STK/hash/tsoft_hash_ssc1.cpp\
-        ../STK/cipher/tsoft_cipher_mtf.cpp\
-        ../STK/cipher/tsoft_cipher_API.cpp\
-        ../STK/koperek/tsoft_kop32_class.cpp\
-        ../STK/koperek/tsoft_kop32_controler.cpp\
-        ../STK/koperek/tsoft_kop32_search.cpp\
-        ../STK/koperek/tsoft_kop32_socket_server.cpp\
-        ../STK/koperek/tsoft_kop32_API.cpp\
-        ../STK/sthreads/tsoft_threads.cpp\
+        ../STK/cpu/stk_cpu.cpp\
+        ../STK/time/stk_time.cpp\
+        ../STK/text/stk_cstr_class.cpp\
+        ../STK/text/stk_cstr_stack.cpp\
+        ../STK/io/stk_file_io.cpp\
+        ../STK/io/stk_rs232.cpp\
+        ../STK/file/stk_file_mime_types.cpp\
+        ../STK/file/ini/stk_file_ini.cpp\
+        ../STK/file/eno/stk_file_lzst_header.cpp\
+        ../STK/io/stk_console.cpp\
+        ../STK/database/stk_database_items.cpp\
+        ../STK/database/stk_database.cpp\
+        ../STK/process_journal/stk_journal.cpp\
+        ../STK/pharser/stk_pharse_command_line.cpp\
+        ../STK/pharser/stk_pharse_math.cpp\
+        ../STK/sockets/stk_sockets.cpp\
+        ../STK/compression/stk_compression_ari.cpp\
+        ../STK/compression/stk_compression_bwt_matrix2.cpp\
+        ../STK/compression/stk_compression_huff.cpp\
+        ../STK/compression/stk_compression_lzstv4.cpp\
+        ../STK/compression/stk_compression_static_huff.cpp\
+        ../STK/compression/stk_compression_API.cpp\
+        ../STK/hash/stk_hash_crc32.cpp\
+        ../STK/hash/stk_hash_md5.cpp\
+        ../STK/hash/stk_hash_password.cpp\
+        ../STK/hash/stk_hash_ssc1.cpp\
+        ../STK/cipher/stk_cipher_mtf.cpp\
+        ../STK/cipher/stk_cipher_API.cpp\
+        ../STK/koperek/stk_kop32_class.cpp\
+        ../STK/koperek/stk_kop32_controler.cpp\
+        ../STK/koperek/stk_kop32_search.cpp\
+        ../STK/koperek/stk_kop32_socket_server.cpp\
+        ../STK/koperek/stk_kop32_API.cpp\
+        ../STK/sthreads/stk_threads.cpp\
         ../STK/kop32_main.cpp\
-        ../STK/__vector.cpp\
-        ../STK/__set.cpp\
-        ../STK/__hash_chain.cpp\
-        ../STK/__list.cpp\
-        ../STK/__property.cpp\
-        ../STK/__map.cpp\
-        ../STK/stasm/__stasm.cpp\
-        ../STK/cipher/tsoft_cipher_pair.cpp\
-        ../STK/tsoft_test.cpp \
-        ../STK/file/vfs/tsoft_file_vfs.cpp \
-        ../STK/mem/tsoft_mem.cpp \
-        ../STK/text/tsoft_cstr_utils.cpp \
+        ../STK/stk_vector.cpp\
+        ../STK/stk_set.cpp\
+        ../STK/stk_hash_chain.cpp\
+        ../STK/stk_list.cpp\
+        ../STK/stk_variable.cpp\
+        ../STK/stk_map.cpp\
+        ../STK/stasm/stk_stasm.cpp\
+        ../STK/cipher/stk_cipher_pair.cpp\
+        ../STK/stk_test.cpp \
+        ../STK/file/vfs/stk_file_vfs.cpp \
+        ../STK/mem/stk_mem.cpp \
+        ../STK/text/stk_cstr_utils.cpp \
         ../STK/file/json/json.c \
         ../STK/file/zip/miniz.c \
         ../STK/hash/md5/md5.c \
         ../STK/hash/sha1/hmac_sha1.c \
-        ../STK/cipher/tsoft_base64.cpp \
+        ../STK/cipher/stk_base64.cpp \
         ../STK/file/xml/XML.CPP \
-        ../STK/hash/sha1/sha1.c
+        ../STK/hash/sha1/sha1.c \
+    cipher/rsa/stk_rsa_single.c \
+    cipher/rsa/stk_rsa.c \
+    cipher/rsa/stk_rsa_multiple.c \
+    cipher/FastAESinC/stk_aes.c
 
 contains(DEFINES, QT_GUI) {
         SOURCES +=
 }
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
 SOURCES+=
-        ../STK/cpu/tsoft_cpu_gas.s
+        ../STK/cpu/stk_cpu_gas.s
 }
 
-#PRECOMPILED_HEADER += ../STK/tsoft_MAIN.h
+#PRECOMPILED_HEADER += ../STK/stk_MAIN.h
 #PRECOMPILED_HEADER += ../STK/kop32_main.h
 
 HEADERS += \
-        ../STK/tsoft_main.h \
-        ../STK/time/tsoft_time.h \
-        ../STK/cpu/tsoft_cpu.h \
-        ../STK/text/tsoft_cstr_class.h \
-        ../STK/text/tsoft_cstr_stack.h \
-        ../STK/io/tsoft_file_io.h \
-        ../STK/io/tsoft_rs232.h \
-        ../STK/file/tsoft_file_mime_types.h \
-        ../STK/file/ini/tsoft_file_ini.h \
-        ../STK/file/eno/tsoft_file_lzst_header.h \
-        ../STK/io/tsoft_console.h \
-        ../STK/database/tsoft_database.h \
-        ../STK/database/tsoft_database_owner.h \
-        ../STK/database/tsoft_database_alias.h \
-        ../STK/database/tsoft_database_items.h \
-        ../STK/pharser/tsoft_pharse_math.h \
-        ../STK/pharser/tsoft_pharse_command_line.h \
-        ../STK/process_journal/tsoft_journal.h \
-        ../STK/sockets/tsoft_sockets.h \
-        ../STK/compression/tsoft_compression_static_huff.h \
-        ../STK/compression/tsoft_compression_ari.h \
-        ../STK/compression/tsoft_compression_bwt_matrix2.h \
-        ../STK/compression/tsoft_compression_bwt_matrix3_suffix.h \
-        ../STK/compression/tsoft_compression_huff.h \
-        ../STK/compression/tsoft_compression_lzstv4.h \
-        ../STK/compression/tsoft_compression_API.h \
-        ../STK/hash/tsoft_hash_ssc1.h \
-        ../STK/hash/tsoft_hash_crc32.h \
-        ../STK/hash/tsoft_hash_md5.h \
-        ../STK/hash/tsoft_hash_password.h \
-        ../STK/cipher/tsoft_cipher_mtf.h \
-        ../STK/cipher/tsoft_cipher_API.h \
-        ../STK/koperek/tsoft_kop32_class.h \
-        ../STK/koperek/tsoft_kop32_search.cpp \
-        ../STK/koperek/tsoft_kop32_controler.h \
-        ../STK/koperek/tsoft_kop32_list.h \
-        ../STK/koperek/tsoft_kop32_options.h \
-        ../STK/koperek/tsoft_kop32_socket_server.h \
-        ../STK/koperek/tsoft_kop32_API.h \
-        ../STK/sthreads/tsoft_threads.h \
+        ../STK/stk_main.h \
+        ../STK/time/stk_time.h \
+        ../STK/cpu/stk_cpu.h \
+        ../STK/text/stk_cstr_class.h \
+        ../STK/text/stk_cstr_stack.h \
+        ../STK/io/stk_file_io.h \
+        ../STK/io/stk_rs232.h \
+        ../STK/file/stk_file_mime_types.h \
+        ../STK/file/ini/stk_file_ini.h \
+        ../STK/file/eno/stk_file_lzst_header.h \
+        ../STK/io/stk_console.h \
+        ../STK/database/stk_database.h \
+        ../STK/database/stk_database_owner.h \
+        ../STK/database/stk_database_alias.h \
+        ../STK/database/stk_database_items.h \
+        ../STK/pharser/stk_pharse_math.h \
+        ../STK/pharser/stk_pharse_command_line.h \
+        ../STK/process_journal/stk_journal.h \
+        ../STK/sockets/stk_sockets.h \
+        ../STK/compression/stk_compression_static_huff.h \
+        ../STK/compression/stk_compression_ari.h \
+        ../STK/compression/stk_compression_bwt_matrix2.h \
+        ../STK/compression/stk_compression_bwt_matrix3_suffix.h \
+        ../STK/compression/stk_compression_huff.h \
+        ../STK/compression/stk_compression_lzstv4.h \
+        ../STK/compression/stk_compression_API.h \
+        ../STK/hash/stk_hash_ssc1.h \
+        ../STK/hash/stk_hash_crc32.h \
+        ../STK/hash/stk_hash_md5.h \
+        ../STK/hash/stk_hash_password.h \
+        ../STK/cipher/stk_cipher_mtf.h \
+        ../STK/cipher/stk_cipher_API.h \
+        ../STK/koperek/stk_kop32_class.h \
+        ../STK/koperek/stk_kop32_search.cpp \
+        ../STK/koperek/stk_kop32_controler.h \
+        ../STK/koperek/stk_kop32_list.h \
+        ../STK/koperek/stk_kop32_options.h \
+        ../STK/koperek/stk_kop32_socket_server.h \
+        ../STK/koperek/stk_kop32_API.h \
+        ../STK/sthreads/stk_threads.h \
         ../STK/kop32_main.h \
-        ../STK/3D/__3Dvector.h \
-        ../STK/__set.h \
-        ../STK/__vector.h \
-        ../STK/__hash_chain.h \
-        ../STK/__list.h \
-        ../STK/__map.h \
-        ../STK/stasm/__stasm.h \
-        ../STK/cipher/tsoft_cipher_pair.h \
-        ../STK/file/vfs/tsoft_file_vfs.h \
-        ../STK/incbin/__incbin.h \
-        ../STK/mem/tsoft_mem.h \
-        ../STK/text/tsoft_cstr_utils.h \
-        ../STK/text/tsoft_cstr.h \
+        ../STK/3D/stk_3Dvector.h \
+        ../STK/stk_set.h \
+        ../STK/stk_vector.h \
+        ../STK/stk_hash_chain.h \
+        ../STK/stk_list.h \
+        ../STK/stk_map.h \
+        ../STK/stasm/stk_stasm.h \
+        ../STK/cipher/stk_cipher_pair.h \
+        ../STK/file/vfs/stk_file_vfs.h \
+        ../STK/incbin/stk_incbin.h \
+        ../STK/mem/stk_mem.h \
+        ../STK/text/stk_cstr_utils.h \
+        ../STK/text/stk_cstr.h \
         ../STK/file/json/json.h \
         ../STK/hash/md5/md5.h \
         ../STK/hash/sha1/hmac_sha1.h \
-        ../STK/cipher/tsoft_base64.h \
+        ../STK/cipher/stk_base64.h \
         ../STK/file/xml/XML.H \
-        ../STK/hash/sha1/sha.h
+        ../STK/hash/sha1/sha.h \
+    cipher/FastAESinC/stk_aes.h
 
 contains(DEFINES, QT_GUI) {
 HEADERS +=

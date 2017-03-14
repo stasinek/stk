@@ -84,13 +84,13 @@ XML_OPTIONAL_IMPORTRKEY
 // http://ootips.org/yonat/4dev/
 #ifndef MIME_CODES_H
 #define MIME_CODES_H
-#include "./../../cipher/tsoft_base64.h"
+#include "./../../cipher/stk_base64.h"
 
 /******************************************************************************
  * Quoted-Printable
  ******************************************************************************/
 template <class InIter, class OutIter>
-class QpEncoder : public ts::cipher::__mime_coder<InIter, OutIter>
+class QpEncoder : public stk::cipher::__mime_coder<InIter, OutIter>
 {
 public:
     QpEncoder() : itsLinePos(0), itsPrevCh('x') {}
@@ -102,7 +102,7 @@ private:
 };
 
 template <class InIter, class OutIter>
-class QpDecoder : public ts::cipher::__mime_coder<InIter, OutIter>
+class QpDecoder : public stk::cipher::__mime_coder<InIter, OutIter>
 {
 public:
 	 QpDecoder() : itsHexLen(0) {}
@@ -162,7 +162,7 @@ OutIter QpEncoder<InIter, OutIter>::Filter(
             ++itsLinePos;
         }
 
-        if (itsLinePos > ts::cipher::cLineLen) {
+        if (itsLinePos > stk::cipher::cLineLen) {
             *out++ = '=';
             *out++ = itsPrevCh = '\n';
             itsLinePos = 0;
@@ -376,7 +376,7 @@ BDC :: BDC(unsigned long long s)
 	if (s)
 		{
 		d = new char[(unsigned int)s];
-		memset(d,0,(size_t)s);
+		stk::mem::set(d,0,(size_t)s);
 		ss = s;
 		}
 	}
@@ -416,7 +416,7 @@ void BDC :: operator =(const BDC& d2)
 	if (ns)
 		{
 		d = new char[(unsigned int)ns];
-		memcpy(d,d2.operator char*(),(size_t)ns);
+		stk::mem::mov(d,d2.operator char*(),(size_t)ns);
 		ss = ns;
 		}
 	}
@@ -438,7 +438,7 @@ unsigned long long BDC :: size() const
 	}
 void BDC :: clear()
 	{
-	memset(d,0,(size_t)ss);
+	stk::mem::set(d,0,(size_t)ss);
 	}
 void BDC :: reset()
 	{
@@ -461,13 +461,13 @@ void BDC :: Resize(unsigned long long news)
 	// Create buffer to store existing BDC
 	char* newd = new char[(unsigned int)news];
 	unsigned long long newbs = news;
-	memset((void*)newd,0, (size_t)newbs);
+	stk::mem::set((void*)newd,0, (size_t)newbs);
 
 	if (ss < news)
-		memcpy((void*)newd,d,(size_t)ss);
+		stk::mem::mov((void*)newd,d,(size_t)ss);
 	else
 		// we created a smaller BDC structure
-		memcpy((void*)newd,d,(size_t)news);
+		stk::mem::mov((void*)newd,d,(size_t)news);
 	delete[] d;
 	d = newd;
 	ss = news;
@@ -3184,7 +3184,7 @@ void XMLElement :: printc(FILE* fp,XMLElement* root,int deep,int ShowAll,XML_SAV
 void XMLElement :: SetExportFormatting(XMLEXPORTFORMAT* xf)
 	{
 	if (xf)
-		memcpy(&xfformat,xf,sizeof(XMLEXPORTFORMAT));
+		stk::mem::mov(&xfformat,xf,sizeof(XMLEXPORTFORMAT));
 	if (xfformat.nId > 50)
 		xfformat.nId = 50;
 	for(unsigned int i = 0 ; i < GetChildrenNum() ; i++)
@@ -3236,7 +3236,7 @@ void XMLElement :: Export(FILE* fp,int ShowAll,XML_SAVE_MODE SaveMode,XML_TARGET
 			fwrite(yy.operator char* (),1,nS,fp);
 		else
 			if (TargetMode == 1)
-				memcpy((char*)fp,yy.operator char *(),nS);
+				stk::mem::mov((char*)fp,yy.operator char *(),nS);
 
 
 		/*      char* tf = ".\\a.tmp";
@@ -3461,7 +3461,7 @@ void XMLHeader :: SetH1(const char* x,const wchar_t* wx)
 	else
 		{
 		hdr1 = new char[100];
-		memset(hdr1,0,100);
+		stk::mem::set(hdr1,0,100);
 		}
 #endif
 	}
@@ -3484,7 +3484,7 @@ void XMLHeader :: SetH2(const char* x,const wchar_t* wx)
 	else
 		{
 		hdr2 = new char[100];
-		memset(hdr2,0,100);
+		stk::mem::set(hdr2,0,100);
 		}
 #endif
 	}
@@ -3501,7 +3501,7 @@ void XMLHeader :: CompressMemory()
 		P = 1;
 	XMLComment** oldp = new XMLComment*[P];
 	if (commentsnum)
-		memcpy(oldp,comments,commentsnum*sizeof(XMLComment*));
+		stk::mem::mov(oldp,comments,commentsnum*sizeof(XMLComment*));
 
 	TotalCommentPointersAvailable = P;
 	delete[] comments;
@@ -4073,7 +4073,7 @@ void XMLElement :: CompressMemory()
 
 		XMLComment** oldpc = new XMLComment*[PC];
 		if (commentsnum)
-			memcpy(oldpc,comments,commentsnum*sizeof(XMLComment*));
+			stk::mem::mov(oldpc,comments,commentsnum*sizeof(XMLComment*));
 
 		TotalCommentPointersAvailable = PC;
 		delete[] comments;
@@ -4088,7 +4088,7 @@ void XMLElement :: CompressMemory()
 
 		XMLVariable** oldpv = new XMLVariable*[PV];
 		if (variablesnum)
-			memcpy(oldpv,variables,variablesnum*sizeof(XMLVariable*));
+			stk::mem::mov(oldpv,variables,variablesnum*sizeof(XMLVariable*));
 
 		TotalVariablePointersAvailable = PV;
 		delete[] variables;
@@ -4103,7 +4103,7 @@ void XMLElement :: CompressMemory()
 
 		XMLElement** oldpv = new XMLElement*[PE];
 		if (childrennum)
-			memcpy(oldpv,children,childrennum*sizeof(XMLElement*));
+			stk::mem::mov(oldpv,children,childrennum*sizeof(XMLElement*));
 
 		TotalChildPointersAvailable = PE;
 		delete[] children;
@@ -4951,7 +4951,7 @@ void XMLElement :: SetElementName(const char* x,const wchar_t* wx)
 	el = 0;
 	size_t Sug = XML :: XMLEncode(x,0);
 	el = new char[Sug +10];
-	memset(el,0,Sug + 10);
+	stk::mem::set(el,0,Sug + 10);
 	XML :: XMLEncode(x,el);
 #endif
 	}
@@ -5525,9 +5525,9 @@ int XML :: Load(const char* file,XML_LOAD_MODE LoadMode,XMLTransform* eclass,cla
 			f.append(file,wcslen(wf)*2);
 #else
 			f = new char[(wcslen(wf)*2) + 2];
-			memset(f,0,wcslen(wf)*2 + 2);
+			stk::mem::set(f,0,wcslen(wf)*2 + 2);
 			IsFileU = true;
-			memcpy(f,file,wcslen(wf)*2);
+			stk::mem::mov(f,file,wcslen(wf)*2);
 #endif
 
 			// parse this file
@@ -5843,7 +5843,7 @@ void XMLElement :: Reparse(const char* elm2,int Type)
 
 	char* xel = 0;
 	xel = new char[strlen(elm) + 10];
-	memset(xel,0,strlen(elm) + 10);
+	stk::mem::set(xel,0,strlen(elm) + 10);
 
 	int x = 0;
 	int i = 0;
@@ -5863,7 +5863,7 @@ void XMLElement :: Reparse(const char* elm2,int Type)
 
 	size_t Sug = XML :: XMLEncode(xel,0);
 	char* ael = new char[Sug + 10];
-	memset(ael,0,Sug +10);
+	stk::mem::set(ael,0,Sug +10);
 	XML :: XMLEncode(xel,ael);
 
 	delete[] xel;
@@ -6007,32 +6007,32 @@ XMLElement :: XMLElement(XMLElement* par,const char* elm,int Type,bool Temp,cons
 #else
 	// children
 	children = new XMLElement*[XML_MAX_INIT_CHILDREN];
-	memset(children,0,sizeof(XMLElement*)*XML_MAX_INIT_CHILDREN);
+	stk::mem::set(children,0,sizeof(XMLElement*)*XML_MAX_INIT_CHILDREN);
 	TotalChildPointersAvailable = XML_MAX_INIT_CHILDREN;
 	childrennum = 0;
 
 
 	// variables
 	variables = new XMLVariable*[XML_MAX_INIT_VARIABLES];
-	memset(variables,0,sizeof(XMLVariable*)*XML_MAX_INIT_VARIABLES);
+	stk::mem::set(variables,0,sizeof(XMLVariable*)*XML_MAX_INIT_VARIABLES);
 	TotalVariablePointersAvailable = XML_MAX_INIT_VARIABLES;
 	variablesnum = 0;
 
 	// contents
 	contents = new XMLContent*[XML_MAX_INIT_CONTENTS];
-	memset(contents,0,sizeof(XMLContent*)*XML_MAX_INIT_CONTENTS);
+	stk::mem::set(contents,0,sizeof(XMLContent*)*XML_MAX_INIT_CONTENTS);
 	TotalContentPointersAvailable = XML_MAX_INIT_CONTENTS;
 	contentsnum = 0;
 
 	// comments
 	comments = new XMLComment*[XML_MAX_INIT_COMMENTS];
-	memset(comments,0,sizeof(XMLComment*)*XML_MAX_INIT_COMMENTS);
+	stk::mem::set(comments,0,sizeof(XMLComment*)*XML_MAX_INIT_COMMENTS);
 	TotalCommentPointersAvailable = XML_MAX_INIT_COMMENTS;
 	commentsnum = 0;
 
 	// cdatas
 	cdatas = new XMLCData*[XML_MAX_INIT_CDATAS];
-	memset(cdatas,0,sizeof(XMLCData*)*XML_MAX_INIT_CDATAS);
+	stk::mem::set(cdatas,0,sizeof(XMLCData*)*XML_MAX_INIT_CDATAS);
 	TotalCDataPointersAvailable = XML_MAX_INIT_CDATAS;
 	cdatasnum = 0;
 
@@ -6191,7 +6191,7 @@ int XMLElement :: SpaceForElement(unsigned int i)
 
 	// make more space
 	Z<XMLElement*> oldp(childrennum);
-	memcpy(oldp,children,childrennum*sizeof(XMLElement*));
+	stk::mem::mov(oldp,children,childrennum*sizeof(XMLElement*));
 
 	TotalChildPointersAvailable += XML_MAX_INIT_CHILDREN;
 	if ((TotalChildPointersAvailable - childrennum) < i)
@@ -6199,7 +6199,7 @@ int XMLElement :: SpaceForElement(unsigned int i)
 
 	delete[] children;
 	children = new XMLElement*[TotalChildPointersAvailable];
-	memcpy(children,oldp,childrennum*sizeof(XMLElement*));
+	stk::mem::mov(children,oldp,childrennum*sizeof(XMLElement*));
 	return (TotalChildPointersAvailable - childrennum);
 	}
 
@@ -6210,13 +6210,13 @@ int XMLElement :: SpaceForVariable(unsigned int i)
 		return (TotalVariablePointersAvailable - variablesnum);
 
 	Z<XMLVariable*> oldp(variablesnum);
-	memcpy(oldp,variables,variablesnum*sizeof(XMLVariable*));
+	stk::mem::mov(oldp,variables,variablesnum*sizeof(XMLVariable*));
 
 	TotalVariablePointersAvailable += XML_MAX_INIT_VARIABLES;
 
 	delete[] variables;
 	variables = new XMLVariable*[TotalVariablePointersAvailable];
-	memcpy(variables,oldp,variablesnum*sizeof(XMLVariable*));
+	stk::mem::mov(variables,oldp,variablesnum*sizeof(XMLVariable*));
 	return (TotalVariablePointersAvailable - variablesnum);
 	}
 
@@ -6226,13 +6226,13 @@ int XMLElement :: SpaceForComment(unsigned int i)
 		return (TotalCommentPointersAvailable - commentsnum);
 
 	Z<XMLComment*> oldp(commentsnum);
-	memcpy(oldp,comments,commentsnum*sizeof(XMLComment*));
+	stk::mem::mov(oldp,comments,commentsnum*sizeof(XMLComment*));
 
 	TotalCommentPointersAvailable += XML_MAX_INIT_COMMENTS;
 
 	delete[] comments;
 	comments = new XMLComment*[TotalCommentPointersAvailable];
-	memcpy(comments,oldp,commentsnum*sizeof(XMLComment*));
+	stk::mem::mov(comments,oldp,commentsnum*sizeof(XMLComment*));
 	return (TotalCommentPointersAvailable - commentsnum);
 	}
 int XMLHeader :: SpaceForComment(unsigned int i)
@@ -6241,13 +6241,13 @@ int XMLHeader :: SpaceForComment(unsigned int i)
 		return (TotalCommentPointersAvailable - commentsnum);
 
 	Z<XMLComment*> oldp(commentsnum);
-	memcpy(oldp,comments,commentsnum*sizeof(XMLComment*));
+	stk::mem::mov(oldp,comments,commentsnum*sizeof(XMLComment*));
 
 	TotalCommentPointersAvailable += XML_MAX_INIT_COMMENTS;
 
 	delete[] comments;
 	comments = new XMLComment*[TotalCommentPointersAvailable];
-	memcpy(comments,oldp,commentsnum*sizeof(XMLComment*));
+	stk::mem::mov(comments,oldp,commentsnum*sizeof(XMLComment*));
 	return (TotalCommentPointersAvailable - commentsnum);
 	}
 
@@ -6257,13 +6257,13 @@ int XMLElement :: SpaceForCData(unsigned int i)
 		return (TotalCDataPointersAvailable - commentsnum);
 
 	Z<XMLCData*> oldp(cdatasnum);
-	memcpy(oldp,cdatas,cdatasnum*sizeof(XMLCData*));
+	stk::mem::mov(oldp,cdatas,cdatasnum*sizeof(XMLCData*));
 
 	TotalCDataPointersAvailable += XML_MAX_INIT_CDATAS;
 
 	delete[] cdatas;
 	cdatas = new XMLCData*[TotalCDataPointersAvailable];
-	memcpy(cdatas,oldp,cdatasnum*sizeof(XMLCData*));
+	stk::mem::mov(cdatas,oldp,cdatasnum*sizeof(XMLCData*));
 	return (TotalCDataPointersAvailable - cdatasnum);
 	}
 
@@ -6274,13 +6274,13 @@ int XMLElement :: SpaceForContent(unsigned int i)
 		return (TotalContentPointersAvailable - contentsnum);
 
 	Z<char*> oldp(contentsnum);
-	memcpy(oldp,contents,contentsnum*sizeof(char*));
+	stk::mem::mov(oldp,contents,contentsnum*sizeof(char*));
 
 	TotalContentPointersAvailable += XML_MAX_INIT_CONTENTS;
 
 	delete[] contents;
 	contents = new XMLContent*[TotalContentPointersAvailable];
-	memcpy(contents,oldp,contentsnum*sizeof(XMLContent*));
+	stk::mem::mov(contents,oldp,contentsnum*sizeof(XMLContent*));
 	return (TotalContentPointersAvailable - contentsnum);
 	}
 #endif
@@ -6350,7 +6350,7 @@ XMLVariable& XMLElement :: AddBinaryVariable(const char* vn,const char* vv,int S
 	{
 	XMLVariable x(vn,0,0,0);
 	Z<char> tmp(S + 1);
-	memcpy(tmp,vv,S);
+	stk::mem::mov(tmp,vv,S);
 	x.SetBinaryValue(tmp,S);
 	return AddVariable(x);
 	}
@@ -6359,7 +6359,7 @@ int XMLElement :: AddBinaryVariable(const char* vn,const char* vv,int S)
 	{
 	XMLVariable* x = new XMLVariable(vn,"");
 	Z<char> tmp(S + 1);
-	memcpy(tmp,vv,S);
+	stk::mem::mov(tmp,vv,S);
 	x->SetBinaryValue(tmp,S);
 	return AddVariable(x);
 	}
@@ -6969,7 +6969,7 @@ bool XMLContent :: GetBinaryValue(char**o,unsigned int* len)
 		if (!o || !len)
 			return false;
 		char* oo = new char[(unsigned int)(bdc.size() + 1)];
-		memcpy(oo,bdc.p(),(size_t)bdc.size());
+		stk::mem::mov(oo,bdc.p(),(size_t)bdc.size());
 		*len = (unsigned int)bdc.size();
 		*o = oo;
 		return true;
@@ -6990,10 +6990,10 @@ bool XMLContent :: GetBinaryValue(char**o,unsigned int* len)
 	ll = (int)strlen(d);
 
 	char* a = new char[ll*5 + 1000];
-	memset(a,0,ll*5 + 1000);
+	stk::mem::set(a,0,ll*5 + 1000);
 
 	char *oo;
-    ts::cipher::__base64_decoder<char*,char*> e;
+    stk::cipher::__base64_decoder<char*,char*> e;
 	oo = e.Filter(a, (char*)d, (char*)d + ll);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end
@@ -7013,7 +7013,7 @@ string XMLElement :: GetElementNameS(int NoDecode)
 	{
 	size_t sz = GetElementName(0,NoDecode);
 	char* a = new char[sz + 100];
-	memset(a,0,sz + 100);
+	stk::mem::set(a,0,sz + 100);
 	GetElementName(a,NoDecode);
 	string s = a;
 	delete[] a;
@@ -7026,7 +7026,7 @@ string XMLContent :: GetValueS()
 		return "";
 	size_t sz = GetValue(0);
 	char* a = new char[sz + 100];
-	memset(a,0,sz + 100);
+	stk::mem::set(a,0,sz + 100);
 	GetValue(a);
 	string s = a;
 	delete[] a;
@@ -7080,7 +7080,7 @@ void XMLContent :: SetValue(const char* VV,int NoDecode,int BinarySize)
 			BinarySize = (int)strlen(VV);
 		bdc.Resize(BinarySize);
 		if (BinarySize)
-			memcpy(bdc.p(),VV,BinarySize);
+			stk::mem::mov(bdc.p(),VV,BinarySize);
 		return;
 		}
 
@@ -7092,10 +7092,10 @@ void XMLContent :: SetValue(const char* VV,int NoDecode,int BinarySize)
 	
 		// Sets value using MIME
 		char* a = new char[BinarySize*5 + 1000];
-		memset(a,0,BinarySize*5 + 1000);
+		stk::mem::set(a,0,BinarySize*5 + 1000);
 
 		char *oo;
-        ts::cipher::__base64_encoder<char*,char*> e;
+        stk::cipher::__base64_encoder<char*,char*> e;
 		oo = e.Filter(a, (char*)VV, (char*)VV + BinarySize);
 		oo = e.Finish(oo);
 		*oo = 0;                  // Put a zero to the end
@@ -7125,7 +7125,7 @@ void XMLContent :: SetValue(const char* VV,int NoDecode,int BinarySize)
 	size_t Sug = XML :: XMLEncode(VV,0);
 
 	c = new char[Sug + 10];
-	memset(c,0,Sug + 10);
+	stk::mem::set(c,0,Sug + 10);
 
 	if (NoDecode)
 		strcpy(c,VV);
@@ -7162,7 +7162,7 @@ XMLHeader :: XMLHeader(const char* ht,const wchar_t* wht)
 	hdr2.clear();
 #else
 	hdr2 = new char[100];
-	memset(hdr2,0,100);
+	stk::mem::set(hdr2,0,100);
 	if (ht)
 		{
 		hdr1 = new char[strlen(ht) + 1];
@@ -7171,7 +7171,7 @@ XMLHeader :: XMLHeader(const char* ht,const wchar_t* wht)
 	else
 		{
 		hdr1 = new char[100];
-		memset(hdr1,0,100);
+		stk::mem::set(hdr1,0,100);
 		}
 #endif
 
@@ -7179,7 +7179,7 @@ XMLHeader :: XMLHeader(const char* ht,const wchar_t* wht)
 #ifdef XML_USE_STL
 #else
 	comments = new XMLComment*[XML_MAX_INIT_COMMENTS_HEADER];
-	memset(comments,0,sizeof(XMLComment*)*XML_MAX_INIT_COMMENTS_HEADER);
+	stk::mem::set(comments,0,sizeof(XMLComment*)*XML_MAX_INIT_COMMENTS_HEADER);
 	TotalCommentPointersAvailable = XML_MAX_INIT_COMMENTS_HEADER;
 	commentsnum = 0;
 #endif
@@ -7235,7 +7235,7 @@ XMLHeader& XMLHeader :: operator =(XMLHeader& h)
 	comments = h.GetComments();
 #else
 	comments = new XMLComment*[XML_MAX_INIT_COMMENTS_HEADER];
-	memset(comments,0,sizeof(XMLComment*)*XML_MAX_INIT_COMMENTS_HEADER);
+	stk::mem::set(comments,0,sizeof(XMLComment*)*XML_MAX_INIT_COMMENTS_HEADER);
 	TotalCommentPointersAvailable = XML_MAX_INIT_COMMENTS_HEADER;
 	commentsnum = 0;
 	// Add comments from h
@@ -7278,7 +7278,7 @@ void XMLHeader :: SetEncoding(const char* e)
 #else
 	delete[] hdr1;
 	hdr1 = new char[sl];
-	memset(hdr1,0,sl);
+	stk::mem::set(hdr1,0,sl);
 	strcpy(hdr1,nt);
 #endif
 	}
@@ -7539,7 +7539,7 @@ void XMLVariable :: SetName(const char* VN,int NoDecode,const wchar_t *WVN)
 		delete[] vn;
 	size_t Sug = XML :: XMLEncode(VN,0);
 	vn = new char[Sug + 10];
-	memset(vn,0,Sug + 10);
+	stk::mem::set(vn,0,Sug + 10);
 	if (NoDecode)
 		strcpy(vn,VN);
 	else
@@ -7575,7 +7575,7 @@ void XMLVariable :: SetValue(const char* VV,int NoDecode,const wchar_t* WVV)
 		delete[] vv;
 	size_t Sug = XML :: XMLEncode(VV,0);
 	vv = new char[Sug + 10];
-	memset(vv,0,Sug + 10);
+	stk::mem::set(vv,0,Sug + 10);
 	if (NoDecode)
 		strcpy(vv,VV);
 	else
@@ -7682,7 +7682,7 @@ string XMLVariable :: GetNameS()
 		return "";
 	size_t sz = GetName(0);
 	char* a = new char[sz + 100];
-	memset(a,0,sz + 100);
+	stk::mem::set(a,0,sz + 100);
 	GetName(a);
 	string s = a;
 	delete[] a;
@@ -7700,7 +7700,7 @@ string XMLVariable :: GetValueS()
 		return "";
 	size_t sz = GetValue(0);
 	char* a = new char[sz + 100];
-	memset(a,0,sz + 100);
+	stk::mem::set(a,0,sz + 100);
 	GetValue(a);
 	string s = a;
 	delete[] a;
@@ -7922,10 +7922,10 @@ size_t XMLVariable :: SetBinaryValue(char* data,int len)
 	{
 	// Sets value using MIME
 	char* a = new char[len*5 + 1000];
-	memset(a,0,len*5 + 1000);
+	stk::mem::set(a,0,len*5 + 1000);
 
 	char *oo;
-    ts::cipher::__base64_encoder<char*,char*> e;
+    stk::cipher::__base64_encoder<char*,char*> e;
 	oo = e.Filter(a, data, data + len);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end
@@ -7981,7 +7981,7 @@ size_t XMLVariable :: GetBinaryValue(char* data)
 
 
 	char *oo;
-    ts::cipher::__base64_decoder<char*,char*> e;
+    stk::cipher::__base64_decoder<char*,char*> e;
 	oo = e.Filter(oout, bdata.operator char*(), bdata.operator char*() + aL);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end
@@ -7997,7 +7997,7 @@ size_t XMLVariable :: GetBinaryValue(char* data)
 		}
 	else
 		{
-		memcpy(data,oout,S);
+		stk::mem::mov(data,oout,S);
 		return S;
 		}
 	}
@@ -8064,7 +8064,7 @@ bool XMLEncryptDecryptData(bool Decrypt,const char*pwd,int pwdlen,const char* d,
 		{
 		DWORD dl = sz;
 		char* out = new char[dl];
-		memcpy(out,d,sz);
+		stk::mem::mov(out,d,sz);
 		if (!CryptDecrypt(hCryptKey,0,TRUE,0,(BYTE*)out,&dl))
 			{
 			delete[] out;
@@ -8096,7 +8096,7 @@ bool XMLEncryptDecryptData(bool Decrypt,const char*pwd,int pwdlen,const char* d,
 			return 0;
 			}
 		char* out = new char[dl + 1];
-		memcpy(out,d,sz);
+		stk::mem::mov(out,d,sz);
 		DWORD dl2 = sz;
 		if (!CryptEncrypt(hCryptKey,0,TRUE,0,(BYTE*)out,&dl2,dl))
 			{
@@ -8617,7 +8617,7 @@ bool XMLContent :: ImportFromBinary(const BDC& b)
 	else
 		{
 		Z<char> txt(DataSize + 10);
-		memcpy(txt,ptr,DataSize);
+		stk::mem::mov(txt,ptr,DataSize);
 		SetValue(txt,1);
 		}
 	ptr += DataSize;
@@ -8681,14 +8681,14 @@ BDC XMLContent :: ExportToBinary()
 	ptr += 4;
 
 	if (BinaryMode)
-		memcpy(ptr,bdc.p(),ds);
+		stk::mem::mov(ptr,bdc.p(),ds);
 	else
 		{
 #ifdef XML_USE_STL
-		memcpy(ptr,c.c_str(),ds);
+		stk::mem::mov(ptr,c.c_str(),ds);
 #else
 		if (c)
-			memcpy(ptr,c,ds);
+			stk::mem::mov(ptr,c,ds);
 #endif
 		}
 	ptr += ds;
@@ -8733,7 +8733,7 @@ bool XMLComment :: ImportFromBinary(const BDC& b)
 	if (RemainingSize < DataSize)
 		return false;
 	Z<char> txt(DataSize + 10);
-	memcpy(txt,ptr,DataSize);
+	stk::mem::mov(txt,ptr,DataSize);
 	SetComment(txt);
 	ptr += DataSize;
 	RemainingSize -= DataSize;
@@ -8786,10 +8786,10 @@ BDC XMLComment :: ExportToBinary()
 	ptr += 4;
 
 #ifdef XML_USE_STL
-	memcpy(ptr,c.c_str(),ds);
+	stk::mem::mov(ptr,c.c_str(),ds);
 #else
 	if (c)
-		memcpy(ptr,c,ds);
+		stk::mem::mov(ptr,c,ds);
 #endif
 	ptr += ds;
 
@@ -8833,7 +8833,7 @@ bool XMLCData :: ImportFromBinary(const BDC& b)
 	if (RemainingSize < DataSize)
 		return false;
 	Z<char> txt(DataSize + 10);
-	memcpy(txt,ptr,DataSize);
+	stk::mem::mov(txt,ptr,DataSize);
 	SetCData(txt);
 	ptr += DataSize;
 	RemainingSize -= DataSize;
@@ -8886,10 +8886,10 @@ BDC XMLCData :: ExportToBinary()
 	ptr += 4;
 
 #ifdef XML_USE_STL
-	memcpy(ptr,c.c_str(),ds);
+	stk::mem::mov(ptr,c.c_str(),ds);
 #else
 	if (c)
-		memcpy(ptr,c,ds);
+		stk::mem::mov(ptr,c,ds);
 #endif
 	ptr += ds;
 
@@ -8927,7 +8927,7 @@ bool XMLVariable :: ImportFromBinary(const BDC& b)
 	if (RemainingSize < ds1)
 		return false;
 	Z<char> tn(ds1 + 10);
-	memcpy(tn.p(),ptr,ds1);
+	stk::mem::mov(tn.p(),ptr,ds1);
 	SetName(tn,1);
 	ptr += ds1;
 	RemainingSize -= ds1;
@@ -8942,7 +8942,7 @@ bool XMLVariable :: ImportFromBinary(const BDC& b)
 	if (RemainingSize < ds2)
 		return false;
 	Z<char> tv(ds2 + 10);
-	memcpy(tv.p(),ptr,ds2);
+	stk::mem::mov(tv.p(),ptr,ds2);
 	SetValue(tv,1);
 	ptr += ds2;
 	RemainingSize -= ds2;
@@ -8996,10 +8996,10 @@ BDC XMLVariable :: ExportToBinary()
 	ptr += 4;
 
 #ifdef XML_USE_STL
-	memcpy(ptr,vn.c_str(),ds1);
+	stk::mem::mov(ptr,vn.c_str(),ds1);
 #else
 	if (vn)
-		memcpy(ptr,vn,ds1);
+		stk::mem::mov(ptr,vn,ds1);
 #endif
 	ptr += ds1;
 
@@ -9009,10 +9009,10 @@ BDC XMLVariable :: ExportToBinary()
 	ptr += 4;
 
 #ifdef XML_USE_STL
-	memcpy(ptr,vv.c_str(),ds2);
+	stk::mem::mov(ptr,vv.c_str(),ds2);
 #else
 	if (vn)
-		memcpy(ptr,vv,ds2);
+		stk::mem::mov(ptr,vv,ds2);
 #endif
 	ptr += ds2;
 
@@ -9051,7 +9051,7 @@ bool XMLHeader :: ImportFromBinary(const BDC& b)
 	if (RemainingSize < DataSize)
 		return false;
 	Z<char> txt(DataSize + 10);
-	memcpy(txt,ptr,DataSize);
+	stk::mem::mov(txt,ptr,DataSize);
 
 	Clear();
 
@@ -9080,7 +9080,7 @@ bool XMLHeader :: ImportFromBinary(const BDC& b)
 		unsigned int ds = x->s + sizeof(XMLBINARYHEADER);
 		BDC co;
 		co.Resize(ds);
-		memcpy(co.p(),ptr,ds);
+		stk::mem::mov(co.p(),ptr,ds);
 #ifdef XML_USE_STL
 		XMLComment nc;
 		if (nc.ImportFromBinary(co))
@@ -9173,25 +9173,25 @@ BDC XMLHeader :: ExportToBinary()
 	ptr += 4;
 
 #ifdef XML_USE_STL
-	memcpy(ptr,hdr1.c_str(),ds1);
+	stk::mem::mov(ptr,hdr1.c_str(),ds1);
 #else
 	if (hdr1)
-		memcpy(ptr,hdr1,ds1);
+		stk::mem::mov(ptr,hdr1,ds1);
 #endif
 	ptr += ds1;
 
 #ifdef XML_USE_STL
-	memcpy(ptr,hdr2.c_str(),ds2);
+	stk::mem::mov(ptr,hdr2.c_str(),ds2);
 #else
 	if (hdr2)
-		memcpy(ptr,hdr2,ds2);
+		stk::mem::mov(ptr,hdr2,ds2);
 #endif
 	ptr += ds2;
 
 	// All comments
 	for(unsigned int i = 0 ; i < numComments ; i++)
 		{
-		memcpy(ptr,CommentsData[i].p(),(size_t)CommentsData[i].size());
+		stk::mem::mov(ptr,CommentsData[i].p(),(size_t)CommentsData[i].size());
 		ptr += CommentsData[i].size();
 		}
 
@@ -9231,7 +9231,7 @@ bool XMLElement :: ImportFromBinary(const BDC& b)
 	if (RemainingSize < NameSize)
 		return false;
 	Z<char> txt(NameSize + 10);
-	memcpy(txt,ptr,NameSize);
+	stk::mem::mov(txt,ptr,NameSize);
 
 	SetElementName(txt);
 
@@ -9252,7 +9252,7 @@ bool XMLElement :: ImportFromBinary(const BDC& b)
 		unsigned int ds = x->s + sizeof(XMLBINARYHEADER);
 		BDC co;
 		co.Resize(ds);
-		memcpy(co.p(),ptr,ds);
+		stk::mem::mov(co.p(),ptr,ds);
 
 		//Children, Variables, Contents, Cdatas, Comments
 		if (x->t == 2) //Element
@@ -9456,12 +9456,12 @@ BDC XMLElement :: ExportToBinary()
 	ptr += 4;
 
 #ifdef XML_USE_STL
-	memcpy(ptr,el.c_str(),el.length());
+	stk::mem::mov(ptr,el.c_str(),el.length());
 	ptr += el.length();
 #else
 	if (el)
 		{
-		memcpy(ptr,el,strlen(el));
+		stk::mem::mov(ptr,el,strlen(el));
 		ptr += strlen(el);
 		}
 #endif
@@ -9470,7 +9470,7 @@ BDC XMLElement :: ExportToBinary()
 	for(unsigned int i = 0 ; i < iMoreData ; i++)
 		{
 		size_t sz = (size_t)MoreData[i].size();
-		memcpy(ptr,MoreData[i].p(),sz);
+		stk::mem::mov(ptr,MoreData[i].p(),sz);
 		ptr += sz;
 		}
 
@@ -9509,7 +9509,7 @@ bool XML :: ImportFromBinary(const BDC& b)
 		unsigned int ds = x->s + sizeof(XMLBINARYHEADER);
 		BDC co;
 		co.Resize(ds);
-		memcpy(co.p(),ptr,ds);
+		stk::mem::mov(co.p(),ptr,ds);
 		ptr += ds;
 		RemainingSize -= ds;
 
@@ -9590,9 +9590,9 @@ BDC XML :: ExportToBinary()
 	xbh->s = bs - sizeof(XMLBINARYHEADER);
 	ptr += sizeof(XMLBINARYHEADER);
 
-	memcpy(ptr,h.p(),(size_t)h.size());
+	stk::mem::mov(ptr,h.p(),(size_t)h.size());
 	ptr += h.size();
-	memcpy(ptr,r.p(),(size_t)r.size());
+	stk::mem::mov(ptr,r.p(),(size_t)r.size());
 	ptr += r.size();
 
 	return b;
@@ -9761,7 +9761,7 @@ size_t XMLGetBinaryData(const char* item,const char* attr,const char* defv,char*
 	Z<char> oout(maxlen*5 + 5000);
 
 	char *oo;
-    ts::cipher::__base64_decoder<char*,char*> e;
+    stk::cipher::__base64_decoder<char*,char*> e;
 	oo = e.Filter(oout, bdata.operator char*(), bdata.operator char*() + len);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end
@@ -9770,12 +9770,12 @@ size_t XMLGetBinaryData(const char* item,const char* attr,const char* defv,char*
 	size_t S = oo - oout.operator char*();
 	if (S > maxlen)
 		{
-		memcpy(out,oout,maxlen);
+		stk::mem::mov(out,oout,maxlen);
 		return maxlen;
 		}
 	else
 		{
-		memcpy(out,oout,S);
+		stk::mem::mov(out,oout,S);
 		return S;
 		}
 	}
@@ -9828,10 +9828,10 @@ int    XMLSetFloat(const char* section,const char* attr,float v,const char* xml,
 int    XMLSetBinaryData(const char* section,const char* attr,char* data,int len,const char* xml,XML* af)
 	{
 	char* a = new char[len*5 + 1000];
-	memset(a,0,len*5 + 1000);
+	stk::mem::set(a,0,len*5 + 1000);
 
 	char *oo;
-    ts::cipher::__base64_encoder<char*,char*> e;
+    stk::cipher::__base64_encoder<char*,char*> e;
 	oo = e.Filter(a, data, data + len);
 	oo = e.Finish(oo);
 	*oo = 0;                  // Put a zero to the end
@@ -9879,7 +9879,7 @@ int XMLGetAllVariables(const char* section,vector<char*>* vnames,vector<char*>* 
 		int yS = e->GetVariables()[i]->GetName(0);
 #endif
 		char* d = new char[yS + 10];
-		memset(d,0,yS + 10);
+		stk::mem::set(d,0,yS + 10);
 #ifdef XML_USE_STL
 		e->GetVariables()[i].GetName(d);
 #else
@@ -9893,7 +9893,7 @@ int XMLGetAllVariables(const char* section,vector<char*>* vnames,vector<char*>* 
 		yS = e->GetVariables()[i]->GetValue(0);
 #endif
 		char* d2 = new char[yS + 10];
-		memset(d2,0,yS + 10);
+		stk::mem::set(d2,0,yS + 10);
 #ifdef XML_USE_STL
 		e->GetVariables()[i].GetValue(d2);
 #else
@@ -9927,7 +9927,7 @@ int XMLGetAllItems(const char* section,vector<char*>* vnames,const char*xml)
 		int yS =  e->GetChildren()[i]->GetElementName(0);
 #endif
 		char* d = new char[yS + 10];
-		memset(d,0,yS + 10);
+		stk::mem::set(d,0,yS + 10);
 #ifdef XML_USE_STL
 		e->GetChildren()[i].GetElementName(d);
 #else
@@ -9953,13 +9953,13 @@ int XMLGetAllVariables(const char* section,char** vnames,char** vvalues,const ch
 		{
 		size_t yS = e->GetVariables()[i]->GetName(0);
 		char* d = new char[yS + 10];
-		memset(d,0,yS + 10);
+		stk::mem::set(d,0,yS + 10);
 		e->GetVariables()[i]->GetName(d);
 		vnames[i] = d;
 
 		yS = e->GetVariables()[i]->GetValue(0);
 		char* d2 = new char[yS + 10];
-		memset(d2,0,yS + 10);
+		stk::mem::set(d2,0,yS + 10);
 		e->GetVariables()[i]->GetValue(d2);
 		vvalues[i] = d2;
 		}
@@ -9980,7 +9980,7 @@ int XMLGetAllItems(const char* section,char** vnames,const char*xml)
 		{
 		size_t yS =  e->GetChildren()[i]->GetElementName(0);
 		char* d = new char[yS + 10];
-		memset(d,0,yS + 10);
+		stk::mem::set(d,0,yS + 10);
 		e->GetChildren()[i]->GetElementName(d);
 		vnames[i] = d;
 		}

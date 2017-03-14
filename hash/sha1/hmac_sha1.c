@@ -53,8 +53,8 @@
  * was designed and how this file is formatted.
  */
 
-#ifndef __HMAC_SHA1_H__
-#define __HMAC_SHA1_H__
+#ifndef __HMAC_SHA1_H
+#define __HMAC_SHA1_H
 
 #include "hmac_sha1.h"
 #include <string.h>

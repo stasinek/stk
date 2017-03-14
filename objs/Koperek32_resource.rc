@@ -1,0 +1,47 @@
+# if defined(UNDER_CE)
+#  include <winbase.h>
+# else
+#  include <windows.h>
+# endif
+
+IDI_ICON1	ICON	DISCARDABLE	"C:/Documents and Settings/stasiek.TC12/My Documents/prc++/x86_libraries/STK/ICO/icon4.ico"
+IDI_ICON2	ICON	DISCARDABLE	"C:/Documents and Settings/stasiek.TC12/My Documents/prc++/x86_libraries/STK/ICO/icon6.ico"
+IDI_ICON3	ICON	DISCARDABLE	"C:/Documents and Settings/stasiek.TC12/My Documents/prc++/x86_libraries/STK/ICO/icon2.ico"
+IDI_ICON4	ICON	DISCARDABLE	"C:/Documents and Settings/stasiek.TC12/My Documents/prc++/x86_libraries/STK/ICO/icon3.ico"
+IDI_ICON5	ICON	DISCARDABLE	"C:/Documents and Settings/stasiek.TC12/My Documents/prc++/x86_libraries/STK/ICO/icon5.ico"
+IDI_ICON6	ICON	DISCARDABLE	"C:/Documents and Settings/stasiek.TC12/My Documents/prc++/x86_libraries/STK/ICO/icon7.ico"
+IDI_ICON7	ICON	DISCARDABLE	"C:/Documents and Settings/stasiek.TC12/My Documents/prc++/x86_libraries/STK/ICO/icon8.ico"
+
+VS_VERSION_INFO VERSIONINFO
+	FILEVERSION 0,0,0,0
+	PRODUCTVERSION 0,0,0,0
+	FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+	FILEFLAGS VS_FF_DEBUG
+#else
+	FILEFLAGS 0x0L
+#endif
+	FILEOS VOS__WINDOWS32
+	FILETYPE VFT_DLL
+	FILESUBTYPE 0x0L
+	BEGIN
+		BLOCK "StringFileInfo"
+		BEGIN
+			BLOCK "040904b0"
+			BEGIN
+				VALUE "CompanyName", "\0"
+				VALUE "FileDescription", "\0"
+				VALUE "FileVersion", "0.0.0.0\0"
+				VALUE "LegalCopyright", "\0"
+				VALUE "OriginalFilename", "Koperek32.exe\0"
+				VALUE "ProductName", "Koperek32\0"
+				VALUE "ProductVersion", "0.0.0.0\0"
+			END
+		END
+		BLOCK "VarFileInfo"
+		BEGIN
+			VALUE "Translation", 0x0409, 1200
+		END
+	END
+/* End of Version info */
+

@@ -60,7 +60,7 @@ typedef struct
    unsigned long max_memory;
    int settings;
 
-   /* Custom allocator support (leave null to use malloc/free)
+   /* Custom allocator support (leave null to use stk::mem::alloc/free)
     */
 
    void * (* mem_alloc) (size_t, int zero, void * user_data);
@@ -175,7 +175,7 @@ typedef struct _json_value
       public:
 
          inline _json_value ()
-         {  memset (this, 0, sizeof (_json_value));
+         {  stk::mem::set (this, 0, sizeof (_json_value));
          }
 
          inline const struct _json_value &operator [] (int index) const

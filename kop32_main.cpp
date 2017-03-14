@@ -11,7 +11,7 @@
 #ifndef _USE_OLD_IOSTREAMS
 using namespace std;
 #endif
-#include "tsoft_test.h"
+#include "stk_test.h"
 //---------------------------------------------------------------------------
 #ifndef QT_GUI
 //---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return (char)getchar();
 
 //---------------------------------------------------------------------------
 
-const char*__stdcall text_Kop32EventHandler(ts::__kop32_class *akop, const char *a_event, const char *a_code, const char *a_code_ex)
+const char*__stdcall text_Kop32EventHandler(stk::__kop32_class *akop, const char *a_event, const char *a_code, const char *a_code_ex)
 {
 return "";
 }
@@ -121,7 +121,7 @@ QString old_item("");
 
  if (Application->Console_form->ui->listWidget->count()>0) old_item = Application->Console_form->ui->listWidget->item(Application->Console_form->ui->listWidget->count()-1)->text();
 else Application->Console_form->ui->listWidget->addItem("");
-register  int ol = old_item.length(), in = 0, nl = ts::cstr::len(atext);
+register  int ol = old_item.length(), in = 0, nl = stk::cstr::len(atext);
   bool old_item_must_be_synced = true;
 
 for (in = 0;in < nl;in++) {
@@ -147,17 +147,17 @@ void __stdcall Qt_ErrorEventHandler(const char *atext)
 }
 //---------------------------------------------------------------------------
 
-const char*__stdcall Qt_Kop32EventHandler(ts::__kop32_class *akop, const char *a_event, const char *a_code, const char *a_code_ex)
+const char*__stdcall Qt_Kop32EventHandler(stk::__kop32_class *akop, const char *a_event, const char *a_code, const char *a_code_ex)
 {
 register char *ret = "OK";
 
- if (ts::cstr::cmpex(a_event,"PREPARED_EVENT")==0)
+ if (stk::cstr::cmpex(a_event,"PREPARED_EVENT")==0)
         {
                 Application->Main_form->show();
                 ret = "OK";
         }
         else
- if (ts::cstr::cmpex(a_event,"PROGRESS_EVENT")==0)
+ if (stk::cstr::cmpex(a_event,"PROGRESS_EVENT")==0)
         {
                 Application->Main_form->ui->progressBar_1->setValue((akop->progress->src->one->percent() + akop->progress->src->one->percent())/2);
                 Application->Main_mini_form->ui->progressBar_1->setValue(Application->Main_form->ui->progressBar_1->value());
@@ -165,23 +165,23 @@ register char *ret = "OK";
                 Application->Main_mini_form->ui->progressBar_2->setValue(Application->Main_form->ui->progressBar_2->value());
         }
         else
- if (ts::cstr::cmpex(a_event,"ASK_USER_EVENT")==0)
+ if (stk::cstr::cmpex(a_event,"ASK_USER_EVENT")==0)
         {
                 //Application->Replace_form->exec();
                 ret = "YES";
         }
         else
- if (ts::cstr::cmpex(a_event,"SHOW_LICENSE_EVENT")==0)
+ if (stk::cstr::cmpex(a_event,"SHOW_LICENSE_EVENT")==0)
         {
                 Application->About_form->exec();
         }
         else
- if (ts::cstr::cmpex(a_event,"SHOW_COMMAND_ARGS_EVENT")==0)
+ if (stk::cstr::cmpex(a_event,"SHOW_COMMAND_ARGS_EVENT")==0)
         {
                 Application->help_me();
         }
         else
- if (ts::cstr::cmpex(a_event,"ASK_USER_REPLACE_EVENT")==0)
+ if (stk::cstr::cmpex(a_event,"ASK_USER_REPLACE_EVENT")==0)
         {
                 int userret = Application->Replace_form->exec();
 
@@ -197,21 +197,21 @@ register char *ret = "OK";
 
         }
         else
- if (ts::cstr::cmpex(a_event,"FINISHED_EVENT")==0)
+ if (stk::cstr::cmpex(a_event,"FINISHED_EVENT")==0)
         {
                 ret = "OK";
                 Application->Finished = true;
                 emit Application->before_quit();
         }
         else
- if (ts::cstr::cmpex(a_event,"CANCELED_EVENT")==0)
+ if (stk::cstr::cmpex(a_event,"CANCELED_EVENT")==0)
         {
                 ret = "OK";
                 Application->Finished = true;
                 emit Application->before_quit();
         }
         else
- if (ts::cstr::cmpex(a_event,"ERROR_EVENT")==0)
+ if (stk::cstr::cmpex(a_event,"ERROR_EVENT")==0)
         {
                 ret = "OK";
         }
@@ -220,7 +220,7 @@ register char *ret = "OK";
                 ret = "OK";
         }
 if (Application->Console_form->isVisible())
-ts::__kop32::console_event_handler(akop,a_event,a_code,a_code_ex);
+stk::__kop32::console_event_handler(akop,a_event,a_code,a_code_ex);
 return  ret;
 }
 //---------------------------------------------------------------------------
@@ -238,7 +238,7 @@ void __cdecl Qt_BeforeExit(void)
 
 unsigned long __stdcall thread2(const char *arg){
 printf("Thread2! %s",(char*)arg);
-ts::time::wait_ms(1000);
+stk::time::wait_ms(1000);
 return 0;
 }
 int main(int argc, char *argv[])
@@ -247,18 +247,18 @@ int main(int argc, char *argv[])
 
 #ifndef QT_GUI
         atexit(&text_BeforeExit);
-        ts::__kop32::set_text_handlers(&text_GetchEventHandler, &text_PrintEventHandler, NULL);
+        stk::__kop32::set_text_handlers(&text_GetchEventHandler, &text_PrintEventHandler, NULL);
 
         int r = 0;
         char *args = new char[4096];
         args[0] = '\0';
         delete args;
-ts::test::start(argc,argv);
+stk::test::start(argc,argv);
 char a[] = {
 #include "./test.txt"
 };
 printf("%s",a);
-//ts::thread::join(&t2);
+//stk::thread::join(&t2);
 system("pause");
         return r;
 #else
