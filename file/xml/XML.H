@@ -1,5 +1,5 @@
-﻿#ifndef STK_XML_H
-#define STK_XML_H
+﻿#ifndef __stk_XML_H
+#define __stk_XML_H
 
 #include "../../mem/stk_mem.h"
 

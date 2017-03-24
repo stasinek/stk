@@ -26,6 +26,7 @@ NOTE:   String length must be evenly divisible by 16byte (str_len % 16 == 0)
 /* Includes:                                                                 */
 /*****************************************************************************/
 #include "stk_aes.h"
+//-----------------------------------------------------------------------------
 #ifdef H
 #include "hiding.h"
 #endif
@@ -35,6 +36,7 @@ NOTE:   String length must be evenly divisible by 16byte (str_len % 16 == 0)
 #ifdef M
 #include "masking.h"
 #endif
+//-----------------------------------------------------------------------------
 #include <stdint.h>
 #include <string.h> // CBC mode, for memset
 /*****************************************************************************/
@@ -48,9 +50,6 @@ NOTE:   String length must be evenly divisible by 16byte (str_len % 16 == 0)
 #define KEYLEN 16
 // The number of rounds in AES Cipher.
 #define Nr 10
-
-
-
 /*****************************************************************************/
 /* variables:                                                        */
 /*****************************************************************************/
@@ -63,15 +62,15 @@ NOTE:   String length must be evenly divisible by 16byte (str_len % 16 == 0)
 
 // The Key input to the AES Program
 //static const uint8_t* Key;
-
+//-----------------------------------------------------------------------------
 #ifdef H
 static uint8_t num_nop[40] = {0};
 #endif
-
+//-----------------------------------------------------------------------------
 #ifdef M
 static uint8_t RoundKey_temp[176];
 #endif
-
+//-----------------------------------------------------------------------------
 // The lookup-tables are marked const so they can be placed in read-only storage instead of RAM
 // The numbers below can be computed dynamically trading ROM for RAM -
 // This can be useful in (embedded) bootloader applications, where ROM is often limited.
@@ -93,7 +92,7 @@ static const uint8_t sbox[256] =   {
   0x70, 0x3e, 0xb5, 0x66, 0x48, 0x03, 0xf6, 0x0e, 0x61, 0x35, 0x57, 0xb9, 0x86, 0xc1, 0x1d, 0x9e,
   0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
   0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 };
-
+//-----------------------------------------------------------------------------
 static const uint8_t rsbox[256] =
 { 0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
   0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87, 0x34, 0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb,
@@ -111,11 +110,11 @@ static const uint8_t rsbox[256] =
   0x60, 0x51, 0x7f, 0xa9, 0x19, 0xb5, 0x4a, 0x0d, 0x2d, 0xe5, 0x7a, 0x9f, 0x93, 0xc9, 0x9c, 0xef,
   0xa0, 0xe0, 0x3b, 0x4d, 0xae, 0x2a, 0xf5, 0xb0, 0xc8, 0xeb, 0xbb, 0x3c, 0x83, 0x53, 0x99, 0x61,
   0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d };
-
-
+//-----------------------------------------------------------------------------
 // The round constant word array, Rcon[i], contains the values given by
 // x to th e power (i-1) being powers of x (x is denoted as {02}) in the field GF(2^8)
 // Note that i starts at 1, not 0).
+//-----------------------------------------------------------------------------
 static const uint8_t Rcon[255] = {
   0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a,
   0x2f, 0x5e, 0xbc, 0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91, 0x39,
@@ -133,7 +132,7 @@ static const uint8_t Rcon[255] = {
   0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a, 0x2f, 0x5e, 0xbc, 0x63,
   0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91, 0x39, 0x72, 0xe4, 0xd3, 0xbd,
   0x61, 0xc2, 0x9f, 0x25, 0x4a, 0x94, 0x33, 0x66, 0xcc, 0x83, 0x1d, 0x3a, 0x74, 0xe8, 0xcb  };
-
+//-----------------------------------------------------------------------------
 static const uint8_t times2[256] = {
 //0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 0x00,0x02,0x04,0x06,0x08,0x0a,0x0c,0x0e,0x10,0x12,0x14,0x16,0x18,0x1a,0x1c,0x1e,
@@ -152,7 +151,7 @@ static const uint8_t times2[256] = {
 0xbb,0xb9,0xbf,0xbd,0xb3,0xb1,0xb7,0xb5,0xab,0xa9,0xaf,0xad,0xa3,0xa1,0xa7,0xa5,
 0xdb,0xd9,0xdf,0xdd,0xd3,0xd1,0xd7,0xd5,0xcb,0xc9,0xcf,0xcd,0xc3,0xc1,0xc7,0xc5,
 0xfb,0xf9,0xff,0xfd,0xf3,0xf1,0xf7,0xf5,0xeb,0xe9,0xef,0xed,0xe3,0xe1,0xe7,0xe5 };
-
+//-----------------------------------------------------------------------------
 static const uint8_t times3[256] = {
 //0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 0x00,0x03,0x06,0x05,0x0c,0x0f,0x0a,0x09,0x18,0x1b,0x1e,0x1d,0x14,0x17,0x12,0x11,
@@ -171,7 +170,7 @@ static const uint8_t times3[256] = {
 0x6b,0x68,0x6d,0x6e,0x67,0x64,0x61,0x62,0x73,0x70,0x75,0x76,0x7f,0x7c,0x79,0x7a,
 0x3b,0x38,0x3d,0x3e,0x37,0x34,0x31,0x32,0x23,0x20,0x25,0x26,0x2f,0x2c,0x29,0x2a,
 0x0b,0x08,0x0d,0x0e,0x07,0x04,0x01,0x02,0x13,0x10,0x15,0x16,0x1f,0x1c,0x19,0x1a };
-
+//-----------------------------------------------------------------------------
 static const uint8_t times9[256] = {
 //0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 0x00,0x09,0x12,0x1b,0x24,0x2d,0x36,0x3f,0x48,0x41,0x5a,0x53,0x6c,0x65,0x7e,0x77,
@@ -190,7 +189,7 @@ static const uint8_t times9[256] = {
 0x0a,0x03,0x18,0x11,0x2e,0x27,0x3c,0x35,0x42,0x4b,0x50,0x59,0x66,0x6f,0x74,0x7d,
 0xa1,0xa8,0xb3,0xba,0x85,0x8c,0x97,0x9e,0xe9,0xe0,0xfb,0xf2,0xcd,0xc4,0xdf,0xd6,
 0x31,0x38,0x23,0x2a,0x15,0x1c,0x07,0x0e,0x79,0x70,0x6b,0x62,0x5d,0x54,0x4f,0x46 };
-
+//-----------------------------------------------------------------------------
 static const uint8_t times11[256] = {
 //0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 0x00,0x0b,0x16,0x1d,0x2c,0x27,0x3a,0x31,0x58,0x53,0x4e,0x45,0x74,0x7f,0x62,0x69,
@@ -209,7 +208,7 @@ static const uint8_t times11[256] = {
 0xb1,0xba,0xa7,0xac,0x9d,0x96,0x8b,0x80,0xe9,0xe2,0xff,0xf4,0xc5,0xce,0xd3,0xd8,
 0x7a,0x71,0x6c,0x67,0x56,0x5d,0x40,0x4b,0x22,0x29,0x34,0x3f,0x0e,0x05,0x18,0x13,
 0xca,0xc1,0xdc,0xd7,0xe6,0xed,0xf0,0xfb,0x92,0x99,0x84,0x8f,0xbe,0xb5,0xa8,0xa3 };
-
+//-----------------------------------------------------------------------------
 static const uint8_t times13[256] = {
 //0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 0x00,0x0d,0x1a,0x17,0x34,0x39,0x2e,0x23,0x68,0x65,0x72,0x7f,0x5c,0x51,0x46,0x4b,
@@ -228,7 +227,7 @@ static const uint8_t times13[256] = {
 0x67,0x6a,0x7d,0x70,0x53,0x5e,0x49,0x44,0x0f,0x02,0x15,0x18,0x3b,0x36,0x21,0x2c,
 0x0c,0x01,0x16,0x1b,0x38,0x35,0x22,0x2f,0x64,0x69,0x7e,0x73,0x50,0x5d,0x4a,0x47,
 0xdc,0xd1,0xc6,0xcb,0xe8,0xe5,0xf2,0xff,0xb4,0xb9,0xae,0xa3,0x80,0x8d,0x9a,0x97 };
-
+//-----------------------------------------------------------------------------
 static const uint8_t times14[256] = {
 //0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 0x00,0x0e,0x1c,0x12,0x38,0x36,0x24,0x2a,0x70,0x7e,0x6c,0x62,0x48,0x46,0x54,0x5a,
@@ -248,7 +247,6 @@ static const uint8_t times14[256] = {
 0x37,0x39,0x2b,0x25,0x0f,0x01,0x13,0x1d,0x47,0x49,0x5b,0x55,0x7f,0x71,0x63,0x6d,
 0xd7,0xd9,0xcb,0xc5,0xef,0xe1,0xf3,0xfd,0xa7,0xa9,0xbb,0xb5,0x9f,0x91,0x83,0x8d };
 
-
 /*****************************************************************************/
 /* functions:                                                        */
 /*****************************************************************************/
@@ -257,31 +255,37 @@ uint8_t getSBoxValue(uint8_t num)
 {
   return sbox[num];
 }
+//-----------------------------------------------------------------------------
 
 uint8_t getSBoxInvert(uint8_t num)
 {
   return rsbox[num];
 }
+//-----------------------------------------------------------------------------
 
 static uint8_t get_times9(uint8_t num)
 {
   return times9[num];
 }
+//-----------------------------------------------------------------------------
 
 static uint8_t get_times11(uint8_t num)
 {
   return times11[num];
 }
+//-----------------------------------------------------------------------------
 
 static uint8_t get_times13(uint8_t num)
 {
   return times13[num];
 }
+//-----------------------------------------------------------------------------
 
 static uint8_t get_times14(uint8_t num)
 {
   return times14[num];
 }
+//-----------------------------------------------------------------------------
 
 #ifndef M
 // This function produces Nb(Nr+1) round keys. The round keys are used in each round to decrypt the states.
@@ -342,7 +346,7 @@ void KeyExpansion(void)
   }
 }
 #endif
-
+//-----------------------------------------------------------------------------
 #ifdef M
 static void KeyExpansion_m(void)
 {
@@ -431,7 +435,7 @@ static void KeyExpansion_m(void)
 
 }
 #endif
-
+//-----------------------------------------------------------------------------
 void AesInit(const uint8_t* key){
 
     Key = key;
@@ -446,8 +450,10 @@ void AesInit(const uint8_t* key){
     #endif
 
 }
+//-----------------------------------------------------------------------------
 // This function adds the round key to state.
 // The round key is added to the state by an XOR function.
+//-----------------------------------------------------------------------------
 void AddRoundKey(uint8_t round)
 {
   uint8_t i,j;
@@ -459,13 +465,12 @@ void AddRoundKey(uint8_t round)
     }
   }
 }
-
-
-
+//-----------------------------------------------------------------------------
 // MixColumns function mixes the columns of the state matrix.
 // The method used to multiply may be difficult to understand for the inexperienced.
 // Please use the references to gain more information.
 // 14 11 13 9 // 0e 0b 0d 09
+//-----------------------------------------------------------------------------
 void InvMixColumns(void)
 {
   int i;
@@ -483,10 +488,10 @@ void InvMixColumns(void)
     (*state)[i][3] = get_times11(a) ^ get_times13(b) ^ get_times9(c) ^ get_times14(d);
   }
 }
-
-
+//-----------------------------------------------------------------------------
 // The SubBytes Function Substitutes the values in the
 // state matrix with values in an S-box.
+//-----------------------------------------------------------------------------
 void InvSubBytes(void)
 {
   uint8_t i,j;
@@ -513,7 +518,7 @@ void InvSubBytes(void)
     }
   }
 }
-
+//-----------------------------------------------------------------------------
 void InvShiftRows(void)
 {
   uint8_t temp;
@@ -541,7 +546,7 @@ void InvShiftRows(void)
   (*state)[2][3]=(*state)[3][3];
   (*state)[3][3]=temp;
 }
-
+//-----------------------------------------------------------------------------
 void InvCipher(void)
 {
     #ifdef H
@@ -626,8 +631,8 @@ void InvCipher(void)
     #endif
 
 }
-
-void BlockCopy(uint8_t* output, uint8_t* input)
+//-----------------------------------------------------------------------------
+void block_copy(uint8_t* output, uint8_t* input)
 {
   uint8_t i;
   for (i=0;i<KEYLEN;++i)
@@ -635,9 +640,6 @@ void BlockCopy(uint8_t* output, uint8_t* input)
     output[i] = input[i];
   }
 }
-
-
-
 /*****************************************************************************/
 /* test functions:                                                         */
 /*****************************************************************************/
@@ -662,9 +664,8 @@ void AES128_ECB_decrypt(uint8_t* input, uint8_t *output)
   #endif
 
   // Copy input to output, and work in-memory on output
-  BlockCopy(output, input);
+  block_copy(output, input);
   state = (state_t*)output;
-
 
   InvCipher();
 }

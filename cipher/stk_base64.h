@@ -1,8 +1,8 @@
+﻿//---------------------------------------------------------------------------
+//----------------- "sstsoft.pl 2001-2017 -----------------------------------
 //---------------------------------------------------------------------------
-//----------------- "tsoft, where?" 2001-2002 -------------------------------
-//---------------------------------------------------------------------------
-#ifndef stk_base64_h
-#define stk_base64_h
+#ifndef __stk_base64_h
+#define __stk_base64_h
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 //---------------------------------------------------------------------------
@@ -32,9 +32,9 @@ public:
     virtual out_iter_t Filter( out_iter_t out, in_iter_t in_head, in_iter_t in_end );
      virtual out_iter_t Finish( out_iter_t out );
 private:
-    int             itsLinePos;
      unsigned char   itsCurr3[3];
     int             its3Len;
+    int             itsLinePos;
     void EncodeCurr3( out_iter_t& out );
 };
 
@@ -46,9 +46,9 @@ public:
     virtual out_iter_t Filter( out_iter_t out, in_iter_t in_head, in_iter_t in_end );
      virtual out_iter_t Finish( out_iter_t out );
 private:
-    int             itsEnded;
     unsigned char   itsCurr4[4];
     int             its4Len;
+    int             itsEnded;
     int             itsErrNum;
     void DecodeCurr4( out_iter_t& out );
 };
@@ -206,17 +206,17 @@ int __stdcall base642char(char *Z, int s, char *out);
 class  __base64 {
 private:
 //---------------------------------------------------------------------------
-		uint8_t  *order;
+        uint8_t  *order;
 //---------------------------------------------------------------------------
 public:
 //---------------------------------------------------------------------------
         __base64(void);
        ~__base64(void);
 //---------------------------------------------------------------------------
-		void __stdcall  initialize(void);
+        void __stdcall  initialize(void);
 //---------------------------------------------------------------------------
-		char __stdcall  encode(const char a_ch);
-		char __stdcall  decode(const char a_ch);
+        char __stdcall  encode(const char a_ch);
+        char __stdcall  decode(const char a_ch);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------

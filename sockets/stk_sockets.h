@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef stk_sockets_h
-#define stk_sockets_h
+#ifndef __stk_sockets_h
+#define __stk_sockets_h
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 #include "./../text/stk_cstr_utils.h"

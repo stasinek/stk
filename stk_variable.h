@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef stk__property_h
-#define stk__property_h
+#ifndef __stk__property_h
+#define __stk__property_h
 //---------------------------------------------------------------------------
 #include "./stk_MAIN.h"
 #include <iostream>

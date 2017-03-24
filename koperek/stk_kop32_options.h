@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef stk_kop32_options_h
-#define stk_kop32_options_h
+#ifndef __stk_kop32_options_h
+#define __stk_kop32_options_h
 //---------------------------------------------------------------------------
 #include "./../database/stk_database.h"
 #include "./../hash/stk_hash_password.h"

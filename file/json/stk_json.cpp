@@ -1,4 +1,4 @@
-/* vim: set et ts=3 sw=3 sts=3 ft=c:
+﻿/* vim: set et ts=3 sw=3 sts=3 ft=c:
  *
  * Copyright (C) 2012, 2013, 2014 James McLaughlin et al.  All rights reserved.
  * https://github.com/udp/json-parser
@@ -26,25 +26,54 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
-#include "json.h"
-
+//---------------------------------------------------------------------------
+#include "stk_json.h"
+//---------------------------------------------------------------------------
 #ifdef _MSC_VER
    #ifndef _CRT_SECURE_NO_WARNINGS
       #define _CRT_SECURE_NO_WARNINGS
    #endif
 #endif
-
-const struct _json_value json_value_none;
-
+//---------------------------------------------------------------------------
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-
+//---------------------------------------------------------------------------
+namespace stk {
+//---------------------------------------------------------------------------
+const json_value json_value_none;
 typedef unsigned int json_uchar;
+typedef struct {
+   unsigned long used_memory;
+   unsigned int  uint_max;
+   unsigned long ulong_max;
+   json_settings settings;
+   int first_pass;
+   const __json_char_t * ptr;
+   unsigned int cur_line, cur_col;
+} json_state;
+} // namespace stk
+//---------------------------------------------------------------------------
+static const long
+   flag_next             = 1 << 0,
+   flag_reproc           = 1 << 1,
+   flag_need_comma       = 1 << 2,
+   flag_seek_value       = 1 << 3,
+   flag_escaped          = 1 << 4,
+   flag_string           = 1 << 5,
+   flag_need_colon       = 1 << 6,
+   flag_done             = 1 << 7,
+   flag_num_negative     = 1 << 8,
+   flag_num_zero         = 1 << 9,
+   flag_num_e            = 1 << 10,
+   flag_num_e_got_sign   = 1 << 11,
+   flag_num_e_negative   = 1 << 12,
+   flag_line_comment     = 1 << 13,
+   flag_block_comment    = 1 << 14;
+//---------------------------------------------------------------------------
 
-static unsigned char hex_value (json_char c)
+static unsigned char hex_value(__json_char_t c)
 {
    if (isdigit(c))
       return c - '0';
@@ -59,33 +88,21 @@ static unsigned char hex_value (json_char c)
       default: return 0xFF;
    }
 }
+//---------------------------------------------------------------------------
 
-typedef struct
-{
-   unsigned long used_memory;
-
-   unsigned int uint_max;
-   unsigned long ulong_max;
-
-   json_settings settings;
-   int first_pass;
-
-   const json_char * ptr;
-   unsigned int cur_line, cur_col;
-
-} json_state;
-
-static void * default_alloc (size_t size, int zero, void * user_data)
+static void* default_alloc(size_t size, int zero, void * user_data)
 {
    return zero ? calloc (1, size) : malloc (size);
 }
+//---------------------------------------------------------------------------
 
-static void default_free (void * ptr, void * user_data)
+static void default_free(void * ptr, void * user_data)
 {
-   free (ptr);
+   free(ptr);
 }
+//---------------------------------------------------------------------------
 
-static void * json_alloc (json_state * state, unsigned long size, int zero)
+static void* json_alloc(stk::json_state * state, unsigned long size, int zero)
 {
    if ((state->ulong_max - state->used_memory) < size)
       return 0;
@@ -98,12 +115,11 @@ static void * json_alloc (json_state * state, unsigned long size, int zero)
 
    return state->settings.mem_alloc (size, zero, state->settings.user_data);
 }
+//---------------------------------------------------------------------------
 
-static int new_value (json_state * state,
-                      json_value ** top, json_value ** root, json_value ** alloc,
-                      json_type type)
+static int new_value(stk::json_state * state, stk::json_value** top, stk::json_value** root, stk::json_value** alloc, stk::json_type type)
 {
-   json_value * value;
+   stk::json_value* value;
    int values_size;
 
    if (!state->first_pass)
@@ -116,13 +132,13 @@ static int new_value (json_state * state,
 
       switch (value->type)
       {
-         case json_array:
+         case stk::json_array:
 
             if (value->u.array.length == 0)
                break;
 
-            if (! (value->u.array.values = (json_value **) json_alloc
-               (state, value->u.array.length * sizeof (json_value *), 0)) )
+            if (! (value->u.array.values = (stk::json_value **)json_alloc
+               (state, value->u.array.length * sizeof (stk::json_value *), 0)) )
             {
                return 0;
             }
@@ -130,14 +146,14 @@ static int new_value (json_state * state,
             value->u.array.length = 0;
             break;
 
-         case json_object:
+         case stk::json_object:
 
             if (value->u.object.length == 0)
                break;
 
             values_size = sizeof (*value->u.object.values) * value->u.object.length;
 
-            if (! (value->u.object.values = (json_object_entry *) json_alloc
+            if (! (value->u.object.values = (stk::json_object_entry *) json_alloc
                   (state, values_size + ((unsigned long) value->u.object.values), 0)) )
             {
                return 0;
@@ -148,10 +164,10 @@ static int new_value (json_state * state,
             value->u.object.length = 0;
             break;
 
-         case json_string:
+         case stk::json_string:
 
-            if (! (value->u.string.ptr = (json_char *) json_alloc
-               (state, (value->u.string.length + 1) * sizeof (json_char), 0)) )
+            if (! (value->u.string.ptr = (__json_char_t*) json_alloc
+               (state, (value->u.string.length + 1) * sizeof (__json_char_t), 0)) )
             {
                return 0;
             }
@@ -166,8 +182,8 @@ static int new_value (json_state * state,
       return 1;
    }
 
-   if (! (value = (json_value *) json_alloc
-         (state, sizeof (json_value) + state->settings.value_extra, 1)))
+   if (! (value = (stk::json_value *) json_alloc
+         (state, sizeof (stk::json_value) + state->settings.value_extra, 1)))
    {
       return 0;
    }
@@ -190,46 +206,25 @@ static int new_value (json_state * state,
 
    return 1;
 }
-
+//---------------------------------------------------------------------------
 #define whitespace \
    case '\n': ++ state.cur_line;  state.cur_col = 0; \
    case ' ': case '\t': case '\r'
-
 #define string_add(b)  \
    do { if (!state.first_pass) string [string_length] = b;  ++ string_length; } while (0);
-
 #define line_and_col \
    state.cur_line, state.cur_col
+//---------------------------------------------------------------------------
 
-static const long
-   flag_next             = 1 << 0,
-   flag_reproc           = 1 << 1,
-   flag_need_comma       = 1 << 2,
-   flag_seek_value       = 1 << 3, 
-   flag_escaped          = 1 << 4,
-   flag_string           = 1 << 5,
-   flag_need_colon       = 1 << 6,
-   flag_done             = 1 << 7,
-   flag_num_negative     = 1 << 8,
-   flag_num_zero         = 1 << 9,
-   flag_num_e            = 1 << 10,
-   flag_num_e_got_sign   = 1 << 11,
-   flag_num_e_negative   = 1 << 12,
-   flag_line_comment     = 1 << 13,
-   flag_block_comment    = 1 << 14;
-
-json_value * json_parse_ex (json_settings * settings,
-                            const json_char * json,
-                            size_t length,
-                            char * error_buf)
+stk::json_value* stk::json_parse_ex(stk::json_settings* settings, const __json_char_t* json, size_t length, char* error_buf)
 {
-   json_char error [json_error_max];
-   const json_char * end;
-   json_value * top, * root, * alloc = 0;
-   json_state state = { 0 };
+   __json_char_t error [json_error_max];
+   const __json_char_t * end;
+   stk::json_value * top, * root, * alloc = 0;
+   stk::json_state state = { 0 };
    long flags;
    long num_digits = 0, num_e = 0;
-   json_int_t num_fraction = 0;
+   __json_int_t num_fraction = 0;
 
    /* Skip UTF-8 BOM
     */
@@ -260,9 +255,9 @@ json_value * json_parse_ex (json_settings * settings,
 
    for (state.first_pass = 1; state.first_pass >= 0; -- state.first_pass)
    {
-      json_uchar uchar;
+      stk::json_uchar uchar;
       unsigned char uc_b1, uc_b2, uc_b3, uc_b4;
-      json_char * string = 0;
+      __json_char_t * string = 0;
       unsigned int string_length = 0;
 
       top = root = 0;
@@ -272,8 +267,8 @@ json_value * json_parse_ex (json_settings * settings,
 
       for (state.ptr = json ;; ++ state.ptr)
       {
-         json_char b = (state.ptr == end ? 0 : *state.ptr);
-         
+         __json_char_t b = (state.ptr == end ? 0 : *state.ptr);
+
          if (flags & flag_string)
          {
             if (!b)
@@ -297,7 +292,7 @@ json_value * json_parse_ex (json_settings * settings,
                   case 't':  string_add ('\t');  break;
                   case 'u':
 
-                    if (end - state.ptr < 4 || 
+                    if (end - state.ptr < 4 ||
                         (uc_b1 = hex_value (*++ state.ptr)) == 0xFF ||
                         (uc_b2 = hex_value (*++ state.ptr)) == 0xFF ||
                         (uc_b3 = hex_value (*++ state.ptr)) == 0xFF ||
@@ -312,8 +307,8 @@ json_value * json_parse_ex (json_settings * settings,
                     uchar = (uc_b1 << 8) | uc_b2;
 
                     if ((uchar & 0xF800) == 0xD800) {
-                        json_uchar uchar2;
-                        
+                        stk::json_uchar uchar2;
+
                         if (end - state.ptr < 6 || (*++ state.ptr) != '\\' || (*++ state.ptr) != 'u' ||
                             (uc_b1 = hex_value (*++ state.ptr)) == 0xFF ||
                             (uc_b2 = hex_value (*++ state.ptr)) == 0xFF ||
@@ -327,13 +322,13 @@ json_value * json_parse_ex (json_settings * settings,
                         uc_b1 = (uc_b1 << 4) | uc_b2;
                         uc_b2 = (uc_b3 << 4) | uc_b4;
                         uchar2 = (uc_b1 << 8) | uc_b2;
-                        
+
                         uchar = 0x010000 | ((uchar & 0x3FF) << 10) | (uchar2 & 0x3FF);
                     }
 
-                    if (sizeof (json_char) >= sizeof (json_uchar) || (uchar <= 0x7F))
+                    if (sizeof (__json_char_t) >= sizeof (json_uchar) || (uchar <= 0x7F))
                     {
-                       string_add ((json_char) uchar);
+                       string_add ((__json_char_t) uchar);
                        break;
                     }
 
@@ -357,7 +352,7 @@ json_value * json_parse_ex (json_settings * settings,
                            string [string_length ++] = 0x80 | ((uchar >> 6) & 0x3F);
                            string [string_length ++] = 0x80 | (uchar & 0x3F);
                         }
-                        
+
                         break;
                     }
 
@@ -395,26 +390,26 @@ json_value * json_parse_ex (json_settings * settings,
 
                switch (top->type)
                {
-                  case json_string:
+                  case stk::json_string:
 
                      top->u.string.length = string_length;
                      flags |= flag_next;
 
                      break;
 
-                  case json_object:
+                  case stk::json_object:
 
                      if (state.first_pass)
-                        (*(json_char **) &top->u.object.values) += string_length + 1;
+                        (*(__json_char_t**) &top->u.object.values) += string_length + 1;
                      else
-                     {  
+                     {
                         top->u.object.values [top->u.object.length].name
-                           = (json_char *) top->_reserved.object_mem;
+                           = (__json_char_t*) top->_reserved.object_mem;
 
                         top->u.object.values [top->u.object.length].name_length
                            = string_length;
 
-                        (*(json_char **) &top->_reserved.object_mem) += string_length + 1;
+                        (*(__json_char_t**) &top->_reserved.object_mem) += string_length + 1;
                      }
 
                      flags |= flag_seek_value | flag_need_colon;
@@ -464,7 +459,7 @@ json_value * json_parse_ex (json_settings * settings,
             }
             else if (b == '/')
             {
-               if (! (flags & (flag_seek_value | flag_done)) && top->type != json_object)
+               if (! (flags & (flag_seek_value | flag_done)) && top->type != stk::json_object)
                {  sprintf (error, "%d:%d: Comment not allowed here", line_and_col);
                   goto e_failed;
                }
@@ -519,7 +514,7 @@ json_value * json_parse_ex (json_settings * settings,
 
                case ']':
 
-                  if (top && top->type == json_array)
+                  if (top && top->type == stk::json_array)
                      flags = (flags & ~ (flag_need_comma | flag_seek_value)) | flag_next;
                   else
                   {  sprintf (error, "%d:%d: Unexpected ]", line_and_col);
@@ -552,7 +547,7 @@ json_value * json_parse_ex (json_settings * settings,
                         continue;
                      }
                      else
-                     { 
+                     {
                         sprintf (error, "%d:%d: Expected : before %c",
                                  state.cur_line, state.cur_col, b);
 
@@ -566,14 +561,14 @@ json_value * json_parse_ex (json_settings * settings,
                   {
                      case '{':
 
-                        if (!new_value (&state, &top, &root, &alloc, json_object))
+                        if (!new_value (&state, &top, &root, &alloc, stk::json_object))
                            goto e_alloc_failure;
 
                         continue;
 
                      case '[':
 
-                        if (!new_value (&state, &top, &root, &alloc, json_array))
+                        if (!new_value (&state, &top, &root, &alloc, stk::json_array))
                            goto e_alloc_failure;
 
                         flags |= flag_seek_value;
@@ -581,7 +576,7 @@ json_value * json_parse_ex (json_settings * settings,
 
                      case '"':
 
-                        if (!new_value (&state, &top, &root, &alloc, json_string))
+                        if (!new_value (&state, &top, &root, &alloc, stk::json_string))
                            goto e_alloc_failure;
 
                         flags |= flag_string;
@@ -599,7 +594,7 @@ json_value * json_parse_ex (json_settings * settings,
                            goto e_unknown_value;
                         }
 
-                        if (!new_value (&state, &top, &root, &alloc, json_boolean))
+                        if (!new_value (&state, &top, &root, &alloc, stk::json_boolean))
                            goto e_alloc_failure;
 
                         top->u.boolean = 1;
@@ -616,7 +611,7 @@ json_value * json_parse_ex (json_settings * settings,
                            goto e_unknown_value;
                         }
 
-                        if (!new_value (&state, &top, &root, &alloc, json_boolean))
+                        if (!new_value (&state, &top, &root, &alloc, stk::json_boolean))
                            goto e_alloc_failure;
 
                         flags |= flag_next;
@@ -630,7 +625,7 @@ json_value * json_parse_ex (json_settings * settings,
                            goto e_unknown_value;
                         }
 
-                        if (!new_value (&state, &top, &root, &alloc, json_null))
+                        if (!new_value (&state, &top, &root, &alloc, stk::json_null))
                            goto e_alloc_failure;
 
                         flags |= flag_next;
@@ -640,7 +635,7 @@ json_value * json_parse_ex (json_settings * settings,
 
                         if (isdigit (b) || b == '-')
                         {
-                           if (!new_value (&state, &top, &root, &alloc, json_integer))
+                           if (!new_value (&state, &top, &root, &alloc, stk::json_integer))
                               goto e_alloc_failure;
 
                            if (!state.first_pass)
@@ -689,8 +684,8 @@ json_value * json_parse_ex (json_settings * settings,
          {
             switch (top->type)
             {
-            case json_object:
-               
+            case stk::json_object:
+
                switch (b)
                {
                   whitespace:
@@ -705,11 +700,11 @@ json_value * json_parse_ex (json_settings * settings,
 
                      flags |= flag_string;
 
-                     string = (json_char *) top->_reserved.object_mem;
+                     string = (__json_char_t*) top->_reserved.object_mem;
                      string_length = 0;
 
                      break;
-                  
+
                   case '}':
 
                      flags = (flags & ~ flag_need_comma) | flag_next;
@@ -730,14 +725,14 @@ json_value * json_parse_ex (json_settings * settings,
 
                break;
 
-            case json_integer:
-            case json_double:
+            case stk::json_integer:
+            case stk::json_double:
 
                if (isdigit (b))
                {
                   ++ num_digits;
 
-                  if (top->type == json_integer || flags & flag_num_e)
+                  if (top->type == stk::json_integer || flags & flag_num_e)
                   {
                      if (! (flags & flag_num_e))
                      {
@@ -776,14 +771,14 @@ json_value * json_parse_ex (json_settings * settings,
                      continue;
                   }
                }
-               else if (b == '.' && top->type == json_integer)
+               else if (b == '.' && top->type == stk::json_integer)
                {
                   if (!num_digits)
                   {  sprintf (error, "%d:%d: Expected digit before `.`", line_and_col);
                      goto e_failed;
                   }
 
-                  top->type = json_double;
+                  top->type = stk::json_double;
                   top->u.dbl = (double) top->u.integer;
 
                   num_digits = 0;
@@ -792,7 +787,7 @@ json_value * json_parse_ex (json_settings * settings,
 
                if (! (flags & flag_num_e))
                {
-                  if (top->type == json_double)
+                  if (top->type == stk::json_double)
                   {
                      if (!num_digits)
                      {  sprintf (error, "%d:%d: Expected digit after `.`", line_and_col);
@@ -806,9 +801,9 @@ json_value * json_parse_ex (json_settings * settings,
                   {
                      flags |= flag_num_e;
 
-                     if (top->type == json_integer)
+                     if (top->type == stk::json_integer)
                      {
-                        top->type = json_double;
+                        top->type = stk::json_double;
                         top->u.dbl = (double) top->u.integer;
                      }
 
@@ -831,7 +826,7 @@ json_value * json_parse_ex (json_settings * settings,
 
                if (flags & flag_num_negative)
                {
-                  if (top->type == json_integer)
+                  if (top->type == stk::json_integer)
                      top->u.integer = - top->u.integer;
                   else
                      top->u.dbl = - top->u.dbl;
@@ -863,23 +858,23 @@ json_value * json_parse_ex (json_settings * settings,
                continue;
             }
 
-            if (top->parent->type == json_array)
+            if (top->parent->type == stk::json_array)
                flags |= flag_seek_value;
-               
+
             if (!state.first_pass)
             {
-               json_value * parent = top->parent;
+               stk::json_value * parent = top->parent;
 
                switch (parent->type)
                {
-                  case json_object:
+                  case stk::json_object:
 
                      parent->u.object.values
                         [parent->u.object.length].value = top;
 
                      break;
 
-                  case json_array:
+                  case stk::json_array:
 
                      parent->u.array.values
                            [parent->u.array.length] = top;
@@ -906,22 +901,15 @@ json_value * json_parse_ex (json_settings * settings,
    return root;
 
 e_unknown_value:
-
    sprintf (error, "%d:%d: Unknown value", line_and_col);
    goto e_failed;
-
 e_alloc_failure:
-
    strcpy (error, "Memory allocation failure");
    goto e_failed;
-
 e_overflow:
-
    sprintf (error, "%d:%d: Too long (caught overflow)", line_and_col);
    goto e_failed;
-
 e_failed:
-
    if (error_buf)
    {
       if (*error)
@@ -929,7 +917,6 @@ e_failed:
       else
          strcpy (error_buf, "Unknown error");
    }
-
    if (state.first_pass)
       alloc = root;
 
@@ -941,20 +928,22 @@ e_failed:
    }
 
    if (!state.first_pass)
-      json_value_free_ex (&state.settings, root);
+      stk::json_value_free_ex (&state.settings, root);
 
    return 0;
 }
+//---------------------------------------------------------------------------
 
-json_value * json_parse (const json_char * json, size_t length)
+stk::json_value* stk::json_parse(const __json_char_t* json, size_t length)
 {
-   json_settings settings = { 0 };
-   return json_parse_ex (&settings, json, length, 0);
+   stk::json_settings settings = { 0 };
+   return stk::json_parse_ex (&settings, json, length, 0);
 }
+//---------------------------------------------------------------------------
 
-void json_value_free_ex (json_settings * settings, json_value * value)
+void stk::json_value_free_ex(json_settings* settings, stk::json_value* value)
 {
-   json_value * cur_value;
+   stk::json_value* cur_value;
 
    if (!value)
       return;
@@ -965,7 +954,7 @@ void json_value_free_ex (json_settings * settings, json_value * value)
    {
       switch (value->type)
       {
-         case json_array:
+         case stk::json_array:
 
             if (!value->u.array.length)
             {
@@ -976,7 +965,7 @@ void json_value_free_ex (json_settings * settings, json_value * value)
             value = value->u.array.values [-- value->u.array.length];
             continue;
 
-         case json_object:
+         case stk::json_object:
 
             if (!value->u.object.length)
             {
@@ -987,7 +976,7 @@ void json_value_free_ex (json_settings * settings, json_value * value)
             value = value->u.object.values [-- value->u.object.length].value;
             continue;
 
-         case json_string:
+         case stk::json_string:
 
             settings->mem_free (value->u.string.ptr, settings->user_data);
             break;
@@ -995,17 +984,17 @@ void json_value_free_ex (json_settings * settings, json_value * value)
          default:
             break;
       };
-
       cur_value = value;
       value = value->parent;
       settings->mem_free (cur_value, settings->user_data);
    }
 }
+//---------------------------------------------------------------------------
 
-void json_value_free (json_value * value)
+void stk::json_value_free(json_value* value)
 {
-   json_settings settings = { 0 };
+   stk::json_settings settings = { 0 };
    settings.mem_free = default_free;
-   json_value_free_ex (&settings, value);
+   stk::json_value_free_ex(&settings, value);
 }
-
+//---------------------------------------------------------------------------

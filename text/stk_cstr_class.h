@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef stk_cstr_class_h
-#define stk_cstr_class_h
+#ifndef __stk_cstr_class_h
+#define __stk_cstr_class_h
 #pragma once
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"

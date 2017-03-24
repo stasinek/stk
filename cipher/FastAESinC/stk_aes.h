@@ -1,8 +1,13 @@
-#ifndef AES_H
+﻿#ifndef AES_H
 #define AES_H
-
+//-----------------------------------------------------------------------------
 #include <stdint.h>
-#include <string.h> 
+#include <string.h>
+//-----------------------------------------------------------------------------
+#ifdef __cplusplus
+namespace stk { namespace cipher {
+#endif
+//-----------------------------------------------------------------------------
 /*****************************************************************************/
 /* Defines:                                                                  */
 /*****************************************************************************/
@@ -14,38 +19,36 @@
 #define KEYLEN 16
 // The number of rounds in AES Cipher.
 #define Nr 10
-
 /*****************************************************************************/
 /* variables:                                                        */
 /*****************************************************************************/
 // state - array holding the intermediate results during decryption.
 typedef uint8_t state_t[4][4];
 state_t* state;
-
+//-----------------------------------------------------------------------------
 uint8_t* temp_value;
 // The array that stores the round keys.
 uint8_t RoundKey[176];
-
+//-----------------------------------------------------------------------------
 // The Key input to the AES Program
+//-----------------------------------------------------------------------------
 const uint8_t* Key;
-
+//-----------------------------------------------------------------------------
 uint8_t getSBoxValue(uint8_t num);
 uint8_t getSBoxInvert(uint8_t num);
-
+//-----------------------------------------------------------------------------
 void KeyExpansion(void);
-
 void AddRoundKey(uint8_t round);
-
 void InvMixColumns(void);
-
 void InvSubBytes(void);
-
 void InvShiftRows(void);
-
 void InvCipher(void);
-
-void BlockCopy(uint8_t* output, uint8_t* input);
-
+void block_copy(uint8_t* output, uint8_t* input);
 void AES128_ECB_decrypt(uint8_t* input, uint8_t *output);
-
+//-----------------------------------------------------------------------------
+#ifdef __cplusplus
+}}
 #endif
+//-----------------------------------------------------------------------------
+#endif
+//-----------------------------------------------------------------------------

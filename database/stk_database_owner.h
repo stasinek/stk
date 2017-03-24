@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef stk_database_owner_h
-#define stk_database_owner_h
+#ifndef __stk_database_owner_h
+#define __stk_database_owner_h
 #pragma once
 //---------------------------------------------------------------------------
 #include "./../stk_MAIN.h"

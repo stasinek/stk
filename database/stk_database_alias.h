@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef stk_database_alias_h
-#define stk_database_alias_h
+#ifndef __stk_database_alias_h
+#define __stk_database_alias_h
 #pragma once
 //---------------------------------------------------------------------------
 #include "./../text/stk_cstr_class.h"

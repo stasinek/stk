@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef stk_database_items_h
-#define stk_database_items_h
+#ifndef __stk_database_items_h
+#define __stk_database_items_h
 #pragma once
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
