@@ -2,6 +2,9 @@ TEMPLATE = lib
 DEFINES += STK_BUILD_LIBRARY
 
 QMAKE_CFLAGS_RELEASE += rtti_off stl_off exceptions_off
+QMAKE_CXXFLAGS += -save-temps
+QMAKE_CXXFLAGS += -fverbose-asm
+QMAKE_CXXFLAGS -= -pipe
 
 contains (QMAKE_COMPILER_DEFINES,__clang__) {
 QMAKE_CC  = clang
@@ -112,7 +115,7 @@ QMAKE_LFLAGS -= -mthreads
 }
 
 SOURCES += \
-    kop32_main.cpp \
+#    kop32_main.cpp \
     stk_set.cpp \
     stk_test.cpp \
     stk_hash_chain.cpp \
@@ -162,9 +165,9 @@ SOURCES += \
     process_journal/stk_journal.cpp \
     pharser/stk_pharse_command_line.cpp \
     pharser/stk_pharse_math.cpp \
-    sthreads/stk_threads.cpp \
-    stasm/stk_stasm.cpp \
     sockets/stk_sockets.cpp \
+    stasm/stk_stasm.cpp \
+    sthreads/stk_threads.cpp \
     text/stk_cstr_utils.cpp \
     time/stk_time.cpp \
     text/stk_cstr_class.cpp \
@@ -237,8 +240,8 @@ HEADERS += \
     pharser/stk_pharse_command_line.h \
     process_journal/stk_journal.h \
     sockets/stk_sockets.h \
-    sthreads/stk_threads.h \
     stasm/stk_stasm.h \
+    sthreads/stk_threads.h \
     time/stk_time.h \
     text/stk_cstr_class.h \
     text/stk_cstr_stack.h \

@@ -1,4 +1,74 @@
-﻿//---------------------------------------------------------------------------
+﻿//
+// C++ WARNINGS/ERRORS
+//
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic ignored "-Waggregate-return"
+#endif
+
+#ifndef __EXPORT
+#    define __EXPORT __declspec(dllexport)
+#endif /* __EXPORT */
+
+#ifndef __IMPORT
+#    define __IMPORT __declspec(dllimport)
+#endif /* __IMPORT */
+
+#define STK_EXPORT __EXPORT
+#define STK_IMPORT __IMPORT
+
+#ifdef STK_BUILD_LIBRARY
+    #define STK_IMPEXP __EXPORT
+#else /* !STK_BUILD_LIBRARY */
+    #define STK_IMPEXP __IMPORT
+#endif /* STK_BUILD_LIBRARY */
+
+
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma clang diagnostic ignored "-Wnon-virtual-dtor"
+#pragma clang diagnostic ignored "-Wweak-vtables"
+#pragma clang diagnostic ignored "-Wpadded"
+#pragma clang diagnostic ignored "-Wdeprecated"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#pragma clang diagnostic ignored "-Wunused-local-typedef"
+#pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+#pragma clang diagnostic ignored "-Wc++11-long-long"
+#endif // __clang__
+
+#if defined(__GNUC__) && !defined(__clang__)
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 6)
+#pragma GCC diagnostic push
+#endif // > gcc 4.6
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma GCC diagnostic ignored "-Weffc++"
+#pragma GCC diagnostic ignored "-Wstrict-overflow"
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#pragma GCC diagnostic ignored "-Wctor-dtor-privacy"
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
+#pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+#pragma GCC diagnostic ignored "-Winline"
+#pragma GCC diagnostic ignored "-Wlong-long"
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 6)
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+#endif // > gcc 4.6
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 7)
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#endif // > gcc 4.7
+#if __GNUC__ > 5 || (__GNUC__ == 5 && __GNUC_MINOR__ > 3)
+#pragma GCC diagnostic ignored "-Wuseless-cast"
+#endif // > gcc 5.3
+#endif // __GNUC__
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4996) // The compiler encountered a deprecated declaration
+#pragma warning(disable : 4706) // assignment within conditional expression
+#pragma warning(disable : 4512) // 'class' : assignment operator could not be generated
+#pragma warning(disable : 4127) // conditional expression is constant
+#endif                          // _MSC_VER
+
+//---------------------------------------------------------------------------
 // SET DEBUG
 //---------------------------------------------------------------------------
 #if !defined(__DEBUG__)

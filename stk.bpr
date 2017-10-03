@@ -4,17 +4,17 @@
   <MACROS>
 	<VERSION value="BCB.06.00"/>
 	<PROJECT value="core_kop32_library.dll"/>
-	<OBJFILES value="core_kop32_library.obj tsoft_ari.obj tsoft_bin_tree.obj 
-	  tsoft_bwt_matrix.obj tsoft_database.obj tsoft_file_io.obj 
-	  tsoft_file_search.obj tsoft_hdr.obj tsoft_huff.obj tsoft_memory32.obj 
-	  tsoft_koder.obj tsoft_kop32.obj tsoft_mtf.obj tsoft_pharser.obj 
-	  tsoft_stack.obj tsoft_kop32_console.obj tsoft_progression.obj 
-	  tsoft_controler.obj tsoft_password.obj tsoft_kop32_socket_server.obj 
-	  tsoft_journal.obj tsoft_md5.obj tsoft_bwt_matrix2.obj 
-	  tsoft_static_huff.obj tsoft_ssc1.obj ..\database\tsoft_database_item.obj 
-	  ..\io\tsoft_memory32.obj ..\pharser\tsoft_pharser.obj 
-	  ..\sockets\tsoft_mime_types.obj ..\sockets\tsoft_sockets.obj 
-	  ..\stack\tsoft_stack.obj"/>
+	<OBJFILES value="core_kop32_library.obj stk_ari.obj stk_bin_tree.obj 
+	  stk_bwt_matrix.obj stk_database.obj stk_file_io.obj 
+	  stk_file_search.obj stk_hdr.obj stk_huff.obj stk_memory32.obj 
+	  stk_koder.obj stk_kop32.obj stk_mtf.obj stk_pharser.obj 
+	  stk_stack.obj stk_kop32_console.obj stk_progression.obj 
+	  stk_controler.obj stk_password.obj stk_kop32_socket_server.obj 
+	  stk_journal.obj stk_md5.obj stk_bwt_matrix2.obj 
+	  stk_static_huff.obj stk_ssc1.obj ..\database\stk_database_item.obj 
+	  ..\io\stk_memory32.obj ..\pharser\stk_pharser.obj 
+	  ..\sockets\stk_mime_types.obj ..\sockets\stk_sockets.obj 
+	  ..\stack\stk_stack.obj"/>
 	<RESFILES value="core_kop32_library.res"/>
 	<IDLFILES value=""/>
 	<IDLGENFILES value=""/>
@@ -64,36 +64,36 @@
   <FILELIST>
 	  <FILE FILENAME="core_kop32_library.cpp" FORMNAME="" UNITNAME="core_kop32_library" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
 	  <FILE FILENAME="core_kop32_library.res" FORMNAME="" UNITNAME="core_kop32_library.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_ari.Cpp" FORMNAME="" UNITNAME="tsoft_ari.Cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_bin_tree.cpp" FORMNAME="" UNITNAME="tsoft_bin_tree.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_bwt_matrix.cpp" FORMNAME="" UNITNAME="tsoft_bwt_matrix.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_database.cpp" FORMNAME="" UNITNAME="tsoft_database.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_file_io.cpp" FORMNAME="" UNITNAME="tsoft_file_io.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_file_search.cpp" FORMNAME="" UNITNAME="tsoft_file_search.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_hdr.cpp" FORMNAME="" UNITNAME="tsoft_hdr.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_huff.Cpp" FORMNAME="" UNITNAME="tsoft_huff.Cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_memory32.cpp" FORMNAME="" UNITNAME="tsoft_memory32.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_koder.cpp" FORMNAME="" UNITNAME="tsoft_koder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_kop32.cpp" FORMNAME="" UNITNAME="tsoft_kop32.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_mtf.cpp" FORMNAME="" UNITNAME="tsoft_mtf.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_pharser.cpp" FORMNAME="" UNITNAME="tsoft_pharser.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_stack.cpp" FORMNAME="" UNITNAME="tsoft_stack.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_kop32_console.cpp" FORMNAME="" UNITNAME="tsoft_kop32_console.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_progression.cpp" FORMNAME="" UNITNAME="tsoft_progression.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_controler.cpp" FORMNAME="" UNITNAME="tsoft_controler.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_password.cpp" FORMNAME="" UNITNAME="tsoft_password.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_kop32_socket_server.cpp" FORMNAME="" UNITNAME="tsoft_kop32_socket_server.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_journal.cpp" FORMNAME="" UNITNAME="tsoft_journal.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_md5.cpp" FORMNAME="" UNITNAME="tsoft_md5.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_bwt_matrix2.cpp" FORMNAME="" UNITNAME="tsoft_bwt_matrix2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_static_huff.cpp" FORMNAME="" UNITNAME="tsoft_static_huff.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="tsoft_ssc1.cpp" FORMNAME="" UNITNAME="tsoft_ssc1.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\database\tsoft_database_item.cpp" FORMNAME="" UNITNAME="tsoft_database_item" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\io\tsoft_memory32.cpp" FORMNAME="" UNITNAME="tsoft_memory32" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\pharser\tsoft_pharser.cpp" FORMNAME="" UNITNAME="tsoft_pharser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\sockets\tsoft_mime_types.cpp" FORMNAME="" UNITNAME="tsoft_mime_types.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\sockets\tsoft_sockets.cpp" FORMNAME="" UNITNAME="tsoft_sockets.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\stack\tsoft_stack.cpp" FORMNAME="" UNITNAME="tsoft_stack" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_ari.Cpp" FORMNAME="" UNITNAME="stk_ari.Cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_bin_tree.cpp" FORMNAME="" UNITNAME="stk_bin_tree.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_bwt_matrix.cpp" FORMNAME="" UNITNAME="stk_bwt_matrix.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_database.cpp" FORMNAME="" UNITNAME="stk_database.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_file_io.cpp" FORMNAME="" UNITNAME="stk_file_io.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_file_search.cpp" FORMNAME="" UNITNAME="stk_file_search.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_hdr.cpp" FORMNAME="" UNITNAME="stk_hdr.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_huff.Cpp" FORMNAME="" UNITNAME="stk_huff.Cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_memory32.cpp" FORMNAME="" UNITNAME="stk_memory32.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_koder.cpp" FORMNAME="" UNITNAME="stk_koder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_kop32.cpp" FORMNAME="" UNITNAME="stk_kop32.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_mtf.cpp" FORMNAME="" UNITNAME="stk_mtf.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_pharser.cpp" FORMNAME="" UNITNAME="stk_pharser.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_stack.cpp" FORMNAME="" UNITNAME="stk_stack.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_kop32_console.cpp" FORMNAME="" UNITNAME="stk_kop32_console.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_progression.cpp" FORMNAME="" UNITNAME="stk_progression.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_controler.cpp" FORMNAME="" UNITNAME="stk_controler.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_password.cpp" FORMNAME="" UNITNAME="stk_password.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_kop32_socket_server.cpp" FORMNAME="" UNITNAME="stk_kop32_socket_server.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_journal.cpp" FORMNAME="" UNITNAME="stk_journal.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_md5.cpp" FORMNAME="" UNITNAME="stk_md5.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_bwt_matrix2.cpp" FORMNAME="" UNITNAME="stk_bwt_matrix2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_static_huff.cpp" FORMNAME="" UNITNAME="stk_static_huff.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="stk_ssc1.cpp" FORMNAME="" UNITNAME="stk_ssc1.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="..\database\stk_database_item.cpp" FORMNAME="" UNITNAME="stk_database_item" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="..\io\stk_memory32.cpp" FORMNAME="" UNITNAME="stk_memory32" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="..\pharser\stk_pharser.cpp" FORMNAME="" UNITNAME="stk_pharser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="..\sockets\stk_mime_types.cpp" FORMNAME="" UNITNAME="stk_mime_types.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="..\sockets\stk_sockets.cpp" FORMNAME="" UNITNAME="stk_sockets.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+	  <FILE FILENAME="..\stack\stk_stack.cpp" FORMNAME="" UNITNAME="stk_stack" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
