@@ -1,4 +1,4 @@
-﻿/*
+/*
 ----------
 
   plain-text:
@@ -37,7 +37,9 @@ NOTE:   String length must be evenly divisible by 16byte (str_len % 16 == 0)
 #include "masking.h"
 #endif
 //-----------------------------------------------------------------------------
+#ifdef __GNUC__
 #include <stdint.h>
+#endif
 #include <string.h> // CBC mode, for memset
 /*****************************************************************************/
 /* Defines:                                                                  */

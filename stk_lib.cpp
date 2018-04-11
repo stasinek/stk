@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 //----------------- "sstsoft.pl 2001-2017 -----------------------------------
 //---------------------------------------------------------------------------
-#include "stk_kop32_console.h"
+#include "./koperek/stk_kop32_console.h"
 #include <windows.h>
 //---------------------------------------------------------------------------
 //   Important note about DLL memory management when your DLL uses the
@@ -23,6 +23,13 @@
 //   If your DLL uses the dynamic version of the RTL, you do not need to
 //   explicitly add MEMMGR.LIB as this will be done implicitly for you
 //---------------------------------------------------------------------------
+USEUNIT(".\koperek\stk_kop32_API.cpp");
+USEUNIT(".\koperek\stk_kop32_class.cpp");
+USEUNIT(".\koperek\stk_kop32_console_API.cpp");
+USEUNIT(".\koperek\stk_kop32_controler.cpp");
+USEUNIT(".\koperek\stk_kop32_search.cpp");
+USEUNIT(".\koperek\stk_kop32_socket_server.cpp");
+//---------------------------------------------------------------------------
 stk::__kop32_class *kop;
 //---------------------------------------------------------------------------
 
@@ -38,4 +45,4 @@ int WINAPI DllEntryPoint(HINSTANCE, unsigned long reason, void*)
 	return 1;
 }
 //---------------------------------------------------------------------------
-
+ 

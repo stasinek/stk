@@ -243,7 +243,8 @@ stk::con::prints("__database_items::insert(a_index:%d,a_atom->text=NULL)",a_inde
 stk::con::print("\r\n\r\n");
 #endif
 
-        set_count(count()+1);
+		set_count(count()+1);
+        // TODO: change static to something else for MULTITHREADED app
         static stk::__database_items::__atom c_atom;
         stk::mem::mov(&c_atom,f_atom_matrix[count()-1],sizeof(stk::__database_items::__atom));
         for (uint32_t iT = count()-1; iT > a_index; iT--) {

@@ -1,4 +1,4 @@
-﻿/* vim: set et ts=3 sw=3 sts=3 ft=c:
+/* vim: set et ts=3 sw=3 sts=3 ft=c:
  *
  * Copyright (C) 2012, 2013, 2014 James McLaughlin et al.  All rights reserved.
  * https://github.com/udp/json-parser
@@ -134,14 +134,9 @@ static int new_value(stk::json_state * state, stk::json_value** top, stk::json_v
       {
          case stk::json_array:
 
-            if (value->u.array.length == 0)
-               break;
-
-            if (! (value->u.array.values = (stk::json_value **)json_alloc
-               (state, value->u.array.length * sizeof (stk::json_value *), 0)) )
-            {
-               return 0;
-            }
+			if (value->u.array.length == 0) break;
+				 value->u.array.values = (stk::json_value **)json_alloc(state, value->u.array.length * sizeof (stk::json_value *), 0);
+			if (value->u.array.values == 0) return 0;
 
             value->u.array.length = 0;
             break;

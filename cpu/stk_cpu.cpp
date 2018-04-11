@@ -4,6 +4,7 @@
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
 #include "./../sthreads/stk_threads.h"
+#include "./../stasm/stk_stasm.h"
 #include "./../time/stk_time.h"
 #include "./../io/stk_console.h"
 //---------------------------------------------------------------------------
@@ -13,18 +14,24 @@ static uint64_t tsc_STARTED = 0, tsc_PAUSED = 0, tsc_LAST_MEASURED = 0;
 static uint64_t tsc_ADJ = stk::cpu::tsc_init();
 static uint64_t tsc_ELAPSED = 0;
 //---------------------------------------------------------------------------
+
 #if !defined(__BORLANDC__) && !defined(__WATCOMC__)
 uint64_t __cdecl stk::cpu::rdtscp(uint32_t *a_chip, uint32_t *a_core)
 {
 uint32_t HI, LO, CC;
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(__GNUC__) || defined(__CLANG__)
 asm volatile("rdtscp" : "=a" (LO), "=d" (HI), "=c" (CC));
-#else
-    __asm { rdtscp;
-            mov [LO], eax;
-            mov [HI], edx;
-            mov [CC], ecx;
+#elif defined(_MSC_VER)
+    __asm {
+        rdtscp;
+        mov [LO], eax;
+        mov [HI], edx;
+        mov [CC], ecx;
     }
+#else
+
+// Other compiler ERROR!
+
 #endif
 if (a_chip!=NULL) *a_chip = (CC & 0x00FFF000)>>12;
 if (a_core!=NULL) *a_core =  CC & 0x00000FFF;
@@ -34,16 +41,18 @@ if (a_core!=NULL) *a_core =  CC & 0x00000FFF;
     return r; //( (unsigned long long)lo)|( ((unsigned long long)hi)<<32 );
 }
 #endif
+//---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::rdtsc(void)
 {
 uint32_t HI, LO;
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(__GNUC__) || defined(__CLANG__)
     asm volatile ("rdtsc" : "=a"(LO), "=d"(HI));
-#else
-    __asm { rdtsc;
-            mov [LO], eax;
-            mov [HI], edx;
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+    __asm {
+        rdtsc;
+        mov [LO], eax;
+        mov [HI], edx;
     }
 #endif
     register uint64_t r = HI;
@@ -51,15 +60,16 @@ uint32_t HI, LO;
     r = r  | LO;
     return r; //( (unsigned long long)lo)|( ((unsigned long long)hi)<<32 );
 }
+//---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::rdtscex(void)
 {
-#if defined(__ARM__) && (defined (__GNUC__) || defined(__clang__))
+#if defined(__ARM__) && (defined (__GNUC__) || defined(__CLANG__))
 uint32_t r;
-    asm volatile ("mcr p15,  0, %0, c15,  c9, 0\n" : : "r" (1));
-    asm volatile ("mrc p15,  0, %0, c15, c12, 1" : "=r" (r));
-return r;
-#elif __BORLANDC__
+    asm volatile ("mcr p15, 0, %0, c15,  c9, 0\n" : : "r" (1));
+    asm volatile ("mrc p15, 0, %0, c15, c12, 1" : "=r" (r));
+  return r;
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
 uint32_t LO, HI;
     __asm {
     pushfd;
@@ -82,7 +92,7 @@ uint32_t LO, HI;
         mov eax,1;
         cpuid;
         jmp tsc_intel_measure;
-        tsc_amd_measure:
+        // AMD & other specific version
         sfence;
         rdtsc;
 
@@ -97,68 +107,70 @@ uint32_t LO, HI;
         pop edx;
         pop ecx;
         pop ebx;
-        pop eax;
-        popfd;
-    }
-    uint64_t r = HI;
-    r = r << 32;
-    r = r  | LO;
-#elif defined(__GNUC__) || defined(__clang__)
+		pop eax;
+		popfd;
+	}
+	uint64_t r = HI;
+	r = r << 32;
+	r = r  | LO;
+	return r;
+
+#elif defined(__GNUC__) || defined(__CLANG__)
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t LO, HI;
-    __stasm(eax,ebx,ecx,edx,esi,edi,
-    code,
-        pushfd;
-        push eax;
-        push ebx;
-        push ecx;
-        push edx;
-        push esi;
+	__stasm(eax,ebx,ecx,edx,esi,edi,
+	code,
+		pushfd;
+		push eax;
+		push ebx;
+		push ecx;
+		push edx;
+		push esi;
 
-        mov eax,0x00000001;
-        xor ecx,ecx;
-        cpuid;
-        mov ecx,0x00000001;
-        shl ecx,27;
-        and ecx,edx;
-        xor eax,eax;
-        xor edx,edx;
+		mov eax,0x00000001;
+		xor ecx,ecx;
+		cpuid;
+		mov ecx,0x00000001;
+		shl ecx,27;
+		and ecx,edx;
+		xor eax,eax;
+		xor edx,edx;
 
-       test ecx,ecx;
-         jz tsc_exit;
-        mov eax,1;
-        cpuid;
-        jmp tsc_intel_measure;
-        tsc_amd_measure:\n
-        sfence;
-        rdtsc;
+	   test ecx,ecx;
+		 jz tsc_exit;
+		mov eax,1;
+		cpuid;
+		jmp tsc_intel_measure;
+		tsc_amd_measure:\n
+		sfence;
+		rdtsc;
 
-        tsc_intel_measure:\n
-        sfence;
-        rdtsc;
+		tsc_intel_measure:\n
+		sfence;
+		rdtsc;
 
-        tsc_exit:\n
-        mov edi,s_x86;
-        mov [edi+0],eax;
-        mov [edi+4],edx;
+		tsc_exit:\n
+		mov edi,__s_x86;
+		mov [edi+0],eax;
+		mov [edi+4],edx;
 
-        pop esi;
-        pop edx;
-        pop ecx;
-        pop ebx;
-        pop eax;
-        popfd;
-    )
-    uint64_t r = (uint64_t)s_x86[1];
-    r = r << 32;
-    r = r  | (uint64_t)s_x86[0];
-    ATOMIC_UNLOCK(1)
-    return r;
+		pop esi;
+		pop edx;
+		pop ecx;
+		pop ebx;
+		pop eax;
+		popfd;
+	)
+	uint64_t r = (uint64_t)__s_x86[1];
+	r = r << 32;
+	r = r  | (uint64_t)__s_x86[0];
+	ATOMIC_UNLOCK(1)
+	return r;
 #else
-        // Microsoft Visual Studio, OpenWatcom, Peles C
+		// OpenWatcom, Peles C
+	return 0;
 #endif
-return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -259,7 +271,7 @@ ATOMIC_UNLOCK(1)
 
 uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_ecx, uint32_t* a_edx,uint32_t a_feature,uint32_t a_feature_ecx)
 {
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(__GNUC__) || defined(__CLANG__)
     __asm__ __volatile__ (
     "movl %0, %%eax\n"
     "movl %1, %%ecx\n"
@@ -269,8 +281,9 @@ uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_e
     "mov %%eax, %2\n"
     "mov %%eax, %3\n"
      : "=m"(a_eax), "=m"(a_ebx), "=m"(a_ecx), "=m"(a_edx) : "m" (a_feature), "m" (a_feature_ecx) : "eax", "ebx", "ecx", "edx", "memory");
-#elif defined(__BORLANDC_) || defined(__MSVC__)
-asm {   mov eax,a_feature;
+#elif defined(__BORLANDC_) || defined(_MSC_VER)
+__asm {
+        mov eax,a_feature;
         mov ecx,a_feature_ecx;
         and eax,0x80000000;
         cpuid;
@@ -313,9 +326,8 @@ previous_feature = a_feature;
 previous_feature_ecx = a_feature_ecx;
 }
 //-----------------------------
-#ifdef __BORLANDC__
-__asm
-  {
+#if (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+__asm {
         pushfd
         push eax;
         push ebx;
@@ -355,9 +367,9 @@ cpuid;
 *a_ebx = cached_ebx;
 *a_ecx = cached_ecx;
 *a_edx = cached_edx;
-#elif defined(__GNUC__) || defined(__clang__)
-s_x86[0]        = a_feature;
-s_x86[5]        = a_feature_ecx;
+#elif defined(__GNUC__) || defined(__CLANG__)
+__s_x86[0]        = a_feature;
+__s_x86[5]        = a_feature_ecx;
 __stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
     pushfd\n
         push eax\n
@@ -366,7 +378,7 @@ __stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
         push edx\n
         push esi\n
         push edi\n
-    mov edi,s_x86[0]\n
+    mov edi,__s_x86[0]\n
     mov eax,dword ptr[edi+0*4]\n
     and eax,0x80000000\n
 cpuid\n
@@ -393,13 +405,13 @@ cpuid\n
         pop eax\n
     popfd\n
     )
-cached_eax = s_x86[1];
+cached_eax = __s_x86[1];
     *a_eax = cached_eax;
-cached_ebx = s_x86[2];
+cached_ebx = __s_x86[2];
     *a_ebx = cached_ebx;
-cached_ecx = s_x86[3];
+cached_ecx = __s_x86[3];
     *a_ecx = cached_ecx;
-cached_edx = s_x86[4];
+cached_edx = __s_x86[4];
     *a_edx = cached_edx;
 
 #else
@@ -648,20 +660,20 @@ ATOMIC_LOCK(1)
     for (r = 0, i = 0; i < TIMES;i++) { if (i!=imin && i!=imax) r = r + x[i];
     }
 r = (r / (TIMES-2)) / 1000000;
-s_answer = uint32_t(r);
+s_answer = (uint32_t)r;
 //-----------------------------
 ATOMIC_UNLOCK(1)
 return (uint32_t)r;
 }
 //---------------------------------------------------------------------------
 
-#if defined(__i386__) || defined(_MSC_VER) || defined(__BORLANDC__)
+#if defined(__i386__) || defined(_MSC_VER) || (__BORLANDC__ > 0x551)
 
 bool __cdecl stk::cpu::cpu_has_x87(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -685,7 +697,6 @@ if (f_edx & (1<<0)) {
 s_answer = 0;
 ATOMIC_UNLOCK(1)
 return 0;
-
 }
 //---------------------------------------------------------------------------
 
@@ -693,7 +704,7 @@ bool __cdecl stk::cpu::cpu_has_mmx(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -711,7 +722,7 @@ bool __cdecl stk::cpu::cpu_has_mmxext(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -735,7 +746,7 @@ bool __cdecl stk::cpu::cpu_has_amd64(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -753,7 +764,7 @@ bool __cdecl stk::cpu::cpu_has_ht(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -807,7 +818,7 @@ bool __cdecl stk::cpu::cpu_has_sse4a(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -852,7 +863,7 @@ bool __cdecl stk::cpu::cpu_has_popcnt(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -870,7 +881,7 @@ bool __cdecl stk::cpu::cpu_has_f16c(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -924,7 +935,7 @@ bool __cdecl stk::cpu::cpu_has_vmx(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -942,7 +953,7 @@ bool __cdecl stk::cpu::cpu_has_smx(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -960,7 +971,7 @@ bool __cdecl stk::cpu::cpu_has_cmov(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -978,7 +989,7 @@ bool __cdecl stk::cpu::cpu_has_movbe(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1020,7 +1031,7 @@ bool __cdecl stk::cpu::cpu_has_erms(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1062,7 +1073,7 @@ bool __cdecl stk::cpu::cpu_has_3dnowprefetch(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1080,7 +1091,7 @@ bool __cdecl stk::cpu::cpu_has_perftsc(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1098,7 +1109,7 @@ bool __cdecl stk::cpu::cpu_has_sha(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1116,7 +1127,7 @@ bool __cdecl stk::cpu::cpu_has_xop(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1134,7 +1145,7 @@ bool __cdecl stk::cpu::cpu_has_avx512f(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1152,7 +1163,7 @@ bool __cdecl stk::cpu::cpu_has_avx512bw(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1170,7 +1181,7 @@ bool __cdecl stk::cpu::cpu_has_avx512er(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1188,7 +1199,7 @@ bool __cdecl stk::cpu::cpu_has_avx512cd(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1206,7 +1217,7 @@ bool __cdecl stk::cpu::cpu_has_avx512pf(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1224,7 +1235,7 @@ bool __cdecl stk::cpu::cpu_has_avx512dq(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1242,7 +1253,7 @@ bool __cdecl stk::cpu::cpu_has_avx512vl(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1260,7 +1271,7 @@ bool __cdecl stk::cpu::cpu_has_avx512ifma(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1278,7 +1289,7 @@ bool __cdecl stk::cpu::cpu_has_avx512vbmi(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1296,7 +1307,7 @@ bool __cdecl stk::cpu::cpu_has_adx(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1314,7 +1325,7 @@ bool __cdecl stk::cpu::cpu_has_lzcnt(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1332,7 +1343,7 @@ bool __cdecl stk::cpu::cpu_has_tbm(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1350,7 +1361,7 @@ bool __cdecl stk::cpu::cpu_has_clfsh(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1368,7 +1379,7 @@ bool __cdecl stk::cpu::cpu_has_pclmulqdq(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1386,7 +1397,7 @@ bool __cdecl stk::cpu::cpu_has_fxsr(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1404,7 +1415,7 @@ bool __cdecl stk::cpu::cpu_has_ss(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1422,7 +1433,7 @@ bool __cdecl stk::cpu::cpu_has_mtrr(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1440,7 +1451,7 @@ bool __cdecl stk::cpu::cpu_has_msr(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1458,7 +1469,7 @@ bool __cdecl stk::cpu::cpu_has_tsc(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1476,7 +1487,7 @@ bool __cdecl stk::cpu::cpu_has_psn(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1494,7 +1505,7 @@ bool __cdecl stk::cpu::cpu_has_xsave(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1512,7 +1523,7 @@ bool __cdecl stk::cpu::cpu_has_clmul(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1585,7 +1596,7 @@ bool __cdecl stk::cpu::cpu_has_aes(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1603,7 +1614,7 @@ bool __cdecl stk::cpu::cpu_has_viaaes(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1621,7 +1632,7 @@ bool __cdecl stk::cpu::cpu_has_viarng(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1639,7 +1650,7 @@ bool __cdecl stk::cpu::cpu_has_viahash(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1657,7 +1668,7 @@ bool __cdecl stk::cpu::cpu_has_rdseed(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1675,7 +1686,7 @@ bool __cdecl stk::cpu::cpu_has_rdrand(void)
 {
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+    return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
@@ -1712,7 +1723,7 @@ void __cdecl stk::cpu::cpu_print_info()
     PRINT_CPUID(stk::cpu::cpu_cache_line_size(3));
     PRINT_CPUID(stk::cpu::cpu_num_cores());
     PRINT_CPUID(stk::cpu::cpu_num_threads());
-#if defined(__i386__) || defined(_MSC_VER) || defined(__BORLANDC__)
+#if defined(__i386__) || defined(_MSC_VER) || (__BORLANDC__ > 0x551)
     PRINT_CPUID(stk::cpu::cpu_has_amd64());
     PRINT_CPUID(stk::cpu::cpu_has_ht());
     PRINT_CPUID(stk::cpu::cpu_has_mmx());

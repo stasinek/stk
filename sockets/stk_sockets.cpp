@@ -9,6 +9,8 @@
 #include "./../sthreads/stk_threads.h"
 #include "./../time/stk_time.h"
 //---------------------------------------------------------------------------
+#pragma comment(lib, "Ws2_32.lib")
+//---------------------------------------------------------------------------
 
 SOCKET __stdcall stk::socket::create_server_socket(const char *aipv4_port_s, const int atimeout_s)
 {
@@ -138,10 +140,10 @@ int32_t __stdcall stk::socket::send_for_sure(SOCKET amain_socket,const char *ase
 #ifdef __DEBUG_SOCKET__
 __DEBUG_FUNC_CALLED("")
 #endif
-        register int32_t s = 0;
+                register int32_t s;
         register int32_t s_sum = 0;
         register int32_t to_s = alen;
-        while(s_sum<to_s) {
+                while(s_sum < to_s) {
         s =  send(amain_socket,&asend_lp[s_sum],to_s-s_sum,0);
         if (s<0) break;
         else if (s>0) s_sum += s;
@@ -162,11 +164,11 @@ int32_t __stdcall stk::socket::recv_for_sure(SOCKET amain_socket, char *arecv_lp
 #ifdef __DEBUG_SOCKET__
 __DEBUG_FUNC_CALLED("")
 #endif
-        register int32_t r = 0;
-        register int32_t r_sum = 0;
-        register int32_t to_r = alen;
-        stk::mem::set(arecv_lp,0,to_r);
-        do {
+                register int32_t r;
+                register int32_t r_sum = 0;
+                register int32_t to_r = alen;
+                stk::mem::set(arecv_lp,0,to_r);
+                do {
         r = recv(amain_socket,&arecv_lp[r_sum], to_r-r_sum, 0);
         if (r <0 || r==WSAECONNRESET || r==SOCKET_ERROR) break;
         else if (r==0) {

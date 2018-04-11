@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------
 namespace stk { namespace mem {
 //---------------------------------------------------------------------------
-        extern intmax_t       __stdcall allocated           (void);
+                extern intmax_t       __stdcall allocated           (void);
 // must be SIGNED for mem leak detection ;)
 		extern size_t         __stdcall size                (const void *a_ptr);
 		extern void          *__stdcall alloc	            (const size_t a_count);
@@ -18,23 +18,23 @@ namespace stk { namespace mem {
 		extern void          *__stdcall rev                 (void *a_dst_ptr, const void *a_src_ptr, const size_t a_count);
 		extern void          *__stdcall swap                (void *a_ptr, const size_t a_head_count, const size_t a_tail_count);
 		//---------------------------------------------------------------------------
-        extern intmax_t       __stdcall cmp                 (const void *a_ptr1, const void *a_ptr2, const size_t a_count);
+                extern intmax_t       __stdcall cmp                 (const void *a_ptr1, const void *a_ptr2, const size_t a_count);
 		//---------------------------------------------------------------------------
 		extern void          *__stdcall set                 (void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count);
 		extern void          *__stdcall set                 (void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count);
-        extern void          *__stdcall setex               (void *a_dst_ptr, const void *a_src_ptr, const int8_t a_element_size, const size_t a_count);
+                extern void          *__stdcall setex               (void *a_dst_ptr, const void *a_src_ptr, const int8_t a_element_size, const size_t a_count);
 		//---------------------------------------------------------------------------
 		extern void          *__stdcall shr                 (void *a_dst_ptr, const size_t a_count);
 		extern void          *__stdcall shl                 (void *a_dst_ptr, const size_t a_count);
 		extern void          *__stdcall ror                 (void *a_dst_ptr, const size_t a_count);
 		extern void          *__stdcall rol                 (void *a_dst_ptr, const size_t a_count);
 		//---------------------------------------------------------------------------
-        extern intmax_t        __stdcall chr                (const void *a_src_ptr, const char a_znak_B, const size_t a_count);
-        extern intmax_t        __stdcall chrr               (const void *a_src_ptr, const char a_znak_B, const size_t a_count);
+                extern intmax_t       __stdcall chr                 (const void *a_src_ptr, const char a_znak_B, const size_t a_count);
+                extern intmax_t       __stdcall chrr                (const void *a_src_ptr, const char a_znak_B, const size_t a_count);
 //---------------------------------------------------------------------------
-        extern intmax_t        __stdcall pos                (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size);
-        extern intmax_t        __stdcall posr               (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size);
-        extern intmax_t        __stdcall pos_kmp 		    (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size);
+                extern intmax_t       __stdcall pos                 (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size);
+                extern intmax_t       __stdcall posr                (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size);
+                extern intmax_t       __stdcall pos_kmp	            (const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size);
 
 //---------------------------------------------------------------------------
 #define membit(val,b) (((char*)val)[b/8] &   (0x01<<(b%8)));
@@ -58,7 +58,7 @@ inline uint8_t bitcount(uint32_t i)
 //---------------------------------------------------------------------------
 }}
 //---------------------------------------------------------------------------
-#if defined(__clang__)
+#if defined(__CLANG__)
 inline void* __cdecl operator new (const size_t a_count)
 {	return stk::mem::alloc(a_count); }
 inline void* __cdecl operator new [] (const size_t a_count)

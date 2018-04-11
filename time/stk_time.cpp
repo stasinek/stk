@@ -1,11 +1,11 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
+#include "stk_time.h"
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
 #include  <time.h>
 //---------------------------------------------------------------------------
-#include "stk_time.h"
 
 uint64_t __stdcall stk::time::time_us(void)
 // cross-platform timeGetTime (on Windows minimum return is 1000us, on linux there is us acuracy (probably?) CLOCKS_PER_SEC >=1M
@@ -36,8 +36,10 @@ void __stdcall stk::time::wait_ms(const uint64_t milliseconds) // cross-platform
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED("")
 #endif
-                #ifdef __WIN32__
-                ::Sleep(milliseconds);
+	            #ifdef __WIN32__
+				register uint64_t ms = milliseconds;
+				for (; ms > 0x3FFFFFFF; ms-=0x3FFFFFFF) ::Sleep(0x3FFFFFFF);
+				::Sleep((DWORD)ms);
                 #else
                 _usleep(milliseconds * 1000);
                 #endif // win32
@@ -69,7 +71,9 @@ void __stdcall stk::time::wait_us(const uint64_t microseconds) // cross-platform
 __DEBUG_FUNC_CALLED("")
 #endif
                 #ifdef __WIN32__
-                ::Sleep(microseconds / 1000);
+				register uint64_t ms = microseconds / 1000;
+				for (; ms > 0x3FFFFFFF; ms-=0x3FFFFFFF) ::Sleep(0x3FFFFFFF);
+				::Sleep((DWORD)ms);
                 //MSDN: A value of zero causes the thread to relinquish the remainder of its time slice to any other thread that is ready to run
                 #else
         struct timespec req,rem;
@@ -100,7 +104,7 @@ time_t __stdcall stk::time::wait_idle(const time_t a_prev_time, const double a_p
 __DEBUG_FUNC_CALLED("")
 #endif
         time_t f_current_time = ::time(NULL);
-        wait_ms((a_percent_of_idle * difftime(a_prev_time,f_current_time)) / 100);
+        wait_ms((uint64_t)(a_percent_of_idle * difftime(a_prev_time,f_current_time)) / 100);
         return f_current_time;
 
 }
@@ -114,7 +118,7 @@ __DEBUG_FUNC_CALLED("")
                 ULARGE_INTEGER ull;
                 ull.HighPart = ft.dwHighDateTime;
                 ull.LowPart = ft.dwLowDateTime;
-                return (ull.QuadPart / (LONGLONG)10000000ULL) - (LONGLONG)11644473600ULL;
+                return (ull.QuadPart / (LONGLONG)10000000) - (LONGLONG)11644473600;
 }
 
 FILETIME* __stdcall stk::time::time_t_to_FILETIME(time_t t, LPFILETIME pft)
@@ -124,7 +128,7 @@ __DEBUG_FUNC_CALLED("")
 #endif
 // Note that LONGLONG is a 64-bit value
                 LONGLONG ull;
-                ull = (LONGLONG)(((LONGLONG)t) * (LONGLONG)(10000000LL + 116444736000000000LL));
+                ull = (LONGLONG)(((LONGLONG)t) * (LONGLONG)(10000000 + 116444736000000000));
                 pft->dwLowDateTime = (DWORD)ull;
                 pft->dwHighDateTime = ull >> 32;
                 return pft;

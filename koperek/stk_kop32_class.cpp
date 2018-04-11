@@ -1,4 +1,4 @@
-﻿//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 //----------------- sstsoft 2001-2015--------------------------------
 //---------------------------------------------------------------------------
 #include "stk_kop32_class.h"
@@ -42,7 +42,7 @@ int main() {
 //---------------------------------------------------------------------------
 
 __stdcall stk::__kop32_class::__kop32_class()
-:	f_write_file_thread_handle(NULL),
+:       f_write_file_thread_handle(NULL),
         f_write_file_thread_id(0),
         f_write_file_thread_control(0),
         default_progress(this)
@@ -129,22 +129,22 @@ stk::con::print("\r\n");
 // SELECT MAIN OPERATION TYPE AND SUBOPTIONS
 //
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-X","--REMOVE","/REMOVE",NULL)==true :
-        p.find(temp_lpCommand->c_str(),"-X","--REMOVE",NULL,NULL)==true)
+        p.find(temp_lpCommand->c_str(),"-X","--REMOVE","/REMOVE",NULL)!=0 :
+        p.find(temp_lpCommand->c_str(),"-X","--REMOVE",NULL,NULL)!=0)
    {options->operation  = OPERATION_REMOVE;
         p.delete_found(temp_lpCommand->data());
         goto GOTO_OPTIONS;
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-D","--DECODE","/DECODE",NULL)==true :
-        p.find(temp_lpCommand->c_str(),"-D","--DECODE",NULL,NULL)==true)
+        p.find(temp_lpCommand->c_str(),"-D","--DECODE","/DECODE",NULL)!=0 :
+        p.find(temp_lpCommand->c_str(),"-D","--DECODE",NULL,NULL)!=0)
    {options->operation  = OPERATION_DECODE;
         p.delete_found(temp_lpCommand->data());
         goto GOTO_OPTIONS;
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-E","--ENCODE",NULL,temp_lpCommandSubOption->data())==true :
-        p.find(temp_lpCommand->c_str(),"-E","--ENCODE","/ENCODE",temp_lpCommandSubOption->data())==true)
+        p.find(temp_lpCommand->c_str(),"-E","--ENCODE",NULL,temp_lpCommandSubOption->data())!=0 :
+        p.find(temp_lpCommand->c_str(),"-E","--ENCODE","/ENCODE",temp_lpCommandSubOption->data())!=0)
    {options->operation  = OPERATION_ENCODE;
 
                 options->coder  = 0x00000000L; //defauld coder type NOP
@@ -172,44 +172,44 @@ if (path_separator=='\\' ?
         goto GOTO_OPTIONS;
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-M","--MOVE","/MOVE",NULL)==true :
-        p.find(temp_lpCommand->c_str(),"-M","--MOVE",NULL,NULL)==true)
+        p.find(temp_lpCommand->c_str(),"-M","--MOVE","/MOVE",NULL)!=0 :
+        p.find(temp_lpCommand->c_str(),"-M","--MOVE",NULL,NULL)!=0)
    {options->operation = OPERATION_MOVE;
         p.delete_found(temp_lpCommand->data());
         goto GOTO_OPTIONS;
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-C","--COPY","/COPY",NULL)==true :
-        p.find(temp_lpCommand->c_str(),"-C","--COPY",NULL,NULL)==true)
+        p.find(temp_lpCommand->c_str(),"-C","--COPY","/COPY",NULL)!=0 :
+        p.find(temp_lpCommand->c_str(),"-C","--COPY",NULL,NULL)!=0)
    {options->operation = OPERATION_COPY;
         p.delete_found(temp_lpCommand->data());
         goto GOTO_OPTIONS;
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-L","--LIST","/LIST",NULL) :
-        p.find(temp_lpCommand->c_str(),"-L","--LIST",NULL,NULL))
+        p.find(temp_lpCommand->c_str(),"-L","--LIST","/LIST",NULL)!=0 :
+        p.find(temp_lpCommand->c_str(),"-L","--LIST",NULL,NULL)!=0)
    {options->operation = OPERATION_LIST;
         p.delete_found(temp_lpCommand->data());
         goto GOTO_OPTIONS;
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-V","--COMPARE","/COMPARE",NULL) :
-        p.find(temp_lpCommand->c_str(),"-V","--COMPARE",NULL,NULL))
+        p.find(temp_lpCommand->c_str(),"-V","--COMPARE","/COMPARE",NULL)!=0 :
+        p.find(temp_lpCommand->c_str(),"-V","--COMPARE",NULL,NULL)!=0)
    {options->operation = OPERATION_COMPARE;
         p.delete_found(temp_lpCommand->data());
         goto GOTO_OPTIONS;
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-S","--SELECT","/SELECT",NULL) : // is copy the file list to windows clipboard
-        p.find(temp_lpCommand->c_str(),"-S","--SELECT",NULL,NULL))
+        p.find(temp_lpCommand->c_str(),"-S","--SELECT","/SELECT",NULL)!=0 : // is copy the file list to windows clipboard
+        p.find(temp_lpCommand->c_str(),"-S","--SELECT",NULL,NULL)!=0)
    {
                 options->operation = OPERATION_SELECT;
         p.delete_found(temp_lpCommand->data());
         goto GOTO_OPTIONS;
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-H","--CHECKSUM","/CHECKSUM",temp_lpCommandSubOption->data()) :
-        p.find(temp_lpCommand->c_str(),"-H","--CHECKSUM",NULL,temp_lpCommandSubOption->data()))
+        p.find(temp_lpCommand->c_str(),"-H","--CHECKSUM","/CHECKSUM",temp_lpCommandSubOption->data())!=0 :
+        p.find(temp_lpCommand->c_str(),"-H","--CHECKSUM",NULL,temp_lpCommandSubOption->data())!=0)
    {options->operation = OPERATION_CHECKSUM;
         if (-1!=stk::cstr::pos(temp_lpCommandSubOption->data(),0,"SSC1024"))
            options->checksum |= CHECKSUM_SSC1024;
@@ -241,8 +241,8 @@ if (path_separator=='\\' ?
         p.delete_found(temp_lpCommand->data());
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-F","--CACHED","/CACHED",NULL) :
-        p.find(temp_lpCommand->c_str(),"-F","--CACHED",NULL,NULL))
+        p.find(temp_lpCommand->c_str(),"-F","--CACHED","/CACHED",NULL)!=0 :
+        p.find(temp_lpCommand->c_str(),"-F","--CACHED",NULL,NULL)!=0)
    {options->block_is_cached = true;
         p.delete_found(temp_lpCommand->data());
    }
@@ -265,8 +265,8 @@ if (path_separator=='\\' ?
         p.delete_found(temp_lpCommand->data());
    }
 if (path_separator=='\\' ?
-        p.find(temp_lpCommand->c_str(),"-Q","--BREAK","/BREAK",temp_lpCommandSubOption->data()) :
-        p.find(temp_lpCommand->c_str(),"-Q","--BREAK",NULL,temp_lpCommandSubOption->data()))
+        p.find(temp_lpCommand->c_str(),"-Q","--BREAK","/BREAK",temp_lpCommandSubOption->data())!=0 :
+        p.find(temp_lpCommand->c_str(),"-Q","--BREAK",NULL,temp_lpCommandSubOption->data())!=0)
    {options->ask_at_break = ASK_USER; // default option
         if (temp_lpCommandSubOption->data()[0]=='T')
                 options->ask_at_break = ASK_ALL;
@@ -370,7 +370,7 @@ do_event(ON_SEARCH_START,OK,EMPTY);
 if (options->operation==OPERATION_SELECT) {
         do_event(ON_SEARCH_SRC_START,OK,EMPTY);
         do_event(ON_SEARCH_SRC_PROGRESS,OK,EMPTY);
-        if (OpenClipboard(NULL)==true) { if (options->ask_at_break==ASK_USER) do_event(ON_ERROR,stk::cstr::itoa(GetLastError()),OK);
+        if (OpenClipboard(NULL)!=0) { if (options->ask_at_break==ASK_USER) do_event(ON_ERROR,stk::cstr::itoa(GetLastError()),OK);
                 goto GOTO_prepare_EXIT_ERROR;
         }
         else {
@@ -515,7 +515,7 @@ stk::con::prints("src->count():%d\r\n",list->src_main_list->items()->count());
 stk::con::prints("dst->count():%d\r\n",list->dst_main_list->items()->count());
 stk::con::print("\r\n");
 #endif
-stk::__cstr_class  *templp	= new stk::__cstr_class(512);
+stk::__cstr_class  *templp      = new stk::__cstr_class(512);
 char *ret = stk::cstr::allocex(32,"");
 int32_t d;
 
@@ -602,7 +602,7 @@ for (d = 0; list->cur_i >= 0 && list->cur_i < (int32_t)list->src_main_list->item
                  if (options->ask_at_break==ASK_ALL) continue;
                  if (options->ask_at_break==ASK_NO)  progress->cancel = true;
                  if (options->ask_at_break==ASK_USER)
-                         progress->cancel |= stk::cstr::compare((char*)do_event(ON_ERROR,OKCANCEL,stk::cstr::itoa(GetLastError())),"CANCEL");
+                         progress->cancel |= stk::cstr::compare((char*)do_event(ON_ERROR,OKCANCEL,stk::cstr::itoa(GetLastError())),"CANCEL")!=0;
                 }
                  else
                                  continue;
@@ -756,7 +756,7 @@ do_event(ON_BEFORE_SKIP_ONE,OK,EMPTY);
 // SOURCE DIRS & FILES
 //
 stk::cstr::mov(templp->data(),list->src_main_list->items()->get_text(aindex));
- if (a_skip_items_at_same_level==true)
+ if (a_skip_items_at_same_level!=0)
          {stk::cstr::get_file_path(templp->data(),templp->c_str());
          }
 for (crt = aindex; crt < list->src_main_list->items()->count(); crt++) {
@@ -773,7 +773,7 @@ goto GOTO_execute_cleanup_OK;
 // DESTINATION DIRS & FILES
 //
 stk::cstr::mov(templp->data(),list->dst_main_list->items()->get_text(aindex));
- if (a_skip_items_at_same_level==true)
+ if (a_skip_items_at_same_level!=0)
          {stk::cstr::get_file_path(templp->data(),templp->c_str());
          }
 for (crt = aindex; crt < list->dst_main_list->items()->count(); crt++) {
@@ -1275,7 +1275,7 @@ else
 
 
 
-/*				f_dst_file.buffer.size = f_mem_buffer_map.map[f_mem_buffer_map.previous_index].size;
+/*                              f_dst_file.buffer.size = f_mem_buffer_map.map[f_mem_buffer_map.previous_index].size;
                 f_dst_file.buffer.offset = f_dst_file.readed % 65536;
                 f_dst_file.buffer.ptr = stk::file::create_map_view(f_dst_file.hand_map, FILE_MAP_WRITE, 0,
                                 f_dst_file.readed - f_dst_file.buffer.offset, f_dst_file.buffer.size + f_dst_file.buffer.offset);
@@ -1296,7 +1296,7 @@ else
         }
 else
         if (anaction==OPERATION_ENCODE) {
-                for	(;progress->cancel==0 && f_src_file.readed < f_src_file.size;)
+                for     (;progress->cancel==0 && f_src_file.readed < f_src_file.size;)
                 {
                 //
                 do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
@@ -1332,7 +1332,7 @@ else
                 if (options->coder & LZSS_CODER_BWT)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = stk::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
                          f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = stk::compression::compress_BWT(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
-//			 if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//                       if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
@@ -1340,7 +1340,7 @@ else
                 if (options->coder & LZSS_CODER_LZS)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = stk::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
                          f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = stk::compression::compress_LZS(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
-//			 if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//                       if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
@@ -1352,7 +1352,7 @@ else
                 if (options->coder & LZSS_CODER_HUF)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = stk::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
                          f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = stk::compression::compress_HUF(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
-//			 if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//                       if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
@@ -1360,7 +1360,7 @@ else
                 if (options->coder & LZSS_CODER_ARI)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr = stk::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index+1].size+1);
                          f_mem_buffer_map.map[f_mem_buffer_map.index+1].size = stk::compression::compress_ARI(f_mem_buffer_map.map[f_mem_buffer_map.index+1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size,options->coder_LZS_dup_size);
-//			 if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//                       if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index++;
                         }
@@ -1400,7 +1400,7 @@ else
                 f_dst_file.readed += sizeof(file_header::__eno_block_header_struct);
                 stk::mem::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset + sizeof(file_header::__eno_block_header_struct)),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                 f_src_file.readed += f_src_file.buffer.size;
-//		if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//              if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                         stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                 stk::file::close_map_view((void*)f_src_file.buffer.ptr);
                 f_dst_file.readed += f_dst_file.buffer.size;
@@ -1444,7 +1444,7 @@ else
                 if (b_hdr.data_coder & LZSS_CODER_BWT)
                 {f_mem_buffer_map.count++;}
 
-//				f_mem_buffer_map.count = b_hdr.s_count;
+//                              f_mem_buffer_map.count = b_hdr.s_count;
                 for (uint32_t i = 0; i < f_mem_buffer_map.count; i++)
                 {f_mem_buffer_map.map[i].size = b_hdr.size[i];
                         }
@@ -1491,7 +1491,7 @@ else
                 if (b_hdr.data_coder & LZSS_CODER_ARI)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = stk::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          stk::compression::uncompress_ARI(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-//			 if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//                       if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index--;
                          }
@@ -1499,7 +1499,7 @@ else
                 if (b_hdr.data_coder & LZSS_CODER_HUF)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = stk::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          stk::compression::uncompress_HUF(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-//			 if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//                       if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index--;
                          }
@@ -1511,7 +1511,7 @@ else
                 if (b_hdr.data_coder & LZSS_CODER_LZS)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = stk::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          stk::compression::uncompress_LZS(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-//			 if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//                       if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index--;
                          }
@@ -1519,7 +1519,7 @@ else
                 if (b_hdr.data_coder & LZSS_CODER_BWT)
                         {f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr = stk::mem::alloc(f_mem_buffer_map.map[f_mem_buffer_map.index-1].size+1);
                          stk::compression::uncompress_BWT(f_mem_buffer_map.map[f_mem_buffer_map.index-1].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index-1].size,f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
-//			 if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//                       if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                          f_mem_buffer_map.index--;
                         }
@@ -1533,7 +1533,7 @@ else
                 stk::mem::mov((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_mem_buffer_map.map[f_mem_buffer_map.index].ptr,f_mem_buffer_map.map[f_mem_buffer_map.index].size);
                 f_src_file.readed += f_src_file.buffer.size;
                 stk::file::close_map_view(f_src_file.buffer.ptr);
-//		if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
+//              if (f_mem_buffer_map.index!=0) stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                 stk::mem::free(f_mem_buffer_map.map[f_mem_buffer_map.index].ptr);
                 if (options->block_is_cached==0)
                 stk::file::flush_map_view((void*)((int8_t*)f_dst_file.buffer.ptr + f_dst_file.buffer.offset),f_dst_file.buffer.size);
@@ -1711,7 +1711,7 @@ if (r_volume_name[1]!=':')
 if (r_volume_name[stk::cstr::len(r_volume_name)-1]!='\\') strcat(r_volume_name,"\\");
 //
 //
-while (::GetDiskFreeSpaceExA(avolume_name,&disk_UInt,NULL,NULL))	 {
+while (::GetDiskFreeSpaceExA(avolume_name,&disk_UInt,NULL,NULL))         {
                 disk_real_free_space = disk_UInt.QuadPart + anumber_of_destination_bytes - anumber_of_source_bytes;
 
                 if (disk_real_free_space > 0)

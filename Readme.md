@@ -1,0 +1,5 @@
+# stk
+stasinek / SSTSOFT's C98 Tool Kit of all algoritmhs interesting for me before C11 was introduced. Made as simple as possible for Kop32 file processing experimenting program (sthreads and stasm repos are included as part of it) 
+It's compilable with Borland C++ 5, MinGW 4.9.2, LLVM 3.7, Watcom 1.9, VC++ 2010. It's based on mine work since 2002r and inspired other BSD, MIT or public licensed libraries. There is no GNU GPL libs because i was unable to use them, understand their logic. It's just different world to me, too complicated. Intend to be shared on MIT license - do whatever You want but keep in mind it's most of mine work. Think it's osbolete now we got Boost, C++11, C++14, FOX toolkits etc. but it attend to be collection all of algorithms i whereever created so it would be maintained.
+
+Modifications and ideas are welcome.

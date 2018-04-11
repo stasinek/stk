@@ -15,7 +15,8 @@ void* __cdecl stk::qsort(void *base, size_t number_of_elements, size_t size_of_e
 		 size_t istart = 0;
 		 size_t imid, imid_times_size, icount = number_of_elements;
 		 size_t size = size_of_element;
-		 size_t compare_result;
+
+		 int64_t compare_result;
 
 		 while (istart < icount) {
 				 imid = istart + ((icount - istart) >> 1); // >>1 faster than /2
@@ -38,10 +39,10 @@ void* __cdecl stk::isort(void *a, size_t number_of_elements, size_t size_of_elem
 	stk::con::prints("This function doesn't work for now, it is just a prototype");
 	assert(0); return NULL;
 
-    size_t i, j, count = number_of_elements, size = size_of_element;
+    int64_t i, j, count = number_of_elements, size = size_of_element;
     void *value = stk::mem::alloc(size);
 
-    for (i = 1; i < count; ++i) {
+	for (i = 1; i < count; ++i) {
         stk::mem::mov((void*)value,(void*)((size_t)a+i),size);
         for (j = i - 1; j >= 0 && compare((void*)((size_t)a+j),value); --j)
             stk::mem::mov((void*)((size_t)a+j + 1),(void*)((size_t)a+j),size);
@@ -60,4 +61,5 @@ void* __cdecl stk::ssort(void *a, size_t number_of_elements, size_t size_of_elem
       for(j=i+1; j<count; j++) if(compare((void*)((size_t)a+j),(void*)((size_t)a+k)) < 0) k=j;
       swap((void*)((size_t)a+k), (void*)((size_t)a+i),1);
    }
+return a;
 }

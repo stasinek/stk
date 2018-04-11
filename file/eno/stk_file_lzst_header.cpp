@@ -3,7 +3,6 @@
 //---------------------------------------------------------------------------
 #include "stk_file_lzst_header.h"
 //---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
 #ifdef  LZSSv4_HEAD
 
 // Little Endian 0x03020100L -> [0]:0x00L, [1]:0x01L, [2]:0x02L, [3]:0x03L
@@ -18,7 +17,6 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::plain_price(const uint
                 else {
                                 return 2;
                 }
-return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -47,7 +45,6 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::plain_encode(void *a_c
                                 ((uint8_t*)code)[1] = l;
                                 return 2;
                 }
-return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -173,7 +170,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::pattern_encode(void *a
                                 ((uint8_t*)code)[1] = t;
                                 return 2;
                 }
-return 0;
+//return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -207,7 +204,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::pattern_decode(uint32_
                                 a_data_uncoded_counte[0] = l;
                                 return 2;
                 }
-return 0;
+//return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -225,7 +222,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_price(const  uint3
                                 else if (o<=DUP_OFFSET_2) return 2+2;
                                 else return 2+3;
                 }
-return 0;
+//return 0;
 }
 //---------------------------------------------------------------------------
 

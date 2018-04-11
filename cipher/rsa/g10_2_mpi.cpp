@@ -20,7 +20,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __GNUC__
 #include "mpi.h"
+#endif // __GNUC__
 #include "util.h"
 
 /* FIXME: The modules should use functions from libgcrypt */

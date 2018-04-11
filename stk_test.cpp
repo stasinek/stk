@@ -89,7 +89,7 @@ return (char)getchar();
 //---------------------------------------------------------------------------
 
 #ifdef __WATCOMC__
-void atexit(void)
+void stk::test::atexit(void)
 #else
 void __cdecl stk::test::atexit(void)
 #endif
@@ -172,7 +172,7 @@ TEST_RANDOM(stk::mem::mov(&test_out[(RANDOM_TIME*TEST_SIZE)/RANDOM_TIMES],&test_
 
 stk::con::prints("Thank's for help :)\n");
 TEST_EXIT()
-                char text[100], *texti = "betweeen(a,b,c,d) begin { between_be } end";
+                char text[100]; char *texti = "betweeen(a,b,c,d) begin { between_be } end";
                 if (stk::cstr::between_cc(text,texti,'(',')')>=0)
                 stk::con::prints("\"%s\"\n",text);
                 else stk::con::prints("not found between\n");

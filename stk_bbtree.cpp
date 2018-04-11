@@ -1,11 +1,9 @@
 //---------------------------------------------------------------------------
-
 #pragma hdrstop
-
-#include "__bbtree.h"
+#include "stk_bbtree.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-
+//---------------------------------------------------------------------------
 struct bt_node
 {
  	unsigned index;
@@ -22,49 +20,50 @@ struct bt_tree
 	struct bt_node* nodes;
 	int freeslots;
 };
-//
-
-
-// the function add() is the same for each case, and data type, it works just 
+//---------------------------------------------------------------------------
+// the function add() is the same for each case, and data type, it works just
 //with slots and returns the index of the new value if inserted
 // otherwise the index of the existing value. The handling of the "error" or whatelse
 // get done from the add_if_not_exists or other interface function (in my version I add also a pointer to function, one
 //for compare, for simplicity I don't put it here)
 long add(struct bt_tree*bt, unsigned root, unsigned newitemix);
 // the function below save first the data in a new slot. this get done
-//because I would generalize the function of the tree. So, when found, it 
-//finds all the information in the proper slot. Without to modify the 
-//parameter list of the core functions. So with different data type I just have to modify my 
+//because I would generalize the function of the tree. So, when found, it
+//finds all the information in the proper slot. Without to modify the
+//parameter list of the core functions. So with different data type I just have to modify my
 //interface function.
+//---------------------------------------------------------------------------
 
 unsigned add_if_not_exists(struct bt_tree* bt, char *name, void*value)
 {
 	//the function get_new_slot() pop a value from freeslots, if it has
 	// otherwise increase the counter of the tree, check if the buffer
 	//can satisfy the new request, otherwise realloc() the vector
-	 res = get_new_slot(bt->freeslots);
-	unsigned tmp=add(bt, cur,res);	
+	res = get_new_slot(bt->freeslots);
+	unsigned tmp=add(bt, cur,res);
 	bt->node[res].name=name; //I just paste the address of the name
-				    //i don't duplicate yet 
+				    //i don't duplicate yet
 	bt->node[res].value=value;
 	if (tmp==cur)	//successfully inserted
 	{
-		bt->node[res].name=strdup(name); 
-		bt->node[res].value=value;	
+		bt->node[res].name=strdup(name);
+		bt->node[res].value=value;
 
 	}
-	else 
+	else
 	{  //already existing
 		stack_push(bt->freeslots,res);
-		bt->node[res].name=NULL; 
+		bt->node[res].name=NULL;
 		bt->node[res].value=NULL;
 	}
 	return tmp;
 }
-//this is a core function, it returns "newitemix" 
+//---------------------------------------------------------------------------
+//this is a core function, it returns "newitemix"
 //if successfully inserted otherwise the index of the existing item
 //with the same key. What do with it is a matter of interface function (if raise an exception or
-//sum, or just add_if_not_exists) 
+//sum, or just add_if_not_exists)
+
 long add(struct bt_tree*bt,  unsigned newitemix)
 {
 	int cmp;
@@ -82,7 +81,7 @@ long add(struct bt_tree*bt,  unsigned newitemix)
 				bt->nodes[newitemix].parent=root;
 				break;
 			}
-			else 
+			else
 				root=bt->nodes[root].right;
 		}
 		else
@@ -91,9 +90,9 @@ long add(struct bt_tree*bt,  unsigned newitemix)
 			{
 				bt->nodes[root].left=newitemix;
 				bt->nodes[newitemix].parent=root;
-				break;			
+				break;
 			}
-			else 
+			else
 				root=bt->nodes[root].left;
 		}
 
@@ -101,10 +100,9 @@ long add(struct bt_tree*bt,  unsigned newitemix)
 
 	propagate_depth(bt,newitemix);
 	bubble(bt, newitemix);
-	return newitemix; 
+	return newitemix;
 }
-
-//
+//---------------------------------------------------------------------------
 
 void propagate_depth(bt,newitemix)
 {
@@ -116,8 +114,9 @@ void propagate_depth(bt,newitemix)
           depth=bt->nodes[i].left<0?depth:max(depth,bt->nodes[bt->nodes[i].left].depth);
           depth++;
           bt->nodes[i].depth=depth;
-   } 
+   }
 }
+//---------------------------------------------------------------------------
 
 void bubble(struct bt_tree*bt, unsigned index)
 {
@@ -134,8 +133,7 @@ void bubble(struct bt_tree*bt, unsigned index)
 		parent=bt->nodes[index].parent;
 	}
 }
-
-//
+//---------------------------------------------------------------------------
 
 unsigned rotate(struct bt_tree*bt,unsigned ix)
 {  //we save first all the neighborhood in some comfortable variables
@@ -149,7 +147,7 @@ unsigned rotate(struct bt_tree*bt,unsigned ix)
    assert(left || right);
   if (parent)
    side=parent->left==me->index?'l':'r';
-  else 
+  else
    side =0;
    if (!right || (left && left->depth>right->depth)
    {
@@ -168,17 +166,16 @@ unsigned rotate(struct bt_tree*bt,unsigned ix)
     }
     else
    {
-      //mirror routine 
+      //mirror routine
 
    }
 }
-
-//
+//---------------------------------------------------------------------------
 
 void* find(struct bt_tree*bt,char *key)
 {
 	long current_root=bt->current_root;
-	int cmp;	
+	int cmp;
 	while (current_root>=0)
 	{	if ( (cmp=strcmp(bt->nodes[current_root].name,key)==0)
 			return bt->nodes[current_root].value;
@@ -186,23 +183,21 @@ void* find(struct bt_tree*bt,char *key)
 			current_root=bt->nodes[current_root].right;
 		else
 			current_root=bt->nodes[current_root].left;
-	
-	}	
+
+	}
 	printf ("item %s not present in the tree\n",key);
-	return NULL; 
+	return NULL;
 }
-
-//
-
+//---------------------------------------------------------------------------
 
 void  fill_ratio(struct bt_tree*bt)
 {
-	unsigned depth=0:	
+	unsigned depth=0:
 	long i,n,buf, fix;
 	buf=max(bt->n/10,100);
 	n=0;
 	 long long *reg= (long long*)calloc(buf,sizeof(long long));
-	reg[n++]=bt->current_root; 	
+	reg[n++]=bt->current_root;
 	while (n>0)
 	{
 		depth ++;
@@ -236,9 +231,9 @@ void  fill_ratio(struct bt_tree*bt)
 				}
 				reg [i]=bt->nodes[reg[i]].right;
 				reg [n]=bt->nodes[reg[i]].left;
-			}				
-		}	
+			}
+		}
 	}
 }
+//---------------------------------------------------------------------------
 
-//

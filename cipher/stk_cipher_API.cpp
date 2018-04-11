@@ -51,7 +51,7 @@ void __stdcall stk::cipher::cript_XOR(void *a_dst_ptr, const uint32_t a_count, c
 #ifdef __DEBUG_CIPHER_API__
 __DEBUG_FUNC_CALLED("")
 #endif
-#ifdef __BORLANDC__
+#if (__BORLANDC__ > 0x551)
 		__asm {
 				mov EDI,a_dst_ptr
 				mov EDX,EDI
@@ -79,6 +79,7 @@ __DEBUG_FUNC_CALLED("")
 				cript_XOR_EXIT:
 		}
 #else
+    // VC++, GNU implementation
 #endif
 }
 //---------------------------------------------------------------------------
@@ -105,7 +106,7 @@ __DEBUG_FUNC_CALLED("")
 		char *buff_ptr = stk::cstr::alloc(buff_count+1);
 		int8_t *ptrd 	  = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
 		int8_t *ptrd_end  = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr)) + size_t(a_count) - size_t(buff_count);
-#ifdef __BORLANDC__
+#if (__BORLANDC__ > 0x551)
 		__asm {
 				movzx EAX,buff_count
 				movzx EBX,buff_sq
@@ -149,6 +150,7 @@ __DEBUG_FUNC_CALLED("")
 				cript_ROT_BREAK:
 		}
 #else
+    // VC++, GNU implementation
 #endif
 		stk::cstr::free(buff_ptr);
 }

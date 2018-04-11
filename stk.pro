@@ -1,10 +1,10 @@
 TEMPLATE = lib
 DEFINES += STK_BUILD_LIBRARY
 
-QMAKE_CFLAGS_RELEASE += rtti_off stl_off exceptions_off
-QMAKE_CXXFLAGS += -save-temps
-QMAKE_CXXFLAGS += -fverbose-asm
-QMAKE_CXXFLAGS -= -pipe
+#QMAKE_CFLAGS_RELEASE += rtti_off stl_off exceptions_off
+#QMAKE_CXXFLAGS += -save-temps
+#QMAKE_CXXFLAGS += -fverbose-asm
+#QMAKE_CXXFLAGS -= -pipe
 
 contains (QMAKE_COMPILER_DEFINES,__clang__) {
 QMAKE_CC  = clang
@@ -23,11 +23,11 @@ QMAKE_CXX = clang++
 #QMAKE_EXTRA_COMPILERS += YASM
 #ASM_SOURCES += 	../STK/cpu/stk_cpu_nasm.asm
 
-CONFIG += windows shared dll lib_bundle
+CONFIG += windows shared dll # lib_bundle
 CONFIG -= app_bundle
 CONFIG -= qt
 
-QT -= core gui
+#QT -= core gui
 
 LIBS += -lkernel32 -lgdi32 -lshell32 -luser32 -lcomctl32 -luserenv
 LIBS += -lws2_32 -lwsock32 -lwinmm -limm32 -lole32 -loleaut32
@@ -37,20 +37,22 @@ TARGET = stk
 }
 else {
 TARGET = stk
-CONFIG += console
+#CONFIG += console
 }
 
-CONFIG -= static
-CONFIG += precompile_header
-CONFIG += debug
-CONFIG += warn_on
-CONFIG += exceptions
-CONFIG += c++11
+#CONFIG -= static
+#CONFIG += precompile_header
+#CONFIG += debug
+#CONFIG += warn_on
+#CONFIG += exceptions
+#CONFIG += c++11
 
 #LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
 #LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
 
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
+QMAKE_CXXFLAGS += -fno-use-linker-plugin
+QMAKE_CFLAGS   += -fno-use-linker-plugin
 QMAKE_CXXFLAGS += -Wno-write-strings -Wno-multichar
 QMAKE_CFLAGS   += -Wno-write-strings -Wno-multichar
 QMAKE_CXXFLAGS += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
@@ -62,8 +64,8 @@ QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CXXFLAGS += -Wunknown-pragmas
 QMAKE_CFLAGS   += -Wunknown-pragmas
 
-QMAKE_CXXFLAGS -= -pipe
-QMAKE_CXXFLAGS += -save-temps
+#QMAKE_CXXFLAGS -= -pipe
+#QMAKE_CXXFLAGS += -save-temps
 QMAKE_CXXFLAGS += -fverbose-asm
 QMAKE_CXXFLAGS += -fstrict-aliasing
 QMAKE_CXXFLAGS += -dD
@@ -92,7 +94,8 @@ QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CXXFLAGS += -Wunknown-pragmas
 QMAKE_CFLAGS   += -Wunknown-pragmas
 
-QMAKE_CXXFLAGS += -save-temps
+#QMAKE_CXXFLAGS -= -pipe
+#QMAKE_CXXFLAGS += -save-temps
 QMAKE_CXXFLAGS += -fverbose-asm
 QMAKE_CXXFLAGS += -fstrict-aliasing
 QMAKE_CXXFLAGS += -dD
@@ -108,7 +111,6 @@ QMAKE_CXXFLAGS += -mmmx -msse -msse2
 QMAKE_CXXFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 QMAKE_CXXFLAGS -= -fno-keep-inline-dllexport
 QMAKE_CXXFLAGS -= -finline-small-functions
-QMAKE_CXXFLAGS -= -pipe
 
 QMAKE_LFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 QMAKE_LFLAGS -= -mthreads
@@ -123,10 +125,10 @@ SOURCES += \
     stk_vector.cpp \
     stk_variable.cpp \
     stk_map.cpp \
+    stasm/stk_stasm.cpp \
     cpu/stk_cpu.cpp \
 #    cipher/rsa/stk_rsa_single.c \
 #    cipher/rsa/stk_rsa.c \
-    cipher/FastAESinC/stk_aes.c \
     cipher/stk_base64.cpp \
     cipher/stk_cipher_mtf.cpp \
     cipher/stk_cipher_API.cpp \
@@ -145,7 +147,7 @@ SOURCES += \
     file/json/stk_json.cpp \
     file/zip/miniz.c \
     file/vfs/stk_file_vfs.cpp \
-    file/xml/XML.CPP \
+#    file/xml/XML.CPP \
     hash/stk_hash_crc32.cpp \
     hash/stk_hash_md5.cpp \
     hash/stk_hash_password.cpp \
@@ -166,7 +168,6 @@ SOURCES += \
     pharser/stk_pharse_command_line.cpp \
     pharser/stk_pharse_math.cpp \
     sockets/stk_sockets.cpp \
-    stasm/stk_stasm.cpp \
     sthreads/stk_threads.cpp \
     text/stk_cstr_utils.cpp \
     time/stk_time.cpp \
@@ -186,7 +187,6 @@ SOURCES+=
 #PRECOMPILED_HEADER += ../STK/kop32_main.h
 
 HEADERS += \
-    kop32_main.h \
     stk_hash_chain.h \
     stk_list.h \
     stk_main.h \
@@ -214,7 +214,7 @@ HEADERS += \
     file/eno/stk_file_lzst_header.h \
     file/vfs/stk_file_vfs.h \
     file/json/stk_json.h \
-    file/xml/XML.H \
+#    file/xml/XML.H \
     incbin/stk_incbin.h \
     io/stk_file_io.h \
     io/stk_rs232.h \

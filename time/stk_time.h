@@ -1,13 +1,14 @@
 //---------------------------------------------------------------------------
 #ifndef __stk_time_h
 #define __stk_time_h
+#pragma once
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 //---------------------------------------------------------------------------
 namespace stk { namespace time {
 //------------------------------------
 extern uint64_t		    	__stdcall	time_us(void);
-extern uint64_t			    __stdcall	time_ms(void);
+extern uint64_t             __stdcall	time_ms(void);
 extern void 		        __stdcall	wait_us(const uint64_t a_microseconds);
 extern void 		        __stdcall	wait_ms(const uint64_t a_milliseconds);
 extern void 		        __stdcall	wait_until(time_t a_time);

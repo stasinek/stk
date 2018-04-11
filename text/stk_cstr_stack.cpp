@@ -4,6 +4,7 @@
 #include "stk_cstr_stack.h"
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
+#include "./../stk_MAIN.h"
 //---------------------------------------------------------------------------
 
 __stdcall stk::__cstr_stack::__cstr_stack(void)

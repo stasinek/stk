@@ -7,11 +7,10 @@
 #include "./../stk_vector.h"
 #include "stk_mem.h"
 //---------------------------------------------------------------------------
-#ifdef _MSC_VER
-#include <memory.h>
-#else
-#include <malloc.h>
+#ifdef __MSVC__
+#include <MEMORY.h>
 #endif
+#include <malloc.h>
 //---------------------------------------------------------------------------
 static int64_t g_mem_allocated = 0;
 static int64_t g_mem_max = 1<<30;
@@ -44,14 +43,14 @@ struct __mem_tail {
 #pragma pack(pop)
 
 //---------------------------------------------------------------------------
-int64_t __stdcall stk::mem::allocated(void)
+intmax_t __stdcall stk::mem::allocated(void)
 {
 return g_mem_allocated;
 }
 //---------------------------------------------------------------------------
 size_t __stdcall stk::mem::size(const void *a_ptr)
 {
-return ::_msize((void*)a_ptr);
+	return ::_msize((void*)a_ptr);
 }
 //---------------------------------------------------------------------------
 
@@ -166,7 +165,7 @@ void *__stdcall stk::mem::set(void *a_dst_ptr, const unsigned char a_znak_B, con
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 return stk::mem::setex(a_dst_ptr,&a_znak_B,1,a_count);
 #else
 ::memset(a_dst_ptr,a_znak_B,a_count);
@@ -180,7 +179,7 @@ void *__stdcall stk::mem::setex(void *a_dst_ptr, const void *a_src_ptr, const in
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 if (a_element_size <= 1) {
     __asm {
         push EDI;
@@ -312,7 +311,7 @@ void *__stdcall stk::mem::mov(void *a_dst_ptr,const void *a_src_ptr, const size_
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
     __asm {
         push EDI;
         push ESI;
@@ -615,7 +614,7 @@ intmax_t __stdcall stk::mem::cmp(const void *a_ptr1, const void *a_ptr2, const s
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
     __asm {
         push EDI;
         push ESI;
@@ -702,7 +701,7 @@ intmax_t __stdcall stk::mem::chr(const void *a_dst_ptr, const char a_znak_B, con
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)  && (1==0)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)  && (1==0)
     __asm {
         push EDI;
         push EDX;
@@ -818,7 +817,7 @@ intmax_t __stdcall stk::mem::pos(const void *a_src_ptr, const size_t a_src_size,
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 size_t src_size = a_src_size, fnd_size = a_search_size;
 size_t r;
     __asm {
@@ -1043,7 +1042,7 @@ void __stdcall stk::mem::bit_mov(void *a_dst_ptr, const uint8_t adst_bit, const 
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
     __asm {
 //------------------------------------------
         push EDI;
@@ -1202,7 +1201,7 @@ void __stdcall stk::mem::bit_setex(void *a_dst_ptr, const uint8_t adst_bit, cons
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
 #endif
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
     __asm {
 //------------------------------------------
         push EDI;
@@ -1320,7 +1319,7 @@ __DEBUG_FUNC_CALLED("")
 
 size_t __stdcall len(char *lpString) {
 
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 
 asm{
 
@@ -1352,7 +1351,7 @@ return 0;
 
 size_t __stdcall kmp2(char *StringSource, size_t SourceLength, char* StringPattern, size_t PatternLength, char *ShiftTable)
 {
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 asm {
 
     mov     eax, PatternLength
@@ -1446,7 +1445,7 @@ return 0;
     }
 size_t __stdcall asciitdec (char *String)
  {
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 asm {
     mov edx, [esp+4]
     xor eax, eax
@@ -1472,7 +1471,7 @@ again:
 
 size_t __stdcall StrHex2bin(char *lpString) {
 
-#if defined(__BORLANDC__) & defined (__ASM_OPT__)
+#if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 asm {
     movq mm0,QWORD PTR [lpString]
 

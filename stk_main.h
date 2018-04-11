@@ -1,42 +1,42 @@
-﻿//
-// C++ WARNINGS/ERRORS
+#ifndef __stk_main_H
+#define __stk_main_H
+#pragma once
+
 //
-#if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic ignored "-Waggregate-return"
-#endif
-
-#ifndef __EXPORT
-#    define __EXPORT __declspec(dllexport)
-#endif /* __EXPORT */
-
-#ifndef __IMPORT
-#    define __IMPORT __declspec(dllimport)
-#endif /* __IMPORT */
-
-#define STK_EXPORT __EXPORT
-#define STK_IMPORT __IMPORT
-
+// IMPORT/EXPORT define what're You doing LINK LIBRARY or STK_BUILD_LIBRARY
+//
 #ifdef STK_BUILD_LIBRARY
     #define STK_IMPEXP __EXPORT
 #else /* !STK_BUILD_LIBRARY */
     #define STK_IMPEXP __IMPORT
 #endif /* STK_BUILD_LIBRARY */
 
-
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunknown-pragmas"
-#pragma clang diagnostic ignored "-Wnon-virtual-dtor"
-#pragma clang diagnostic ignored "-Wweak-vtables"
-#pragma clang diagnostic ignored "-Wpadded"
-#pragma clang diagnostic ignored "-Wdeprecated"
-#pragma clang diagnostic ignored "-Wmissing-prototypes"
-#pragma clang diagnostic ignored "-Wunused-local-typedef"
-#pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
-#pragma clang diagnostic ignored "-Wc++11-long-long"
-#endif // __clang__
-
-#if defined(__GNUC__) && !defined(__clang__)
+#if !defined(__EXPORT)
+#define __EXPORT __declspec(dllexport)
+#define STK_EXPORT __EXPORT
+#endif /* __EXPORT */
+#if !defined(__IMPORT)
+#define __IMPORT __declspec(dllimport)
+#define STK_IMPORT __IMPORT
+#endif /* __IMPORT */
+//
+// C++ Compiler name "redefinition"
+//
+#if       defined(__clang__)
+#define __CLANG__ __clang__
+#elif    defined(_MSC_VER)
+#define __MSVC__ _MSC_VER
+#endif
+//
+// C++ WARNINGS/ERRORS
+//
+#if defined(__GNUC__) && !defined(__CLANG__)
+#pragma GCC diagnostic ignored "-Waggregate-return"
+#pragma GCC diagnostic ignored "-Wno-write-strings"
+#pragma GCC diagnostic ignored "-Wno-unused-variable"
+#pragma GCC diagnostic ignored "-Wno-unused-parameter"
+#pragma GCC diagnostic ignored "-Wno-unused-value"
+#pragma GCC diagnostic ignored "-Wno-unused-label"
 #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 6)
 #pragma GCC diagnostic push
 #endif // > gcc 4.6
@@ -58,23 +58,36 @@
 #if __GNUC__ > 5 || (__GNUC__ == 5 && __GNUC_MINOR__ > 3)
 #pragma GCC diagnostic ignored "-Wuseless-cast"
 #endif // > gcc 5.3
-#endif // __GNUC__
+#endif
 
-#ifdef _MSC_VER
+#if defined(__CLANG__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma clang diagnostic ignored "-Wnon-virtual-dtor"
+#pragma clang diagnostic ignored "-Wweak-vtables"
+#pragma clang diagnostic ignored "-Wpadded"
+#pragma clang diagnostic ignored "-Wdeprecated"
+#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#pragma clang diagnostic ignored "-Wunused-local-typedef"
+#pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+#pragma clang diagnostic ignored "-Wc++11-long-long"
+#endif // __CLANG__
+
+#if defined(__MSVC__)
 #pragma warning(push)
+#pragma warning(disable : 4244) // Conversion from __int64 to double potential data lost
 #pragma warning(disable : 4996) // The compiler encountered a deprecated declaration
 #pragma warning(disable : 4706) // assignment within conditional expression
 #pragma warning(disable : 4512) // 'class' : assignment operator could not be generated
 #pragma warning(disable : 4127) // conditional expression is constant
-#endif                          // _MSC_VER
-
+#endif // __MSVC__
 //---------------------------------------------------------------------------
 // SET DEBUG
 //---------------------------------------------------------------------------
 #if !defined(__DEBUG__)
      #define __DEBUG__ 1
-     #define __DEBUG   1
-     #define DEBUG
+     #define __DEBUG __DEBUG__
+     #define   DEBUG __DEBUG__
 #endif
 //---------------------------------------------------------------------------
 // DEBUG OR NOT DEBUG
@@ -125,19 +138,11 @@
 // **************************************************************************
 // **************************************************************************
 //---------------------------------------------------------------------------
-// SET ENCODING / RUNTIME
-//---------------------------------------------------------------------------
-//#define __STRICT_ANSI__
-#if !defined(UNICODE)
-#define __UNICODE__
-#define __UNICODE
-#define UNICODE
-#endif
-//---------------------------------------------------------------------------
 // OPERATING SYSTEM DETECTION
 //---------------------------------------------------------------------------
-#if !defined(__BSD__) && (defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || \
-     defined(__bsdi__) || defined(__DragonFly__) || defined(BSD) || defined(__APPLE__))
+#if !defined(__BSD__) && (defined(__bsdi__) || defined(BSD) ||\
+         defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) ||\
+         defined(__APPLE__))
      #define __BSD__
 #endif
 #if !defined(__LINUX__) && (defined(__LINUX) || defined(__ANDROID__) || defined(__gnu_linux__))
@@ -149,7 +154,8 @@
 #if !defined(__WIN32__) && (defined(WIN32) || defined(_WIN32) || defined(__WINDOWS__) || defined(__WIN64__))
      #define __WIN32__
 #endif
-#if !defined(WIN32) && (defined(__WIN32__) || defined(__WIN64__))
+//---------------------------------------------------------------------------
+#if !defined(WIN32) && (defined(_WIN32) || defined(_WIN64))
      #define WIN32
      #define WIN32_LEAN_AND_MEAN
 #endif
@@ -160,12 +166,16 @@
      defined(__X86__) || defined(_X86_) || defined(__I86__))
      #define __i386__
 #endif
-
 #if !defined(__x86_64__) && (defined(_M_X64) || defined(_M_AMD64) || \
      defined(__amd64__) || defined(__amd64))
+         #if !defined(__MMX__)
+                  #define __MMX__
+         #endif
+         #if !defined(__SSE__)
+                  #define __SSE__ 2
+         #endif
      #define __x86_64__
 #endif
-
 #if !defined(__arm__) && (defined(_ARM) || defined(_M_ARM) || \
      defined(__arm) || defined(__TARGET_ARCH_ARM))
      #define __arm__
@@ -175,12 +185,6 @@
      #define __arm__
 #endif
 //---------------------------------------------------------------------------
-#if !defined(__MMX__) & defined(__x86_64__)
-     #define __MMX__
-#endif
-#if !defined(__SSE__) & defined(__x86_64__)
-     #define __SSE__
-#endif
 #if !defined(__ASM_OPT__) & (defined(__MMX__) & defined(__SSE__))
      #define __ASM_OPT__
 #endif
@@ -188,6 +192,15 @@
 // **************************************************************************
 // **************************************************************************
 // **************************************************************************
+//---------------------------------------------------------------------------
+// SET ENCODING / RUNTIME
+//---------------------------------------------------------------------------
+//#define __STRICT_ANSI__
+#if !defined(UNICODE)
+#define __UNICODE__
+#define __UNICODE
+#define   UNICODE
+#endif
 //---------------------------------------------------------------------------
 // MEMORY ORDER DETECTION
 //---------------------------------------------------------------------------
@@ -204,15 +217,15 @@
 //---------------------------------------------------------------------------
 // PLATFORM AND COMPILER SPECIFIC COMMON INCLUDES
 //---------------------------------------------------------------------------
-#ifdef __WIN32__
-    #ifdef __WATCOMC__
-    #define NOMINMAX
+#if defined(__WIN32__)
+    #if defined(__WATCOMC__)
+                #define   NOMINMAX
     #endif
-#include <winsock2.h>
-#include <windows.h>
-#include <conio.h>
-#include <io.h>
-#include <direct.h>
+    #include <winsock2.h>
+    #include <windows.h>
+    #include <conio.h>
+    #include <io.h>
+    #include <direct.h>
 #endif
 //---------------------------------------------------------------------------
 // **************************************************************************
@@ -221,8 +234,30 @@
 //---------------------------------------------------------------------------
 // STD_C++ COMMON INCLUDES
 //---------------------------------------------------------------------------
-#include <cstddef>
-#include <stdint.h>
+#if defined(__BORLANDC__) || defined(__MSVC__)
+    #if _MSC_VER >= 1600
+        #include <cstdint>
+    #else
+        typedef __int8              int8_t;
+        typedef __int16             int16_t;
+        typedef __int32             int32_t;
+        typedef __int64             int64_t;
+        typedef unsigned __int8     uint8_t;
+        typedef unsigned __int16    uint16_t;
+        typedef unsigned __int32    uint32_t;
+        typedef unsigned __int64    uint64_t;
+        typedef  int64_t            intmax_t;
+        typedef uint64_t           uintmax_t;
+    #endif
+#elif (__GNUC__ >= 3) || defined(__CLANG__)
+//    #include <stddef>
+    #include <stdint.h>
+#elif defined(__WATCOMC__)
+    #include <cstddef>
+    #include <cstdint>
+    typedef  int64_t         intmax_t;
+    typedef uint64_t        uintmax_t;
+#endif
 #include <stdlib.h>
 #include <assert.h>
 //---------------------------------------------------------------------------
@@ -240,14 +275,37 @@
 //---------------------------------------------------------------------------
 // COMPILER SPECIFIC DEFINES
 //---------------------------------------------------------------------------
-#ifdef __BORLANDC__
+#if   defined(__BORLANDC__)
 //---------------------------------------------------------------------------
 // Borland C++
 //---------------------------------------------------------------------------
 #define __restrict__
 #define __restrict __restrict__
+#define   restrict __restrict__
 //---------------------------------------------------------------------------
-#elif __WATCOMC__
+#elif defined(__MSVC__)
+//---------------------------------------------------------------------------
+// Microsoft Visual Studio Compiler
+//---------------------------------------------------------------------------
+#define __restrict__ __restrict
+#define restrict __restrict__
+//---------------------------------------------------------------------------
+#elif defined(__CLANG__)
+//---------------------------------------------------------------------------
+// LLVM Clang
+//---------------------------------------------------------------------------
+//#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-register"
+//#pragma clang diagnostic pop
+//---------------------------------------------------------------------------
+// GNU Compiler
+//---------------------------------------------------------------------------
+#elif defined(__GNUC__)
+//---------------------------------------------------------------------------
+#include <inttypes.h>
+#include <omp.h>
+//---------------------------------------------------------------------------
+#elif defined(__WATCOMC__)
 //---------------------------------------------------------------------------
 // OpenWatrom C++
 //---------------------------------------------------------------------------
@@ -255,115 +313,19 @@
 #define __restrict__
 #define __restrict __restrict__
 //---------------------------------------------------------------------------
-#elif _MSC_VER
-//---------------------------------------------------------------------------
-// Microsoft Visual Studio Compiler
-//---------------------------------------------------------------------------
-#define __restrict__ __restrict
-#define restrict __restrict__
+#elif defined(__POCC__)
 //---------------------------------------------------------------------------
 // Peles C
-//---------------------------------------------------------------------------
-#elif __POCC__
 //---------------------------------------------------------------------------
 #define __restrict__ restrict
 #define __restrict __restrict__
 //---------------------------------------------------------------------------
-#elif _UCC
+#elif defined(_UCC)
 //---------------------------------------------------------------------------
 // Ultimate++ BSD licensed C++ framework
 //---------------------------------------------------------------------------
 #define __restrict__ __restrict
 #define restrict __restrict__
-//---------------------------------------------------------------------------
-#elif __clang__
-//#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-register"
-//#pragma clang diagnostic pop
-#elif __GNUC__
-//---------------------------------------------------------------------------
-// GCC etc.
-//---------------------------------------------------------------------------
-#include <inttypes.h>
-#include <omp.h>
-#ifndef __GNUC__
-#if !defined(int8_t) & defined(__int8_t)
-#define int8_t  __int8_t
-#endif
-#if !defined(int8_t) & defined(__int8)
-#define int8_t  __int8
-#endif
-#if !defined(int8_t) & defined(BYTE)
-#define int8_t  BYTE
-#endif
-#if !defined(int8_t) & defined(char)
-#define int8_t  char
-#endif
-#ifndef int8
-#define int8 int8_t
-#endif
-#ifndef __i8
-#define __i8 int8_t
-#endif
-
-#if !defined(int16_t) & defined(__int16_t)
-#define int16_t  __int16_t
-#endif
-#if !defined(int16_t) & defined(__int16)
-#define int16_t  __int16
-#endif
-#if !defined(int16_t) & defined(SHORT)
-#define int16_t  SHORT
-#endif
-#if !defined(int16_t) & defined(short)
-#define int16_t  short
-#endif
-#ifndef int16
-#define int16 int16_t
-#endif
-#ifndef __i16
-#define __i16 int16_t
-#endif
-
-#if !defined(int32_t) & defined(__int32_t)
-#define int32_t  __int32_t
-#endif
-#if !defined(int32_t) & defined(__int32)
-#define int32_t  __int32
-#endif
-#if !defined(int32_t) & defined(DWORD)
-#define int32_t  DWORD
-#endif
-#if !defined(int32_t) & defined(long)
-#define int32_t  long
-#endif
-#ifndef int32
-#define int32 int32_t
-#endif
-#ifndef __i32
-#define __i32 int32_t
-#endif
-
-#if !defined(int64_t) & defined(__int64_t)
-#define int64_t  __int64_t
-#endif
-#if !defined(int64_t) & defined(__int64)
-#define int64_t  __int64
-#endif
-#if !defined(int64_t) & defined(LONGLONG)
-#define int64_t  LONGLONG
-#endif
-#if !defined(int64_t) & defined(long)
-#define int64_t (long long)
-#endif
-#ifndef int64
-#define int64 int64_t
-#endif
-#ifndef __i64
-#define __i64 int64_t
-#endif
-//end __GNUC__
-#endif
 //---------------------------------------------------------------------------
 #endif
 //---------------------------------------------------------------------------
@@ -374,7 +336,9 @@
 // DEBUG MACROS
 //---------------------------------------------------------------------------
 #if defined(__DEBUG_FUNC_ENTER__)
+
 #include "./time/stk_time.h"
+
 #define __DEBUG_FUNC_CALLED(__func)\
         static const int __entered_line = __LINE__;\
         static double __time_1 = stk::time::time_ms();\
@@ -400,18 +364,32 @@
 //---------------------------------------------------------------------------
 // ASM MACROS
 //---------------------------------------------------------------------------
-#if !defined(__GNUC__) && !defined(__clang__)
-#ifdef __BORLANDC__
-#define __builtin_prefetch(x1,x2,x3)   asm { push esi; mov esi,x1; prefetchnta esi+0; pop esi; };
-#define __builtin___clear_cache(x1,x2) asm { SFENCE; };
+#if (__BORLANDC__ > 0x551) || defined(__POCC__)
+#define __builtin_prefetch(x1,x2,x3)                    \
+                __asm { push ESI; mov ESI, x1; prefetchnta ESI+0; pop ESI; }
+#define __builtin___clear_cache(x1,x2)                  \
+                __asm { SFENCE; }
 #define __PTRDIFF_TYPE__ int8_t*
 #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
+#elif !defined(__GNUC__) && !defined(__CLANG__)
+#if defined(__MSVC__)
+inline void __builtin_prefetch(void *x1,int x2,int x3) {
+                __asm { __asm push ESI;
+                                __asm mov ESI, x1;
+                                __asm prefetchnta [ESI];
+                                __asm pop ESI;
+                }
+}
+inline void __builtin___clear_cache(void *x1, void *x2)                 {
+                __asm { __asm SFENCE;
+                }
+}
 #else
 #define __builtin_prefetch(x1,x2,x3)
 #define __builtin___clear_cache(x1,x2)
+#endif
 #define __PTRDIFF_TYPE__ int8_t*
 #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
-#endif
 #endif
 //---------------------------------------------------------------------------
 // **************************************************************************
@@ -440,20 +418,16 @@
 //---------------------------------------------------------------------------
 // UNICODE MACROS
 //---------------------------------------------------------------------------
-#ifndef __x
-#define __x(s) L ## s
+#ifndef __T
+#define __T(s) L ## s
 #endif
 
-#ifndef _T
-#define _T(s) __x(s)
+#ifndef  _TEXT
+#define  _TEXT(s) __T(s)
 #endif
 
-#ifndef _TEXT
-#define _TEXT(s) __T(s)
-#endif
-
-#ifndef _TEOF
-#define _TEOF EOF
+#ifndef  _TEOF
+#define  _TEOF EOF
 #endif
 //---------------------------------------------------------------------------
 // **************************************************************************
@@ -462,15 +436,13 @@
 //---------------------------------------------------------------------------
 // OS TYPEDEF TUNE
 //---------------------------------------------------------------------------
-#if defined(__BSD__)
-#endif
 #if defined(__LINUX__)
 #endif
 #if defined(__WIN32__)
 #endif
 #if defined(__WIN64__)
 #endif
-#if defined(__BEOS__)
+#if defined(__HAIKU__)
 #endif
 //---------------------------------------------------------------------------
 // **************************************************************************
@@ -479,9 +451,8 @@
 //---------------------------------------------------------------------------
 // SSTSOFT INCLUDES
 //---------------------------------------------------------------------------
-#include "./incbin/stk_incbin.h"
 #define __STASM_DO_NOT_WARN__
 #include "./stasm/stk_stasm.h"
+//#include "./incbin/stk_incbin.h"
 //---------------------------------------------------------------------------
-
-
+#endif

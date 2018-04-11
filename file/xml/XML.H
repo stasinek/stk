@@ -1,5 +1,5 @@
-﻿#ifndef __stk_XML_H
-#define __stk_XML_H
+#ifndef __stk_xml_H
+#define __stk_xml_H
 
 #include "../../mem/stk_mem.h"
 
@@ -210,11 +210,11 @@ class BDC
 /*
     Binary Exporting Stuff
 
-    int (4)		: Version of the exporter, currently 0
-    int (4)		: Type (0 xml,1 header, 2 element, 3 variable, 4 comment, 5 cdata, 6 content)
-    int (4)		: Version of the specific type exporter, currently 0
-    int (4)		: Total size of the binary data following
-    <...>		: Data
+    int (4)             : Version of the exporter, currently 0
+    int (4)             : Type (0 xml,1 header, 2 element, 3 variable, 4 comment, 5 cdata, 6 content)
+    int (4)             : Version of the specific type exporter, currently 0
+    int (4)             : Total size of the binary data following
+    <...>               : Data
 
 */
 
@@ -938,7 +938,7 @@ class XMLContent
 
         // constructors/destructor
         XMLContent(XMLElement* p = 0,int ElementPosition = -1,const char* ht = 0,int NoDecode = 0,int BinarySize = 0,const wchar_t* wt = 0);
-//		operator const char*();
+//              operator const char*();
         size_t GetValue(char*,int NoDecode = 0) const;
         bool GetBinaryValue(char**o,unsigned int* len);
         void SetValue(const char*,int NoDecode = 0,int BinarySize = 0);

@@ -49,7 +49,7 @@ const uint32_t*  __stdcall stk::hash::md5::calc_MD5(const char *a_data, const ui
 #ifdef __DEBUG_HASH_MD5__
 __DEBUG_FUNC_CALLED("")
 #endif
-                int8_t *data_chunk = NULL;
+                int8_t *data_chunk;
                 int8_t *last_data_chunk = NULL;
                 int32_t final_len = 512;
                 int32_t bits_len;

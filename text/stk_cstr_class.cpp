@@ -3,6 +3,7 @@
 //---------------------------------------------------------------------------
 #include "stk_cstr_class.h"
 #include "./../text/stk_cstr_utils.h"
+#include "./../stk_MAIN.h"
 //---------------------------------------------------------------------------
 
 __stdcall stk::__cstr_class::__cstr_class()
@@ -33,7 +34,7 @@ __init(a_initial_size,"\0");
 
 __stdcall stk::__cstr_class::__cstr_class(const char* __restrict__ a_text_to_clone)
 :
-  __vector<char>(),
+  __vector<char>(0),
   f_subs_size(0), f_subs(NULL), f_ptr_dup(NULL)
 {
 #ifdef __DEBUG_CSTR_CLASS__

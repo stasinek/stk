@@ -2,171 +2,101 @@
 <!-- C++Builder XML Project -->
 <PROJECT>
   <MACROS>
-	<VERSION value="BCB.06.00"/>
-	<PROJECT value="core_kop32_library.dll"/>
-	<OBJFILES value="core_kop32_library.obj stk_ari.obj stk_bin_tree.obj 
-	  stk_bwt_matrix.obj stk_database.obj stk_file_io.obj 
-	  stk_file_search.obj stk_hdr.obj stk_huff.obj stk_memory32.obj 
-	  stk_koder.obj stk_kop32.obj stk_mtf.obj stk_pharser.obj 
-	  stk_stack.obj stk_kop32_console.obj stk_progression.obj 
-	  stk_controler.obj stk_password.obj stk_kop32_socket_server.obj 
-	  stk_journal.obj stk_md5.obj stk_bwt_matrix2.obj 
-	  stk_static_huff.obj stk_ssc1.obj ..\database\stk_database_item.obj 
-	  ..\io\stk_memory32.obj ..\pharser\stk_pharser.obj 
-	  ..\sockets\stk_mime_types.obj ..\sockets\stk_sockets.obj 
-	  ..\stack\stk_stack.obj"/>
-	<RESFILES value="core_kop32_library.res"/>
-	<IDLFILES value=""/>
-	<IDLGENFILES value=""/>
-	<DEFFILE value=""/>
-	<RESDEPEN value="$(RESFILES)"/>
-	<LIBFILES value=""/>
-	<LIBRARIES value=""/>
-	<SPARELIBS value=""/>
-	<PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi dbrtl.bpi vcldb.bpi ibsmp.bpi 
-	  bdertl.bpi vcldbx.bpi qrpt.bpi teeui.bpi teedb.bpi tee.bpi dss.bpi 
-	  teeqr.bpi ibxpress.bpi adortl.bpi"/>
-	<PATHCPP value=".;..\database;..\io32;..\pharser;..\sockets;..\sockets;..\stack"/>
-	<PATHPAS value=".;"/>
-	<PATHRC value=".;"/>
-	<PATHASM value=".;"/>
-	<DEBUGLIBPATH value="$(BCB)\lib\debug"/>
-	<RELEASELIBPATH value="$(BCB)\lib\release"/>
-	<LINKER value="ilink32"/>
-	<USERDEFINES value="_DEBUG"/>
-	<SYSDEFINES value="NO_STRICT;_NO_VCL"/>
-	<MAINSOURCE value="core_kop32_library.cpp"/>
-	<INCLUDEPATH value="..\stack;..\sockets;..\pharser;..\io32;..\database;$(BCB)\include"/>
-	<LIBPATH value="..\stack;..\sockets;..\pharser;..\io32;..\database;$(BCB)\lib"/>
-	<WARNINGS value=""/>
-	<WARNOPTSTR value=""/>
-	<OTHERFILES value=""/>
+    <VERSION value="BCB.05.03"/>
+    <PROJECT value="stk.dll"/>
+    <OBJFILES value="stk_lib.obj"/>
+    <RESFILES value="stk.res"/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value=""/>
+    <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi dclocx50.bpi bcb2kaxserver50.bpi 
+      dclusr50.bpi REGULAREXPRESSIONCOMPONENTBCB5.bpi"/>
+    <PATHCPP value=".;"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="tlink32"/>
+    <USERDEFINES value="_DEBUG"/>
+    <SYSDEFINES value="NO_STRICT;_NO_VCL"/>
+    <MAINSOURCE value="stk.bpf"/>
+    <INCLUDEPATH value="$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
   </MACROS>
   <OPTIONS>
-	<IDLCFLAGS value="-I$(BCB)\include -src_suffix cpp -boa"/>
-	<CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -Tkh30000 -VF -C -fp -ff -X- 
-	  -ps -a4 -6 -b -k -y -v -vi- -c -tWD -tWM"/>
-	<CFLAG2 value=""/>
-	<CFLAG3 value=""/>
-	<PFLAGS value="-$Y+ -$W -$I- -$H- -$A8 -v -M -JPHNE"/>
-	<RFLAGS value=""/>
-	<AFLAGS value="/ml /w2 /zn"/>
-	<LFLAGS value="-D&quot;&quot; -Rr -Gz -c- -aa -Tpd -x -Gn -Gi -v"/>
-	<IFLAGS value=""/>
-	<OTHERFILES value=""/>
+    <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl50.csm -Hc -Vx -Ve -xf -xp -VF -C -X- -ps -a8 -6 
+      -b- -k -y -v -vi- -tWD -tWM -c"/>
+    <PFLAGS value="-$YD -$W -$R -$Q -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zd"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpd -GD -s -Gn -Gi -M -v"/>
   </OPTIONS>
   <LINKER>
-	<ALLOBJ value="c0d32.obj $(OBJFILES)"/>
-	<ALLRES value="$(RESFILES)"/>
-	<ALLLIB value="$(LIBFILES) import32.lib cw32mt.lib"/>
-	<OTHERFILES value=""/>
+    <ALLOBJ value="c0d32.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32mt.lib"/>
   </LINKER>
-  <FILELIST>
-	  <FILE FILENAME="core_kop32_library.cpp" FORMNAME="" UNITNAME="core_kop32_library" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="core_kop32_library.res" FORMNAME="" UNITNAME="core_kop32_library.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_ari.Cpp" FORMNAME="" UNITNAME="stk_ari.Cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_bin_tree.cpp" FORMNAME="" UNITNAME="stk_bin_tree.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_bwt_matrix.cpp" FORMNAME="" UNITNAME="stk_bwt_matrix.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_database.cpp" FORMNAME="" UNITNAME="stk_database.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_file_io.cpp" FORMNAME="" UNITNAME="stk_file_io.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_file_search.cpp" FORMNAME="" UNITNAME="stk_file_search.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_hdr.cpp" FORMNAME="" UNITNAME="stk_hdr.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_huff.Cpp" FORMNAME="" UNITNAME="stk_huff.Cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_memory32.cpp" FORMNAME="" UNITNAME="stk_memory32.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_koder.cpp" FORMNAME="" UNITNAME="stk_koder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_kop32.cpp" FORMNAME="" UNITNAME="stk_kop32.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_mtf.cpp" FORMNAME="" UNITNAME="stk_mtf.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_pharser.cpp" FORMNAME="" UNITNAME="stk_pharser.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_stack.cpp" FORMNAME="" UNITNAME="stk_stack.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_kop32_console.cpp" FORMNAME="" UNITNAME="stk_kop32_console.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_progression.cpp" FORMNAME="" UNITNAME="stk_progression.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_controler.cpp" FORMNAME="" UNITNAME="stk_controler.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_password.cpp" FORMNAME="" UNITNAME="stk_password.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_kop32_socket_server.cpp" FORMNAME="" UNITNAME="stk_kop32_socket_server.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_journal.cpp" FORMNAME="" UNITNAME="stk_journal.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_md5.cpp" FORMNAME="" UNITNAME="stk_md5.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_bwt_matrix2.cpp" FORMNAME="" UNITNAME="stk_bwt_matrix2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_static_huff.cpp" FORMNAME="" UNITNAME="stk_static_huff.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="stk_ssc1.cpp" FORMNAME="" UNITNAME="stk_ssc1.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\database\stk_database_item.cpp" FORMNAME="" UNITNAME="stk_database_item" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\io\stk_memory32.cpp" FORMNAME="" UNITNAME="stk_memory32" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\pharser\stk_pharser.cpp" FORMNAME="" UNITNAME="stk_pharser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\sockets\stk_mime_types.cpp" FORMNAME="" UNITNAME="stk_mime_types.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\sockets\stk_sockets.cpp" FORMNAME="" UNITNAME="stk_sockets.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-	  <FILE FILENAME="..\stack\stk_stack.cpp" FORMNAME="" UNITNAME="stk_stack" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-  </FILELIST>
-  <BUILDTOOLS>
-  </BUILDTOOLS>
-
   <IDEOPTIONS>
 [Version Info]
 IncludeVerInfo=1
-AutoIncBuild=1
-MajorVer=3
+AutoIncBuild=0
+MajorVer=1
 MinorVer=0
-Release=1
-Build=59
+Release=0
+Build=0
 Debug=0
 PreRelease=0
 Special=0
 Private=0
-DLL=1
-Locale=1045
-CodePage=1250
+DLL=0
+Locale=1033
+CodePage=1252
 
 [Version Info Keys]
-CompanyName=tsoft&gt;&gt;
-FileDescription=koperek.core
-FileVersion=3.0.1.59
-internalName=
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
 LegalCopyright=
 LegalTrademarks=
-OriginalFilename=kop32.dll
-ProductName=tsoft.kop32
+OriginalFilename=
+ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-count=1
-Item0=$(BCB)\include
+Count=2
+Item0=$(BCB)\include;$(BCB)\include\vcl
+Item1=$(BCB)\include;$(BCB)\include\vcl;K:\My Projects\prc++\x86_libraries\STK
 
 [HistoryLists\hlLibraryPath]
-count=1
-Item0=$(BCB)\lib
+Count=1
+Item0=$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-count=3
+Count=1
 Item0=_DEBUG
-Item1=_NO_VCL;_RTLDLL
-Item2=_NO_VCL
-
-[HistoryLists\hlRunParameters]
-count=2
-Item0=/koduj &quot;A:\&quot;
-Item1=/kopiuj &quot;A:\&quot;
 
 [Debugging]
-DebugSourceDirs=
+DebugSourceDirs=$(BCB)\source\vcl
 
 [Parameters]
-RunParams=/koduj &quot;A:\&quot;
-Launcher=
-UseLauncher=0
-DebugCWD=
+RunParams=
 HostApplication=
 RemoteHost=
 RemotePath=
-RemoteLauncher=
-RemoteCWD=
 RemoteDebug=0
 
 [Compiler]
 ShowInfoMsgs=0
-LinkDebugVcl=0
-
-[Linker]
-LibPrefix=
-LibSuffix=
-LibVersion=
+LinkDebugVcl=1
   </IDEOPTIONS>
 </PROJECT>
