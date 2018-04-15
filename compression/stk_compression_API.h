@@ -8,16 +8,16 @@
 #include "./../file/eno/stk_file_lzst_header.h"
 /*
 //FOR DEBUGING, STATISTICS OF USE LENGHT CODES
-extern uint32_t *hist_l_dict;
-extern uint32_t hist_l_dup_max;
-extern uint32_t *hist_o_dict;
-extern uint32_t hist_o_dup_max;
-extern uint32_t *hist_l_brun;
-extern uint32_t hist_l_pattern_max;
-extern uint32_t *hist_e_brun;
-extern uint32_t hist_e_pattern_max;
-extern uint32_t *hist_l_pass;
-extern uint32_t hist_l_plain_max;
+extern STK_IMPEXP uint32_t *hist_l_dict;
+extern STK_IMPEXP uint32_t hist_l_dup_max;
+extern STK_IMPEXP uint32_t *hist_o_dict;
+extern STK_IMPEXP uint32_t hist_o_dup_max;
+extern STK_IMPEXP uint32_t *hist_l_brun;
+extern STK_IMPEXP uint32_t hist_l_pattern_max;
+extern STK_IMPEXP uint32_t *hist_e_brun;
+extern STK_IMPEXP uint32_t hist_e_pattern_max;
+extern STK_IMPEXP uint32_t *hist_l_pass;
+extern STK_IMPEXP uint32_t hist_l_plain_max;
 */
 //---------------------------------------------------------------------------
 namespace stk { namespace compression {
@@ -47,8 +47,8 @@ void __stdcall  uncompress_ARI(void *a_dst_ptr, const uint32_t a_count, const vo
 uint32_t __stdcall compress_BWT(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const uint32_t ablock);
 void __stdcall  uncompress_BWT(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
-}}
-//-------------------------------THE END-------------------------------------
+}}
+//-------------------------------THE END-------------------------------------
 
 
 

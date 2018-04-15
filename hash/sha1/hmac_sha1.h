@@ -51,7 +51,7 @@
 #include "sha.h"
 
 #ifdef  __cplusplus
-extern "C" {
+STK_extern "C" {
 #endif
 
 #define HMAC_SHA1_DIGEST_LENGTH	20

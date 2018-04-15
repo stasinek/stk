@@ -14,41 +14,42 @@
 #define PRINT_S(val)    stk::con::prints(#val "= %1s\n"   ,       val);
 #define PRINT(val)      stk::con::prints(#val);
 
+//---------------------------------------------------------------------------
 namespace stk { namespace con {
 //---------------------------------------------------------------------------
-extern char             __stdcall   getch                   (void);
-extern void             __stdcall   print                   (const char* __restrict__ atext);
-extern void             __stdcall   error                   (const char* __restrict__ atext);
+extern "C" STK_IMPEXP char             __stdcall   getch                   (void);
+extern "C" STK_IMPEXP void             __stdcall   print                   (const char* __restrict__ atext);
+extern "C" STK_IMPEXP void             __stdcall   error                   (const char* __restrict__ atext);
 
-extern void             __cdecl     prints  				(const char* __restrict__ a_format, ...);
-extern void             __cdecl     printe  				(const char* __restrict__ a_format, ...);
-extern void             __cdecl     printr  				(const char* __restrict__ a_text, const char an_times);
+extern "C" STK_IMPEXP void             __cdecl     prints  				(const char* __restrict__ a_format, ...);
+extern "C" STK_IMPEXP void             __cdecl     printe  				(const char* __restrict__ a_format, ...);
+extern "C" STK_IMPEXP void             __cdecl     printr  				(const char* __restrict__ a_text, const char an_times);
 
 typedef char       		(__stdcall  __getch_handler)		(void);
 typedef void       		(__stdcall  __print_handler)		(const char* a_text);
 typedef void       		(__stdcall  __error_handler)		(const char* a_text);
 
-extern __getch_handler *getch_handler;
-extern __print_handler *print_handler;
-extern __error_handler *error_handler;
+extern "C" STK_IMPEXP __getch_handler *getch_handler;
+extern "C" STK_IMPEXP __print_handler *print_handler;
+extern "C" STK_IMPEXP __error_handler *error_handler;
 
-extern void             __stdcall   set_console_handlers	(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*));
-extern char             __stdcall   stdinp_handler  		(void);
-extern void             __stdcall   stdout_handler  		(const char* a_text);
-extern void             __stdcall   stderr_handler  		(const char* a_text);
+extern "C" STK_IMPEXP void             __stdcall   set_console_handlers	(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*));
+extern "C" STK_IMPEXP char             __stdcall   stdinp_handler  		(void);
+extern "C" STK_IMPEXP void             __stdcall   stdout_handler  		(const char* a_text);
+extern "C" STK_IMPEXP void             __stdcall   stderr_handler  		(const char* a_text);
 
 #ifdef __WATCOMC__
-extern void                         atexit(void);
+extern "C" STK_IMPEXP void                         con_atexit(void);
 #else
-extern void             __cdecl     atexit(void);
+extern "C" STK_IMPEXP void             __cdecl     con_atexit(void);
 #endif
 //---------------------------------------------------------------------------
 
 /*
 #define SELECT_10TH(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, ...) a10
 #define NUM(...) SELECT_10TH(__VA_ARGS__,\
-        TWOORMORE, TWOORMORE, TWOORMORE, TWOORMORE, TWOORMORE,\
-        TWOORMORE, TWOORMORE, TWOORMORE, ONE, ARGTS_EON)
+		TWOORMORE, TWOORMORE, TWOORMORE, TWOORMORE, TWOORMORE,\
+		TWOORMORE, TWOORMORE, TWOORMORE, ONE, ARGTS_EON)
 #define REST_HELPER_TWOORMORE(first, ...),__VA_ARGS__
 #define REST_HELPER_ONE(first)
 #define REST_HELPER_2(qt, ...) REST_HELPER_##qt(__VA_ARGS__)

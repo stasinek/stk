@@ -6,11 +6,11 @@
 //---------------------------------------------------------------------------
 namespace stk { namespace file { namespace mime {
 //---------------------------------------------------------------------------
-extern char *__stdcall decode(char* a_file_name);
+extern STK_IMPEXP char *__stdcall decode(char* a_file_name);
 #ifdef __WATCOMC__
-extern void  atexit(void);
+extern STK_IMPEXP void  atexit(void);
 #else
-extern void __cdecl atexit(void);
+extern STK_IMPEXP void __cdecl atexit(void);
 #endif
 //---------------------------------------------------------------------------
 }}}

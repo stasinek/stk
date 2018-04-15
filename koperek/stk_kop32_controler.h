@@ -6,21 +6,21 @@
 //---------------------------------------------------------------------------
 namespace stk {
 //---------------------------------------------------------------------------
-class __kop32_class;
-		//------------------------------------
-class __kop32_class_progress_controler {
-		//------------------------------------
-class __stat {
-public:
-						__stdcall  __stat	(void);
-						__stdcall ~__stat	(void);
-		//------------------------------------
-void			__stdcall  reset	(void);
-int64_t readed, size;
-        int32_t  __stdcall percent	(void);
-		//------------------------------------
-};
-		//------------------------------------
+class STK_IMPEXP __kop32_class;
+//---------------------------------------------------------------------------
+class STK_IMPEXP __kop32_class_progress_controler {
+//---------------------------------------------------------------------------
+    class __stat {
+    public:
+				__stdcall  __stat	(void);
+				__stdcall ~__stat	(void);
+    void 		__stdcall reset	    (void);
+	//------------------------------------
+    int64_t readed, size;
+    int32_t     __stdcall percent	(void);
+	//------------------------------------
+    };
+//---------------------------------------------------------------------------
 private:
 		stk::__kop32_class *f_owner;
 		bool f_timer_freezed; uint32_t f_t1, f_t2; time_t f_t;

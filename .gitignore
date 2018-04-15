@@ -15,4 +15,14 @@
 *.exe
 *.#*
 *.bak
-*(from *).*
+*.ipch
+*.tlog
+*.ii*
+*.ilk
+*.pdb
+*.s
+*.idb
+*.cache
+*.sdf
+*.stat
+*.log

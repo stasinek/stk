@@ -1,0 +1,415 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="cipher\stk_cipher_API.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="cpu\cpuid.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="cpu\stk_cpu.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="cpu\stk_cpu_nasm.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="incbin\stk_incbin.asm">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="io\Complete MIME Types List - FreeFormatter.com.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="3d\stk_3dvector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cipher\FastAESinC\stk_aes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cipher\stk_base64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cipher\stk_cipher_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cipher\stk_cipher_mtf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cipher\stk_cipher_pair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compression\stk_compression_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compression\stk_compression_ari.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compression\stk_compression_bwt_matrix2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compression\stk_compression_bwt_matrix3_suffix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compression\stk_compression_huff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compression\stk_compression_lzstv4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compression\stk_compression_static_huff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpu\stk_cpu (from HP2730).h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpu\stk_cpu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="database\stk_database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="database\stk_database_alias.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="database\stk_database_items.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="database\stk_database_owner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file\eno\stk_file_lzst_header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file\ini\stk_file_ini.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file\json\stk_json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file\vfs\stk_file_vfs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file\xml\xml.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file\stk_file_mime_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash\md5\md5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash\sha1\hmac_sha1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash\sha1\sha.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash\stk_hash_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash\stk_hash_crc32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash\stk_hash_md5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash\stk_hash_password.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash\stk_hash_ssc1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="incbin\stk_incbin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io\stk_console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io\stk_file_io.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="io\stk_rs232.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="koperek\stk_kop32_API (from HP2730).h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="koperek\stk_kop32_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="koperek\stk_kop32_class.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="koperek\stk_kop32_console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="koperek\stk_kop32_controler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="koperek\stk_kop32_list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="koperek\stk_kop32_options.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="koperek\stk_kop32_search.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="koperek\stk_kop32_socket_server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mem\stk_bsearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mem\stk_mem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mem\stk_qsort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pharser\stk_pharse_command_line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pharser\stk_pharse_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process_journal\stk_journal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sockets\stk_sockets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stasm\copy_of_stk_MAIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stasm\stk_stasm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sthreads\stk_idle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sthreads\stk_threads.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="text\stk_cstr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="text\stk_cstr_class.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="text\stk_cstr_stack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="text\stk_cstr_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="time\stk_time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="uuidxx\uuidxx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stk_bitset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stk_hash_chain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stk_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stk_map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stk_set.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stk_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stk_variable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stk_vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\stk_3Dvector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cipher\stk_base64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cipher\stk_cipher_API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cipher\stk_cipher_mtf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cipher\stk_cipher_pair.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cipher\stk_cipher_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compression\stk_compression_API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compression\stk_compression_ari.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compression\stk_compression_bwt_matrix2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compression\stk_compression_huff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compression\stk_compression_lzstv4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compression\stk_compression_static_huff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpu\stk_cpu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="database\stk_database.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="database\stk_database_items.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file\eno\stk_file_lzst_header.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file\ini\stk_file_ini.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file\json\stk_json.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file\vfs\stk_file_vfs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file\xml\stk_xml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file\stk_file_mime_types.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hash\stk_hash_API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hash\stk_hash_crc32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hash\stk_hash_md5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hash\stk_hash_password.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hash\stk_hash_ssc1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="incbin\stk_incbin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="io\stk_console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="io\stk_file_io.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="io\stk_rs232.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="koperek\stk_kop32_API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="koperek\stk_kop32_class.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="koperek\stk_kop32_console_API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="koperek\stk_kop32_controler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="koperek\stk_kop32_search.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="koperek\stk_kop32_socket_server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mem\stk_bsearch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mem\stk_mem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mem\stk_qsort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pharser\stk_pharse_command_line.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pharser\stk_pharse_math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="process_journal\stk_journal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sockets\stk_sockets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stasm\stk_stasm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sthreads\stk_idle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sthreads\stk_threads.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="text\stk_cstr_class.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="text\stk_cstr_stack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="text\stk_cstr_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="time\stk_time.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stk_BCB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

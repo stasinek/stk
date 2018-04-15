@@ -1,0 +1,19 @@
+stk_bbtree.cpp(42): Error! E029: col(15) symbol 'get_new_slot' has not been declared
+stk_bbtree.cpp(43): Error! E029: col(30) symbol 'cur' has not been declared
+stk_bbtree.cpp(44): Error! E715: col(13) member 'node' has not been declared in 'bt_tree'
+stk_bbtree.cpp(49): Error! E029: col(36) symbol 'strdup' has not been declared
+stk_bbtree.cpp(55): Error! E029: col(42) symbol 'res' has not been declared
+stk_bbtree.cpp(60): Warning! W726: col(1) no reference to formal parameter 'value'
+stk_bbtree.cpp(37): Note! N392: col(65) definition: 'void * value' in 'unsigned add_if_not_exists( bt_tree *, char *, void * )'
+stk_bbtree.cpp(70): Error! E715: col(23) member 'cuurent_root' has not been declared in 'bt_tree'
+stk_bbtree.cpp(73): Error! E715: col(49) member 'name' has not been declared in 'bt_node'
+stk_bbtree.cpp(74): Error! E028: col(17) expecting ')' but found '{'
+stk_bbtree.cpp(76): Error! E121: col(18) syntax error
+stk_bbtree.cpp(81): Error! E715: col(54) member 'parent' has not been declared in 'bt_node'
+stk_bbtree.cpp(82): Error! E019: col(33) 'break' may only appear in a for, do, while, or switch statement
+stk_bbtree.cpp(93): Error! E019: col(33) 'break' may only appear in a for, do, while, or switch statement
+stk_bbtree.cpp(99): Error! E003: col(9) missing return value
+stk_bbtree.cpp(101): Error! E498: col(25) syntax error before 'bt'; probable cause: incorrectly spelled type name
+stk_bbtree.cpp(102): Error! E498: col(16) syntax error before 'bt'; probable cause: incorrectly spelled type name
+stk_bbtree.cpp(103): Error! E121: col(9) syntax error
+stk_bbtree.cpp(107): Error! E121: col(1) syntax error

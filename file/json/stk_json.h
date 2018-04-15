@@ -220,7 +220,7 @@ void json_value_free_ex (json_settings * settings, json_value *);
  * use a custom mem_free. */
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
-   } /* extern "C" */
+   } /* STK_extern "C" */
    } // namespace stk
 #endif
 //---------------------------------------------------------------------------

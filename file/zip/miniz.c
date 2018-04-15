@@ -189,7 +189,7 @@
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+STK_extern "C" {
 #endif
 
 // ------------------- zlib-style API Definitions.
@@ -477,7 +477,7 @@ typedef struct
   mz_uint64 m_comp_size;
   mz_uint64 m_uncomp_size;
   mz_uint16 m_internal_attr;
-  mz_uint32 m_external_attr;
+  mz_uint32 m_IMPEXPal_attr;
   mz_uint64 m_local_header_ofs;
   mz_uint32 m_comment_size;
   char m_filename[MZ_ZIP_MAX_ARCHIVE_FILENAME_SIZE];
@@ -930,7 +930,7 @@ typedef unsigned char mz_validate_uint64[sizeof(mz_uint64)==8 ? 1 : -1];
 #endif
 
 #ifdef __cplusplus
-  extern "C" {
+  STK_extern "C" {
 #endif
 
 // ------------------- zlib-style API's
@@ -3241,14 +3241,14 @@ mz_bool mz_zip_reader_is_file_encrypted(mz_zip_archive *pZip, mz_uint file_index
 
 mz_bool mz_zip_reader_is_file_a_directory(mz_zip_archive *pZip, mz_uint file_index)
 {
-  mz_uint filename_len, internal_attr, external_attr;
+  mz_uint filename_len, internal_attr, IMPEXPal_attr;
   const mz_uint8 *p = mz_zip_reader_get_cdh(pZip, file_index);
   if (!p)
     return MZ_FALSE;
 
   internal_attr = MZ_READ_LE16(p + MZ_ZIP_CDH_INTERNAL_ATTR_OFS);
-  external_attr = MZ_READ_LE32(p + MZ_ZIP_CDH_EXTERNAL_ATTR_OFS);
-  if ((!internal_attr) && ((external_attr & 0x10) != 0))
+  IMPEXPal_attr = MZ_READ_LE32(p + MZ_ZIP_CDH_EXTERNAL_ATTR_OFS);
+  if ((!internal_attr) && ((IMPEXPal_attr & 0x10) != 0))
     return MZ_TRUE;
 
   filename_len = MZ_READ_LE16(p + MZ_ZIP_CDH_FILENAME_LEN_OFS);
@@ -3282,7 +3282,7 @@ mz_bool mz_zip_reader_file_stat(mz_zip_archive *pZip, mz_uint file_index, mz_zip
   pStat->m_comp_size = MZ_READ_LE32(p + MZ_ZIP_CDH_COMPRESSED_SIZE_OFS);
   pStat->m_uncomp_size = MZ_READ_LE32(p + MZ_ZIP_CDH_DECOMPRESSED_SIZE_OFS);
   pStat->m_internal_attr = MZ_READ_LE16(p + MZ_ZIP_CDH_INTERNAL_ATTR_OFS);
-  pStat->m_external_attr = MZ_READ_LE32(p + MZ_ZIP_CDH_EXTERNAL_ATTR_OFS);
+  pStat->m_IMPEXPal_attr = MZ_READ_LE32(p + MZ_ZIP_CDH_EXTERNAL_ATTR_OFS);
   pStat->m_local_header_ofs = MZ_READ_LE32(p + MZ_ZIP_CDH_LOCAL_HEADER_OFS);
 
   // Copy as much of the filename and comment as possible.

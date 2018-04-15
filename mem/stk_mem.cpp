@@ -54,7 +54,7 @@ size_t __stdcall stk::mem::size(const void *a_ptr)
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::alloc(const size_t a_count)
+STK_IMPEXP void *__stdcall stk::mem::alloc(const size_t a_count)
 {
     register size_t l_n_tailed_count;
     register __mem_tail *n_t;
@@ -129,7 +129,7 @@ ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 
-void __stdcall stk::mem::free(void *a_dst_ptr)
+STK_IMPEXP void __stdcall stk::mem::free(void *a_dst_ptr)
 {
     register size_t l_p_tailed_count;
     register __mem_tail *o_t;
@@ -1312,7 +1312,7 @@ __DEBUG_FUNC_CALLED("")
         pop EDI;
     }
 #else
- return;
+assert(0); return;
 #endif
 }
 //---------------------------------------------------------------------------
@@ -1344,6 +1344,8 @@ asm{
         emms
 
 }
+#else
+return strlen(lpString);
 #endif
 return 0;
 }
@@ -1442,7 +1444,8 @@ asm {
 }
 #endif
 return 0;
-    }
+}
+	
 size_t __stdcall asciitdec (char *String)
  {
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)

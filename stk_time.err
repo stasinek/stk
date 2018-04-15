@@ -1,0 +1,10 @@
+./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from time\.\..\stk_main.h(455)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from time\stk_time.h(6)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from time\stk_time.cpp(4)
+./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
+time\stk_time.cpp(121): Warning! W389: col(60) integral value may be truncated during assignment or initialization
+time\stk_time.cpp(121): Warning! W389: col(60) integral value may be truncated during assignment or initialization
+time\stk_time.cpp(133): Warning! W389: col(43) integral value may be truncated during assignment or initialization
+time\stk_time.cpp(144): Warning! W726: col(66) no reference to formal parameter 'year'
+time\stk_time.cpp(144): Note! N392: col(47) definition: 'unsigned & year' in 'unsigned firstDayOfJanuary( unsigned & )'

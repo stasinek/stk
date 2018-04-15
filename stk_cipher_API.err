@@ -1,0 +1,14 @@
+./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from cipher\.\..\stk_main.h(455)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from cipher\stk_cipher_API.h(7)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from cipher\stk_cipher_API.cpp(4)
+./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
+cipher\stk_cipher_API.cpp(84): Warning! W726: col(1) no reference to formal parameter 'a_dst_ptr'
+cipher\stk_cipher_API.cpp(49): Note! N392: col(45) definition: 'void * a_dst_ptr' in 'void stdcall (__declspec(dllimport) stk::cipher::cript_XOR)( void *, unsigned, char const *, unsigned )'
+cipher\stk_cipher_API.cpp(84): Warning! W726: col(1) no reference to formal parameter 'a_count'
+cipher\stk_cipher_API.cpp(49): Note! N392: col(71) definition: 'unsigned const a_count' in 'void stdcall (__declspec(dllimport) stk::cipher::cript_XOR)( void *, unsigned, char const *, unsigned )'
+cipher\stk_cipher_API.cpp(84): Warning! W726: col(1) no reference to formal parameter 'alpHaslo'
+cipher\stk_cipher_API.cpp(49): Note! N392: col(92) definition: 'char const * alpHaslo' in 'void stdcall (__declspec(dllimport) stk::cipher::cript_XOR)( void *, unsigned, char const *, unsigned )'
+cipher\stk_cipher_API.cpp(84): Warning! W726: col(1) no reference to formal parameter 'a_haslo_count'
+cipher\stk_cipher_API.cpp(49): Note! N392: col(117) definition: 'unsigned const a_haslo_count' in 'void stdcall (__declspec(dllimport) stk::cipher::cript_XOR)( void *, unsigned, char const *, unsigned )'
+cipher\stk_cipher_API.cpp(104): Warning! W389: col(34) integral value may be truncated during assignment or initialization

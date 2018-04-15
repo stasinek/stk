@@ -1,0 +1,10 @@
+./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from mem\.\..\stk_main.h(455)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from mem\stk_mem.h(6)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from mem\stk_qsort.cpp(4)
+./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
+mem\stk_qsort.cpp(43): Warning! W389: col(35) integral value may be truncated during assignment or initialization
+mem\stk_qsort.cpp(45): Warning! W013: col(14) unreachable code
+mem\stk_qsort.cpp(46): Warning! W389: col(57) integral value may be truncated during assignment or initialization
+mem\stk_qsort.cpp(48): Warning! W389: col(73) integral value may be truncated during assignment or initialization
+mem\stk_qsort.cpp(49): Warning! W389: col(55) integral value may be truncated during assignment or initialization

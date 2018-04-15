@@ -91,7 +91,7 @@ return (char)getchar();
 #ifdef __WATCOMC__
 void stk::test::atexit(void)
 #else
-void __cdecl stk::test::atexit(void)
+void __cdecl stk::test::stk_atexit(void)
 #endif
 {
 #ifdef __BORLANDC__
@@ -104,14 +104,19 @@ int i asm("i");
 #include <stdio.h>
 #include <conio.h>
 
-int __stdcall stk::test::start(int argc, char *argv[])
+int __stdcall stk::test::start_test(int argc, char *argv[])
 {
-::atexit(&stk::test::atexit);
+    int32_t argi, argl = 0;
+    for (argi = 0; argi < argc; argi++) argl += strlen(argv[argi]);
+    char *args = new char[argl+1];
+    for (argi = 0; argi < argc; argi++) strcat(args,argv[argi]);
+    args[0] = '\0';
+
+::atexit(&stk::test::stk_atexit);
 system("COLOR A");
 register int32_t r = 0;
 stk::con::set_console_handlers(&test_ConsoleGetchHandler, &test_ConsolePrintHandler,NULL);
-char *args = new char[4096];
-args[0] = '\0';
+
 
 stk::con::prints("ALLOCATING VARIABLES...\n");
 TEST_INIT(200000000,10000);

@@ -1,0 +1,30 @@
+./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from cpu\.\..\mem\.\..\stk_main.h(455)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from cpu\.\..\mem\stk_mem.h(6)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from cpu\stk_cpu.cpp(4)
+./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
+cpu\.\..\sthreads\stk_threads.h(85): Warning! W014: col(5) no reference to symbol 'request_command'
+cpu\.\..\sthreads\stk_threads.h(79): Note! N392: col(21) definition: 'int * request_command' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+cpu\.\..\sthreads\stk_threads.h(85): Warning! W014: col(5) no reference to symbol 'request_time'
+cpu\.\..\sthreads\stk_threads.h(80): Note! N392: col(24) definition: 'unsigned long * request_time' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+cpu\.\..\sthreads\stk_threads.h(85): Warning! W014: col(5) no reference to symbol 'request_count'
+cpu\.\..\sthreads\stk_threads.h(81): Note! N392: col(20) definition: 'int request_count' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+cpu\.\..\sthreads\stk_threads.h(85): Warning! W726: col(5) no reference to formal parameter 'a_request_command'
+cpu\.\..\sthreads\stk_threads.h(78): Note! N392: col(35) definition: 'int a_request_command' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+cpu\.\..\sthreads\stk_threads.h(85): Warning! W726: col(5) no reference to formal parameter 'a_request_time'
+cpu\.\..\sthreads\stk_threads.h(78): Note! N392: col(60) definition: 'unsigned long a_request_time' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+cpu\stk_cpu.cpp(302): Warning! W726: col(1) no reference to formal parameter 'a_ebx'
+cpu\stk_cpu.cpp(272): Note! N392: col(61) definition: 'unsigned * a_ebx' in 'unsigned cdecl (__declspec(dllimport) stk::cpu::cpuid)( unsigned *, unsigned *, unsigned *, unsigned *, unsigned, unsigned )'
+cpu\stk_cpu.cpp(302): Warning! W726: col(1) no reference to formal parameter 'a_ecx'
+cpu\stk_cpu.cpp(272): Note! N392: col(78) definition: 'unsigned * a_ecx' in 'unsigned cdecl (__declspec(dllimport) stk::cpu::cpuid)( unsigned *, unsigned *, unsigned *, unsigned *, unsigned, unsigned )'
+cpu\stk_cpu.cpp(302): Warning! W726: col(1) no reference to formal parameter 'a_edx'
+cpu\stk_cpu.cpp(272): Note! N392: col(95) definition: 'unsigned * a_edx' in 'unsigned cdecl (__declspec(dllimport) stk::cpu::cpuid)( unsigned *, unsigned *, unsigned *, unsigned *, unsigned, unsigned )'
+cpu\stk_cpu.cpp(302): Warning! W726: col(1) no reference to formal parameter 'a_feature'
+cpu\stk_cpu.cpp(272): Note! N392: col(110) definition: 'unsigned a_feature' in 'unsigned cdecl (__declspec(dllimport) stk::cpu::cpuid)( unsigned *, unsigned *, unsigned *, unsigned *, unsigned, unsigned )'
+cpu\stk_cpu.cpp(302): Warning! W726: col(1) no reference to formal parameter 'a_feature_ecx'
+cpu\stk_cpu.cpp(272): Note! N392: col(129) definition: 'unsigned a_feature_ecx' in 'unsigned cdecl (__declspec(dllimport) stk::cpu::cpuid)( unsigned *, unsigned *, unsigned *, unsigned *, unsigned, unsigned )'
+cpu\stk_cpu.cpp(437): Warning! W007: col(15) '&array' may not produce intended result
+cpu\stk_cpu.cpp(445): Warning! W007: col(19) '&array' may not produce intended result
+cpu\stk_cpu.cpp(452): Warning! W007: col(33) '&array' may not produce intended result
+cpu\stk_cpu.cpp(458): Warning! W007: col(24) '&array' may not produce intended result
+cpu\stk_cpu.cpp(460): Warning! W007: col(16) '&array' may not produce intended result

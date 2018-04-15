@@ -1,14 +1,13 @@
-#ifndef __stk_main_H
-#define __stk_main_H
+#ifndef __stk_main_h
+#define __stk_main_h
 #pragma once
-
 //
 // IMPORT/EXPORT define what're You doing LINK LIBRARY or STK_BUILD_LIBRARY
 //
 #ifdef STK_BUILD_LIBRARY
-    #define STK_IMPEXP __EXPORT
+	#define STK_IMPEXP __EXPORT
 #else /* !STK_BUILD_LIBRARY */
-    #define STK_IMPEXP __IMPORT
+	#define STK_IMPEXP __IMPORT
 #endif /* STK_BUILD_LIBRARY */
 
 #if !defined(__EXPORT)
@@ -373,16 +372,16 @@
 #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
 #elif !defined(__GNUC__) && !defined(__CLANG__)
 #if defined(__MSVC__)
-inline void __builtin_prefetch(void *x1,int x2,int x3) {
-                __asm { __asm push ESI;
-                                __asm mov ESI, x1;
-                                __asm prefetchnta [ESI];
-                                __asm pop ESI;
-                }
+inline void __builtin_prefetch(void *x1,int x2,int x3)
+{
+    __asm push ESI;
+    __asm mov ESI, x1;
+    __asm prefetchnta [ESI];
+    __asm pop ESI;
 }
-inline void __builtin___clear_cache(void *x1, void *x2)                 {
-                __asm { __asm SFENCE;
-                }
+inline void __builtin___clear_cache(void *x1, void *x2)
+{
+    __asm SFENCE;
 }
 #else
 #define __builtin_prefetch(x1,x2,x3)

@@ -127,33 +127,3 @@ __DEBUG_FUNC_CALLED("")
 return CloseHandle(hObject);
 }
 //---------------------------------------------------------------------------
-
-int stk::file::send(int file_num,void *data,unsigned long int len)
-{
-#ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
-#endif
-  DWORD i = 0;
-#ifdef __WIN32__
-//  write(__file_handle,(LPVOID)data,(DWORD)len,&i,NULL);
-#else
-//  i = ::write(__file_fd,data,len);
-#endif
-  return i;
-}
-//---------------------------------------------------------------------------
-
-int stk::file::recv(int file_num,void *data,unsigned long int len)
-{
-#ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
-#endif
-  DWORD i = 0;
-#ifdef __WIN32__
-  //read(__file_handle,(LPVOID)data,(DWORD)len,&i,NULL);
-#else
-//  i = ::read(__file_fd,data,len); break;
-#endif
-  return i;
-}
-//---------------------------------------------------------------------------

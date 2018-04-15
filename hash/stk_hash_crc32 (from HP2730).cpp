@@ -282,8 +282,8 @@ for (; r_src_ptr  < r_src_ptr_end_modulo_64;) { __builtin_prefetch(r_src_ptr + 6
 for (register  uint8_t prefetched_num = 0; prefetched_num < 64; prefetched_num++) {
          UPDATE8()
          r_src_ptr++;
-}}
-for (;r_src_ptr  < r_src_ptr_end;) {
+}}
+for (;r_src_ptr  < r_src_ptr_end;) {
          UPDATE8()
          r_src_ptr++;
 }

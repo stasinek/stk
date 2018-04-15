@@ -11,20 +11,20 @@
 //---------------------------------------------------------------------------
 namespace stk { namespace socket {
 //---------------------------------------------------------------------------
-extern SOCKET  __stdcall create_server_socket(const char *a_ipv4_port_s, const int32_t a_timeout_s);
-extern SOCKET  __stdcall create_server_socket(const char *a_ipv4_addr_s, const char *a_ipv4_port_s, const int32_t a_timeout_s);
-extern SOCKET  __stdcall create_client_socket(const char *a_ipv4_addr_s, const char *a_ipv4_port_s, const int32_t a_timeout_s);
-extern int32_t __stdcall close_socket(SOCKET a_main_socket);
+extern STK_IMPEXP SOCKET  __stdcall create_server_socket(const char *a_ipv4_port_s, const int32_t a_timeout_s);
+extern STK_IMPEXP SOCKET  __stdcall create_server_socket(const char *a_ipv4_addr_s, const char *a_ipv4_port_s, const int32_t a_timeout_s);
+extern STK_IMPEXP SOCKET  __stdcall create_client_socket(const char *a_ipv4_addr_s, const char *a_ipv4_port_s, const int32_t a_timeout_s);
+extern STK_IMPEXP int32_t __stdcall close_socket(SOCKET a_main_socket);
 
-extern int32_t __stdcall recv_for_sure(SOCKET a_main_socket,char *a_recv_lp, const int32_t alen,const  int32_t ax);
-extern int32_t __stdcall send_for_sure(SOCKET a_main_socket,const char *a_send_lp, const int32_t alen,const  int32_t ax);
-extern int32_t __stdcall start_tftp_server(const char* a_path, const char *a_ipv4_addr_s, const char *a_ipv4_port_s);
-extern int32_t __stdcall start_http_server(const char* a_path, const char *a_ipv4_addr_s, const char *a_ipv4_port_s);
+extern STK_IMPEXP int32_t __stdcall recv_for_sure(SOCKET a_main_socket,char *a_recv_lp, const int32_t alen,const  int32_t ax);
+extern STK_IMPEXP int32_t __stdcall send_for_sure(SOCKET a_main_socket,const char *a_send_lp, const int32_t alen,const  int32_t ax);
+extern STK_IMPEXP int32_t __stdcall start_tftp_server(const char* a_path, const char *a_ipv4_addr_s, const char *a_ipv4_port_s);
+extern STK_IMPEXP int32_t __stdcall start_http_server(const char* a_path, const char *a_ipv4_addr_s, const char *a_ipv4_port_s);
 
-extern int32_t __stdcall get_file_size(const char* a_filename);
-extern const char   *__stdcall get_file_size_ansi(const char* a_filename);
-extern int32_t __stdcall get_file_content(const char* a_filename, char *a_file_content, const int32_t a_max_size);
-extern void	__stdcall print_socket_error();
+extern STK_IMPEXP int32_t __stdcall get_file_size(const char* a_filename);
+extern STK_IMPEXP const char   *__stdcall get_file_size_ansi(const char* a_filename);
+extern STK_IMPEXP int32_t __stdcall get_file_content(const char* a_filename, char *a_file_content, const int32_t a_max_size);
+extern STK_IMPEXP void	__stdcall print_socket_error();
 
 class SOCKET_BUFFER_CLASS {
 public:

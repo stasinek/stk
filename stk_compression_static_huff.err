@@ -1,0 +1,13 @@
+./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from compression\.\..\stk_main.h(455)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from compression\stk_compression_static_huff.h(7)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from compression\stk_compression_static_huff.cpp(4)
+./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
+compression\stk_compression_static_huff.cpp(133): Warning! W017: col(1) label 'HUFF_CHECK_ORDER' has not been referenced by a goto
+compression\stk_compression_static_huff.cpp(133): Note! N574: col(1) label defined in: compression\stk_compression_static_huff.cpp(105) (col 17)
+compression\stk_compression_static_huff.cpp(133): Warning! W017: col(1) label 'HUFF_EXCHANGE_NODES' has not been referenced by a goto
+compression\stk_compression_static_huff.cpp(133): Note! N574: col(1) label defined in: compression\stk_compression_static_huff.cpp(112) (col 20)
+compression\stk_compression_static_huff.cpp(133): Warning! W014: col(1) no reference to symbol 'dad_exg'
+compression\stk_compression_static_huff.cpp(95): Note! N392: col(45) definition: 'unsigned dad_exg' in 'void stdcall stk::compression::__static_huff_compressor::update( char )'
+compression\stk_compression_static_huff.cpp(133): Warning! W014: col(1) no reference to symbol 'dad_cur'
+compression\stk_compression_static_huff.cpp(96): Note! N392: col(45) definition: 'unsigned dad_cur' in 'void stdcall stk::compression::__static_huff_compressor::update( char )'

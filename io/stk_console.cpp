@@ -5,8 +5,6 @@
 #include "./../sthreads/stk_threads.h"
 #include "stk_console.h"
 //---------------------------------------------------------------------------
-
-//---------------------------------------------------------------------------
 static int s_print_buffer_size = 0; static char *s_print_buffer = NULL;
 //---------------------------------------------------------------------------
 char (__stdcall *stk::con::getch_handler)() = &stk::con::stdinp_handler;
@@ -65,9 +63,9 @@ void  __stdcall stk::con::error(const char* a_text)
 //---------------------------------------------------------------------------
 
 #ifdef __WATCOMC__
-void  stk::con::atexit(void)
+void  stk::con::con_atexit(void)
 #else
-void __cdecl  stk::con::atexit(void)
+void __cdecl  stk::con::con_atexit(void)
 #endif
 {
 if (s_print_buffer!=NULL && s_print_buffer_size > 0)
@@ -86,7 +84,7 @@ if (s_print_buffer_size==0) {
     s_print_buffer = (char*)stk::cstr::alloc(VA_DEFAULT_SIZE);
     assert(s_print_buffer!=NULL);
     s_print_buffer_size = VA_DEFAULT_SIZE; //vsnprintf nsize is passed without terminator
-    ::atexit(&stk::con::atexit);
+    ::atexit(&stk::con::con_atexit);
     }
 
     do {
@@ -152,7 +150,7 @@ ATOMIC(1)
 #define VA_DEFAULT_SIZE 4096
 ATOMIC_LOCK(1)
 if (s_print_buffer_size==0) {
-    ::atexit(&stk::con::atexit);
+    ::atexit(&stk::con::con_atexit);
     s_print_buffer = (char*)stk::cstr::alloc(VA_DEFAULT_SIZE);
     assert(s_print_buffer!=NULL);
     s_print_buffer_size =VA_DEFAULT_SIZE;

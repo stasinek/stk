@@ -1,0 +1,29 @@
+./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from compression\.\..\stk_main.h(455)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from compression\stk_compression_API.h(7)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from compression\stk_compression_API.cpp(4)
+./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
+compression\stk_compression_API.cpp(201): Warning! W017: col(1) label 'LZS_UPDATE_DUP' has not been referenced by a goto
+compression\stk_compression_API.cpp(201): Note! N574: col(1) label defined in: compression\stk_compression_API.cpp(82) (col 31)
+compression\stk_compression_API.cpp(201): Warning! W017: col(1) label 'LZS_PATTERN' has not been referenced by a goto
+compression\stk_compression_API.cpp(201): Note! N574: col(1) label defined in: compression\stk_compression_API.cpp(97) (col 28)
+compression\stk_compression_API.cpp(201): Warning! W017: col(1) label 'LZS_DUP' has not been referenced by a goto
+compression\stk_compression_API.cpp(201): Note! N574: col(1) label defined in: compression\stk_compression_API.cpp(106) (col 24)
+compression\stk_compression_API.cpp(201): Warning! W017: col(1) label 'LZS_NOTHING' has not been referenced by a goto
+compression\stk_compression_API.cpp(201): Note! N574: col(1) label defined in: compression\stk_compression_API.cpp(114) (col 28)
+compression\stk_compression_API.cpp(201): Warning! W017: col(1) label 'LZS_SAVE_REST' has not been referenced by a goto
+compression\stk_compression_API.cpp(201): Note! N574: col(1) label defined in: compression\stk_compression_API.cpp(194) (col 22)
+compression\stk_compression_API.cpp(227): Warning! W389: col(48) integral value may be truncated during assignment or initialization
+compression\stk_compression_API.cpp(237): Warning! W389: col(48) integral value may be truncated during assignment or initialization
+compression\stk_compression_API.cpp(246): Warning! W389: col(48) integral value may be truncated during assignment or initialization
+compression\stk_compression_API.cpp(272): Warning! W389: col(59) integral value may be truncated during assignment or initialization
+compression\stk_compression_API.cpp(320): Warning! W389: col(37) integral value may be truncated during assignment or initialization
+compression\stk_compression_API.cpp(328): Warning! W726: col(1) no reference to formal parameter 'ablock'
+compression\stk_compression_API.cpp(303): Note! N392: col(130) definition: 'unsigned const ablock' in 'unsigned stdcall stk::compression::compress_HUF( void *, void const *, unsigned, unsigned )'
+compression\stk_compression_API.cpp(349): Warning! W389: col(37) integral value may be truncated during assignment or initialization
+compression\stk_compression_API.cpp(374): Warning! W389: col(37) integral value may be truncated during assignment or initialization
+compression\stk_compression_API.cpp(380): Warning! W389: col(29) integral value may be truncated during assignment or initialization
+compression\stk_compression_API.cpp(386): Warning! W726: col(1) no reference to formal parameter 'ablock'
+compression\stk_compression_API.cpp(357): Note! N392: col(130) definition: 'unsigned const ablock' in 'unsigned stdcall stk::compression::compress_ARI( void *, void const *, unsigned, unsigned )'
+compression\stk_compression_API.cpp(403): Warning! W389: col(29) integral value may be truncated during assignment or initialization
+compression\stk_compression_API.cpp(409): Warning! W389: col(37) integral value may be truncated during assignment or initialization

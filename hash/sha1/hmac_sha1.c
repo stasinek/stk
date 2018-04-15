@@ -60,7 +60,7 @@
 #include <string.h>
 
 #ifdef  __cplusplus
-extern "C" {
+STK_extern "C" {
 #endif
 
 /* Filler bytes: */

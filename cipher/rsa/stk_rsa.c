@@ -35,9 +35,7 @@
  */
 
 //-----------------------------------------------------------------------------
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "./../../stk_main.h"
 #include <assert.h>
 //-----------------------------------------------------------------------------
 /* configuration stuff */
@@ -99,8 +97,8 @@ typedef struct {
 //-----------------------------------------------------------------------------
 /* imports */
 //-----------------------------------------------------------------------------
-extern int g10c_debug_mode;
-extern int g10_opt_verbose;
+STK_IMPEXP int g10c_debug_mode;
+STK_IMPEXP int g10_opt_verbose;
 //-----------------------------------------------------------------------------
 void *g10_malloc( size_t n );
 void *g10_calloc( size_t n );

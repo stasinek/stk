@@ -1,0 +1,9 @@
+./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from koperek\.\..\stk_main.h(455)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from koperek\stk_kop32_controler.h(5)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from koperek\stk_kop32_controler.cpp(4)
+./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
+koperek\stk_kop32_controler.cpp(93): Warning! W389: col(34) integral value may be truncated during assignment or initialization
+koperek\stk_kop32_controler.cpp(114): Warning! W389: col(34) integral value may be truncated during assignment or initialization
+koperek\stk_kop32_controler.cpp(125): Warning! W389: col(62) integral value may be truncated during assignment or initialization
+koperek\stk_kop32_controler.cpp(136): Warning! W389: col(34) integral value may be truncated during assignment or initialization

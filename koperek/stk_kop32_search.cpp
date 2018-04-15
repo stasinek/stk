@@ -45,8 +45,8 @@ int32_t __stdcall stk::__kop32_search::exec(const char *a_dir, const stk::__data
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		f_external_src_output_list_ptr = a_output_list_ptr;
-		f_external_mask_list_ptr = a_mask_list_ptr;
+		f_IMPEXPal_src_output_list_ptr = a_output_list_ptr;
+		f_IMPEXPal_mask_list_ptr = a_mask_list_ptr;
 		return f_seek_src(a_dir);
 }
 //---------------------------------------------------------------------------
@@ -65,27 +65,27 @@ __DEBUG_FUNC_CALLED("")
 				}
 #define SEEKSRC_FIND_ADD_TO_list_ptr(path,found,bpl)\
 		if (found && f_src_file.find_data.data.nFileSizeHigh==0)\
-				{current = f_external_src_output_list_ptr->items()->add_text(path);\
-				 f_external_src_output_list_ptr->items()->set_number(current,IS,EXISTS);\
-				 f_external_src_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE,stk::time::FILETIME_to_time_t(f_src_file.find_data.data.ftCreationTime));\
-				 f_external_src_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE,stk::time::FILETIME_to_time_t(f_src_file.find_data.data.ftLastWriteTime));\
-				 f_external_src_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE,stk::time::FILETIME_to_time_t(f_src_file.find_data.data.ftLastAccessTime));\
-				 f_external_src_output_list_ptr->items()->set_number(current,ATTRIB,f_src_file.find_data.data.dwFileAttributes);\
-				 f_external_src_output_list_ptr->items()->set_number(current,SIZE,f_src_file.find_data.data.nFileSizeLow);\
-				 f_external_src_output_list_ptr->items()->set_number(current,SIZE_H_DWORD,f_src_file.find_data.data.nFileSizeHigh);\
-				 f_external_src_output_list_ptr->items()->set_number(current,FILENAME_BASE_PATH_LEN,bpl);\
+				{current = f_IMPEXPal_src_output_list_ptr->items()->add_text(path);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,IS,EXISTS);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE,stk::time::FILETIME_to_time_t(f_src_file.find_data.data.ftCreationTime));\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE,stk::time::FILETIME_to_time_t(f_src_file.find_data.data.ftLastWriteTime));\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE,stk::time::FILETIME_to_time_t(f_src_file.find_data.data.ftLastAccessTime));\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,ATTRIB,f_src_file.find_data.data.dwFileAttributes);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,SIZE,f_src_file.find_data.data.nFileSizeLow);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,SIZE_H_DWORD,f_src_file.find_data.data.nFileSizeHigh);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILENAME_BASE_PATH_LEN,bpl);\
 				 progress->src->all->size += f_src_file.find_data.data.nFileSizeLow;\
 				}\
 		else\
-				{current = f_external_src_output_list_ptr->items()->add_text(path);\
-				 f_external_src_output_list_ptr->items()->set_number(current,IS,!EXISTS);\
-				 f_external_src_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE,0);\
-				 f_external_src_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE,0);\
-				 f_external_src_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE,0);\
-				 f_external_src_output_list_ptr->items()->set_number(current,ATTRIB,0);\
-				 f_external_src_output_list_ptr->items()->set_number(current,SIZE,0);\
-				 f_external_src_output_list_ptr->items()->set_number(current,SIZE_H_DWORD,0);\
-				 f_external_src_output_list_ptr->items()->set_number(current,FILENAME_BASE_PATH_LEN,bpl);\
+				{current = f_IMPEXPal_src_output_list_ptr->items()->add_text(path);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,IS,!EXISTS);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE,0);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE,0);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE,0);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,ATTRIB,0);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,SIZE,0);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,SIZE_H_DWORD,0);\
+				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILENAME_BASE_PATH_LEN,bpl);\
 				}
 #define SEEKSRC_STACK_push(current_path)\
 				seek_stack->push(current_path,(void*)f_src_file.find_data.hand);
@@ -216,10 +216,10 @@ __DEBUG_FUNC_CALLED("")
 
 		register uint32_t current;
 		stk::__cstr_class *currentlpSource = new stk::__cstr_class(1024);//f_text_stack->push(1024);
-		for (uint32_t i = 0; i < f_external_mask_list_ptr->items()->count() && progress->cancel==0; i++) {
+		for (uint32_t i = 0; i < f_IMPEXPal_mask_list_ptr->items()->count() && progress->cancel==0; i++) {
 				currentlpSource->set(a_lpSource);
 				currentlpSource->add("\\");
-				currentlpSource->add((char*)f_external_mask_list_ptr->items()->get_text(i));
+				currentlpSource->add((char*)f_IMPEXPal_mask_list_ptr->items()->get_text(i));
 				SEEKSRC_FIND_FIRST(currentlpSource->c_str());
 //------------------
 				for (; progress->cancel==0;) {
@@ -258,26 +258,26 @@ __DEBUG_FUNC_CALLED("")
 				}
 #define SEEKDST_FIND_ADD_TO_list_ptr(patch,found)\
 		if (found && f_dst_file.find_data.data.nFileSizeHigh==0)\
-				{current = f_external_dst_output_list_ptr->items()->add_text(patch);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,IS, EXISTS);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE, stk::time::FILETIME_to_time_t(f_dst_file.find_data.data.ftCreationTime));\
-				 f_external_dst_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE, stk::time::FILETIME_to_time_t(f_dst_file.find_data.data.ftLastWriteTime));\
-				 f_external_dst_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE, stk::time::FILETIME_to_time_t(f_dst_file.find_data.data.ftLastAccessTime));\
-				 f_external_dst_output_list_ptr->items()->set_number(current,ATTRIB, f_dst_file.find_data.data.dwFileAttributes);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,SIZE, f_dst_file.find_data.data.nFileSizeLow);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,SIZE_H_DWORD, f_dst_file.find_data.data.nFileSizeHigh);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,FILENAME_BASE_PATH_LEN, base_path_len);\
+				{current = f_IMPEXPal_dst_output_list_ptr->items()->add_text(patch);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,IS, EXISTS);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE, stk::time::FILETIME_to_time_t(f_dst_file.find_data.data.ftCreationTime));\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE, stk::time::FILETIME_to_time_t(f_dst_file.find_data.data.ftLastWriteTime));\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE, stk::time::FILETIME_to_time_t(f_dst_file.find_data.data.ftLastAccessTime));\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,ATTRIB, f_dst_file.find_data.data.dwFileAttributes);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,SIZE, f_dst_file.find_data.data.nFileSizeLow);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,SIZE_H_DWORD, f_dst_file.find_data.data.nFileSizeHigh);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILENAME_BASE_PATH_LEN, base_path_len);\
 				 progress->dst->all->size += f_dst_file.find_data.data.nFileSizeLow;\
 				}\
 		else\
-				{current = f_external_dst_output_list_ptr->items()->add_text(patch);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,IS, 0);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE, 0);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE, 0);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE, 0);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,ATTRIB, 0);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,SIZE, 0);\
-				 f_external_dst_output_list_ptr->items()->set_number(current,FILENAME_BASE_PATH_LEN, base_path_len);\
+				{current = f_IMPEXPal_dst_output_list_ptr->items()->add_text(patch);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,IS, 0);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE, 0);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE, 0);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE, 0);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,ATTRIB, 0);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,SIZE, 0);\
+				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILENAME_BASE_PATH_LEN, base_path_len);\
 				}
 
 int32_t __stdcall stk::__kop32_search::create_destination_list(const char *a_lpDestination, const char *a_lpExtension_to_add, const char *a_lpExtension_to_delete, __database* a_output_list_ptr)
@@ -286,7 +286,7 @@ int32_t __stdcall stk::__kop32_search::create_destination_list(const char *a_lpD
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		f_external_dst_output_list_ptr = a_output_list_ptr;
+		f_IMPEXPal_dst_output_list_ptr = a_output_list_ptr;
 		return f_seek_dst(a_lpDestination, a_lpExtension_to_add, a_lpExtension_to_delete);
 }
 //---------------------------------------------------------------------------
@@ -297,12 +297,12 @@ int32_t __stdcall stk::__kop32_search::f_seek_dst(const char *a_lpDestination, c
 __DEBUG_FUNC_CALLED("")
 #endif
 
-		if (f_external_src_output_list_ptr->items()->count()==0)
+		if (f_IMPEXPal_src_output_list_ptr->items()->count()==0)
 				return 0;
 		stk::__cstr_class *lpDestination = new stk::__cstr_class(1024);
 		stk::__cstr_class *lpSource = new stk::__cstr_class(1024);
 		stk::cstr::fix_file_path(lpDestination->data(),a_lpDestination);
-		stk::cstr::fix_file_path(lpSource->data(),f_external_src_output_list_ptr->items()->get_text(f_external_dst_output_list_ptr->items()->count()));
+		stk::cstr::fix_file_path(lpSource->data(),f_IMPEXPal_src_output_list_ptr->items()->get_text(f_IMPEXPal_dst_output_list_ptr->items()->count()));
 		stk::__cstr_class *temp_lpDestination = new stk::__cstr_class(1024);
 		stk::__cstr_class *temp_lpSource = new stk::__cstr_class(1024);
 		int32_t len_of_ext_to_add = stk::cstr::len(a_lpExtension_to_add), len_of_ext_to_delete = stk::cstr::len(a_lpExtension_to_delete);
@@ -348,10 +348,10 @@ __DEBUG_FUNC_CALLED("")
 								SEEKDST_FIND_CLOSE();
 						}
 		}
-		for (int  srclen_old = lpSource->len(), dstlen_old = lpDestination->len(); f_external_dst_output_list_ptr->items()->count() < f_external_src_output_list_ptr->items()->count() && progress->cancel==0; ) {
+		for (int  srclen_old = lpSource->len(), dstlen_old = lpDestination->len(); f_IMPEXPal_dst_output_list_ptr->items()->count() < f_IMPEXPal_src_output_list_ptr->items()->count() && progress->cancel==0; ) {
 				// NEW NAME BASED ON OLD NAME
 				temp_lpSource->set(lpDestination);
-				temp_lpSource->add((char*)((char*)f_external_src_output_list_ptr->items()->get_text(f_external_dst_output_list_ptr->items()->count()) + srclen_old));
+				temp_lpSource->add((char*)((char*)f_IMPEXPal_src_output_list_ptr->items()->get_text(f_IMPEXPal_dst_output_list_ptr->items()->count()) + srclen_old));
 				// PREPARE NEW NAME
 				if (len_of_ext_to_add > 0) {
 						for (int p = temp_lpSource->len(); p > dstlen_old; p--)

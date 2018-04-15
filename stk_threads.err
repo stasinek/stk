@@ -1,0 +1,16 @@
+./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from sthreads\.\..\stk_main.h(455)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from sthreads\stk_threads.h(5)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from sthreads\stk_threads.cpp(4)
+./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
+sthreads\stk_threads.h(85): Warning! W014: col(5) no reference to symbol 'request_command'
+sthreads\stk_threads.h(79): Note! N392: col(21) definition: 'int * request_command' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+sthreads\stk_threads.h(85): Warning! W014: col(5) no reference to symbol 'request_time'
+sthreads\stk_threads.h(80): Note! N392: col(24) definition: 'unsigned long * request_time' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+sthreads\stk_threads.h(85): Warning! W014: col(5) no reference to symbol 'request_count'
+sthreads\stk_threads.h(81): Note! N392: col(20) definition: 'int request_count' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+sthreads\stk_threads.h(85): Warning! W726: col(5) no reference to formal parameter 'a_request_command'
+sthreads\stk_threads.h(78): Note! N392: col(35) definition: 'int a_request_command' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+sthreads\stk_threads.h(85): Warning! W726: col(5) no reference to formal parameter 'a_request_time'
+sthreads\stk_threads.h(78): Note! N392: col(60) definition: 'unsigned long a_request_time' in 'int stk::thread::ssthread_arg_wrapper_t::request( char, int, unsigned long )'
+sthreads\stk_threads.cpp(89): Warning! W389: col(25) integral value may be truncated during assignment or initialization

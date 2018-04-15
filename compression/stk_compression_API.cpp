@@ -32,7 +32,7 @@ return;
 	stk::con::prints("Compress\n",i);
 	o = stk::compression::compress_LZS(dst,src,1024,4096);
 	stk::con::prints("Zmniejszono do %d bajtow\n",o);
-	for (int x = 0,k = 0;x < o;x++) {
+    for (int x = 0; x < o; x++) {
 		if (dst[x]>=' ' && dst[x]<='~') stk::con::prints(" \'%c\' ",dst[x]); //ASCII numbers,letters, special !~# etc.
 	   else stk::con::prints(" \'%#02x\' ",dst[x]);
 	   //unprintable compressor codes 0xXXL

@@ -1,0 +1,31 @@
+./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from text\.\..\stk_main.h(455)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from text\stk_cstr_utils.h(5)
+./stasm/stk_stasm.h(36): Note! N393: col(160) included from text\stk_cstr_utils.cpp(4)
+./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
+text\stk_cstr_utils.cpp(304): Warning! W389: col(22) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(304): Warning! W389: col(22) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(325): Warning! W013: col(5) unreachable code
+text\stk_cstr_utils.cpp(348): Warning! W389: col(49) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(364): Warning! W389: col(23) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(366): Warning! W389: col(23) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(384): Warning! W389: col(47) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(386): Warning! W389: col(35) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(386): Warning! W389: col(41) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(387): Warning! W389: col(38) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(402): Warning! W013: col(5) unreachable code
+text\stk_cstr_utils.cpp(437): Warning! W389: col(53) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(454): Warning! W389: col(53) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(471): Warning! W389: col(67) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(486): Warning! W389: col(67) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(585): Warning! W389: col(120) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(587): Warning! W389: col(161) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(603): Warning! W389: col(119) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(605): Warning! W389: col(119) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(620): Warning! W389: col(26) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(626): Warning! W389: col(26) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(631): Warning! W389: col(26) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(648): Warning! W389: col(26) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(654): Warning! W389: col(26) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(659): Warning! W389: col(26) integral value may be truncated during assignment or initialization
+text\stk_cstr_utils.cpp(719): Warning! W389: col(30) integral value may be truncated during assignment or initialization

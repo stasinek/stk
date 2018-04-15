@@ -1,0 +1,479 @@
+!define BLANK ""
+C:\X86_LIBRARIES\STK\stk_3Dvector.obj : C:\X86_LIBRARIES\STK\3D\stk_3Dvector&
+.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 3D\stk_3Dvector.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h&
+/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_base64.obj : C:\X86_LIBRARIES\STK\cipher\stk_base64&
+.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 cipher\stk_base64.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM&
+/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_cipher_API.obj : C:\X86_LIBRARIES\STK\cipher\stk_ci&
+pher_API.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 cipher\stk_cipher_API.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WA&
+TCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_cipher_mtf.obj : C:\X86_LIBRARIES\STK\cipher\stk_ci&
+pher_mtf.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 cipher\stk_cipher_mtf.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WA&
+TCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_cipher_pair.obj : C:\X86_LIBRARIES\STK\cipher\stk_c&
+ipher_pair.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 cipher\stk_cipher_pair.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\W&
+ATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_cipher_test.obj : C:\X86_LIBRARIES\STK\cipher\stk_c&
+ipher_test.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 cipher\stk_cipher_test.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\W&
+ATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_compression_API.obj : C:\X86_LIBRARIES\STK\compress&
+ion\stk_compression_API.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 compression\stk_compression_API.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hu&
+biC\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_compression_ari.obj : C:\X86_LIBRARIES\STK\compress&
+ion\stk_compression_ari.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 compression\stk_compression_ari.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hu&
+biC\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_compression_bwt_matrix2.obj : C:\X86_LIBRARIES\STK\&
+compression\stk_compression_bwt_matrix2.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 compression\stk_compression_bwt_matrix2.cpp -i="C:\hubiC\CPP\WATCOM&
+/h;C:\hubiC\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -x&
+s -xr
+
+C:\X86_LIBRARIES\STK\stk_compression_huff.obj : C:\X86_LIBRARIES\STK\compres&
+sion\stk_compression_huff.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 compression\stk_compression_huff.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\h&
+ubiC\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_compression_lzstv4.obj : C:\X86_LIBRARIES\STK\compr&
+ession\stk_compression_lzstv4.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 compression\stk_compression_lzstv4.cpp -i="C:\hubiC\CPP\WATCOM/h;C:&
+\hubiC\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_compression_static_huff.obj : C:\X86_LIBRARIES\STK\&
+compression\stk_compression_static_huff.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 compression\stk_compression_static_huff.cpp -i="C:\hubiC\CPP\WATCOM&
+/h;C:\hubiC\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -x&
+s -xr
+
+C:\X86_LIBRARIES\STK\stk_cpu.obj : C:\X86_LIBRARIES\STK\cpu\stk_cpu.cpp .AUT&
+ODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 cpu\stk_cpu.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt"&
+ -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_database.obj : C:\X86_LIBRARIES\STK\database\stk_da&
+tabase.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 database\stk_database.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WA&
+TCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_database_items.obj : C:\X86_LIBRARIES\STK\database\&
+stk_database_items.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 database\stk_database_items.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\&
+CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_file_lzst_header.obj : C:\X86_LIBRARIES\STK\file\en&
+o\stk_file_lzst_header.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 file\eno\stk_file_lzst_header.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubi&
+C\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_file_ini.obj : C:\X86_LIBRARIES\STK\file\ini\stk_fi&
+le_ini.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 file\ini\stk_file_ini.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WA&
+TCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_json.obj : C:\X86_LIBRARIES\STK\file\json\stk_json.&
+cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 file\json\stk_json.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCO&
+M/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_file_mime_types.obj : C:\X86_LIBRARIES\STK\file\stk&
+_file_mime_types.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 file\stk_file_mime_types.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP&
+\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_xml.obj : C:\X86_LIBRARIES\STK\file\xml\stk_xml.cpp&
+ .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 file\xml\stk_xml.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/&
+h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_hash_API.obj : C:\X86_LIBRARIES\STK\hash\stk_hash_A&
+PI.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 hash\stk_hash_API.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM&
+/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_hash_crc32.obj : C:\X86_LIBRARIES\STK\hash\stk_hash&
+_crc32.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 hash\stk_hash_crc32.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATC&
+OM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_hash_md5.obj : C:\X86_LIBRARIES\STK\hash\stk_hash_m&
+d5.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 hash\stk_hash_md5.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM&
+/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_hash_password.obj : C:\X86_LIBRARIES\STK\hash\stk_h&
+ash_password.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 hash\stk_hash_password.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\W&
+ATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_hash_ssc1.obj : C:\X86_LIBRARIES\STK\hash\stk_hash_&
+ssc1.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 hash\stk_hash_ssc1.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCO&
+M/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_incbin.obj : C:\X86_LIBRARIES\STK\incbin\stk_incbin&
+.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 incbin\stk_incbin.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM&
+/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_console.obj : C:\X86_LIBRARIES\STK\io\stk_console.c&
+pp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 io\stk_console.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/&
+nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_file_io.obj : C:\X86_LIBRARIES\STK\io\stk_file_io.c&
+pp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 io\stk_file_io.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/&
+nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_rs232.obj : C:\X86_LIBRARIES\STK\io\stk_rs232.cpp .&
+AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 io\stk_rs232.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt&
+" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_kop32_API.obj : C:\X86_LIBRARIES\STK\koperek\stk_ko&
+p32_API.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 koperek\stk_kop32_API.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WA&
+TCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_kop32_class.obj : C:\X86_LIBRARIES\STK\koperek\stk_&
+kop32_class.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 koperek\stk_kop32_class.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\&
+WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_kop32_console_API.obj : C:\X86_LIBRARIES\STK\kopere&
+k\stk_kop32_console_API.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 koperek\stk_kop32_console_API.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubi&
+C\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_kop32_controler.obj : C:\X86_LIBRARIES\STK\koperek\&
+stk_kop32_controler.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 koperek\stk_kop32_controler.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\&
+CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_kop32_search.obj : C:\X86_LIBRARIES\STK\koperek\stk&
+_kop32_search.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 koperek\stk_kop32_search.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP&
+\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_kop32_socket_server.obj : C:\X86_LIBRARIES\STK\kope&
+rek\stk_kop32_socket_server.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 koperek\stk_kop32_socket_server.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hu&
+biC\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_bsearch.obj : C:\X86_LIBRARIES\STK\mem\stk_bsearch.&
+cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 mem\stk_bsearch.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h&
+/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_mem.obj : C:\X86_LIBRARIES\STK\mem\stk_mem.cpp .AUT&
+ODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 mem\stk_mem.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt"&
+ -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_qsort.obj : C:\X86_LIBRARIES\STK\mem\stk_qsort.cpp &
+.AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 mem\stk_qsort.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/n&
+t" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_pharse_command_line.obj : C:\X86_LIBRARIES\STK\phar&
+ser\stk_pharse_command_line.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 pharser\stk_pharse_command_line.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hu&
+biC\CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_pharse_math.obj : C:\X86_LIBRARIES\STK\pharser\stk_&
+pharse_math.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 pharser\stk_pharse_math.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\&
+WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_journal.obj : C:\X86_LIBRARIES\STK\process_journal\&
+stk_journal.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 process_journal\stk_journal.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\&
+CPP\WATCOM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_sockets.obj : C:\X86_LIBRARIES\STK\sockets\stk_sock&
+ets.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 sockets\stk_sockets.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATC&
+OM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_stasm.obj : C:\X86_LIBRARIES\STK\stasm\stk_stasm.cp&
+p .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stasm\stk_stasm.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h&
+/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_idle.obj : C:\X86_LIBRARIES\STK\sthreads\stk_idle.c&
+pp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 sthreads\stk_idle.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM&
+/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_threads.obj : C:\X86_LIBRARIES\STK\sthreads\stk_thr&
+eads.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 sthreads\stk_threads.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WAT&
+COM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_bitset.obj : C:\X86_LIBRARIES\STK\stk_bitset.cpp .A&
+UTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stk_bitset.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt" &
+-w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_hash_chain.obj : C:\X86_LIBRARIES\STK\stk_hash_chai&
+n.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stk_hash_chain.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/&
+nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_lib.obj : C:\X86_LIBRARIES\STK\stk_lib.cpp .AUTODEP&
+END
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stk_lib.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt" -w4&
+ -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_list.obj : C:\X86_LIBRARIES\STK\stk_list.cpp .AUTOD&
+EPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stk_list.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt" -w&
+4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_map.obj : C:\X86_LIBRARIES\STK\stk_map.cpp .AUTODEP&
+END
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stk_map.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt" -w4&
+ -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_set.obj : C:\X86_LIBRARIES\STK\stk_set.cpp .AUTODEP&
+END
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stk_set.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt" -w4&
+ -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_test.obj : C:\X86_LIBRARIES\STK\stk_test.cpp .AUTOD&
+EPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stk_test.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt" -w&
+4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_variable.obj : C:\X86_LIBRARIES\STK\stk_variable.cp&
+p .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stk_variable.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt&
+" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_vector.obj : C:\X86_LIBRARIES\STK\stk_vector.cpp .A&
+UTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 stk_vector.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/nt" &
+-w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_cstr_class.obj : C:\X86_LIBRARIES\STK\text\stk_cstr&
+_class.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 text\stk_cstr_class.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATC&
+OM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_cstr_stack.obj : C:\X86_LIBRARIES\STK\text\stk_cstr&
+_stack.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 text\stk_cstr_stack.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATC&
+OM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_cstr_utils.obj : C:\X86_LIBRARIES\STK\text\stk_cstr&
+_utils.cpp .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 text\stk_cstr_utils.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATC&
+OM/h/nt" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_time.obj : C:\X86_LIBRARIES\STK\time\stk_time.cpp .&
+AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ *wpp386 time\stk_time.cpp -i="C:\hubiC\CPP\WATCOM/h;C:\hubiC\CPP\WATCOM/h/n&
+t" -w4 -e25 -zq -od -d2 -6r -bt=nt -fo=.obj -mf -xs -xr
+
+C:\X86_LIBRARIES\STK\stk_WATCOM.lib : C:\X86_LIBRARIES\STK\stk_3Dvector.obj &
+C:\X86_LIBRARIES\STK\stk_base64.obj C:\X86_LIBRARIES\STK\stk_cipher_API.obj &
+C:\X86_LIBRARIES\STK\stk_cipher_mtf.obj C:\X86_LIBRARIES\STK\stk_cipher_pair&
+.obj C:\X86_LIBRARIES\STK\stk_cipher_test.obj C:\X86_LIBRARIES\STK\stk_compr&
+ession_API.obj C:\X86_LIBRARIES\STK\stk_compression_ari.obj C:\X86_LIBRARIES&
+\STK\stk_compression_bwt_matrix2.obj C:\X86_LIBRARIES\STK\stk_compression_hu&
+ff.obj C:\X86_LIBRARIES\STK\stk_compression_lzstv4.obj C:\X86_LIBRARIES\STK\&
+stk_compression_static_huff.obj C:\X86_LIBRARIES\STK\stk_cpu.obj C:\X86_LIBR&
+ARIES\STK\stk_database.obj C:\X86_LIBRARIES\STK\stk_database_items.obj C:\X8&
+6_LIBRARIES\STK\stk_file_lzst_header.obj C:\X86_LIBRARIES\STK\stk_file_ini.o&
+bj C:\X86_LIBRARIES\STK\stk_json.obj C:\X86_LIBRARIES\STK\stk_file_mime_type&
+s.obj C:\X86_LIBRARIES\STK\stk_xml.obj C:\X86_LIBRARIES\STK\stk_hash_API.obj&
+ C:\X86_LIBRARIES\STK\stk_hash_crc32.obj C:\X86_LIBRARIES\STK\stk_hash_md5.o&
+bj C:\X86_LIBRARIES\STK\stk_hash_password.obj C:\X86_LIBRARIES\STK\stk_hash_&
+ssc1.obj C:\X86_LIBRARIES\STK\stk_incbin.obj C:\X86_LIBRARIES\STK\stk_consol&
+e.obj C:\X86_LIBRARIES\STK\stk_file_io.obj C:\X86_LIBRARIES\STK\stk_rs232.ob&
+j C:\X86_LIBRARIES\STK\stk_kop32_API.obj C:\X86_LIBRARIES\STK\stk_kop32_clas&
+s.obj C:\X86_LIBRARIES\STK\stk_kop32_console_API.obj C:\X86_LIBRARIES\STK\st&
+k_kop32_controler.obj C:\X86_LIBRARIES\STK\stk_kop32_search.obj C:\X86_LIBRA&
+RIES\STK\stk_kop32_socket_server.obj C:\X86_LIBRARIES\STK\stk_bsearch.obj C:&
+\X86_LIBRARIES\STK\stk_mem.obj C:\X86_LIBRARIES\STK\stk_qsort.obj C:\X86_LIB&
+RARIES\STK\stk_pharse_command_line.obj C:\X86_LIBRARIES\STK\stk_pharse_math.&
+obj C:\X86_LIBRARIES\STK\stk_journal.obj C:\X86_LIBRARIES\STK\stk_sockets.ob&
+j C:\X86_LIBRARIES\STK\stk_stasm.obj C:\X86_LIBRARIES\STK\stk_idle.obj C:\X8&
+6_LIBRARIES\STK\stk_threads.obj C:\X86_LIBRARIES\STK\stk_bitset.obj C:\X86_L&
+IBRARIES\STK\stk_hash_chain.obj C:\X86_LIBRARIES\STK\stk_lib.obj C:\X86_LIBR&
+ARIES\STK\stk_list.obj C:\X86_LIBRARIES\STK\stk_map.obj C:\X86_LIBRARIES\STK&
+\stk_set.obj C:\X86_LIBRARIES\STK\stk_test.obj C:\X86_LIBRARIES\STK\stk_vari&
+able.obj C:\X86_LIBRARIES\STK\stk_vector.obj C:\X86_LIBRARIES\STK\stk_cstr_c&
+lass.obj C:\X86_LIBRARIES\STK\stk_cstr_stack.obj C:\X86_LIBRARIES\STK\stk_cs&
+tr_utils.obj C:\X86_LIBRARIES\STK\stk_time.obj .AUTODEPEND
+ @C:
+ cd C:\X86_LIBRARIES\STK
+ %create stk_WATCOM.lb1
+!ifneq BLANK "stk_3Dvector.obj stk_base64.obj stk_cipher_API.obj stk_cipher_&
+mtf.obj stk_cipher_pair.obj stk_cipher_test.obj stk_compression_API.obj stk_&
+compression_ari.obj stk_compression_bwt_matrix2.obj stk_compression_huff.obj&
+ stk_compression_lzstv4.obj stk_compression_static_huff.obj stk_cpu.obj stk_&
+database.obj stk_database_items.obj stk_file_lzst_header.obj stk_file_ini.ob&
+j stk_json.obj stk_file_mime_types.obj stk_xml.obj stk_hash_API.obj stk_hash&
+_crc32.obj stk_hash_md5.obj stk_hash_password.obj stk_hash_ssc1.obj stk_incb&
+in.obj stk_console.obj stk_file_io.obj stk_rs232.obj stk_kop32_API.obj stk_k&
+op32_class.obj stk_kop32_console_API.obj stk_kop32_controler.obj stk_kop32_s&
+earch.obj stk_kop32_socket_server.obj stk_bsearch.obj stk_mem.obj stk_qsort.&
+obj stk_pharse_command_line.obj stk_pharse_math.obj stk_journal.obj stk_sock&
+ets.obj stk_stasm.obj stk_idle.obj stk_threads.obj stk_bitset.obj stk_hash_c&
+hain.obj stk_lib.obj stk_list.obj stk_map.obj stk_set.obj stk_test.obj stk_v&
+ariable.obj stk_vector.obj stk_cstr_class.obj stk_cstr_stack.obj stk_cstr_ut&
+ils.obj stk_time.obj"
+ @for %i in (stk_3Dvector.obj stk_base64.obj stk_cipher_API.obj stk_cipher_m&
+tf.obj stk_cipher_pair.obj stk_cipher_test.obj stk_compression_API.obj stk_c&
+ompression_ari.obj stk_compression_bwt_matrix2.obj stk_compression_huff.obj &
+stk_compression_lzstv4.obj stk_compression_static_huff.obj stk_cpu.obj stk_d&
+atabase.obj stk_database_items.obj stk_file_lzst_header.obj stk_file_ini.obj&
+ stk_json.obj stk_file_mime_types.obj stk_xml.obj stk_hash_API.obj stk_hash_&
+crc32.obj stk_hash_md5.obj stk_hash_password.obj stk_hash_ssc1.obj stk_incbi&
+n.obj stk_console.obj stk_file_io.obj stk_rs232.obj stk_kop32_API.obj stk_ko&
+p32_class.obj stk_kop32_console_API.obj stk_kop32_controler.obj stk_kop32_se&
+arch.obj stk_kop32_socket_server.obj stk_bsearch.obj stk_mem.obj stk_qsort.o&
+bj stk_pharse_command_line.obj stk_pharse_math.obj stk_journal.obj stk_socke&
+ts.obj stk_stasm.obj stk_idle.obj stk_threads.obj stk_bitset.obj stk_hash_ch&
+ain.obj stk_lib.obj stk_list.obj stk_map.obj stk_set.obj stk_test.obj stk_va&
+riable.obj stk_vector.obj stk_cstr_class.obj stk_cstr_stack.obj stk_cstr_uti&
+ls.obj stk_time.obj) do @%append stk_WATCOM.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append stk_WATCOM.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 stk_WATCOM.lib @stk_WATCOM.lb1
+

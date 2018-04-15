@@ -28,7 +28,7 @@
 #define __SHA1_H
 
 #ifdef __cplusplus
-extern "C" {
+STK_extern "C" {
 #endif
 
 /* Define this if your machine is LITTLE_ENDIAN, otherwise #undef it: */

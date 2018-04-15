@@ -8,14 +8,13 @@ namespace stk { namespace file {
 //---------------------------------------------------------------------------
 #define SSC_CHECKSUM_SIG "SSC1"
 typedef struct {
-        int8_t s[4];
-        int8_t s_data_range_from[10], s_data_range_to[10];
-        int8_t s_unix_time_t[8];
-        int8_t s_crc32[8];
-        int8_t ssc_bits_count[4];
-        int8_t ssc1024_itoa_in_hex[32];
+		int8_t s[4];
+		int8_t s_data_range_from[10], s_data_range_to[10];
+		int8_t s_unix_time_t[8];
+		int8_t s_crc32[8];
+		int8_t ssc_bits_count[4];
+		int8_t ssc1024_itoa_in_hex[32];
 } __ssc_readable_checksum_struct;
-
 //------------------------------------
 typedef struct {
 		void *hand;
@@ -43,7 +42,7 @@ typedef struct {
 } __file_open_struct;
 //---------------------------------------------------------------------------
 
-extern HANDLE WINAPI create(
+extern "C" STK_IMPEXP HANDLE WINAPI create(
 		   LPCSTR lpFileName,
 		   DWORD dwDesiredAccess,
 		   DWORD dwShareMode,
@@ -54,7 +53,7 @@ extern HANDLE WINAPI create(
 );
 //---------------------------------------------------------------------------
 
-extern BOOL WINAPI write(
+extern "C" STK_IMPEXP BOOL WINAPI write(
 				   HANDLE hFile,
 				   LPCVOID lpBuffer,
 				  DWORD nNumberOfBytesToWrite,
@@ -63,7 +62,7 @@ extern BOOL WINAPI write(
 );
 //---------------------------------------------------------------------------
 
-extern BOOL WINAPI read(
+extern "C" STK_IMPEXP BOOL WINAPI read(
 				   HANDLE hFile,
 				  LPVOID lpBuffer,
 				   DWORD nNumberOfBytesToRead,
@@ -72,7 +71,7 @@ extern BOOL WINAPI read(
 );
 //---------------------------------------------------------------------------
 
-extern HANDLE WINAPI create_map(
+extern "C" STK_IMPEXP HANDLE WINAPI create_map(
 				HANDLE hFile,
 		LPSECURITY_ATTRIBUTES lpAttributes,
 				DWORD flProtect,
@@ -82,7 +81,7 @@ extern HANDLE WINAPI create_map(
 );
 //---------------------------------------------------------------------------
 
-extern LPVOID WINAPI create_map_view(
+extern "C" STK_IMPEXP LPVOID WINAPI create_map_view(
    HANDLE hFileMappingObject,
 		DWORD dwDesiredAccess,
 		DWORD dwFileOffsetHigh,
@@ -91,29 +90,26 @@ extern LPVOID WINAPI create_map_view(
 );
 //---------------------------------------------------------------------------
 
-extern BOOL WINAPI flush_map_view(
+extern "C" STK_IMPEXP BOOL WINAPI flush_map_view(
 		LPCVOID lpBaseAddress,
 		SIZE_T dwNumberOfBytesToFlush
 );
 //---------------------------------------------------------------------------
 
-extern BOOL WINAPI close_map_view(
+extern "C" STK_IMPEXP BOOL WINAPI close_map_view(
 		LPCVOID lpBaseAddress
 );
 //---------------------------------------------------------------------------
 
-extern BOOL WINAPI close(
+extern "C" STK_IMPEXP BOOL WINAPI close(
 		HANDLE hObject
 );
 //---------------------------------------------------------------------------
 
-extern BOOL WINAPI close_map(
+extern "C" STK_IMPEXP BOOL WINAPI close_map(
 		HANDLE hObject
 );
 //---------------------------------------------------------------------------
-
-extern int send(int com_num,void *data,unsigned long int len);
-extern int recv(int com_num,void *data,unsigned long int len);
 }}
 //---------------------------------------------------------------------------
 #endif

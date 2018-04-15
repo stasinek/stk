@@ -898,7 +898,7 @@ XMLElement* XML :: ImportRKey(IMPORTRKEYDATA* d)
 //#include <adoid.h>
 #include <adoint.h>
 
-#define ADOGUID(name, l) extern "C" const GUID name = \
+#define ADOGUID(name, l) STK_extern "C" const GUID name = \
         {l, 0, 0x10, 0x80,0,0,0xAA,0,0x6D,0x2E,0xA4}
 ADOGUID(CLSID_CADOConnection,0x00000514);
 ADOGUID(IID_IADOConnection,0x00000550);

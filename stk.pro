@@ -1,15 +1,36 @@
-TEMPLATE = lib
 DEFINES += STK_BUILD_LIBRARY
-
+contains(DEFINES, STK_BUILD_LIBRARY) {
+TARGET = stk
+TEMPLATE = lib
+CONFIG += windows shared dll # lib_bundle
+CONFIG -= app_bundle
+}
+else {
+TARGET  = stk_tester
+TEMPLATE = app
+CONFIG += console
+CONFIG += app_bundle
+}
+QT -= core gui
+CONFIG -= qt
+#CONFIG -= static
+#CONFIG += precompile_header
+#CONFIG += debug
+#CONFIG += warn_on
+#CONFIG += exceptions
+#CONFIG += c++11
+# -------------------------------------------------------------
+LIBS += -lkernel32 -lgdi32 -lshell32 -luser32 -lcomctl32 -luserenv
+LIBS += -lws2_32 -lwsock32 -lwinmm -limm32 -lole32 -loleaut32
+#LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
+#LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
+# -------------------------------------------------------------
+# External ASM .s compiler
+# -------------------------------------------------------------
 #QMAKE_CFLAGS_RELEASE += rtti_off stl_off exceptions_off
 #QMAKE_CXXFLAGS += -save-temps
 #QMAKE_CXXFLAGS += -fverbose-asm
 #QMAKE_CXXFLAGS -= -pipe
-
-contains (QMAKE_COMPILER_DEFINES,__clang__) {
-QMAKE_CC  = clang
-QMAKE_CXX = clang++
-}
 #moc.depend_command = g++ -E -M ${QMAKE_FILE_NAME} | sed "s,^.*: ,,"
 #NASM.output  = ${QMAKE_FILE_BASE}_asm.o
 #NASM.commands = c:/nasm/nasm -f elf -g -F dwarf --prefix ${PWD}${QMAKE_FILE_NAME} -o ${PWD}/${QMAKE_FILE_OUT}
@@ -22,34 +43,9 @@ QMAKE_CXX = clang++
 #FASM.input = ASM_SOURCES
 #QMAKE_EXTRA_COMPILERS += YASM
 #ASM_SOURCES += 	../STK/cpu/stk_cpu_nasm.asm
-
-CONFIG += windows shared dll # lib_bundle
-CONFIG -= app_bundle
-CONFIG -= qt
-
-#QT -= core gui
-
-LIBS += -lkernel32 -lgdi32 -lshell32 -luser32 -lcomctl32 -luserenv
-LIBS += -lws2_32 -lwsock32 -lwinmm -limm32 -lole32 -loleaut32
-
-contains(DEFINES, STK_BUILD_LIBRARY) {
-TARGET = stk
-}
-else {
-TARGET = stk
-#CONFIG += console
-}
-
-#CONFIG -= static
-#CONFIG += precompile_header
-#CONFIG += debug
-#CONFIG += warn_on
-#CONFIG += exceptions
-#CONFIG += c++11
-
-#LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
-#LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
-
+# -------------------------------------------------------------
+# GCC
+# -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
 QMAKE_CXXFLAGS += -fno-use-linker-plugin
 QMAKE_CFLAGS   += -fno-use-linker-plugin
@@ -63,7 +59,6 @@ QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CXXFLAGS += -Wunknown-pragmas
 QMAKE_CFLAGS   += -Wunknown-pragmas
-
 #QMAKE_CXXFLAGS -= -pipe
 #QMAKE_CXXFLAGS += -save-temps
 QMAKE_CXXFLAGS += -fverbose-asm
@@ -79,10 +74,19 @@ QMAKE_CXXFLAGS += -m32 -mfpmath=sse -flto -O3
 QMAKE_CXXFLAGS += -mpreferred-stack-boundary=8
 QMAKE_CXXFLAGS += -mmmx -msse -msse2
 }
+# -------------------------------------------------------------
+# VCC
+# -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, _MSC_VER) {
 QMAKE_CXXFLAGS += /arch:SSE2
+QMAKE_CXXFLAGS += /W1
 }
-contains(QMAKE_COMPILER_DEFINES, __clang__) {
+# -------------------------------------------------------------
+# LLVM - Clang
+# -------------------------------------------------------------
+contains (QMAKE_COMPILER_DEFINES,__clang__) {
+QMAKE_CXX = clang++
+QMAKE_CC  = clang
 QMAKE_CXXFLAGS += -Wno-write-strings -Wno-multichar
 QMAKE_CFLAGS   += -Wno-write-strings -Wno-multichar
 QMAKE_CXXFLAGS += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
@@ -93,7 +97,6 @@ QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CXXFLAGS += -Wunknown-pragmas
 QMAKE_CFLAGS   += -Wunknown-pragmas
-
 #QMAKE_CXXFLAGS -= -pipe
 #QMAKE_CXXFLAGS += -save-temps
 QMAKE_CXXFLAGS += -fverbose-asm
@@ -111,11 +114,10 @@ QMAKE_CXXFLAGS += -mmmx -msse -msse2
 QMAKE_CXXFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 QMAKE_CXXFLAGS -= -fno-keep-inline-dllexport
 QMAKE_CXXFLAGS -= -finline-small-functions
-
 QMAKE_LFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 QMAKE_LFLAGS -= -mthreads
 }
-
+# -------------------------------------------------------------
 SOURCES += \
 #    kop32_main.cpp \
     stk_set.cpp \
@@ -173,19 +175,22 @@ SOURCES += \
     time/stk_time.cpp \
     text/stk_cstr_class.cpp \
     text/stk_cstr_stack.cpp
-
-contains(DEFINES, QT_GUI) {
-        SOURCES +=
-}
-
+# -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
 SOURCES+=
     cpu/stk_cpu_gas.s
 }
-
-#PRECOMPILED_HEADER += ../STK/stk_MAIN.h
+contains(QMAKE_COMPILER_DEFINES, __clang__) {
+SOURCES+=
+    cpu/stk_cpu_gas.s
+}
+contains(QMAKE_COMPILER_DEFINES, _MSC_VER) {
+SOURCES+=
+    cpu/stk_cpu_gas.s
+}
+# -------------------------------------------------------------
+PRECOMPILED_HEADER += stk_MAIN.h
 #PRECOMPILED_HEADER += ../STK/kop32_main.h
-
 HEADERS += \
     stk_hash_chain.h \
     stk_list.h \
@@ -246,18 +251,24 @@ HEADERS += \
     text/stk_cstr_class.h \
     text/stk_cstr_stack.h \
     text/stk_cstr_utils.h \
-    text/stk_cstr.h
-
+    text/stk_cstr.h \
+    stk_test.h
+# -------------------------------------------------------------
 contains(DEFINES, QT_GUI) {
+SOURCES +=
 HEADERS +=
 FORMS +=
 RESOURCES +=
 }
-
+# -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
 LIBS += -lwinmm -lgomp
 LIBS += -lwsock32 -lws2_32 -lcrypt32 -lgdi32 -luser32 -lshell32
+contains(DEFINES, QT_GUI) {
+LIBS += QtCored.a
 }
+}
+# -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, _MSC_VER) {
 LIBS += winmm.lib wsock32.lib ws2_32.lib crypt32.lib
 LIBS += vcompd.lib
@@ -267,9 +278,14 @@ contains(DEFINES, QT_GUI) {
 LIBS += QtCored.lib
 }
 }
+# -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __clang__) {
 LIBS +=
+contains(DEFINES, QT_GUI) {
+LIBS += QtCored.lib
 }
-
+}
+# -------------------------------------------------------------
 OTHER_FILES +=
 DISTFILES += test.txt
+# -------------------------------------------------------------

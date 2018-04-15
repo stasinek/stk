@@ -27,15 +27,15 @@ class __kop32_search {
 //------------------------------------
 private:
 //------------------------------------
-        const stk::__database  *f_external_mask_list_ptr;
+        const stk::__database  *f_IMPEXPal_mask_list_ptr;
 //------------------------------------
         int32_t __stdcall  f_seek_src				(const char *a_Source_ptr);
         int32_t __stdcall  f_seek_src_file			(const char *a_Source_ptr, const int32_t a_Base_path_len);
-        stk::__database  *f_external_src_output_list_ptr;
+        stk::__database  *f_IMPEXPal_src_output_list_ptr;
         stk::file::__file_open_struct  f_src_file;
 //------------------------------------
         int32_t __stdcall  f_seek_dst				(const char *a_Destination_ptr, const char *a_Extension_to_add_ptr, const char *a_Extension_to_delete_ptr);
-        stk::__database  *f_external_dst_output_list_ptr;
+        stk::__database  *f_IMPEXPal_dst_output_list_ptr;
         stk::file::__file_open_struct  f_dst_file;
         stk::__kop32_class *f_owner;
 //------------------------------------

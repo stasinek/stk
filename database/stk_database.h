@@ -60,8 +60,8 @@ public:
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------
-extern __database *__stdcall DATA_FROM_C(__database *a_database, const char* __restrict__ a_text, const char* __restrict__ a_format);
-extern char *__stdcall C_FROM_DATA(char *a_text, const char* __restrict__ a_format, const __database* __restrict__ a_database);
+extern STK_IMPEXP __database *__stdcall DATA_FROM_C(__database *a_database, const char* __restrict__ a_text, const char* __restrict__ a_format);
+extern STK_IMPEXP char *__stdcall C_FROM_DATA(char *a_text, const char* __restrict__ a_format, const __database* __restrict__ a_database);
 //---------------------------------------------------------------------------
 }
 //---------------------------------------------------------------------------
