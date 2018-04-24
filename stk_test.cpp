@@ -89,7 +89,7 @@ return (char)getchar();
 //---------------------------------------------------------------------------
 
 #ifdef __WATCOMC__
-void stk::test::atexit(void)
+void stk::test::stk_atexit(void)
 #else
 void __cdecl stk::test::stk_atexit(void)
 #endif

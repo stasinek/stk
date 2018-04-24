@@ -1,9 +1,0 @@
-./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
-./stasm/stk_stasm.h(36): Note! N393: col(160) included from compression\.\..\stk_main.h(455)
-./stasm/stk_stasm.h(36): Note! N393: col(160) included from compression\stk_compression_lzstv4.h(7)
-./stasm/stk_stasm.h(36): Note! N393: col(160) included from compression\stk_compression_lzstv4.cpp(4)
-./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"
-compression\stk_compression_lzstv4.cpp(370): Warning! W017: col(1) label 'CALCULATE_OFFSET' has not been referenced by a goto
-compression\stk_compression_lzstv4.cpp(370): Note! N574: col(1) label defined in: compression\stk_compression_lzstv4.cpp(339) (col 17)
-compression\stk_compression_lzstv4.cpp(370): Warning! W017: col(1) label 'EXIT' has not been referenced by a goto
-compression\stk_compression_lzstv4.cpp(370): Note! N574: col(1) label defined in: compression\stk_compression_lzstv4.cpp(366) (col 5)
