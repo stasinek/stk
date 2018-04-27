@@ -67,9 +67,9 @@ __DEBUG_FUNC_CALLED("")
 		if (found && f_src_file.find_data.data.nFileSizeHigh==0)\
 				{current = f_IMPEXPal_src_output_list_ptr->items()->add_text(path);\
 				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,IS,EXISTS);\
-				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE,stk::time::FILETIME_to_time_t(f_src_file.find_data.data.ftCreationTime));\
-				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE,stk::time::FILETIME_to_time_t(f_src_file.find_data.data.ftLastWriteTime));\
-				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE,stk::time::FILETIME_to_time_t(f_src_file.find_data.data.ftLastAccessTime));\
+                 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE,stk::time::FILETIME_to_time_t(&f_src_file.find_data.data.ftCreationTime));\
+                 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE,stk::time::FILETIME_to_time_t(&f_src_file.find_data.data.ftLastWriteTime));\
+                 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE,stk::time::FILETIME_to_time_t(&f_src_file.find_data.data.ftLastAccessTime));\
 				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,ATTRIB,f_src_file.find_data.data.dwFileAttributes);\
 				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,SIZE,f_src_file.find_data.data.nFileSizeLow);\
 				 f_IMPEXPal_src_output_list_ptr->items()->set_number(current,SIZE_H_DWORD,f_src_file.find_data.data.nFileSizeHigh);\
@@ -260,9 +260,9 @@ __DEBUG_FUNC_CALLED("")
 		if (found && f_dst_file.find_data.data.nFileSizeHigh==0)\
 				{current = f_IMPEXPal_dst_output_list_ptr->items()->add_text(patch);\
 				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,IS, EXISTS);\
-				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE, stk::time::FILETIME_to_time_t(f_dst_file.find_data.data.ftCreationTime));\
-				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE, stk::time::FILETIME_to_time_t(f_dst_file.find_data.data.ftLastWriteTime));\
-				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE, stk::time::FILETIME_to_time_t(f_dst_file.find_data.data.ftLastAccessTime));\
+                 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_CREATION_DATE, stk::time::FILETIME_to_time_t(&f_dst_file.find_data.data.ftCreationTime));\
+                 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_MODIFIED_DATE, stk::time::FILETIME_to_time_t(&f_dst_file.find_data.data.ftLastWriteTime));\
+                 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,FILE_ACCESSED_DATE, stk::time::FILETIME_to_time_t(&f_dst_file.find_data.data.ftLastAccessTime));\
 				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,ATTRIB, f_dst_file.find_data.data.dwFileAttributes);\
 				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,SIZE, f_dst_file.find_data.data.nFileSizeLow);\
 				 f_IMPEXPal_dst_output_list_ptr->items()->set_number(current,SIZE_H_DWORD, f_dst_file.find_data.data.nFileSizeHigh);\

@@ -53,7 +53,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;STK_BUILD_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;BUILD_STK_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

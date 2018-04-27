@@ -10,9 +10,11 @@ namespace stk { namespace mem {
 		extern "C" STK_IMPEXP intmax_t       __stdcall allocated           (void);
 		//     ^^ must be SIGNED for mem leak detection ;)
 		extern "C" STK_IMPEXP size_t         __stdcall size                (const void *a_ptr);
-		extern "C" STK_IMPEXP void          *__stdcall alloc	            (const size_t a_count);
-		extern "C" STK_IMPEXP void          *__stdcall realloc             (void *a_dst_ptr, const size_t a_count);
-		extern "C" STK_IMPEXP void           __stdcall free                (void *a_dst_ptr);
+        extern "C" STK_IMPEXP void          *__stdcall calloc	           (char a_size, const size_t a_count);
+        extern "C" STK_IMPEXP void          *__stdcall alloc	           (const size_t a_count);
+//      extern "C" STK_IMPEXP void          *__stdcall crealloc             (char a_znak,void *a_dst_ptr, const size_t a_count);
+        extern "C" STK_IMPEXP void          *__stdcall realloc             (void *a_dst_ptr, const size_t a_count);
+        extern "C" STK_IMPEXP void           __stdcall free                (void *a_dst_ptr);
 //---------------------------------------------------------------------------
 		extern "C" STK_IMPEXP void          *__stdcall mov                 (void *a_dst_ptr, const void *a_src_ptr, const size_t a_count);
 		extern "C" STK_IMPEXP void          *__stdcall rev                 (void *a_dst_ptr, const void *a_src_ptr, const size_t a_count);
@@ -55,8 +57,8 @@ inline uint8_t bitcount(uint32_t i)
 		extern "C" STK_IMPEXP  void          __stdcall bit_mov             (void *a_dst_ptr, const uint8_t a_bit_dst, const void *a_src_ptr, const uint8_t a_bit_src, const size_t a_bit_num);
 		extern "C" STK_IMPEXP  void          __stdcall bit_setex           (void *a_dst_ptr, const uint8_t a_bit_dst, const void *a_src_ptr, const uint8_t a_bit_src, const uint8_t a_src_elelent_size, const size_t a_dst_count);
 //---------------------------------------------------------------------------
-}}
-//---------------------------------------------------------------------------
+}}
+//---------------------------------------------------------------------------
 #if defined(__CLANG__)
 inline void* __cdecl operator new (const size_t a_count)
 {	return stk::mem::alloc(a_count); }

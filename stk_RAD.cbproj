@@ -105,14 +105,14 @@
         <Manifest_File>(None)</Manifest_File>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <Defines>STK_BUILD_LIBRARY;$(Defines)</Defines>
+        <Defines>BUILD_STK_LIBRARY;$(Defines)</Defines>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
         <TASM_Debugging>None</TASM_Debugging>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <Defines>STK_BUILD_LIBRARY;$(Defines)</Defines>
+        <Defines>BUILD_STK_LIBRARY;$(Defines)</Defines>
         <ILINK_KeepOutputFiles>true</ILINK_KeepOutputFiles>
         <BCC_VCCompatibility>true</BCC_VCCompatibility>
         <BCC_BackwardCompatibility>true</BCC_BackwardCompatibility>

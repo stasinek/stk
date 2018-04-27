@@ -45,25 +45,23 @@ __DEBUG_FUNC_CALLED("")
                 #endif // win32
 }
 //---------------------------------------------------------------------------
-
 /*
 static NTSTATUS(__stdcall *NtDelayExecution)(BOOL Alertable, PLARGE_INTEGER DelayInterval) = (NTSTATUS(__stdcall*)(BOOL, PLARGE_INTEGER)) GetProcAddress(GetModuleHandle("ntdll.dll"), "NtDelayExecution");
 static NTSTATUS(__stdcall *ZwSetTimerResolution)(IN ULONG RequestedResolution, IN BOOLEAN Set, OUT PULONG ActualResolution) = (NTSTATUS(__stdcall*)(ULONG, BOOLEAN, PULONG)) GetProcAddress(GetModuleHandle("ntdll.dll"), "ZwSetTimerResolution");
 
 static void sleep_us(double microseconds) {
     static bool once = true;
+    static ULONG actualResolution;
     if (once) {
-        ULONG actualResolution;
         ZwSetTimerResolution(1, true, &actualResolution);
         once = false;
     }
-
     LARGE_INTEGER interval;
     interval.QuadPart = -1 * (int)(milliseconds * 10000.0f);
     NtDelayExecution(false, &interval);
 }
 */
-
+//---------------------------------------------------------------------------
 
 void __stdcall stk::time::wait_us(const uint64_t microseconds) // cross-platform sleep function
 {
@@ -110,18 +108,18 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 #ifdef __WIN32__
-time_t __stdcall stk::time::FILETIME_to_time_t(FILETIME const& ft)
+time_t __stdcall stk::time::FILETIME_to_time_t(const FILETIME *ft)
 {
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED("")
 #endif
                 ULARGE_INTEGER ull;
-                ull.HighPart = ft.dwHighDateTime;
-                ull.LowPart = ft.dwLowDateTime;
+                ull.HighPart = ft->dwHighDateTime;
+                ull.LowPart = ft->dwLowDateTime;
                 return (ull.QuadPart / (LONGLONG)10000000) - (LONGLONG)11644473600;
 }
 
-FILETIME* __stdcall stk::time::time_t_to_FILETIME(time_t t, LPFILETIME pft)
+FILETIME* __stdcall stk::time::time_t_to_FILETIME(time_t t, FILETIME *ft)
 {
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED("")
@@ -129,9 +127,9 @@ __DEBUG_FUNC_CALLED("")
 // Note that LONGLONG is a 64-bit value
                 LONGLONG ull;
                 ull = (LONGLONG)(((LONGLONG)t) * (LONGLONG)(10000000 + 116444736000000000));
-                pft->dwLowDateTime = (DWORD)ull;
-                pft->dwHighDateTime = ull >> 32;
-                return pft;
+                ft->dwLowDateTime = (DWORD)ull;
+                ft->dwHighDateTime = ull >> 32;
+                return ft;
 }
 //---------------------------------------------------------------------------
 #endif

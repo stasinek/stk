@@ -40,7 +40,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="tlink32"/>
-    <USERDEFINES value="_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE;STK_BUILD_LIBRARY"/>
+    <USERDEFINES value="_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE;BUILD_STK_LIBRARY"/>
     <SYSDEFINES value="NO_STRICT;_NO_VCL"/>
     <MAINSOURCE value="stk_BCB.bpf"/>
     <INCLUDEPATH value="3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;sthreads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl"/>
@@ -109,7 +109,7 @@ Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=3
-Item0=_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE;STK_BUILD_LIBRARY
+Item0=_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE;BUILD_STK_LIBRARY
 Item1=_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE
 Item2=_DEBUG
 

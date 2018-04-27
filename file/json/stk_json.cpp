@@ -31,13 +31,13 @@
 //---------------------------------------------------------------------------
 #ifdef _MSC_VER
    #ifndef _CRT_SECURE_NO_WARNINGS
-      #define _CRT_SECURE_NO_WARNINGS
+   #define _CRT_SECURE_NO_WARNINGS
    #endif
 #endif
 //---------------------------------------------------------------------------
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 #include <math.h>
 //---------------------------------------------------------------------------
 namespace stk {
@@ -53,6 +53,7 @@ typedef struct {
    const __json_char_t * ptr;
    unsigned int cur_line, cur_col;
 } json_state;
+//---------------------------------------------------------------------------
 } // namespace stk
 //---------------------------------------------------------------------------
 static const long
@@ -92,13 +93,13 @@ static unsigned char hex_value(__json_char_t c)
 
 static void* default_alloc(size_t size, int zero, void * user_data)
 {
-   return zero ? calloc (1, size) : malloc (size);
+   return zero ? stk::mem::calloc(1, size) : stk::mem::alloc(size);
 }
 //---------------------------------------------------------------------------
 
 static void default_free(void * ptr, void * user_data)
 {
-   free(ptr);
+   stk::mem::free(ptr);
 }
 //---------------------------------------------------------------------------
 
@@ -216,7 +217,7 @@ stk::json_value* stk::json_parse_ex(stk::json_settings* settings, const __json_c
    __json_char_t error [json_error_max];
    const __json_char_t * end;
    stk::json_value * top, * root, * alloc = 0;
-   stk::json_state state = { 0 };
+   stk::json_state state;// = { 0 };
    long flags;
    long num_digits = 0, num_e = 0;
    __json_int_t num_fraction = 0;
@@ -931,7 +932,7 @@ e_failed:
 
 stk::json_value* stk::json_parse(const __json_char_t* json, size_t length)
 {
-   stk::json_settings settings = { 0 };
+   stk::json_settings settings;// = { 0 };
    return stk::json_parse_ex (&settings, json, length, 0);
 }
 //---------------------------------------------------------------------------
@@ -988,7 +989,7 @@ void stk::json_value_free_ex(json_settings* settings, stk::json_value* value)
 
 void stk::json_value_free(json_value* value)
 {
-   stk::json_settings settings = { 0 };
+   stk::json_settings settings;// = { 0 };
    settings.mem_free = default_free;
    stk::json_value_free_ex(&settings, value);
 }

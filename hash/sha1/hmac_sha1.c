@@ -60,7 +60,7 @@
 #include <string.h>
 
 #ifdef  __cplusplus
-STK_extern "C" {
+extern "C" {
 #endif
 
 /* Filler bytes: */
@@ -132,7 +132,8 @@ void HMAC_SHA1_UpdateKey(HMAC_SHA1_CTX *ctx, unsigned char *key, unsigned int ke
 
 void HMAC_SHA1_EndKey(HMAC_SHA1_CTX *ctx) {
 	unsigned char	*ipad, *opad, *key;
-	int		i;
+    int		i;
+    unsigned int j;
 
 	/* Did we end up hashing the key? */
 	if (ctx->hashkey) {
@@ -151,10 +152,10 @@ void HMAC_SHA1_EndKey(HMAC_SHA1_CTX *ctx) {
 
 	/* Precompute the respective pads XORed with the key */
 	key = &(ctx->key[0]);
-	for (i = 0; i < ctx->keylen; i++, key++) {
+    for (j = 0; j < ctx->keylen; j++, key++) {
 		/* XOR the key byte with the appropriate pad filler byte */
 		*ipad++ ^= *key;
-		*opad++ ^= *key;
+        *opad++ ^= *key;
 	}
 }
 

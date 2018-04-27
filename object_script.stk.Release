@@ -6,7 +6,6 @@ INPUT(
 ./release\stk_vector.o
 ./release\stk_variable.o
 ./release\stk_map.o
-./release\stk_stasm.o
 ./release\stk_cpu.o
 ./release\stk_base64.o
 ./release\stk_cipher_mtf.o
@@ -24,8 +23,9 @@ INPUT(
 ./release\stk_file_ini.o
 ./release\stk_file_lzst_header.o
 ./release\stk_json.o
-./release\miniz.o
 ./release\stk_file_vfs.o
+./release\stk_xml.o
+./release\miniz.o
 ./release\stk_hash_crc32.o
 ./release\stk_hash_md5.o
 ./release\stk_hash_password.o
@@ -46,6 +46,7 @@ INPUT(
 ./release\stk_pharse_command_line.o
 ./release\stk_pharse_math.o
 ./release\stk_sockets.o
+./release\stk_stasm.o
 ./release\stk_threads.o
 ./release\stk_cstr_utils.o
 ./release\stk_time.o

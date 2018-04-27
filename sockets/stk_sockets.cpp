@@ -9,7 +9,9 @@
 #include "./../sthreads/stk_threads.h"
 #include "./../time/stk_time.h"
 //---------------------------------------------------------------------------
+#ifdef __MSVC__
 #pragma comment(lib, "Ws2_32.lib")
+#endif
 //---------------------------------------------------------------------------
 
 SOCKET __stdcall stk::socket::create_server_socket(const char *aipv4_port_s, const int atimeout_s)

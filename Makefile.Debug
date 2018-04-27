@@ -9,16 +9,16 @@ MAKEFILE      = Makefile.Debug
 
 ####### Compiler, tools and options
 
-CC            = cl
-CXX           = cl
-DEFINES       = -DUNICODE -DWIN32 -DSTK_BUILD_LIBRARY
-CFLAGS        = -nologo -Zc:wchar_t -Zi -MDd -W3 /Fddebug\stk.pdb $(DEFINES)
-CXXFLAGS      = -nologo -Zc:wchar_t -Zi -MDd -GR -W3 -w34100 -w34189 -w44996 -EHsc /Fddebug\stk.pdb $(DEFINES)
-INCPATH       = -I. -IC:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\win32-msvc2010 
-LINKER        = link
-LFLAGS        = /NOLOGO /DYNAMICBASE /NXCOMPAT /DEBUG /DLL /SUBSYSTEM:WINDOWS
-LIBS          = kernel32.lib gdi32.lib shell32.lib user32.lib comctl32.lib userenv.lib ws2_32.lib wsock32.lib winmm.lib imm32.lib ole32.lib oleaut32.lib 
-QMAKE         = C:\Qt\Qt5.5.1\5.5\msvc2010\bin\qmake.exe
+CC            = gcc
+CXX           = g++
+DEFINES       = -DUNICODE -DBUILD_STK_LIBRARY
+CFLAGS        = -pipe -fno-keep-inline-dllexport -fno-use-linker-plugin -Wno-write-strings -Wno-multichar -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label -Wno-unused-but-set-variable -Wattributes -Winline -Wshadow -Wall -Wunknown-pragmas -g -Wall -Wextra $(DEFINES)
+CXXFLAGS      = -pipe -fno-keep-inline-dllexport -fno-use-linker-plugin -Wno-write-strings -Wno-multichar -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label -Wno-unused-but-set-variable -Wattributes -Winline -Wshadow -Wall -Wunknown-pragmas -fverbose-asm -fstrict-aliasing -dD -g -std=gnu++0x -pthread -malign-double -momit-leaf-frame-pointer -fwrapv -funroll-loops -m32 -mfpmath=sse -flto -O3 -mpreferred-stack-boundary=8 -mmmx -msse -msse2 -g -frtti -Wall -Wextra -fexceptions -mthreads $(DEFINES)
+INCPATH       = -I. -IC:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\win32-g++ 
+LINKER      =        g++
+LFLAGS        =        -shared -Wl,-subsystem,windows -mthreads -Wl,--out-implib,debug\libstk.a
+LIBS        =        -lkernel32 -lcomctl32 -luserenv -limm32 -lole32 -loleaut32 -lwinmm -lgomp -lwsock32 -lws2_32 -lcrypt32 -lgdi32 -luser32 -lshell32 
+QMAKE         = C:\Qt\Qt5.5.1\5.5\mingw492_32\bin\qmake.exe
 IDC           = idc
 IDL           = midl
 ZIP           = zip -r -9
@@ -50,7 +50,6 @@ SOURCES       = stk_set.cpp \
 		stk_vector.cpp \
 		stk_variable.cpp \
 		stk_map.cpp \
-		stasm\stk_stasm.cpp \
 		cpu\stk_cpu.cpp \
 		cipher\stk_base64.cpp \
 		cipher\stk_cipher_mtf.cpp \
@@ -68,8 +67,9 @@ SOURCES       = stk_set.cpp \
 		file\ini\stk_file_ini.cpp \
 		file\eno\stk_file_lzst_header.cpp \
 		file\json\stk_json.cpp \
-		file\zip\miniz.c \
 		file\vfs\stk_file_vfs.cpp \
+		file\xml\stk_xml.cpp \
+		file\zip\miniz.c \
 		hash\stk_hash_crc32.cpp \
 		hash\stk_hash_md5.cpp \
 		hash\stk_hash_password.cpp \
@@ -90,64 +90,65 @@ SOURCES       = stk_set.cpp \
 		pharser\stk_pharse_command_line.cpp \
 		pharser\stk_pharse_math.cpp \
 		sockets\stk_sockets.cpp \
+		stasm\stk_stasm.cpp \
 		sthreads\stk_threads.cpp \
 		text\stk_cstr_utils.cpp \
 		time\stk_time.cpp \
 		text\stk_cstr_class.cpp \
 		text\stk_cstr_stack.cpp 
-OBJECTS       = debug\stk_set.obj \
-		debug\stk_test.obj \
-		debug\stk_hash_chain.obj \
-		debug\stk_list.obj \
-		debug\stk_vector.obj \
-		debug\stk_variable.obj \
-		debug\stk_map.obj \
-		debug\stk_stasm.obj \
-		debug\stk_cpu.obj \
-		debug\stk_base64.obj \
-		debug\stk_cipher_mtf.obj \
-		debug\stk_cipher_API.obj \
-		debug\stk_cipher_pair.obj \
-		debug\stk_compression_ari.obj \
-		debug\stk_compression_bwt_matrix2.obj \
-		debug\stk_compression_huff.obj \
-		debug\stk_compression_lzstv4.obj \
-		debug\stk_compression_static_huff.obj \
-		debug\stk_compression_API.obj \
-		debug\stk_database_items.obj \
-		debug\stk_database.obj \
-		debug\stk_file_mime_types.obj \
-		debug\stk_file_ini.obj \
-		debug\stk_file_lzst_header.obj \
-		debug\stk_json.obj \
-		debug\miniz.obj \
-		debug\stk_file_vfs.obj \
-		debug\stk_hash_crc32.obj \
-		debug\stk_hash_md5.obj \
-		debug\stk_hash_password.obj \
-		debug\stk_hash_ssc1.obj \
-		debug\md5.obj \
-		debug\hmac_sha1.obj \
-		debug\sha1.obj \
-		debug\stk_file_io.obj \
-		debug\stk_rs232.obj \
-		debug\stk_console.obj \
-		debug\stk_kop32_class.obj \
-		debug\stk_kop32_controler.obj \
-		debug\stk_kop32_search.obj \
-		debug\stk_kop32_socket_server.obj \
-		debug\stk_kop32_API.obj \
-		debug\stk_mem.obj \
-		debug\stk_journal.obj \
-		debug\stk_pharse_command_line.obj \
-		debug\stk_pharse_math.obj \
-		debug\stk_sockets.obj \
-		debug\stk_threads.obj \
-		debug\stk_cstr_utils.obj \
-		debug\stk_time.obj \
-		debug\stk_cstr_class.obj \
-		debug\stk_cstr_stack.obj \
-		debug\stk_pch.obj
+OBJECTS       = debug/stk_set.o \
+		debug/stk_test.o \
+		debug/stk_hash_chain.o \
+		debug/stk_list.o \
+		debug/stk_vector.o \
+		debug/stk_variable.o \
+		debug/stk_map.o \
+		debug/stk_cpu.o \
+		debug/stk_base64.o \
+		debug/stk_cipher_mtf.o \
+		debug/stk_cipher_API.o \
+		debug/stk_cipher_pair.o \
+		debug/stk_compression_ari.o \
+		debug/stk_compression_bwt_matrix2.o \
+		debug/stk_compression_huff.o \
+		debug/stk_compression_lzstv4.o \
+		debug/stk_compression_static_huff.o \
+		debug/stk_compression_API.o \
+		debug/stk_database_items.o \
+		debug/stk_database.o \
+		debug/stk_file_mime_types.o \
+		debug/stk_file_ini.o \
+		debug/stk_file_lzst_header.o \
+		debug/stk_json.o \
+		debug/stk_file_vfs.o \
+		debug/stk_xml.o \
+		debug/miniz.o \
+		debug/stk_hash_crc32.o \
+		debug/stk_hash_md5.o \
+		debug/stk_hash_password.o \
+		debug/stk_hash_ssc1.o \
+		debug/md5.o \
+		debug/hmac_sha1.o \
+		debug/sha1.o \
+		debug/stk_file_io.o \
+		debug/stk_rs232.o \
+		debug/stk_console.o \
+		debug/stk_kop32_class.o \
+		debug/stk_kop32_controler.o \
+		debug/stk_kop32_search.o \
+		debug/stk_kop32_socket_server.o \
+		debug/stk_kop32_API.o \
+		debug/stk_mem.o \
+		debug/stk_journal.o \
+		debug/stk_pharse_command_line.o \
+		debug/stk_pharse_math.o \
+		debug/stk_sockets.o \
+		debug/stk_stasm.o \
+		debug/stk_threads.o \
+		debug/stk_cstr_utils.o \
+		debug/stk_time.o \
+		debug/stk_cstr_class.o \
+		debug/stk_cstr_stack.o
 
 DIST          = test.txt stk_hash_chain.h \
 		stk_list.h \
@@ -157,6 +158,8 @@ DIST          = test.txt stk_hash_chain.h \
 		stk_vector.h \
 		3D/stk_3Dvector.h \
 		cpu/stk_cpu.h \
+		cipher/stk_cipher_API.h \
+		cipher/stk_cipher_mtf.h \
 		cipher/stk_cipher_pair.h \
 		cipher/stk_base64.h \
 		cipher/FastAESinC/stk_aes.h \
@@ -174,12 +177,9 @@ DIST          = test.txt stk_hash_chain.h \
 		file/stk_file_mime_types.h \
 		file/ini/stk_file_ini.h \
 		file/eno/stk_file_lzst_header.h \
-		file/vfs/stk_file_vfs.h \
 		file/json/stk_json.h \
-		incbin/stk_incbin.h \
-		io/stk_file_io.h \
-		io/stk_rs232.h \
-		io/stk_console.h \
+		file/vfs/stk_file_vfs.h \
+		file/xml/stk_xml.h \
 		hash/stk_hash_ssc1.h \
 		hash/stk_hash_crc32.h \
 		hash/stk_hash_md5.h \
@@ -187,8 +187,10 @@ DIST          = test.txt stk_hash_chain.h \
 		hash/md5/md5.h \
 		hash/sha1/hmac_sha1.h \
 		hash/sha1/sha.h \
-		cipher/stk_cipher_mtf.h \
-		cipher/stk_cipher_API.h \
+		incbin/stk_incbin.h \
+		io/stk_file_io.h \
+		io/stk_rs232.h \
+		io/stk_console.h \
 		koperek/stk_kop32_class.h \
 		koperek/stk_kop32_search.cpp \
 		koperek/stk_kop32_controler.h \
@@ -215,7 +217,6 @@ DIST          = test.txt stk_hash_chain.h \
 		stk_vector.cpp \
 		stk_variable.cpp \
 		stk_map.cpp \
-		stasm\stk_stasm.cpp \
 		cpu\stk_cpu.cpp \
 		cipher\stk_base64.cpp \
 		cipher\stk_cipher_mtf.cpp \
@@ -233,8 +234,9 @@ DIST          = test.txt stk_hash_chain.h \
 		file\ini\stk_file_ini.cpp \
 		file\eno\stk_file_lzst_header.cpp \
 		file\json\stk_json.cpp \
-		file\zip\miniz.c \
 		file\vfs\stk_file_vfs.cpp \
+		file\xml\stk_xml.cpp \
+		file\zip\miniz.c \
 		hash\stk_hash_crc32.cpp \
 		hash\stk_hash_md5.cpp \
 		hash\stk_hash_password.cpp \
@@ -255,6 +257,7 @@ DIST          = test.txt stk_hash_chain.h \
 		pharser\stk_pharse_command_line.cpp \
 		pharser\stk_pharse_math.cpp \
 		sockets\stk_sockets.cpp \
+		stasm\stk_stasm.cpp \
 		sthreads\stk_threads.cpp \
 		text\stk_cstr_utils.cpp \
 		time\stk_time.cpp \
@@ -267,487 +270,19 @@ DESTDIR_TARGET = debug\stk.dll
 
 ####### Implicit rules
 
-.SUFFIXES: .c .cpp .cc .cxx
+.SUFFIXES: .cpp .cc .cxx .c
 
-{time}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
+.cpp.o:
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o $@ $<
 
-{time}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
+.cc.o:
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o $@ $<
 
-{time}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
+.cxx.o:
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o $@ $<
 
-{time}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash\sha1}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash\sha1}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash\sha1}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash\sha1}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{.}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{.}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{.}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{.}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\ini}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\ini}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\ini}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\ini}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{cpu}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{cpu}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{cpu}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{cpu}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{compression}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{compression}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{compression}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{compression}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{sthreads}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{sthreads}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{sthreads}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{sthreads}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{pharser}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{pharser}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{pharser}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{pharser}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\json}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\json}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\json}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\json}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\vfs}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\vfs}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\vfs}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\vfs}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\eno}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\eno}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\eno}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\eno}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{stasm}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{stasm}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{stasm}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{stasm}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash\md5}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash\md5}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash\md5}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{hash\md5}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{mem}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{mem}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{mem}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{mem}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{database}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{database}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{database}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{database}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{text}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{text}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{text}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{text}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{koperek}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{koperek}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{koperek}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{koperek}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{cipher}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{cipher}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{cipher}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{cipher}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\zip}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\zip}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\zip}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file\zip}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{file}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{process_journal}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{process_journal}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{process_journal}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{process_journal}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{sockets}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{sockets}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{sockets}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{sockets}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{io}.cpp{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{io}.cc{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{io}.cxx{debug\}.obj::
-	$(CXX) -c -FIstk_MAIN.h -Yustk_MAIN.h -Fpdebug\stk_pch.pch $(CXXFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
-
-{io}.c{debug\}.obj::
-	$(CC) -c $(CFLAGS) $(INCPATH) -Fodebug\ @<<
-	$<
-<<
+.c.o:
+	$(CC)  -c -include debug\stk_MAIN.h $(CFLAGS) $(INCPATH) -o $@ $<
 
 ####### Build rules
 
@@ -755,36 +290,21 @@ first: all
 all: Makefile.Debug  $(DESTDIR_TARGET)
 
 $(DESTDIR_TARGET):  $(OBJECTS) 
-	echo 2 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "debug\\stk.dll.embed.manifest">debug\stk.dll_manifest.rc
-	if not exist $(DESTDIR_TARGET) if exist debug\stk.dll.embed.manifest del debug\stk.dll.embed.manifest
-	if exist debug\stk.dll.embed.manifest copy /Y debug\stk.dll.embed.manifest debug\stk.dll_manifest.bak
-	$(LINKER) $(LFLAGS) /MANIFEST /MANIFESTFILE:debug\stk.dll.embed.manifest /OUT:$(DESTDIR_TARGET) @<<
-$(OBJECTS) $(LIBS) 
-!IF EXIST(debug\stk.dll_manifest.res)
-debug\stk.dll_manifest.res
-!ENDIF
-<<
-	if exist debug\stk.dll_manifest.bak fc /b debug\stk.dll.embed.manifest debug\stk.dll_manifest.bak >NUL || del debug\stk.dll_manifest.bak
-	if not exist debug\stk.dll_manifest.bak rc.exe /fodebug\stk.dll_manifest.res debug\stk.dll_manifest.rc
-	if not exist debug\stk.dll_manifest.bak $(LINKER) $(LFLAGS) /MANIFEST /MANIFESTFILE:debug\stk.dll.embed.manifest /OUT:$(DESTDIR_TARGET) @<<
-$(OBJECTS) $(LIBS) debug\stk.dll_manifest.res
-<<
-	if exist debug\stk.dll_manifest.bak del debug\stk.dll_manifest.bak
+	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) object_script.stk.Debug  $(LIBS)
 
 qmake: FORCE
-	@$(QMAKE) -spec win32-msvc2010 "CONFIG+=debug" -o Makefile.Debug stk.pro
+	@$(QMAKE) -spec win32-g++ -o Makefile.Debug stk.pro
 
 qmake_all: FORCE
 
 dist:
-	$(ZIP) stk.zip $(SOURCES) $(DIST) stk.pro C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\spec_pre.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\common\msvc-desktop.conf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\qconfig.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_axbase.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_axserver.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_clucene_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_core.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_core_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_dbus.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_declarative.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_declarative_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_designer.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_enginio.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_enginio_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_gui.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_help.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_help_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_location.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_location_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_network.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_network_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_nfc.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_opengl.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_platformsupport_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_positioning.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_qml.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_quick.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_script.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_script_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_sensors.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_serialport.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_sql.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_svg.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_testlib.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_uitools.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_webkit.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_webkit_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_webkitwidgets.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_webkitwidgets_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_websockets.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_widgets.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_winextras.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_xml.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\qt_functions.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\qt_config.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\win32\qt_config.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\win32-msvc2010\qmake.conf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\spec_post.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\exclusive_builds.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\default_pre.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\win32\default_pre.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\resolve_config.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\exclusive_builds_post.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\default_post.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\build_pass.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\win32\windows.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\win32\rtti.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\precompile_header.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\warn_on.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\testcase_targets.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\exceptions.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\yacc.prf C:\Qt\Qt5.5.1\5.5\msvc2010\mkspecs\features\lex.prf stk.pro  NO_PCH_SOURCES YACCSOURCES YACCSOURCES LEXSOURCES 
+	$(ZIP) stk.zip $(SOURCES) $(DIST) stk.pro C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\spec_pre.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\qdevice.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\device_config.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\qconfig.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_axbase.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_axserver.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_clucene_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_core.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_core_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_dbus.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_declarative.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_declarative_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_designer.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_enginio.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_enginio_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_gui.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_help.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_help_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_network.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_network_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_nfc.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_opengl.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_platformsupport_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_positioning.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_qml.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_quick.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_script.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_script_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_sensors.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_serialport.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_sql.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_svg.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_testlib.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_uitools.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_webkit.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_webkit_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_webkitwidgets.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_webkitwidgets_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_websockets.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_widgets.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_winextras.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_xml.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\qt_functions.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\qt_config.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\win32\qt_config.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\win32-g++\qmake.conf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\spec_post.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\exclusive_builds.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\default_pre.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\win32\default_pre.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\resolve_config.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\exclusive_builds_post.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\default_post.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\build_pass.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\win32\windows.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\win32\rtti.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\precompile_header.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\warn_on.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\testcase_targets.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\exceptions.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\yacc.prf C:\Qt\Qt5.5.1\5.5\mingw492_32\mkspecs\features\lex.prf stk.pro  NO_PCH_SOURCES YACCSOURCES YACCSOURCES LEXSOURCES 
 
 clean: compiler_clean 
-	-$(DEL_FILE) debug\stk_set.obj debug\stk_test.obj debug\stk_hash_chain.obj debug\stk_list.obj debug\stk_vector.obj debug\stk_variable.obj debug\stk_map.obj debug\stk_stasm.obj debug\stk_cpu.obj debug\stk_base64.obj debug\stk_cipher_mtf.obj debug\stk_cipher_API.obj debug\stk_cipher_pair.obj debug\stk_compression_ari.obj debug\stk_compression_bwt_matrix2.obj debug\stk_compression_huff.obj debug\stk_compression_lzstv4.obj debug\stk_compression_static_huff.obj debug\stk_compression_API.obj debug\stk_database_items.obj debug\stk_database.obj debug\stk_file_mime_types.obj debug\stk_file_ini.obj debug\stk_file_lzst_header.obj debug\stk_json.obj debug\miniz.obj debug\stk_file_vfs.obj debug\stk_hash_crc32.obj debug\stk_hash_md5.obj debug\stk_hash_password.obj debug\stk_hash_ssc1.obj debug\md5.obj debug\hmac_sha1.obj debug\sha1.obj debug\stk_file_io.obj debug\stk_rs232.obj debug\stk_console.obj debug\stk_kop32_class.obj debug\stk_kop32_controler.obj debug\stk_kop32_search.obj debug\stk_kop32_socket_server.obj debug\stk_kop32_API.obj debug\stk_mem.obj debug\stk_journal.obj debug\stk_pharse_command_line.obj debug\stk_pharse_math.obj debug\stk_sockets.obj debug\stk_threads.obj debug\stk_cstr_utils.obj debug\stk_time.obj debug\stk_cstr_class.obj debug\stk_cstr_stack.obj debug\stk_pch.obj
-	-$(DEL_FILE) debug\stk_pch.pch debug\stk.exp debug\stk.ilk debug\stk.idb debug\stk.dll.embed.manifest debug\stk.dll_manifest.rc debug\stk.dll_manifest.res
+	-$(DEL_FILE) debug\stk_set.o debug\stk_test.o debug\stk_hash_chain.o debug\stk_list.o debug\stk_vector.o debug\stk_variable.o debug\stk_map.o debug\stk_cpu.o debug\stk_base64.o debug\stk_cipher_mtf.o debug\stk_cipher_API.o debug\stk_cipher_pair.o debug\stk_compression_ari.o debug\stk_compression_bwt_matrix2.o debug\stk_compression_huff.o debug\stk_compression_lzstv4.o debug\stk_compression_static_huff.o debug\stk_compression_API.o debug\stk_database_items.o debug\stk_database.o debug\stk_file_mime_types.o debug\stk_file_ini.o debug\stk_file_lzst_header.o debug\stk_json.o debug\stk_file_vfs.o debug\stk_xml.o debug\miniz.o debug\stk_hash_crc32.o debug\stk_hash_md5.o debug\stk_hash_password.o debug\stk_hash_ssc1.o debug\md5.o debug\hmac_sha1.o debug\sha1.o debug\stk_file_io.o debug\stk_rs232.o debug\stk_console.o debug\stk_kop32_class.o debug\stk_kop32_controler.o debug\stk_kop32_search.o debug\stk_kop32_socket_server.o debug\stk_kop32_API.o debug\stk_mem.o debug\stk_journal.o debug\stk_pharse_command_line.o debug\stk_pharse_math.o debug\stk_sockets.o debug\stk_stasm.o debug\stk_threads.o debug\stk_cstr_utils.o debug\stk_time.o debug\stk_cstr_class.o debug\stk_cstr_stack.o
+	-$(DEL_FILE) debug\stk_MAIN.h.gch\c debug\stk_MAIN.h.gch\c++ debug\libstk.a
 
 distclean: clean 
-	-$(DEL_FILE) debug\stk.lib debug\stk.pdb
 	-$(DEL_FILE) $(DESTDIR_TARGET)
 	-$(DEL_FILE) Makefile.Debug
 
@@ -802,591 +322,662 @@ compiler_clean:
 
 
 
-debug\stk_pch.obj: stk_MAIN.h time\stk_time.h \
+debug/stk_MAIN.h.gch/c: stk_MAIN.h time/stk_time.h \
 		stk_main.h \
-		stasm\stk_stasm.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h
-	$(CXX) -c -Yc -Fpdebug\stk_pch.pch -Fodebug\stk_pch.obj $(CXXFLAGS) $(INCPATH) -TP stk_MAIN.h
+	@if not exist debug\stk_MAIN.h.gch mkdir debug\stk_MAIN.h.gch & if not exist debug\stk_MAIN.h.gch exit 1
+	$(CC) -x c-header -c $(CFLAGS) $(INCPATH) -o debug\stk_MAIN.h.gch\c stk_MAIN.h
+
+debug/stk_MAIN.h.gch/c++: stk_MAIN.h time/stk_time.h \
+		stk_main.h \
+		stasm/stk_stasm.h \
+		stk_MAIN.h
+	@if not exist debug\stk_MAIN.h.gch mkdir debug\stk_MAIN.h.gch & if not exist debug\stk_MAIN.h.gch exit 1
+	$(CXX) -x c++-header -c $(CXXFLAGS) $(INCPATH) -o debug\stk_MAIN.h.gch\c++ stk_MAIN.h
 
 ####### Compile
 
-debug\stk_set.obj: stk_set.cpp stk_set.h \
+debug/stk_set.o: stk_set.cpp stk_set.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_set.o stk_set.cpp
 
-debug\stk_test.obj: stk_test.cpp stk_test.h \
+debug/stk_test.o: stk_test.cpp stk_test.h \
 		stk_MAIN.h \
-		time\stk_time.h \
+		time/stk_time.h \
 		stk_main.h \
-		stasm\stk_stasm.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
-		cpu\stk_cpu.h \
-		sthreads\stk_threads.h \
-		koperek\stk_kop32_API.h \
-		koperek\stk_kop32_class.h \
-		text\stk_cstr_stack.h \
-		text\stk_cstr_class.h \
+		stasm/stk_stasm.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
+		cpu/stk_cpu.h \
+		sthreads/stk_threads.h \
+		koperek/stk_kop32_API.h \
+		koperek/stk_kop32_class.h \
+		text/stk_cstr_stack.h \
+		text/stk_cstr_class.h \
 		stk_vector.h \
-		io\stk_console.h \
-		database\stk_database.h \
-		database\stk_database_alias.h \
-		database\stk_database_items.h \
-		koperek\stk_kop32_options.h \
-		hash\stk_hash_password.h \
-		file\eno\stk_file_lzst_header.h \
-		koperek\stk_kop32_list.h \
-		koperek\stk_kop32_controler.h \
-		koperek\stk_kop32_search.h \
-		io\stk_file_io.h \
-		compression\stk_compression_API.h \
-		cipher\stk_cipher_API.h \
-		hash\stk_hash_API.h \
-		hash\stk_hash_CRC32.h \
-		hash\stk_hash_md5.h \
-		hash\stk_hash_ssc1.h \
-		3d\stk_3dvector.h \
+		io/stk_console.h \
+		database/stk_database.h \
+		database/stk_database_alias.h \
+		database/stk_database_items.h \
+		koperek/stk_kop32_options.h \
+		hash/stk_hash_password.h \
+		file/eno/stk_file_lzst_header.h \
+		koperek/stk_kop32_list.h \
+		koperek/stk_kop32_controler.h \
+		koperek/stk_kop32_search.h \
+		io/stk_file_io.h \
+		compression/stk_compression_API.h \
+		cipher/stk_cipher_API.h \
+		hash/stk_hash_API.h \
+		hash/stk_hash_CRC32.h \
+		hash/stk_hash_md5.h \
+		hash/stk_hash_ssc1.h \
+		3d/stk_3dvector.h \
 		stk_tree.h \
-		process_journal\stk_journal.h \
-		debug\stk_pch.obj
+		process_journal/stk_journal.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_test.o stk_test.cpp
 
-debug\stk_hash_chain.obj: stk_hash_chain.cpp debug\stk_pch.obj
+debug/stk_hash_chain.o: stk_hash_chain.cpp debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_hash_chain.o stk_hash_chain.cpp
 
-debug\stk_list.obj: stk_list.cpp stk_list.h \
-		mem\stk_mem.h \
+debug/stk_list.o: stk_list.cpp stk_list.h \
+		mem/stk_mem.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_list.o stk_list.cpp
 
-debug\stk_vector.obj: stk_vector.cpp stk_vector.h \
-		mem\stk_mem.h \
+debug/stk_vector.o: stk_vector.cpp stk_vector.h \
+		mem/stk_mem.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_utils.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		text/stk_cstr_utils.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_vector.o stk_vector.cpp
 
-debug\stk_variable.obj: stk_variable.cpp stk_variable.h \
+debug/stk_variable.o: stk_variable.cpp stk_variable.h \
 		stk_MAIN.h \
-		time\stk_time.h \
+		time/stk_time.h \
 		stk_main.h \
-		stasm\stk_stasm.h \
-		debug\stk_pch.obj
+		stasm/stk_stasm.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_variable.o stk_variable.cpp
 
-debug\stk_map.obj: stk_map.cpp stk_map.h \
-		debug\stk_pch.obj
+debug/stk_map.o: stk_map.cpp stk_map.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_map.o stk_map.cpp
 
-debug\stk_stasm.obj: stasm\stk_stasm.cpp stasm\stk_stasm.h \
-		stk_MAIN.h \
-		time\stk_time.h \
+debug/stk_cpu.o: cpu/stk_cpu.cpp mem/stk_mem.h \
 		stk_main.h \
-		debug\stk_pch.obj
-
-debug\stk_cpu.obj: cpu\stk_cpu.cpp mem\stk_mem.h \
-		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_utils.h \
-		sthreads\stk_threads.h \
-		cpu\stk_cpu.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		text/stk_cstr_utils.h \
+		sthreads/stk_threads.h \
+		cpu/stk_cpu.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_cpu.o cpu\stk_cpu.cpp
 
-debug\stk_base64.obj: cipher\stk_base64.cpp cipher\stk_base64.h \
+debug/stk_base64.o: cipher/stk_base64.cpp cipher/stk_base64.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_base64.o cipher\stk_base64.cpp
 
-debug\stk_cipher_mtf.obj: cipher\stk_cipher_mtf.cpp cipher\stk_cipher_mtf.h \
+debug/stk_cipher_mtf.o: cipher/stk_cipher_mtf.cpp cipher/stk_cipher_mtf.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_cipher_mtf.o cipher\stk_cipher_mtf.cpp
 
-debug\stk_cipher_API.obj: cipher\stk_cipher_API.cpp cipher\stk_cipher_API.h \
+debug/stk_cipher_API.o: cipher/stk_cipher_API.cpp cipher/stk_cipher_API.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		file\eno\stk_file_lzst_header.h \
-		cipher\stk_cipher_mtf.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		file/eno/stk_file_lzst_header.h \
+		cipher/stk_cipher_mtf.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_cipher_API.o cipher\stk_cipher_API.cpp
 
-debug\stk_cipher_pair.obj: cipher\stk_cipher_pair.cpp cipher\stk_cipher_pair.h \
+debug/stk_cipher_pair.o: cipher/stk_cipher_pair.cpp cipher/stk_cipher_pair.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_cipher_pair.o cipher\stk_cipher_pair.cpp
 
-debug\stk_compression_ari.obj: compression\stk_compression_ari.cpp compression\stk_compression_ari.h \
+debug/stk_compression_ari.o: compression/stk_compression_ari.cpp compression/stk_compression_ari.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_compression_ari.o compression\stk_compression_ari.cpp
 
-debug\stk_compression_bwt_matrix2.obj: compression\stk_compression_bwt_matrix2.cpp compression\stk_compression_bwt_matrix2.h \
+debug/stk_compression_bwt_matrix2.o: compression/stk_compression_bwt_matrix2.cpp compression/stk_compression_bwt_matrix2.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_compression_bwt_matrix2.o compression\stk_compression_bwt_matrix2.cpp
 
-debug\stk_compression_huff.obj: compression\stk_compression_huff.cpp compression\stk_compression_huff.h \
+debug/stk_compression_huff.o: compression/stk_compression_huff.cpp compression/stk_compression_huff.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_compression_huff.o compression\stk_compression_huff.cpp
 
-debug\stk_compression_lzstv4.obj: compression\stk_compression_lzstv4.cpp compression\stk_compression_lzstv4.h \
+debug/stk_compression_lzstv4.o: compression/stk_compression_lzstv4.cpp compression/stk_compression_lzstv4.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		file\eno\stk_file_lzst_header.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		file/eno/stk_file_lzst_header.h \
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_compression_lzstv4.o compression\stk_compression_lzstv4.cpp
 
-debug\stk_compression_static_huff.obj: compression\stk_compression_static_huff.cpp compression\stk_compression_static_huff.h \
+debug/stk_compression_static_huff.o: compression/stk_compression_static_huff.cpp compression/stk_compression_static_huff.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_compression_static_huff.o compression\stk_compression_static_huff.cpp
 
-debug\stk_compression_API.obj: compression\stk_compression_API.cpp compression\stk_compression_API.h \
+debug/stk_compression_API.o: compression/stk_compression_API.cpp compression/stk_compression_API.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		file\eno\stk_file_lzst_header.h \
-		compression\stk_compression_lzstv4.h \
-		compression\stk_compression_bwt_matrix2.h \
-		compression\stk_compression_huff.h \
-		compression\stk_compression_ari.h \
-		cipher\stk_cipher_mtf.h \
-		io\stk_console.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
-		debug\stk_pch.obj
+		file/eno/stk_file_lzst_header.h \
+		compression/stk_compression_lzstv4.h \
+		compression/stk_compression_bwt_matrix2.h \
+		compression/stk_compression_huff.h \
+		compression/stk_compression_ari.h \
+		cipher/stk_cipher_mtf.h \
+		io/stk_console.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_compression_API.o compression\stk_compression_API.cpp
 
-debug\stk_database_items.obj: database\stk_database_items.cpp io\stk_console.h \
+debug/stk_database_items.o: database/stk_database_items.cpp io/stk_console.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
-		database\stk_database.h \
-		database\stk_database_alias.h \
-		text\stk_cstr_class.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
+		database/stk_database.h \
+		database/stk_database_alias.h \
+		text/stk_cstr_class.h \
 		stk_vector.h \
-		database\stk_database_items.h \
-		debug\stk_pch.obj
+		database/stk_database_items.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_database_items.o database\stk_database_items.cpp
 
-debug\stk_database.obj: database\stk_database.cpp io\stk_console.h \
+debug/stk_database.o: database/stk_database.cpp io/stk_console.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
-		database\stk_database.h \
-		database\stk_database_alias.h \
-		text\stk_cstr_class.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
+		database/stk_database.h \
+		database/stk_database_alias.h \
+		text/stk_cstr_class.h \
 		stk_vector.h \
-		database\stk_database_items.h \
-		debug\stk_pch.obj
+		database/stk_database_items.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_database.o database\stk_database.cpp
 
-debug\stk_file_mime_types.obj: file\stk_file_mime_types.cpp mem\stk_mem.h \
+debug/stk_file_mime_types.o: file/stk_file_mime_types.cpp mem/stk_mem.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_utils.h \
-		file\stk_file_mime_types.h \
-		debug\stk_pch.obj
+		text/stk_cstr_utils.h \
+		file/stk_file_mime_types.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_file_mime_types.o file\stk_file_mime_types.cpp
 
-debug\stk_file_ini.obj: file\ini\stk_file_ini.cpp file\ini\stk_file_ini.h \
+debug/stk_file_ini.o: file/ini/stk_file_ini.cpp file/ini/stk_file_ini.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_file_ini.o file\ini\stk_file_ini.cpp
 
-debug\stk_file_lzst_header.obj: file\eno\stk_file_lzst_header.cpp file\eno\stk_file_lzst_header.h \
+debug/stk_file_lzst_header.o: file/eno/stk_file_lzst_header.cpp file/eno/stk_file_lzst_header.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		debug\stk_pch.obj
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_file_lzst_header.o file\eno\stk_file_lzst_header.cpp
 
-debug\stk_json.obj: file\json\stk_json.cpp file\json\stk_json.h \
-		mem\stk_mem.h \
+debug/stk_json.o: file/json/stk_json.cpp file/json/stk_json.h \
+		mem/stk_mem.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		debug\stk_pch.obj
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_json.o file\json\stk_json.cpp
 
-debug\miniz.obj: file\zip\miniz.c 
-
-debug\stk_file_vfs.obj: file\vfs\stk_file_vfs.cpp file\vfs\stk_file_vfs.h \
+debug/stk_file_vfs.o: file/vfs/stk_file_vfs.cpp file/vfs/stk_file_vfs.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		debug\stk_pch.obj
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_file_vfs.o file\vfs\stk_file_vfs.cpp
 
-debug\stk_hash_crc32.obj: hash\stk_hash_crc32.cpp text\stk_cstr_utils.h \
+debug/stk_xml.o: file/xml/stk_xml.cpp cipher/stk_base64.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		sthreads\stk_threads.h \
-		cpu\stk_cpu.h \
-		hash\stk_hash_crc32.h \
-		debug\stk_pch.obj
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_xml.o file\xml\stk_xml.cpp
 
-debug\stk_hash_md5.obj: hash\stk_hash_md5.cpp mem\stk_mem.h \
+debug/miniz.o: file/zip/miniz.c debug/stk_MAIN.h.gch/c
+	$(CC) -c -include debug\stk_MAIN.h $(CFLAGS) $(INCPATH) -o debug\miniz.o file\zip\miniz.c
+
+debug/stk_hash_crc32.o: hash/stk_hash_crc32.cpp text/stk_cstr_utils.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		hash\stk_hash_md5.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		sthreads/stk_threads.h \
+		cpu/stk_cpu.h \
+		hash/stk_hash_crc32.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_hash_crc32.o hash\stk_hash_crc32.cpp
 
-debug\stk_hash_password.obj: hash\stk_hash_password.cpp text\stk_cstr_utils.h \
+debug/stk_hash_md5.o: hash/stk_hash_md5.cpp mem/stk_mem.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		hash\stk_hash_password.h \
-		debug\stk_pch.obj
+		hash/stk_hash_md5.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_hash_md5.o hash\stk_hash_md5.cpp
 
-debug\stk_hash_ssc1.obj: hash\stk_hash_ssc1.cpp text\stk_cstr_utils.h \
+debug/stk_hash_password.o: hash/stk_hash_password.cpp text/stk_cstr_utils.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		io\stk_console.h \
-		hash\stk_hash_ssc1.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		hash/stk_hash_password.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_hash_password.o hash\stk_hash_password.cpp
 
-debug\md5.obj: hash\md5\md5.c hash\md5\md5.h
-
-debug\hmac_sha1.obj: hash\sha1\hmac_sha1.c hash\sha1\hmac_sha1.h \
-		hash\sha1\sha.h
-
-debug\sha1.obj: hash\sha1\sha1.c hash\sha1\sha.h
-
-debug\stk_file_io.obj: io\stk_file_io.cpp io\stk_file_io.h \
+debug/stk_hash_ssc1.o: hash/stk_hash_ssc1.cpp text/stk_cstr_utils.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		io/stk_console.h \
+		hash/stk_hash_ssc1.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_hash_ssc1.o hash\stk_hash_ssc1.cpp
 
-debug\stk_rs232.obj: io\stk_rs232.cpp text\stk_cstr_utils.h \
-		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
-		stk_MAIN.h \
-		mem\stk_mem.h \
-		io\stk_console.h \
-		io\stk_rs232.h \
-		debug\stk_pch.obj
+debug/md5.o: hash/md5/md5.c hash/md5/md5.h \
+		debug/stk_MAIN.h.gch/c
+	$(CC) -c -include debug\stk_MAIN.h $(CFLAGS) $(INCPATH) -o debug\md5.o hash\md5\md5.c
 
-debug\stk_console.obj: io\stk_console.cpp text\stk_cstr_utils.h \
-		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
-		stk_MAIN.h \
-		mem\stk_mem.h \
-		sthreads\stk_threads.h \
-		cpu\stk_cpu.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+debug/hmac_sha1.o: hash/sha1/hmac_sha1.c hash/sha1/hmac_sha1.h \
+		hash/sha1/sha.h \
+		debug/stk_MAIN.h.gch/c
+	$(CC) -c -include debug\stk_MAIN.h $(CFLAGS) $(INCPATH) -o debug\hmac_sha1.o hash\sha1\hmac_sha1.c
 
-debug\stk_kop32_class.obj: koperek\stk_kop32_class.cpp koperek\stk_kop32_class.h \
+debug/sha1.o: hash/sha1/sha1.c hash/sha1/sha.h \
+		debug/stk_MAIN.h.gch/c
+	$(CC) -c -include debug\stk_MAIN.h $(CFLAGS) $(INCPATH) -o debug\sha1.o hash\sha1\sha1.c
+
+debug/stk_file_io.o: io/stk_file_io.cpp io/stk_file_io.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_stack.h \
-		text\stk_cstr_class.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
+		mem/stk_mem.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_file_io.o io\stk_file_io.cpp
+
+debug/stk_rs232.o: io/stk_rs232.cpp text/stk_cstr_utils.h \
+		stk_main.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
+		stk_MAIN.h \
+		mem/stk_mem.h \
+		io/stk_console.h \
+		io/stk_rs232.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_rs232.o io\stk_rs232.cpp
+
+debug/stk_console.o: io/stk_console.cpp text/stk_cstr_utils.h \
+		stk_main.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
+		stk_MAIN.h \
+		mem/stk_mem.h \
+		sthreads/stk_threads.h \
+		cpu/stk_cpu.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_console.o io\stk_console.cpp
+
+debug/stk_kop32_class.o: koperek/stk_kop32_class.cpp koperek/stk_kop32_class.h \
+		stk_main.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
+		stk_MAIN.h \
+		text/stk_cstr_stack.h \
+		text/stk_cstr_class.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
 		stk_vector.h \
-		io\stk_console.h \
-		database\stk_database.h \
-		database\stk_database_alias.h \
-		database\stk_database_items.h \
-		koperek\stk_kop32_options.h \
-		hash\stk_hash_password.h \
-		file\eno\stk_file_lzst_header.h \
-		koperek\stk_kop32_list.h \
-		koperek\stk_kop32_controler.h \
-		koperek\stk_kop32_search.h \
-		io\stk_file_io.h \
-		compression\stk_compression_API.h \
-		cipher\stk_cipher_API.h \
-		hash\stk_hash_API.h \
-		hash\stk_hash_CRC32.h \
-		hash\stk_hash_md5.h \
-		hash\stk_hash_ssc1.h \
-		pharser\stk_pharse_command_line.h \
-		sthreads\stk_threads.h \
-		cpu\stk_cpu.h \
-		debug\stk_pch.obj
+		io/stk_console.h \
+		database/stk_database.h \
+		database/stk_database_alias.h \
+		database/stk_database_items.h \
+		koperek/stk_kop32_options.h \
+		hash/stk_hash_password.h \
+		file/eno/stk_file_lzst_header.h \
+		koperek/stk_kop32_list.h \
+		koperek/stk_kop32_controler.h \
+		koperek/stk_kop32_search.h \
+		io/stk_file_io.h \
+		compression/stk_compression_API.h \
+		cipher/stk_cipher_API.h \
+		hash/stk_hash_API.h \
+		hash/stk_hash_CRC32.h \
+		hash/stk_hash_md5.h \
+		hash/stk_hash_ssc1.h \
+		pharser/stk_pharse_command_line.h \
+		sthreads/stk_threads.h \
+		cpu/stk_cpu.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_kop32_class.o koperek\stk_kop32_class.cpp
 
-debug\stk_kop32_controler.obj: koperek\stk_kop32_controler.cpp koperek\stk_kop32_controler.h \
+debug/stk_kop32_controler.o: koperek/stk_kop32_controler.cpp koperek/stk_kop32_controler.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		koperek\stk_kop32_class.h \
-		text\stk_cstr_stack.h \
-		text\stk_cstr_class.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
+		koperek/stk_kop32_class.h \
+		text/stk_cstr_stack.h \
+		text/stk_cstr_class.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
 		stk_vector.h \
-		io\stk_console.h \
-		database\stk_database.h \
-		database\stk_database_alias.h \
-		database\stk_database_items.h \
-		koperek\stk_kop32_options.h \
-		hash\stk_hash_password.h \
-		file\eno\stk_file_lzst_header.h \
-		koperek\stk_kop32_list.h \
-		koperek\stk_kop32_search.h \
-		io\stk_file_io.h \
-		debug\stk_pch.obj
+		io/stk_console.h \
+		database/stk_database.h \
+		database/stk_database_alias.h \
+		database/stk_database_items.h \
+		koperek/stk_kop32_options.h \
+		hash/stk_hash_password.h \
+		file/eno/stk_file_lzst_header.h \
+		koperek/stk_kop32_list.h \
+		koperek/stk_kop32_search.h \
+		io/stk_file_io.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_kop32_controler.o koperek\stk_kop32_controler.cpp
 
-debug\stk_kop32_search.obj: koperek\stk_kop32_search.cpp koperek\stk_kop32_search.h \
+debug/stk_kop32_search.o: koperek/stk_kop32_search.cpp koperek/stk_kop32_search.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		koperek\stk_kop32_controler.h \
-		database\stk_database.h \
-		database\stk_database_alias.h \
-		text\stk_cstr_class.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
+		koperek/stk_kop32_controler.h \
+		database/stk_database.h \
+		database/stk_database_alias.h \
+		text/stk_cstr_class.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
 		stk_vector.h \
-		io\stk_console.h \
-		database\stk_database_items.h \
-		io\stk_file_io.h \
-		koperek\stk_kop32_class.h \
-		text\stk_cstr_stack.h \
-		koperek\stk_kop32_options.h \
-		hash\stk_hash_password.h \
-		file\eno\stk_file_lzst_header.h \
-		koperek\stk_kop32_list.h \
-		debug\stk_pch.obj
+		io/stk_console.h \
+		database/stk_database_items.h \
+		io/stk_file_io.h \
+		koperek/stk_kop32_class.h \
+		text/stk_cstr_stack.h \
+		koperek/stk_kop32_options.h \
+		hash/stk_hash_password.h \
+		file/eno/stk_file_lzst_header.h \
+		koperek/stk_kop32_list.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_kop32_search.o koperek\stk_kop32_search.cpp
 
-debug\stk_kop32_socket_server.obj: koperek\stk_kop32_socket_server.cpp koperek\stk_kop32_socket_server.h \
+debug/stk_kop32_socket_server.o: koperek/stk_kop32_socket_server.cpp koperek/stk_kop32_socket_server.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		koperek\stk_kop32_API.h \
-		koperek\stk_kop32_class.h \
-		text\stk_cstr_stack.h \
-		text\stk_cstr_class.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
+		koperek/stk_kop32_API.h \
+		koperek/stk_kop32_class.h \
+		text/stk_cstr_stack.h \
+		text/stk_cstr_class.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
 		stk_vector.h \
-		io\stk_console.h \
-		database\stk_database.h \
-		database\stk_database_alias.h \
-		database\stk_database_items.h \
-		koperek\stk_kop32_options.h \
-		hash\stk_hash_password.h \
-		file\eno\stk_file_lzst_header.h \
-		koperek\stk_kop32_list.h \
-		koperek\stk_kop32_controler.h \
-		koperek\stk_kop32_search.h \
-		io\stk_file_io.h \
-		sockets\stk_sockets.h \
-		debug\stk_pch.obj
+		io/stk_console.h \
+		database/stk_database.h \
+		database/stk_database_alias.h \
+		database/stk_database_items.h \
+		koperek/stk_kop32_options.h \
+		hash/stk_hash_password.h \
+		file/eno/stk_file_lzst_header.h \
+		koperek/stk_kop32_list.h \
+		koperek/stk_kop32_controler.h \
+		koperek/stk_kop32_search.h \
+		io/stk_file_io.h \
+		sockets/stk_sockets.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_kop32_socket_server.o koperek\stk_kop32_socket_server.cpp
 
-debug\stk_kop32_API.obj: koperek\stk_kop32_API.cpp koperek\stk_kop32_API.h \
+debug/stk_kop32_API.o: koperek/stk_kop32_API.cpp koperek/stk_kop32_API.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		koperek\stk_kop32_class.h \
-		text\stk_cstr_stack.h \
-		text\stk_cstr_class.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
+		koperek/stk_kop32_class.h \
+		text/stk_cstr_stack.h \
+		text/stk_cstr_class.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
 		stk_vector.h \
-		io\stk_console.h \
-		database\stk_database.h \
-		database\stk_database_alias.h \
-		database\stk_database_items.h \
-		koperek\stk_kop32_options.h \
-		hash\stk_hash_password.h \
-		file\eno\stk_file_lzst_header.h \
-		koperek\stk_kop32_list.h \
-		koperek\stk_kop32_controler.h \
-		koperek\stk_kop32_search.h \
-		io\stk_file_io.h \
-		process_journal\stk_journal.h \
-		hash\stk_hash_ssc1.h \
-		debug\stk_pch.obj
+		io/stk_console.h \
+		database/stk_database.h \
+		database/stk_database_alias.h \
+		database/stk_database_items.h \
+		koperek/stk_kop32_options.h \
+		hash/stk_hash_password.h \
+		file/eno/stk_file_lzst_header.h \
+		koperek/stk_kop32_list.h \
+		koperek/stk_kop32_controler.h \
+		koperek/stk_kop32_search.h \
+		io/stk_file_io.h \
+		process_journal/stk_journal.h \
+		hash/stk_hash_ssc1.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_kop32_API.o koperek\stk_kop32_API.cpp
 
-debug\stk_mem.obj: mem\stk_mem.cpp cpu\stk_cpu.h \
+debug/stk_mem.o: mem/stk_mem.cpp cpu/stk_cpu.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		sthreads\stk_threads.h \
-		io\stk_console.h \
+		sthreads/stk_threads.h \
+		io/stk_console.h \
 		stk_vector.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_mem.o mem\stk_mem.cpp
 
-debug\stk_journal.obj: process_journal\stk_journal.cpp process_journal\stk_journal.h \
+debug/stk_journal.o: process_journal/stk_journal.cpp process_journal/stk_journal.h \
 		stk_MAIN.h \
-		time\stk_time.h \
+		time/stk_time.h \
 		stk_main.h \
-		stasm\stk_stasm.h \
-		io\stk_console.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
-		sthreads\stk_threads.h \
-		cpu\stk_cpu.h \
-		debug\stk_pch.obj
+		stasm/stk_stasm.h \
+		io/stk_console.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
+		sthreads/stk_threads.h \
+		cpu/stk_cpu.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_journal.o process_journal\stk_journal.cpp
 
-debug\stk_pharse_command_line.obj: pharser\stk_pharse_command_line.cpp pharser\stk_pharse_command_line.h \
+debug/stk_pharse_command_line.o: pharser/stk_pharse_command_line.cpp pharser/stk_pharse_command_line.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_pharse_command_line.o pharser\stk_pharse_command_line.cpp
 
-debug\stk_pharse_math.obj: pharser\stk_pharse_math.cpp pharser\stk_pharse_math.h \
+debug/stk_pharse_math.o: pharser/stk_pharse_math.cpp pharser/stk_pharse_math.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_pharse_math.o pharser\stk_pharse_math.cpp
 
-debug\stk_sockets.obj: sockets\stk_sockets.cpp sockets\stk_sockets.h \
+debug/stk_sockets.o: sockets/stk_sockets.cpp sockets/stk_sockets.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
-		file\stk_file_mime_types.h \
-		io\stk_console.h \
-		sthreads\stk_threads.h \
-		cpu\stk_cpu.h \
-		debug\stk_pch.obj
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
+		file/stk_file_mime_types.h \
+		io/stk_console.h \
+		sthreads/stk_threads.h \
+		cpu/stk_cpu.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_sockets.o sockets\stk_sockets.cpp
 
-debug\stk_threads.obj: sthreads\stk_threads.cpp sthreads\stk_threads.h \
-		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+debug/stk_stasm.o: stasm/stk_stasm.cpp stasm/stk_stasm.h \
 		stk_MAIN.h \
-		cpu\stk_cpu.h \
-		mem\stk_mem.h \
-		debug\stk_pch.obj
+		time/stk_time.h \
+		stk_main.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_stasm.o stasm\stk_stasm.cpp
 
-debug\stk_cstr_utils.obj: text\stk_cstr_utils.cpp text\stk_cstr_utils.h \
+debug/stk_threads.o: sthreads/stk_threads.cpp sthreads/stk_threads.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		cpu/stk_cpu.h \
+		mem/stk_mem.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_threads.o sthreads\stk_threads.cpp
 
-debug\stk_time.obj: time\stk_time.cpp time\stk_time.h \
+debug/stk_cstr_utils.o: text/stk_cstr_utils.cpp text/stk_cstr_utils.h \
 		stk_main.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		mem\stk_mem.h \
-		text\stk_cstr_utils.h \
-		debug\stk_pch.obj
+		mem/stk_mem.h \
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_cstr_utils.o text\stk_cstr_utils.cpp
 
-debug\stk_cstr_class.obj: text\stk_cstr_class.cpp text\stk_cstr_class.h \
+debug/stk_time.o: time/stk_time.cpp time/stk_time.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
+		mem/stk_mem.h \
+		text/stk_cstr_utils.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_time.o time\stk_time.cpp
+
+debug/stk_cstr_class.o: text/stk_cstr_class.cpp text/stk_cstr_class.h \
+		stk_main.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
+		stk_MAIN.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
 		stk_vector.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_cstr_class.o text\stk_cstr_class.cpp
 
-debug\stk_cstr_stack.obj: text\stk_cstr_stack.cpp text\stk_cstr_stack.h \
+debug/stk_cstr_stack.o: text/stk_cstr_stack.cpp text/stk_cstr_stack.h \
 		stk_main.h \
-		time\stk_time.h \
-		stasm\stk_stasm.h \
+		time/stk_time.h \
+		stasm/stk_stasm.h \
 		stk_MAIN.h \
-		text\stk_cstr_class.h \
-		text\stk_cstr_utils.h \
-		mem\stk_mem.h \
+		text/stk_cstr_class.h \
+		text/stk_cstr_utils.h \
+		mem/stk_mem.h \
 		stk_vector.h \
-		io\stk_console.h \
-		debug\stk_pch.obj
+		io/stk_console.h \
+		debug/stk_MAIN.h.gch/c++
+	$(CXX) -c -include debug\stk_MAIN.h $(CXXFLAGS) $(INCPATH) -o debug\stk_cstr_stack.o text\stk_cstr_stack.cpp
 
 ####### Install
 

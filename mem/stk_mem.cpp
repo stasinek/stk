@@ -54,6 +54,14 @@ size_t __stdcall stk::mem::size(const void *a_ptr)
 }
 //---------------------------------------------------------------------------
 
+STK_IMPEXP void *__stdcall stk::mem::calloc(char a_size, const size_t a_count)
+{
+register size_t cnt = a_size * a_count;
+register void *ptr = alloc(cnt);
+return  set(ptr,0,cnt);
+}
+//---------------------------------------------------------------------------
+
 STK_IMPEXP void *__stdcall stk::mem::alloc(const size_t a_count)
 {
     register size_t l_n_tailed_count;
@@ -83,6 +91,16 @@ ATOMIC_UNLOCK(1)
     __builtin_prefetch(r,1,3);
     return r;
 }
+//---------------------------------------------------------------------------
+/*
+STK_IMPEXP void *__stdcall stk::mem::crealloc(char a_znak, void *a_dst_ptr, const size_t a_count)
+{
+size_t s = size(a_dst_ptr);
+void  *ptr = realloc(a_dst_ptr,a_count);
+if (s < a_count) return set(ptr,a_znak,a_count-s);
+else return ptr;
+}
+*/
 //---------------------------------------------------------------------------
 
 void *__stdcall stk::mem::realloc(void *a_dst_ptr,const size_t a_count)

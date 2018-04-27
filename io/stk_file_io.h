@@ -4,7 +4,9 @@
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 namespace stk { namespace file {
+#endif
 //---------------------------------------------------------------------------
 #define SSC_CHECKSUM_SIG "SSC1"
 typedef struct {
@@ -42,7 +44,7 @@ typedef struct {
 } __file_open_struct;
 //---------------------------------------------------------------------------
 
-extern "C" STK_IMPEXP HANDLE WINAPI create(
+extern STK_IMPEXP HANDLE WINAPI create(
 		   LPCSTR lpFileName,
 		   DWORD dwDesiredAccess,
 		   DWORD dwShareMode,
@@ -53,7 +55,7 @@ extern "C" STK_IMPEXP HANDLE WINAPI create(
 );
 //---------------------------------------------------------------------------
 
-extern "C" STK_IMPEXP BOOL WINAPI write(
+extern STK_IMPEXP BOOL WINAPI write(
 				   HANDLE hFile,
 				   LPCVOID lpBuffer,
 				  DWORD nNumberOfBytesToWrite,
@@ -62,7 +64,7 @@ extern "C" STK_IMPEXP BOOL WINAPI write(
 );
 //---------------------------------------------------------------------------
 
-extern "C" STK_IMPEXP BOOL WINAPI read(
+extern STK_IMPEXP BOOL WINAPI read(
 				   HANDLE hFile,
 				  LPVOID lpBuffer,
 				   DWORD nNumberOfBytesToRead,
@@ -71,7 +73,7 @@ extern "C" STK_IMPEXP BOOL WINAPI read(
 );
 //---------------------------------------------------------------------------
 
-extern "C" STK_IMPEXP HANDLE WINAPI create_map(
+extern STK_IMPEXP HANDLE WINAPI create_map(
 				HANDLE hFile,
 		LPSECURITY_ATTRIBUTES lpAttributes,
 				DWORD flProtect,
@@ -81,7 +83,7 @@ extern "C" STK_IMPEXP HANDLE WINAPI create_map(
 );
 //---------------------------------------------------------------------------
 
-extern "C" STK_IMPEXP LPVOID WINAPI create_map_view(
+extern STK_IMPEXP LPVOID WINAPI create_map_view(
    HANDLE hFileMappingObject,
 		DWORD dwDesiredAccess,
 		DWORD dwFileOffsetHigh,
@@ -90,27 +92,29 @@ extern "C" STK_IMPEXP LPVOID WINAPI create_map_view(
 );
 //---------------------------------------------------------------------------
 
-extern "C" STK_IMPEXP BOOL WINAPI flush_map_view(
+extern STK_IMPEXP BOOL WINAPI flush_map_view(
 		LPCVOID lpBaseAddress,
 		SIZE_T dwNumberOfBytesToFlush
 );
 //---------------------------------------------------------------------------
 
-extern "C" STK_IMPEXP BOOL WINAPI close_map_view(
+extern STK_IMPEXP BOOL WINAPI close_map_view(
 		LPCVOID lpBaseAddress
 );
 //---------------------------------------------------------------------------
 
-extern "C" STK_IMPEXP BOOL WINAPI close(
+extern STK_IMPEXP BOOL WINAPI close(
 		HANDLE hObject
 );
 //---------------------------------------------------------------------------
 
-extern "C" STK_IMPEXP BOOL WINAPI close_map(
+extern STK_IMPEXP BOOL WINAPI close_map(
 		HANDLE hObject
 );
 //---------------------------------------------------------------------------
-}}
+#ifdef __cplusplus
+}}//namespace stk,file
+#endif
 //---------------------------------------------------------------------------
 #endif
 //---------------------------------------------------------------------------

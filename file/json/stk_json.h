@@ -31,14 +31,17 @@
 #define __stk_JSON_H
 //---------------------------------------------------------------------------
 #include "../../mem/stk_mem.h"
+#include <stdlib.h>
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk {
 #endif
 //---------------------------------------------------------------------------
 #ifndef __json_char_t
-   #define __json_char_t char
+#define __json_char_t char
 #endif
+#define json_error_max 128
+#define json_enable_comments  0x01
 //---------------------------------------------------------------------------
 #ifndef __json_int_t
    #if !defined(_MSC_VER) && !defined(__BORLANDC__)
@@ -48,8 +51,6 @@ namespace stk {
       #define __json_int_t __int64
    #endif
 #endif
-//---------------------------------------------------------------------------
-#include <stdlib.h>
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 extern "C"
@@ -66,8 +67,6 @@ typedef struct __json_settings {
    void * user_data;  /* will be passed to mem_alloc and mem_free */
    size_t value_extra;  /* how much extra space to allocate for values? */
 } json_settings;
-//---------------------------------------------------------------------------
-#define json_enable_comments  0x01
 //---------------------------------------------------------------------------
 typedef enum {
    json_none,
@@ -211,11 +210,10 @@ typedef struct json_value {
    #endif
 } json_value;
 //---------------------------------------------------------------------------
-json_value* json_parse (const __json_char_t * json, size_t length);
-#define json_error_max 128
-json_value* json_parse_ex (json_settings * settings, const __json_char_t * json, size_t length, char * error);
-void json_value_free (json_value *);
-void json_value_free_ex (json_settings * settings, json_value *);
+json_value* json_parse(const __json_char_t * json, size_t length);
+json_value* json_parse_ex(json_settings * settings, const __json_char_t * json, size_t length, char * error);
+void json_value_free(json_value *);
+void json_value_free_ex(json_settings * settings, json_value *);
 /* Not usually necessary, unless you used a custom mem_alloc and now want to
  * use a custom mem_free. */
 //---------------------------------------------------------------------------

@@ -1,9 +1,9 @@
-DEFINES += STK_BUILD_LIBRARY
-contains(DEFINES, STK_BUILD_LIBRARY) {
+DEFINES += BUILD_STK_LIBRARY
+contains(DEFINES, BUILD_STK_LIBRARY) {
 TARGET = stk
 TEMPLATE = lib
-CONFIG += windows shared dll # lib_bundle
 CONFIG -= app_bundle
+CONFIG += windows shared dll # lib_bundle
 }
 else {
 TARGET  = stk_tester
@@ -20,8 +20,11 @@ CONFIG -= qt
 #CONFIG += exceptions
 #CONFIG += c++11
 # -------------------------------------------------------------
-LIBS += -lkernel32 -lgdi32 -lshell32 -luser32 -lcomctl32 -luserenv
-LIBS += -lws2_32 -lwsock32 -lwinmm -limm32 -lole32 -loleaut32
+LIBS += -lkernel32
+LIBS += -lgdi32 -lcomctl32 -lshell32 -luser32 -luserenv
+LIBS += -lws2_32 -lwsock32
+LIBS += -lwinmm -limm32
+LIBS += -lole32 -loleaut32
 #LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
 #LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
 # -------------------------------------------------------------
@@ -48,17 +51,11 @@ LIBS += -lws2_32 -lwsock32 -lwinmm -limm32 -lole32 -loleaut32
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
 QMAKE_CXXFLAGS += -fno-use-linker-plugin
-QMAKE_CFLAGS   += -fno-use-linker-plugin
 QMAKE_CXXFLAGS += -Wno-write-strings -Wno-multichar
-QMAKE_CFLAGS   += -Wno-write-strings -Wno-multichar
 QMAKE_CXXFLAGS += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
-QMAKE_CFLAGS   += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
 QMAKE_CXXFLAGS += -Wno-unused-but-set-variable
-QMAKE_CFLAGS   += -Wno-unused-but-set-variable
 QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow -Wall
-QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CXXFLAGS += -Wunknown-pragmas
-QMAKE_CFLAGS   += -Wunknown-pragmas
 #QMAKE_CXXFLAGS -= -pipe
 #QMAKE_CXXFLAGS += -save-temps
 QMAKE_CXXFLAGS += -fverbose-asm
@@ -73,6 +70,14 @@ QMAKE_CXXFLAGS += -funroll-loops
 QMAKE_CXXFLAGS += -m32 -mfpmath=sse -flto -O3
 QMAKE_CXXFLAGS += -mpreferred-stack-boundary=8
 QMAKE_CXXFLAGS += -mmmx -msse -msse2
+
+QMAKE_CFLAGS   += -fno-use-linker-plugin
+QMAKE_CFLAGS   += -Wno-write-strings -Wno-multichar
+QMAKE_CFLAGS   += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
+QMAKE_CFLAGS   += -Wno-unused-but-set-variable
+QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
+QMAKE_CFLAGS   += -Wunknown-pragmas
+
 }
 # -------------------------------------------------------------
 # VCC
@@ -86,17 +91,11 @@ QMAKE_CXXFLAGS += /W1
 # -------------------------------------------------------------
 contains (QMAKE_COMPILER_DEFINES,__clang__) {
 QMAKE_CXX = clang++
-QMAKE_CC  = clang
 QMAKE_CXXFLAGS += -Wno-write-strings -Wno-multichar
-QMAKE_CFLAGS   += -Wno-write-strings -Wno-multichar
 QMAKE_CXXFLAGS += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
-QMAKE_CFLAGS   += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
 QMAKE_CXXFLAGS += -Wno-unused-but-set-variable
-QMAKE_CFLAGS   += -Wno-unused-but-set-variable
 QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow -Wall
-QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CXXFLAGS += -Wunknown-pragmas
-QMAKE_CFLAGS   += -Wunknown-pragmas
 #QMAKE_CXXFLAGS -= -pipe
 #QMAKE_CXXFLAGS += -save-temps
 QMAKE_CXXFLAGS += -fverbose-asm
@@ -114,6 +113,14 @@ QMAKE_CXXFLAGS += -mmmx -msse -msse2
 QMAKE_CXXFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 QMAKE_CXXFLAGS -= -fno-keep-inline-dllexport
 QMAKE_CXXFLAGS -= -finline-small-functions
+
+QMAKE_CC  = clang
+QMAKE_CFLAGS   += -Wno-write-strings -Wno-multichar
+QMAKE_CFLAGS   += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
+QMAKE_CFLAGS   += -Wno-unused-but-set-variable
+QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
+QMAKE_CFLAGS   += -Wunknown-pragmas
+
 QMAKE_LFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 QMAKE_LFLAGS -= -mthreads
 }
@@ -127,7 +134,6 @@ SOURCES += \
     stk_vector.cpp \
     stk_variable.cpp \
     stk_map.cpp \
-    stasm/stk_stasm.cpp \
     cpu/stk_cpu.cpp \
 #    cipher/rsa/stk_rsa_single.c \
 #    cipher/rsa/stk_rsa.c \
@@ -147,9 +153,9 @@ SOURCES += \
     file/ini/stk_file_ini.cpp \
     file/eno/stk_file_lzst_header.cpp \
     file/json/stk_json.cpp \
-    file/zip/miniz.c \
     file/vfs/stk_file_vfs.cpp \
-#    file/xml/XML.CPP \
+    file/xml/stk_xml.cpp \
+    file/zip/miniz.c \
     hash/stk_hash_crc32.cpp \
     hash/stk_hash_md5.cpp \
     hash/stk_hash_password.cpp \
@@ -170,6 +176,7 @@ SOURCES += \
     pharser/stk_pharse_command_line.cpp \
     pharser/stk_pharse_math.cpp \
     sockets/stk_sockets.cpp \
+    stasm/stk_stasm.cpp \
     sthreads/stk_threads.cpp \
     text/stk_cstr_utils.cpp \
     time/stk_time.cpp \
@@ -200,6 +207,8 @@ HEADERS += \
     stk_vector.h \
     3D/stk_3Dvector.h \
     cpu/stk_cpu.h \
+    cipher/stk_cipher_API.h \
+    cipher/stk_cipher_mtf.h \
     cipher/stk_cipher_pair.h \
     cipher/stk_base64.h \
     cipher/FastAESinC/stk_aes.h \
@@ -217,13 +226,9 @@ HEADERS += \
     file/stk_file_mime_types.h \
     file/ini/stk_file_ini.h \
     file/eno/stk_file_lzst_header.h \
-    file/vfs/stk_file_vfs.h \
     file/json/stk_json.h \
-#    file/xml/XML.H \
-    incbin/stk_incbin.h \
-    io/stk_file_io.h \
-    io/stk_rs232.h \
-    io/stk_console.h \
+    file/vfs/stk_file_vfs.h \
+    file/xml/stk_xml.h \
     hash/stk_hash_ssc1.h \
     hash/stk_hash_crc32.h \
     hash/stk_hash_md5.h \
@@ -231,8 +236,10 @@ HEADERS += \
     hash/md5/md5.h \
     hash/sha1/hmac_sha1.h \
     hash/sha1/sha.h \
-    cipher/stk_cipher_mtf.h \
-    cipher/stk_cipher_API.h \
+    incbin/stk_incbin.h \
+    io/stk_file_io.h \
+    io/stk_rs232.h \
+    io/stk_console.h \
     koperek/stk_kop32_class.h \
     koperek/stk_kop32_search.cpp \
     koperek/stk_kop32_controler.h \
@@ -270,9 +277,11 @@ LIBS += QtCored.a
 }
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, _MSC_VER) {
-LIBS += winmm.lib wsock32.lib ws2_32.lib crypt32.lib
 LIBS += vcompd.lib
-LIBS += gdi32.lib user32.lib shell32.lib ole32.lib oleaut32.lib kernel32.lib uuid.lib
+LIBS += kernel32.lib shell32.lib gdi32.lib
+LIBS += winmm.lib wsock32.lib ws2_32.lib crypt32.lib
+LIBS += user32.lib uuid.lib
+LIBS += ole32.lib oleaut32.lib
 LIBS -= gomp.lib
 contains(DEFINES, QT_GUI) {
 LIBS += QtCored.lib

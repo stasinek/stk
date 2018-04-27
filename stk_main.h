@@ -1,15 +1,26 @@
 #ifndef __stk_main_h
 #define __stk_main_h
+//---------------------------------------------------------------------------
+// C++ Compiler name "redefinition"
+//---------------------------------------------------------------------------
+#if defined(__clang__)
+#define __CLANG__ __clang__
+#elif defined(_MSC_VER)
+#define __MSVC__ _MSC_VER
+#endif
+//---------------------------------------------------------------------------
+#ifdef __MSVC__
 #pragma once
-//
-// IMPORT/EXPORT define what're You doing LINK LIBRARY or STK_BUILD_LIBRARY
-//
-#ifdef STK_BUILD_LIBRARY
+#endif
+//---------------------------------------------------------------------------
+// IMPORT/EXPORT define what're You doing LINK LIBRARY or BUILD_STK_LIBRARY
+//---------------------------------------------------------------------------
+#ifdef BUILD_STK_LIBRARY
 	#define STK_IMPEXP __EXPORT
-#else /* !STK_BUILD_LIBRARY */
+#else /* !BUILD_STK_LIBRARY */
 	#define STK_IMPEXP __IMPORT
-#endif /* STK_BUILD_LIBRARY */
-
+#endif /* BUILD_STK_LIBRARY */
+//---------------------------------------------------------------------------
 #if !defined(__EXPORT)
 #define __EXPORT __declspec(dllexport)
 #define STK_EXPORT __EXPORT
@@ -18,24 +29,13 @@
 #define __IMPORT __declspec(dllimport)
 #define STK_IMPORT __IMPORT
 #endif /* __IMPORT */
-//
-// C++ Compiler name "redefinition"
-//
-#if       defined(__clang__)
-#define __CLANG__ __clang__
-#elif    defined(_MSC_VER)
-#define __MSVC__ _MSC_VER
-#endif
+//---------------------------------------------------------------------------
 //
 // C++ WARNINGS/ERRORS
 //
+//---------------------------------------------------------------------------
 #if defined(__GNUC__) && !defined(__CLANG__)
 #pragma GCC diagnostic ignored "-Waggregate-return"
-#pragma GCC diagnostic ignored "-Wno-write-strings"
-#pragma GCC diagnostic ignored "-Wno-unused-variable"
-#pragma GCC diagnostic ignored "-Wno-unused-parameter"
-#pragma GCC diagnostic ignored "-Wno-unused-value"
-#pragma GCC diagnostic ignored "-Wno-unused-label"
 #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 6)
 #pragma GCC diagnostic push
 #endif // > gcc 4.6
@@ -57,8 +57,8 @@
 #if __GNUC__ > 5 || (__GNUC__ == 5 && __GNUC_MINOR__ > 3)
 #pragma GCC diagnostic ignored "-Wuseless-cast"
 #endif // > gcc 5.3
-#endif
-
+#endif //__GNUC__
+//---------------------------------------------------------------------------
 #if defined(__CLANG__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunknown-pragmas"
@@ -71,7 +71,7 @@
 #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
 #pragma clang diagnostic ignored "-Wc++11-long-long"
 #endif // __CLANG__
-
+//---------------------------------------------------------------------------
 #if defined(__MSVC__)
 #pragma warning(push)
 #pragma warning(disable : 4244) // Conversion from __int64 to double potential data lost
