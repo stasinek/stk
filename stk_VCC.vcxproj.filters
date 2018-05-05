@@ -205,10 +205,10 @@
     <ClInclude Include="stasm\stk_stasm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sthreads\stk_idle.h">
+    <ClInclude Include="threads\stk_idle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sthreads\stk_threads.h">
+    <ClInclude Include="threads\stk_threads.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="text\stk_cstr.h">
@@ -390,10 +390,10 @@
     <ClCompile Include="stasm\stk_stasm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sthreads\stk_idle.cpp">
+    <ClCompile Include="threads\stk_idle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sthreads\stk_threads.cpp">
+    <ClCompile Include="threads\stk_threads.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="text\stk_cstr_class.cpp">

@@ -10,7 +10,7 @@
 #include "./../file/eno/stk_file_lzst_header.h"
 #include "./../io/stk_file_io.h"
 #include "./../io/stk_console.h"
-#include "./../sthreads/stk_threads.h"
+#include "./../threads/stk_threads.h"
 //---------------------------------------------------------------------------
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"

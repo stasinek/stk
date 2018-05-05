@@ -20,8 +20,6 @@ USEUNIT("pharser\stk_pharse_command_line.cpp");
 USEUNIT("pharser\stk_pharse_math.cpp");
 USEUNIT("process_journal\stk_journal.cpp");
 USEUNIT("stasm\stk_stasm.cpp");
-USEUNIT("sthreads\stk_idle.cpp");
-USEUNIT("sthreads\stk_threads.cpp");
 USEUNIT("time\stk_time.cpp");
 USEUNIT("text\stk_cstr_class.cpp");
 USEUNIT("text\stk_cstr_stack.cpp");
@@ -53,6 +51,8 @@ USEUNIT("cipher\stk_cipher_pair.cpp");
 USEUNIT("cipher\stk_cipher_test.cpp");
 USEUNIT("3D\stk_3Dvector.cpp");
 USEUNIT("compression\stk_compression_bwt_matrix2.cpp");
+USEUNIT("threads\stk_idle.cpp");
+USEUNIT("threads\stk_threads.cpp");
 //---------------------------------------------------------------------------
 This file is used by the project manager only and should be treated like the project file
 DllEntryPoint

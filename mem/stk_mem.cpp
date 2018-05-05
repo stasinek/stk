@@ -2,7 +2,7 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "./../cpu/stk_cpu.h"
-#include "./../sthreads/stk_threads.h"
+#include "./../threads/stk_threads.h"
 #include "./../io/stk_console.h"
 #include "./../stk_vector.h"
 #include "stk_mem.h"

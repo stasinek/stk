@@ -7,7 +7,7 @@
 #include "./text/stk_cstr_utils.h"
 #include "./mem/stk_mem.h"
 #include "./cpu/stk_cpu.h"
-#include "./sthreads/stk_threads.h"
+#include "./threads/stk_threads.h"
 #include "./time/stk_time.h"
 #include "./koperek/stk_kop32_API.h"
 #include "./koperek/stk_kop32_class.h"

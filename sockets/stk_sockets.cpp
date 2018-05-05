@@ -6,7 +6,7 @@
 #include "./../file/stk_file_mime_types.h"
 #include "./../io/stk_console.h"
 #include "./../mem/stk_mem.h"
-#include "./../sthreads/stk_threads.h"
+#include "./../threads/stk_threads.h"
 #include "./../time/stk_time.h"
 //---------------------------------------------------------------------------
 #ifdef __MSVC__

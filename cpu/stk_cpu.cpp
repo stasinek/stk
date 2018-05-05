@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
-#include "./../sthreads/stk_threads.h"
+#include "./../threads/stk_threads.h"
 #include "./../stasm/stk_stasm.h"
 #include "./../time/stk_time.h"
 #include "./../io/stk_console.h"

@@ -6,7 +6,7 @@
 #include "./../io/stk_console.h"
 #include "./../text/stk_cstr_utils.h"
 #include "./../mem/stk_mem.h"
-#include "./../sthreads/stk_threads.h"
+#include "./../threads/stk_threads.h"
 //---------------------------------------------------------------------------
 #include <time.h>
 #include  <dos.h>

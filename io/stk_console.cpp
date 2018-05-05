@@ -2,7 +2,7 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include "./../text/stk_cstr_utils.h"
-#include "./../sthreads/stk_threads.h"
+#include "./../threads/stk_threads.h"
 #include "stk_console.h"
 //---------------------------------------------------------------------------
 static int s_print_buffer_size = 0; static char *s_print_buffer = NULL;

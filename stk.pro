@@ -169,7 +169,7 @@ SOURCES += \
     pharser/stk_pharse_math.cpp \
     sockets/stk_sockets.cpp \
     stasm/stk_stasm.cpp \
-    sthreads/stk_threads.cpp \
+    threads/stk_threads.cpp \
     text/stk_cstr_utils.cpp \
     time/stk_time.cpp \
     text/stk_cstr_class.cpp \
@@ -244,7 +244,7 @@ HEADERS += \
     process_journal/stk_journal.h \
     sockets/stk_sockets.h \
     stasm/stk_stasm.h \
-    sthreads/stk_threads.h \
+    threads/stk_threads.h \
     time/stk_time.h \
     text/stk_cstr_class.h \
     text/stk_cstr_stack.h \

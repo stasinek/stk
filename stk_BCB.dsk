@@ -11,80 +11,81 @@ File_8=SourceModule,'D:\My Documents\My Projects\aktualne prc++\OBSOLETE_BCB\PRO
 File_9=SourceModule,'D:\My Documents\My Projects\aktualne prc++\OBSOLETE_BCB\PROGS\Panel\Unit2.cpp',0,1,1,1,1,0,0
 
 [Modules]
-Module0=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_BCB.cpp
-Module1=D:\stasiek\My Projects\X86_LIBRARIES\STK\time\stk_time.h
-Module2=D:\stasiek\My Projects\X86_LIBRARIES\STK\KOPEREK\stk_kop32_controler.h
-Module3=D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_threads.cpp
-Module4=D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_threads.h
-Module5=D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_idle.h
-Module6=D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_idle.cpp
-Module7=D:\stasiek\My Projects\X86_LIBRARIES\STK\stasm\stk_stasm.h
-Module8=D:\stasiek\My Projects\X86_LIBRARIES\STK\stasm\stk_stasm.cpp
-Module9=D:\stasiek\My Projects\X86_LIBRARIES\STK\process_journal\stk_journal.h
-Module10=D:\stasiek\My Projects\X86_LIBRARIES\STK\process_journal\stk_journal.cpp
-Module11=D:\stasiek\My Projects\X86_LIBRARIES\STK\pharser\stk_pharse_math.h
-Module12=D:\stasiek\My Projects\X86_LIBRARIES\STK\pharser\stk_pharse_math.cpp
-Module13=D:\stasiek\My Projects\X86_LIBRARIES\STK\pharser\stk_pharse_command_line.h
-Module14=D:\stasiek\My Projects\X86_LIBRARIES\STK\pharser\stk_pharse_command_line.cpp
-Module15=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_qsort.h
-Module16=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_qsort.cpp
-Module17=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_mem.h
-Module18=C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_stddef.h
-Module19=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_mem.cpp
-Module20=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_test.h
-Module21=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_test.cpp
-Module22=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_API.cpp
-Module23=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_console_API.cpp
-Module24=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_class.h
-Module25=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_class.cpp
-Module26=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_bwt_matrix2.cpp
-Module27=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_console.h
-Module28=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_console.cpp
-Module29=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_file_io.h
-Module30=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_utils.h
-Module31=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_utils.cpp
-Module32=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_MAIN.h
-Module33=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_file_io.cpp
-Module34=D:\stasiek\My Projects\X86_LIBRARIES\STK\3D\stk_3Dvector.cpp
-Module35=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_test.cpp
-Module36=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_pair.cpp
-Module37=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_mtf.cpp
-Module38=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_API.cpp
-Module39=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_base64.cpp
-Module40=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_static_huff.cpp
-Module41=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_lzstv4.cpp
-Module42=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_huff.cpp
-Module43=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_ari.cpp
-Module44=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_API.cpp
-Module45=D:\stasiek\My Projects\X86_LIBRARIES\STK\cpu\stk_cpu.cpp
-Module46=D:\stasiek\My Projects\X86_LIBRARIES\STK\database\stk_database_items.cpp
-Module47=D:\stasiek\My Projects\X86_LIBRARIES\STK\database\stk_database.cpp
-Module48=D:\stasiek\My Projects\X86_LIBRARIES\STK\incbin\stk_incbin.cpp
-Module49=D:\stasiek\My Projects\X86_LIBRARIES\STK\file\ini\stk_file_ini.cpp
-Module50=D:\stasiek\My Projects\X86_LIBRARIES\STK\file\eno\stk_file_lzst_header.cpp
-Module51=D:\stasiek\My Projects\X86_LIBRARIES\STK\file\stk_file_mime_types.cpp
-Module52=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_ssc1.cpp
-Module53=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_password.cpp
-Module54=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_md5.cpp
-Module55=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_crc32.cpp
-Module56=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_API.cpp
-Module57=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_rs232.cpp
-Module58=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_stack.cpp
-Module59=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_class.cpp
-Module60=D:\stasiek\My Projects\X86_LIBRARIES\STK\time\stk_time.cpp
-Module61=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_bsearch.cpp
-Module62=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_socket_server.cpp
-Module63=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_search.cpp
-Module64=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_controler.cpp
-Module65=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_vector.cpp
-Module66=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_variable.cpp
-Module67=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_set.cpp
-Module68=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_map.cpp
-Module69=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_list.cpp
-Module70=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_hash_chain.cpp
-Module71=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_bitset.cpp
-Count=72
+Module0=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_utils.cpp
+Module1=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_BCB.cpp
+Module2=D:\stasiek\My Projects\X86_LIBRARIES\STK\time\stk_time.h
+Module3=D:\stasiek\My Projects\X86_LIBRARIES\STK\KOPEREK\stk_kop32_controler.h
+Module4=D:\stasiek\My Projects\X86_LIBRARIES\STK\stasm\stk_stasm.h
+Module5=D:\stasiek\My Projects\X86_LIBRARIES\STK\stasm\stk_stasm.cpp
+Module6=D:\stasiek\My Projects\X86_LIBRARIES\STK\process_journal\stk_journal.h
+Module7=D:\stasiek\My Projects\X86_LIBRARIES\STK\process_journal\stk_journal.cpp
+Module8=D:\stasiek\My Projects\X86_LIBRARIES\STK\pharser\stk_pharse_math.h
+Module9=D:\stasiek\My Projects\X86_LIBRARIES\STK\pharser\stk_pharse_math.cpp
+Module10=D:\stasiek\My Projects\X86_LIBRARIES\STK\pharser\stk_pharse_command_line.h
+Module11=D:\stasiek\My Projects\X86_LIBRARIES\STK\pharser\stk_pharse_command_line.cpp
+Module12=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_qsort.h
+Module13=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_qsort.cpp
+Module14=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_mem.h
+Module15=C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_stddef.h
+Module16=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_mem.cpp
+Module17=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_test.h
+Module18=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_test.cpp
+Module19=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_API.cpp
+Module20=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_console_API.cpp
+Module21=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_class.h
+Module22=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_class.cpp
+Module23=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_bwt_matrix2.cpp
+Module24=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_console.h
+Module25=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_console.cpp
+Module26=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_file_io.h
+Module27=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_utils.h
+Module28=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_MAIN.h
+Module29=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_file_io.cpp
+Module30=D:\stasiek\My Projects\X86_LIBRARIES\STK\3D\stk_3Dvector.cpp
+Module31=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_test.cpp
+Module32=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_pair.cpp
+Module33=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_mtf.cpp
+Module34=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_API.cpp
+Module35=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_base64.cpp
+Module36=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_static_huff.cpp
+Module37=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_lzstv4.cpp
+Module38=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_huff.cpp
+Module39=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_ari.cpp
+Module40=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_API.cpp
+Module41=D:\stasiek\My Projects\X86_LIBRARIES\STK\cpu\stk_cpu.cpp
+Module42=D:\stasiek\My Projects\X86_LIBRARIES\STK\database\stk_database_items.cpp
+Module43=D:\stasiek\My Projects\X86_LIBRARIES\STK\database\stk_database.cpp
+Module44=D:\stasiek\My Projects\X86_LIBRARIES\STK\incbin\stk_incbin.cpp
+Module45=D:\stasiek\My Projects\X86_LIBRARIES\STK\file\ini\stk_file_ini.cpp
+Module46=D:\stasiek\My Projects\X86_LIBRARIES\STK\file\eno\stk_file_lzst_header.cpp
+Module47=D:\stasiek\My Projects\X86_LIBRARIES\STK\file\stk_file_mime_types.cpp
+Module48=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_ssc1.cpp
+Module49=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_password.cpp
+Module50=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_md5.cpp
+Module51=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_crc32.cpp
+Module52=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_API.cpp
+Module53=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_rs232.cpp
+Module54=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_stack.cpp
+Module55=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_class.cpp
+Module56=D:\stasiek\My Projects\X86_LIBRARIES\STK\time\stk_time.cpp
+Module57=D:\stasiek\My Projects\X86_LIBRARIES\STK\mem\stk_bsearch.cpp
+Module58=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_socket_server.cpp
+Module59=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_search.cpp
+Module60=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_controler.cpp
+Module61=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_vector.cpp
+Module62=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_variable.cpp
+Module63=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_set.cpp
+Module64=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_map.cpp
+Module65=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_list.cpp
+Module66=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_hash_chain.cpp
+Module67=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_bitset.cpp
+Count=68
 EditWindowCount=1
+
+[D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_utils.cpp]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
 
 [D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_BCB.cpp]
 ModuleType=SourceModule
@@ -97,26 +98,6 @@ FormState=0
 FormOnTop=0
 
 [D:\stasiek\My Projects\X86_LIBRARIES\STK\KOPEREK\stk_kop32_controler.h]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_threads.cpp]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_threads.h]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_idle.h]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_idle.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -237,11 +218,6 @@ FormState=0
 FormOnTop=0
 
 [D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_utils.h]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
-
-[D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_utils.cpp]
 ModuleType=SourceModule
 FormState=0
 FormOnTop=0
@@ -446,7 +422,7 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[D:\stasiek\My Projects\OBSOLETE\PACKAGES\ProjectGroup1.bpg]
+[D:\stasiek\My Projects\X86_LIBRARIES\STK\ProjectGroup1.bpg]
 FormState=0
 FormOnTop=0
 
@@ -455,7 +431,7 @@ FormState=0
 FormOnTop=0
 
 [EditWindow0]
-ViewCount=72
+ViewCount=68
 CurrentView=23
 View0=0
 View1=1
@@ -525,10 +501,6 @@ View64=64
 View65=65
 View66=66
 View67=67
-View68=68
-View69=69
-View70=70
-View71=71
 MessageView=MessageView@EditWindow0
 Create=1
 Visible=1
@@ -669,384 +641,356 @@ TopLine=833
 LeftCol=1
 
 [View17]
-Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_idle.cpp
-CursorX=117
-CursorY=3
-TopLine=1
-LeftCol=1
-
-[View18]
-Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_idle.h
-CursorX=97
-CursorY=3
-TopLine=1
-LeftCol=1
-
-[View19]
-Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_threads.cpp
-CursorX=29
-CursorY=175
-TopLine=159
-LeftCol=1
-
-[View20]
-Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\sthreads\stk_threads.h
-CursorX=1
-CursorY=13
-TopLine=1
-LeftCol=1
-
-[View21]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\KOPEREK\stk_kop32_controler.h
 CursorX=7
 CursorY=9
 TopLine=1
 LeftCol=1
 
-[View22]
+[View18]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\time\stk_time.h
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View23]
+[View19]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_BCB.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View24]
+[View20]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\time\stk_time.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View25]
+[View21]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_class.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View26]
+[View22]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_stack.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View27]
+[View23]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_utils.cpp
 CursorX=92
 CursorY=109
 TopLine=104
 LeftCol=1
 
-[View28]
+[View24]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_rs232.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View29]
+[View25]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_file_io.cpp
 CursorX=57
 CursorY=4
 TopLine=1
 LeftCol=1
 
-[View30]
+[View26]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_file_io.h
 CursorX=1
 CursorY=117
 TopLine=102
 LeftCol=1
 
-[View31]
+[View27]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_console.cpp
 CursorX=36
 CursorY=8
 TopLine=1
 LeftCol=1
 
-[View32]
+[View28]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\io\stk_console.h
 CursorX=1
 CursorY=73
 TopLine=54
 LeftCol=1
 
-[View33]
+[View29]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_bwt_matrix2.cpp
 CursorX=20
 CursorY=18
 TopLine=1
 LeftCol=1
 
-[View34]
+[View30]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\incbin\stk_incbin.cpp
 CursorX=8
 CursorY=28
 TopLine=9
 LeftCol=1
 
-[View35]
+[View31]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\database\stk_database.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View36]
+[View32]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\database\stk_database_items.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View37]
+[View33]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\cpu\stk_cpu.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View38]
+[View34]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_API.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View39]
+[View35]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_ari.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View40]
+[View36]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_huff.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View41]
+[View37]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_lzstv4.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View42]
+[View38]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\compression\stk_compression_static_huff.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View43]
+[View39]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_base64.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View44]
+[View40]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_API.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View45]
+[View41]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_mtf.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View46]
+[View42]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_pair.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View47]
+[View43]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\cipher\stk_cipher_test.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View48]
+[View44]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\3D\stk_3Dvector.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View49]
+[View45]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_API.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View50]
+[View46]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_crc32.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View51]
+[View47]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_md5.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View52]
+[View48]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_password.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View53]
+[View49]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\hash\stk_hash_ssc1.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View54]
+[View50]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\file\stk_file_mime_types.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View55]
+[View51]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\file\eno\stk_file_lzst_header.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View56]
+[View52]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\file\ini\stk_file_ini.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View57]
+[View53]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_API.cpp
 CursorX=154
 CursorY=7
 TopLine=39
 LeftCol=1
 
-[View58]
+[View54]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_class.cpp
 CursorX=113
 CursorY=4
 TopLine=1
 LeftCol=1
 
-[View59]
+[View55]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_class.h
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View60]
+[View56]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\koperek\stk_kop32_console_API.cpp
 CursorX=21
 CursorY=33
 TopLine=31
 LeftCol=1
 
-[View61]
+[View57]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_bitset.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View62]
+[View58]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_hash_chain.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View63]
+[View59]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_list.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View64]
+[View60]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_map.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View65]
+[View61]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_set.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View66]
+[View62]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_test.cpp
 CursorX=55
 CursorY=13
 TopLine=1
 LeftCol=1
 
-[View67]
+[View63]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_test.h
 CursorX=12
 CursorY=29
 TopLine=1
 LeftCol=1
 
-[View68]
+[View64]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_MAIN.h
 CursorX=13
 CursorY=19
 TopLine=1
 LeftCol=1
 
-[View69]
+[View65]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\text\stk_cstr_utils.h
 CursorX=78
 CursorY=20
 TopLine=1
 LeftCol=1
 
-[View70]
+[View66]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_variable.cpp
 CursorX=1
 CursorY=1
 TopLine=1
 LeftCol=1
 
-[View71]
+[View67]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\stk_vector.cpp
 CursorX=1
 CursorY=1

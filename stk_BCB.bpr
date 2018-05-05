@@ -11,20 +11,21 @@
       koperek\stk_kop32_socket_server.obj mem\stk_bsearch.obj mem\stk_mem.obj 
       mem\stk_qsort.obj pharser\stk_pharse_command_line.obj 
       pharser\stk_pharse_math.obj process_journal\stk_journal.obj 
-      stasm\stk_stasm.obj sthreads\stk_idle.obj sthreads\stk_threads.obj 
-      time\stk_time.obj text\stk_cstr_class.obj text\stk_cstr_stack.obj 
-      text\stk_cstr_utils.obj io\stk_rs232.obj io\stk_file_io.obj 
-      io\stk_console.obj incbin\stk_incbin.obj hash\stk_hash_API.obj 
-      hash\stk_hash_crc32.obj hash\stk_hash_md5.obj hash\stk_hash_password.obj 
-      hash\stk_hash_ssc1.obj file\stk_file_mime_types.obj 
-      file\eno\stk_file_lzst_header.obj file\ini\stk_file_ini.obj 
-      database\stk_database.obj database\stk_database_items.obj cpu\stk_cpu.obj 
+      stasm\stk_stasm.obj time\stk_time.obj text\stk_cstr_class.obj 
+      text\stk_cstr_stack.obj text\stk_cstr_utils.obj io\stk_rs232.obj 
+      io\stk_file_io.obj io\stk_console.obj incbin\stk_incbin.obj 
+      hash\stk_hash_API.obj hash\stk_hash_crc32.obj hash\stk_hash_md5.obj 
+      hash\stk_hash_password.obj hash\stk_hash_ssc1.obj 
+      file\stk_file_mime_types.obj file\eno\stk_file_lzst_header.obj 
+      file\ini\stk_file_ini.obj database\stk_database.obj 
+      database\stk_database_items.obj cpu\stk_cpu.obj 
       compression\stk_compression_API.obj compression\stk_compression_ari.obj 
       compression\stk_compression_huff.obj 
       compression\stk_compression_lzstv4.obj compression\stk_compression_static_huff.obj 
       cipher\stk_base64.obj cipher\stk_cipher_API.obj cipher\stk_cipher_mtf.obj 
       cipher\stk_cipher_pair.obj cipher\stk_cipher_test.obj 3D\stk_3Dvector.obj 
-      compression\stk_compression_bwt_matrix2.obj"/>
+      compression\stk_compression_bwt_matrix2.obj threads\stk_idle.obj 
+      threads\stk_threads.obj"/>
     <RESFILES value="stk_BCB.res"/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES)"/>
@@ -33,7 +34,7 @@
     <SPARELIBS value=""/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi dclocx50.bpi bcb2kaxserver50.bpi 
       dclusr50.bpi REGULAREXPRESSIONCOMPONENTBCB5.bpi"/>
-    <PATHCPP value=".;koperek;mem;pharser;process_journal;stasm;sthreads;time;text;io;incbin;hash;file;file\eno;file\ini;database;cpu;compression;cipher;3D"/>
+    <PATHCPP value=".;koperek;mem;pharser;process_journal;stasm;time;text;io;incbin;hash;file;file\eno;file\ini;database;cpu;compression;cipher;3D;threads"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -43,17 +44,17 @@
     <USERDEFINES value="_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE;BUILD_STK_LIBRARY"/>
     <SYSDEFINES value="NO_STRICT;_NO_VCL"/>
     <MAINSOURCE value="stk_BCB.bpf"/>
-    <INCLUDEPATH value="3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;sthreads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;sthreads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="sthreads;threads;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="sthreads;threads;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
   </MACROS>
   <OPTIONS>
     <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl50.csm -Hc -Q -w- -Vx -Ve -xf -xp -VC -Vd -VF -C 
       -ff -X- -ps -a8 -6 -b -d -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-$YD -$W -$T -$R -$Q -$B -v -JPHNE -M"/>
+    <PFLAGS value="-$YD -$W -$R -$Q -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zd"/>
-    <LFLAGS value="-D&quot;&quot; -Rr -Gz -aa -Tpd -GD -s -Gn -Gi -v"/>
+    <LFLAGS value="-D&quot;&quot; -Rr -Gz -aa -Tpd -GD -x -Gi -v"/>
   </OPTIONS>
   <LINKER>
     <ALLOBJ value="c0d32.obj $(OBJFILES)"/>
@@ -89,19 +90,21 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=5
-Item0=3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;sthreads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
-Item1=3D\;io\;3D;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io;text;time;sthreads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
-Item2=3D\;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io\;text;time;sthreads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
-Item3=$(BCB)\include;$(BCB)\include\vcl
-Item4=$(BCB)\include;$(BCB)\include\vcl;D:\stasiek\My Projects\x86_libraries\STK
+Count=6
+Item0=sthreads;threads;3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
+Item1=3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
+Item2=3D\;io\;3D;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
+Item3=3D\;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io\;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
+Item4=$(BCB)\include;$(BCB)\include\vcl
+Item5=$(BCB)\include;$(BCB)\include\vcl;D:\stasiek\My Projects\x86_libraries\STK
 
 [HistoryLists\hlLibraryPath]
-Count=4
-Item0=3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;sthreads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
-Item1=3D\;io\;3D;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io;text;time;sthreads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
-Item2=3D\;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io\;text;time;sthreads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
-Item3=$(BCB)\lib\obj;$(BCB)\lib
+Count=5
+Item0=sthreads;threads;3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
+Item1=3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
+Item2=3D\;io\;3D;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
+Item3=3D\;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io\;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
+Item4=$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
