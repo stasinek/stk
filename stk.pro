@@ -1,32 +1,25 @@
 DEFINES += BUILD_STK_LIBRARY
+
 contains(DEFINES, BUILD_STK_LIBRARY) {
-TARGET = stk
-TEMPLATE = lib
-CONFIG -= app_bundle
-CONFIG += windows shared dll # lib_bundle
+    TARGET = stk
+    TEMPLATE = lib
+    CONFIG -= app_bundle
+    CONFIG += windows shared dll lib_bundle
 }
 else {
-TARGET  = stk_tester
-TEMPLATE = app
-CONFIG += console
-CONFIG += app_bundle
+    TARGET  = stk_tester
+    TEMPLATE = app
+    CONFIG += console
+    CONFIG += app_bundle
 }
-QT -= core gui
 CONFIG -= qt
+QT -= core gui
+CONFIG += precompile_header
 #CONFIG -= static
-#CONFIG += precompile_header
-#CONFIG += debug
 #CONFIG += warn_on
+#CONFIG += warn_off
 #CONFIG += exceptions
 #CONFIG += c++11
-# -------------------------------------------------------------
-LIBS += -lkernel32
-LIBS += -lgdi32 -lcomctl32 -lshell32 -luser32 -luserenv
-LIBS += -lws2_32 -lwsock32
-LIBS += -lwinmm -limm32
-LIBS += -lole32 -loleaut32
-#LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
-#LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
 # -------------------------------------------------------------
 # External ASM .s compiler
 # -------------------------------------------------------------
@@ -126,7 +119,6 @@ QMAKE_LFLAGS -= -mthreads
 }
 # -------------------------------------------------------------
 SOURCES += \
-#    kop32_main.cpp \
     stk_set.cpp \
     stk_test.cpp \
     stk_hash_chain.cpp \
@@ -187,17 +179,16 @@ contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
 SOURCES+=
     cpu/stk_cpu_gas.s
 }
-contains(QMAKE_COMPILER_DEFINES, __clang__) {
+contains(QMAKE_COMPILER_DEFINES, _MSC_VER) {
 SOURCES+=
     cpu/stk_cpu_gas.s
 }
-contains(QMAKE_COMPILER_DEFINES, _MSC_VER) {
+contains(QMAKE_COMPILER_DEFINES, __clang__) {
 SOURCES+=
     cpu/stk_cpu_gas.s
 }
 # -------------------------------------------------------------
 PRECOMPILED_HEADER += stk_MAIN.h
-#PRECOMPILED_HEADER += ../STK/kop32_main.h
 HEADERS += \
     stk_hash_chain.h \
     stk_list.h \
@@ -262,6 +253,7 @@ HEADERS += \
     stk_test.h
 # -------------------------------------------------------------
 contains(DEFINES, QT_GUI) {
+CONFIG +=
 SOURCES +=
 HEADERS +=
 FORMS +=
@@ -269,11 +261,18 @@ RESOURCES +=
 }
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
-LIBS += -lwinmm -lgomp
-LIBS += -lwsock32 -lws2_32 -lcrypt32 -lgdi32 -luser32 -lshell32
-contains(DEFINES, QT_GUI) {
-LIBS += QtCored.a
-}
+LIBS += -lkernel32
+LIBS += -lgdi32 -lcomctl32 -lshell32 -luser32 -luserenv
+LIBS += -lws2_32 -lwsock32
+LIBS += -lwinmm -limm32
+LIBS += -lole32 -loleaut32
+LIBS += -lcrypt32
+LIBS += -lgomp
+#LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
+#LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
+    contains(DEFINES, QT_GUI) {
+    LIBS += QtCored.a
+    }
 }
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, _MSC_VER) {
@@ -283,16 +282,16 @@ LIBS += winmm.lib wsock32.lib ws2_32.lib crypt32.lib
 LIBS += user32.lib uuid.lib
 LIBS += ole32.lib oleaut32.lib
 LIBS -= gomp.lib
-contains(DEFINES, QT_GUI) {
-LIBS += QtCored.lib
-}
+    contains(DEFINES, QT_GUI) {
+    LIBS += QtCored.lib
+    }
 }
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __clang__) {
 LIBS +=
-contains(DEFINES, QT_GUI) {
-LIBS += QtCored.lib
-}
+    contains(DEFINES, QT_GUI) {
+    LIBS += QtCored.lib
+    }
 }
 # -------------------------------------------------------------
 OTHER_FILES +=

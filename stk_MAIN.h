@@ -15,12 +15,6 @@
 //---------------------------------------------------------------------------
 // IMPORT/EXPORT define what're You doing LINK LIBRARY or BUILD_STK_LIBRARY
 //---------------------------------------------------------------------------
-#ifdef BUILD_STK_LIBRARY
-	#define STK_IMPEXP __EXPORT
-#else /* !BUILD_STK_LIBRARY */
-	#define STK_IMPEXP __IMPORT
-#endif /* BUILD_STK_LIBRARY */
-//---------------------------------------------------------------------------
 #if !defined(__EXPORT)
 #define __EXPORT __declspec(dllexport)
 #define STK_EXPORT __EXPORT
@@ -29,6 +23,12 @@
 #define __IMPORT __declspec(dllimport)
 #define STK_IMPORT __IMPORT
 #endif /* __IMPORT */
+//---------------------------------------------------------------------------
+#ifdef BUILD_STK_LIBRARY
+	#define STK_IMPEXP __EXPORT
+#else /* !BUILD_STK_LIBRARY */
+	#define STK_IMPEXP __IMPORT
+#endif /* BUILD_STK_LIBRARY */
 //---------------------------------------------------------------------------
 //
 // C++ WARNINGS/ERRORS
