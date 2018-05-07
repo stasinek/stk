@@ -8,12 +8,9 @@
 //---------------------------------------------------------------------------
 // COMPILERS
 //---------------------------------------------------------------------------
-
 #if __GNUC__ > 4 && __GNUC_MINOR__ > 7
 #pragma warning (disable:4996)
-#endif
-
-#ifdef __WATCOMC__
+#elif __WATCOMC__
 #define _atoi64(x) atoll(x)
 #define CALG_AES_256 0x00006610
 #define MS_ENH_RSA_AES_PROV L"Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
@@ -25,21 +22,18 @@
 //---------------------------------------------------------------------------
 
 #ifndef __SYMBIAN32__
-#ifndef LINUX
+    #ifndef LINUX
+    #endif
 #endif
-#endif
-
 #ifdef LINUX
-#define strcmpi(a,b) strcmp(a,b)
+    #define strcmpi(a,b) strcmp(a,b)
 #endif
-
 #ifdef WINCE
-#define strcmpi(a,b) strcmp(a,b)
+    #define strcmpi(a,b) strcmp(a,b)
 #endif
-
-#ifdef _WIN32
-#define XML_USE_CRYPT
-#include "wincrypt.h"
+#ifdef WIN32
+    #define XML_USE_CRYPT
+    #include "wincrypt.h"
 #endif
 //---------------------------------------------------------------------------
 // LIBC DEFS / IN PLACE DEFS
@@ -50,23 +44,18 @@
 #ifndef XML_MAX_INIT_CHILDREN
 #define XML_MAX_INIT_CHILDREN 20
 #endif
-
 #ifndef XML_MAX_INIT_VARIABLES
 #define XML_MAX_INIT_VARIABLES 20
 #endif
-
 #ifndef XML_MAX_INIT_CONTENTS
 #define XML_MAX_INIT_CONTENTS 4
 #endif
-
 #ifndef XML_MAX_INIT_COMMENTS
 #define XML_MAX_INIT_COMMENTS 10
 #endif
-
 #ifndef XML_MAX_INIT_CDATAS
 #define XML_MAX_INIT_CDATAS 10
 #endif
-
 #ifndef XML_MAX_INIT_COMMENTS_HEADER
 #define XML_MAX_INIT_COMMENTS_HEADER 5
 #endif
@@ -78,27 +67,21 @@
 #define MATCH_TRUE 1
 #define MATCH_FALSE 0
 #define MATCH_ABORT -1
-
 #define NEGATE_CLASS
 #define OPTIMIZE_JUST_STAR
 #undef MATCH_TAR_PATTERN
-
 // OPTI
-
 /* Extra definitions
-
 XML_OPTIONAL_WIN32
 XML_OPTIONAL_IMPORTDB
 XML_OPTIONAL_IMPORTRKEY
 */
-
 // MIME Code
 // Code from Yonat
 // http://ootips.org/yonat/4dev/
 #ifndef MIME_CODES_H
 #define MIME_CODES_H
 #include "./../../cipher/stk_base64.h"
-
 /******************************************************************************
  * Quoted-Printable
  ******************************************************************************/
@@ -4570,8 +4553,6 @@ void XMLElement :: Copy()
 // JSON experimental
 //---------------------------------------------------------------------------
 #ifdef XML_USE_STL
-#else
-
 void strreplace(std::string& str,const std::string& from,const std::string& to)
         {
         if (from.empty())
@@ -4583,6 +4564,7 @@ void strreplace(std::string& str,const std::string& from,const std::string& to)
                 start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
                 }
         }
+#else
 //---------------------------------------------------------------------------
 
 void XML :: JsonParser(XMLElement* root,const char* txt)
@@ -9778,7 +9760,7 @@ int XMLSetString(const char* section,const char* Tattr,char*out,const char* xml,
 
 #ifndef __SYMBIAN32__
 #ifdef _WIN32
-int XMLSetString(const char* section,const char* Tattr,wchar_t*out,const char* xml,XML* af)
+int XMLSetStringW(const char* section,const char* Tattr,wchar_t*out,const char* xml,XML* af)
         {
         // Convert to UTF-8
         size_t S = wcslen(out);

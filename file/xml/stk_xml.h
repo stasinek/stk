@@ -1,52 +1,11 @@
 #ifndef __stk_xml_H
 #define __stk_xml_H
-
-#include "../../mem/stk_mem.h"
-
+//---------------------------------------------------------------------------
 // xml.h
-// v.0x170
-// revision 30 - 05 - 2014
-#define XML_VERSION 0x170
-#define XML_VERSION_REVISION_DATE "30-05-2014"
-
-// #define ALLOW_SINGLE_QUOTE_VARIABLES
-// Define the above tow allow var='x' instead of var="x"
-
-#ifdef __unix
-#define LINUX
-#endif
-
-#ifdef __APPLE__
-#define LINUX
-#endif
-
-#ifdef __BORLANDC__
-#pragma warn -pck
-#endif
-
-#ifdef _MSC_VER
-#define _USERENTRY __cdecl
-#endif
-
-#ifdef LINUX
-#define _USERENTRY
-#define __cdecl
-#endif
-
-#ifdef __WATCOMC__
-#define _USERENTRY
-#endif
-
-#ifdef __GNUC__
-#define _USERENTRY
-//#define strcpy_s(a,b,c) strcpy(a,c)
-//#define strncat_s(a,b,c,d) strncat(a,c,d)
-#endif
-
-#define CRYPT_OID_INFO_HAS_EXTRA_FIELDS
-#define XML_OPTIONAL_MIME
-
-
+// v.0x185
+// revision 03 - 05 - 2018
+//---------------------------------------------------------------------------
+#include "../../mem/stk_mem.h"
 // ANSI includes
 #include <stdlib.h>
 #include <stdio.h>
@@ -54,56 +13,70 @@
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
-
-// Always this, from now on
-#define XML_USE_STL_EXTENSIONS
-
-#ifdef LINUX
-#include <wchar.h>
-#endif
-
-#ifdef _WIN32
-#ifndef __SYMBIAN32__
-
-
-#include <windows.h>
-#include <wincrypt.h>
-#include <commctrl.h>
-#include <wininet.h>
-#include <tchar.h>
-
-#if WINVER >= 0x601
+#define XML_VERSION 0x170
+#define XML_VERSION_REVISION_DATE "30-05-2014"
 #define CRYPT_OID_INFO_HAS_EXTRA_FIELDS
-#include <cryptxml.h>
+#define XML_OPTIONAL_MIME
+// Always this, from now on
+// #define XML_USE_STL
+// #define ALLOW_SINGLE_QUOTE_VARIABLES
+// Define the above tow allow var='x' instead of var="x"
+//---------------------------------------------------------------------------
+#ifdef LINUX
+    #include <wchar.h>
 #endif
-
+#ifdef _WIN32
+    #ifndef __SYMBIAN32__
+    #include <windows.h>
+    #include <wincrypt.h>
+    #include <commctrl.h>
+    #include <wininet.h>
+    #include <tchar.h>
+    #if WINVER >= 0x601
+        #define CRYPT_OID_INFO_HAS_EXTRA_FIELDS
+        #include <cryptxml.h>
+    #endif
+    #endif
 #endif
-#endif
-
 #ifdef __SYMBIAN32__
-#define _USERENTRY
-#define strcmpi strcmp
-#include <unistd.h>
+    #define _USERENTRY
+    #define strcmpi strcmp
+    #include <unistd.h>
 #endif
-
-
+#ifdef __unix
+    #define LINUX
+#endif
+#ifdef __APPLE__
+    #define LINUX
+#endif
+#ifdef LINUX
+    #define _USERENTRY
+    #define __cdecl
+#endif
+//---------------------------------------------------------------------------
+#ifdef __BORLANDC__
+    #pragma warn -pck
+#endif
+#ifdef _MSC_VER
+    #define _USERENTRY __cdecl
+#endif
+#ifdef __WATCOMC__
+    #define _USERENTRY
+#endif
+#ifdef __GNUC__
+    #define _USERENTRY
+    //#define strcpy_s(a,b,c) strcpy(a,c)
+    //#define strncat_s(a,b,c,d) strncat(a,c,d)
+#endif
+//---------------------------------------------------------------------------
 #ifdef XML_USE_STL
-#include <vector>
-#include <string>
-#include <algorithm>
-using namespace std;
-#define XML_USE_STL_EXTENSIONS
+    #define XML_USE_STL_EXTENSIONS
+    #include <vector>
+    #include <string>
+    #include <algorithm>
+    using namespace std;
 #endif
-
-#ifdef XML_USE_STL_EXTENSIONS
-#ifndef XML_USE_STL
-#include <vector>
-#include <string>
-#include <algorithm>
-using namespace std;
-#endif
-#endif
-
+//---------------------------------------------------------------------------
 #ifndef _Z_H
 #define _Z_H
 // Z template class
@@ -182,8 +155,9 @@ template <class T>class Z
 
     };
 #endif // Z_H
-
+//---------------------------------------------------------------------------
 // Binary Data Container
+//---------------------------------------------------------------------------
 class BDC
     {
     public:
@@ -206,7 +180,6 @@ class BDC
         void Resize(unsigned long long news);
         void AddResize(unsigned long long More);
     };
-
 /*
     Binary Exporting Stuff
 
@@ -217,7 +190,7 @@ class BDC
     <...>               : Data
 
 */
-
+//---------------------------------------------------------------------------
 #pragma pack(push,8)
 struct XMLBINARYHEADER
     {
@@ -227,14 +200,14 @@ struct XMLBINARYHEADER
     int s;
     };
 #pragma pack(pop)
-
+//---------------------------------------------------------------------------
 #ifdef XML_USE_NAMESPACE
 namespace XMLPP
     {
 #endif
-
-
+//---------------------------------------------------------------------------
 // XMLU Class, converts utf input to wide char and vice versa
+//---------------------------------------------------------------------------
 class XMLU
     {
     public:
@@ -324,8 +297,7 @@ class XMLU
                 }
             }
     };
-
-
+//---------------------------------------------------------------------------
 class XMLHeader;
 class XMLElement;
 class XMLVariable;
@@ -333,15 +305,14 @@ class XMLComment;
 class XMLContent;
 class XMLCData;
 class XML;
-
+//---------------------------------------------------------------------------
 typedef struct
     {
     int VersionHigh;
     int VersionLow;
     char RDate[20];
     } XML_VERSION_INFO;
-
-
+//---------------------------------------------------------------------------
 #ifdef _WIN32
 struct IMPORTDBTABLEDATA
     {
@@ -351,7 +322,7 @@ struct IMPORTDBTABLEDATA
     char** Variables;
     char** ReplaceVariables;
     };
-
+//---------------------------------------------------------------------------
 struct IMPORTDBPARAMS
     {
     char* dbname;
@@ -360,7 +331,7 @@ struct IMPORTDBPARAMS
     IMPORTDBTABLEDATA* Tables;
     };
 #endif
-
+//---------------------------------------------------------------------------
 struct XMLEXPORTFORMAT
     {
     bool UseSpace;
@@ -368,7 +339,7 @@ struct XMLEXPORTFORMAT
     bool ElementsNoBreak;
     bool ContentsNoBreak;
     };
-
+//---------------------------------------------------------------------------
 #ifdef _WIN32
 struct IMPORTRKEYDATA
     {
@@ -378,9 +349,7 @@ struct IMPORTRKEYDATA
     // 2 - Registry key from registry XML
     };
 #endif
-
-
-
+//---------------------------------------------------------------------------
 // UNLOAD elements
 #ifdef XML_USE_STL
 #else
@@ -390,7 +359,7 @@ struct XMLUNLOADELEMENT
     char* fn[300];
     };
 #endif
-
+//---------------------------------------------------------------------------
 // Enumerations
 enum XML_LOAD_MODE
     {
@@ -399,20 +368,20 @@ enum XML_LOAD_MODE
     XML_LOAD_MODE_URL = 2,
     XML_LOAD_MODE_LOCAL_FILE_U = 7,
     };
-
+//---------------------------------------------------------------------------
 enum XML_PARSE_STATUS
     {
     XML_PARSE_OK = 0,
     XML_PARSE_NO_HEADER = 1,
     XML_PARSE_ERROR = 2,
     };
-
+//---------------------------------------------------------------------------
 enum XML_SAVE_MODE
     {
     XML_SAVE_MODE_ZERO = 0,
     XML_SAVE_MODE_DEFAULT = 1,
     };
-
+//---------------------------------------------------------------------------
 enum XML_TARGET_MODE
     {
     XML_TARGET_MODE_FILE = 0,
@@ -420,13 +389,12 @@ enum XML_TARGET_MODE
     XML_TARGET_MODE_REGISTRYKEY = 2,
     XML_TARGET_MODE_UTF16FILE = 3,
     };
-
+//---------------------------------------------------------------------------
 // Global functions
-
+//---------------------------------------------------------------------------
 class XMLHeader
     {
     public:
-
         // constructors/destructor
         XMLHeader(const char* ht = 0,const wchar_t* wht = 0);
         operator const char*();
@@ -441,11 +409,9 @@ class XMLHeader
         void SetEncoding(const char*);
         XMLHeader* Duplicate();
 
-
         XMLHeader(XMLHeader&);
         XMLHeader& operator =(XMLHeader&);
         ~XMLHeader();
-
         // XMLComment
 #ifdef XML_USE_STL
         vector<XMLComment>& GetComments();
@@ -493,13 +459,11 @@ class XMLHeader
         XMLComment** comments;
 #endif
     };
-
-
-
+//---------------------------------------------------------------------------
 #ifdef LINUX
 typedef int (*fcmp) (const void *, const void *);
 #endif
-
+//---------------------------------------------------------------------------
 #ifdef XML_USE_STL
 #else
 struct XMLBORROWELEMENT
@@ -508,20 +472,16 @@ struct XMLBORROWELEMENT
     class XMLElement* x;
     };
 #endif
-
+//---------------------------------------------------------------------------
 class XMLElement
     {
     public:
-
         // constructors/destructor
         XMLElement(XMLElement* par = 0,const char* el = 0,int Type = 0,bool Temp = false,const wchar_t* wel = 0);
-
         //XMLElement& operator =(XMLElement&);
         ~XMLElement();
 
         void Clear();
-
-
 #ifdef XML_USE_STL
         // STL Functions
         XMLElement& operator[](int);
@@ -535,8 +495,6 @@ class XMLElement
         XMLElement* AddElement(const char*,const wchar_t* = 0);
         XMLElement* InsertElement(unsigned int,XMLElement*);
 #endif
-
-
         void SetElementParam(unsigned long long p);
         unsigned long long GetElementParam();
         void Reparse(const char*el,int Type = 0);
@@ -575,7 +533,6 @@ class XMLElement
         XMLElement* DecryptElement(unsigned int i,PCCERT_CONTEXT* ppCert);
 #endif
 #endif
-
         int RemoveElement(XMLElement*);
         int RemoveAllElements();
         int RemoveTemporalElements(bool Deep = false);
@@ -588,7 +545,6 @@ class XMLElement
         int ReloadAllElements();
 #endif
         XMLElement* MoveElement(unsigned int i,unsigned int y);
-
 
 #ifdef XML_USE_STL
         void SortElements();
@@ -607,7 +563,6 @@ class XMLElement
         friend int _USERENTRY XMLVariablefcmp(const void *, const void *);
 #endif
 #endif
-
         XMLElement* Duplicate(XMLElement* = 0);
         XMLElement* Encrypt(const char* pwd);
         XMLElement* Decrypt(const char* pwd);
@@ -627,7 +582,6 @@ class XMLElement
 #else
         int Compare(XMLElement*);
 #endif
-
         // XMLComment
 #ifdef XML_USE_STL
         vector<XMLComment>& GetComments();
@@ -689,7 +643,6 @@ class XMLElement
         unsigned int GetAllChildren(XMLElement**,unsigned int deep = 0xFFFFFFFF);
         unsigned int GetAllChildrenNum(unsigned int deep = 0xFFFFFFFF);
 
-
         // Variable Stuff
 #ifdef XML_USE_STL
         int RemoveVariableAndKeep(unsigned int i,XMLVariable* vr);
@@ -719,8 +672,6 @@ class XMLElement
         int RemoveAllVariables();
         int RemoveTemporalVariables(bool Deep = false);
         unsigned int GetVariableNum();
-
-
 
         XMLElement* GetElementInSection(const char*);
         int XMLQuery(const char* expression,XMLElement** rv,unsigned int deep = 0xFFFFFFFF);
@@ -756,7 +707,6 @@ class XMLElement
 #ifndef XML_USE_STL
         XMLElement(const XMLElement&);
 #endif
-
         unsigned long long param;
         int type; // type, 0 element
         XMLElement* parent; // one
@@ -791,32 +741,25 @@ class XMLElement
         int TotalContentPointersAvailable;
         int TotalCDataPointersAvailable;
 #endif
-
-
         bool Temporal;
 #ifdef XML_USE_STL
 #else
         Z<XMLBORROWELEMENT> BorrowedElements;
         unsigned int NumBorrowedElements;
 #endif
-
         XMLEXPORTFORMAT xfformat;
         static void printc(FILE* fp,XMLElement* root,int deep,int ShowAll,XML_SAVE_MODE SaveMode,XML_TARGET_MODE TargetMode);
         void SetParent(XMLElement*);
-
-
     };
-
+//---------------------------------------------------------------------------
 
 class XMLVariable
     {
     public:
-
         XMLVariable(const char* = 0,const char* = 0,int NoDecode = 0,bool Temp = false,const wchar_t* = 0,const wchar_t* = 0);
         ~XMLVariable();
         XMLVariable(const XMLVariable&);
         XMLVariable& operator =(const XMLVariable&);
-
 
         size_t MemoryUsage();
         void CompressMemory();
@@ -827,7 +770,6 @@ class XMLVariable
 #else
         int Compare(XMLVariable*);
 #endif
-
         XMLElement* SetOwnerElement(XMLElement*);
         size_t GetName(char*,int NoDecode = 0) const;
         size_t GetValue(char*,int NoDecode = 0) const;
@@ -869,13 +811,9 @@ class XMLVariable
         size_t GetBinaryValue(char*);
         size_t SetBinaryValue(char*,int);
 #endif
-
         BDC ExportToBinary();
         bool ImportFromBinary(const BDC&);
-
-
     private:
-
         void Clear();
 #ifdef XML_USE_STL
         string vn;
@@ -886,16 +824,12 @@ class XMLVariable
 #endif
         XMLElement* owner;
         bool Temporal;
-
-
     };
-
-
+//---------------------------------------------------------------------------
 
 class XMLComment
     {
     public:
-
         // constructors/destructor
         XMLComment(XMLElement* p = 0,int ElementPosition = -1,const char* ht = 0,const wchar_t* wt = 0);
         operator const char*() const;
@@ -908,7 +842,6 @@ class XMLComment
 #else
         int Compare(XMLComment*);
 #endif
-
         XMLComment(const XMLComment&);
         XMLComment& operator =(const XMLComment&);
         ~XMLComment();
@@ -919,9 +852,7 @@ class XMLComment
 
         BDC ExportToBinary();
         bool ImportFromBinary(const BDC&);
-
     private:
-
         XMLElement* parent;
 #ifdef XML_USE_STL
         string c;
@@ -930,12 +861,10 @@ class XMLComment
 #endif
         int ep; // Element Position (Before)
     };
-
-
+//---------------------------------------------------------------------------
 class XMLContent
     {
     public:
-
         // constructors/destructor
         XMLContent(XMLElement* p = 0,int ElementPosition = -1,const char* ht = 0,int NoDecode = 0,int BinarySize = 0,const wchar_t* wt = 0);
 //              operator const char*();
@@ -954,8 +883,6 @@ class XMLContent
 #ifdef XML_USE_STL_EXTENSIONS
         string GetValueS();
 #endif
-
-
         XMLContent(const XMLContent&);
         XMLContent& operator =(const XMLContent&);
         ~XMLContent();
@@ -968,9 +895,7 @@ class XMLContent
 
         BDC ExportToBinary();
         bool ImportFromBinary(const BDC&);
-
     private:
-
         XMLElement* parent;
         BDC bdc; // Binary Data Container
         bool BinaryMode;
@@ -982,11 +907,11 @@ class XMLContent
 #endif
         int ep; // Element Position (Before)
     };
+//---------------------------------------------------------------------------
 
 class XMLCData
     {
     public:
-
         // constructors/destructor
         XMLCData(XMLElement* p = 0,int ElementPosition = -1,const char* ht = 0,const wchar_t* wt = 0);
         operator const char*() const;
@@ -999,7 +924,6 @@ class XMLCData
 #else
         int Compare(XMLCData*);
 #endif
-
         XMLCData(const XMLCData&);
         XMLCData& operator =(const XMLCData&);
         ~XMLCData();
@@ -1010,11 +934,7 @@ class XMLCData
 
         BDC ExportToBinary();
         bool ImportFromBinary(const BDC&);
-
-
-
     private:
-
         XMLElement* parent;
 #ifdef XML_USE_STL
         string c;
@@ -1023,13 +943,11 @@ class XMLCData
 #endif
         int ep; // Element Position (Before)
     };
-
+//---------------------------------------------------------------------------
 class XML
     {
     public:
-
         // constructors/destructor
-
         XML();
         XML(const char* file,XML_LOAD_MODE LoadMode = XML_LOAD_MODE_LOCAL_FILE,class XMLTransform* eclass = 0,class XMLTransformData* edata = 0);
 #ifndef LINUX
@@ -1044,7 +962,6 @@ class XML
         XML(XML& x);
         XML& operator =(XML&);
         ~XML();
-
         //      static void Kill(char* tf);
 #ifdef LINUX
         int PhantomLoad(const char* file);
@@ -1052,7 +969,6 @@ class XML
         int PhantomLoad(const char* file,bool IsUnicode = false,bool UseMap = false);
 #endif
         int PhantomElement(FILE*fp,class XMLElement* r,unsigned long long StartP,unsigned long long EndP);
-
         static int DoMatch(const char *text, char *p, bool IsCaseSensitive = false);
         static bool VMatching(const char *text, char *p, bool IsCaseSensitive = false);
         static bool TestMatch(const char* item1,const char* comp,const char* item2);
@@ -1063,7 +979,6 @@ class XML
 #else
         static void JsonParser(XMLElement* root,const char* txt);
 #endif
-
         XML_PARSE_STATUS ParseStatus(int* = 0);
         void SetUnicode(bool x);
         void SaveOnClose(bool);
@@ -1075,7 +990,6 @@ class XML
         int Save(const char* file = 0,XML_SAVE_MODE SaveMode = XML_SAVE_MODE_DEFAULT,XML_TARGET_MODE TargetMode = XML_TARGET_MODE_FILE,class XMLTransform* eclass = 0,class XMLTransformData* edata = 0); // Default, do not encode already encoded
         void Export(FILE* fp,XML_SAVE_MODE SaveMode,XML_TARGET_MODE TargetMode = XML_TARGET_MODE_FILE,XMLHeader *hdr = 0,class XMLTransform* eclass = 0,class XMLTransformData* edata = 0);
         void SetExportFormatting(XMLEXPORTFORMAT* xf);
-
         void Lock(bool);
         int RemoveTemporalElements();
 #ifdef XML_OPTIONAL_IMPORTDB
@@ -1084,7 +998,6 @@ class XML
 #ifdef XML_OPTIONAL_IMPORTRKEY
         static XMLElement* ImportRKey(IMPORTRKEYDATA*);
 #endif
-
 #ifdef XML_USE_STL
         void SetRootElement(XMLElement&);
         XMLElement RemoveRootElementAndKeep();
@@ -1098,29 +1011,22 @@ class XML
         XMLHeader* GetHeader();
         void SetHeader(XMLHeader* h);
 #endif
-
         static size_t XMLEncode(const char* src,char* trg);
         static size_t XMLDecode(const char* src,char* trg);
         size_t XMLGetValue(const char* section,const char* attr,char* put,size_t maxlen);
         void XMLSetValue(const char* section,const char* attr,char* put);
-
         BDC ExportToBinary();
         bool ImportFromBinary(const BDC&);
-
         // Query functions
         int XMLQuery(const char* rootsection,const char* expression,XMLElement** rv,unsigned int deep = 0xFFFFFFFF);
-
     private:
-
         void Init();
         void Clear();
-
         XML_PARSE_STATUS iParseStatus; // 0 Valid , 1 Error but recovered, 2 fatal error
         int iParseStatusPos;
 #ifndef LINUX
         bool IsFileU; // unicode file
 #endif
-
 #ifdef XML_USE_STL
         string f;          // filename
         XMLHeader hdr;
@@ -1130,73 +1036,62 @@ class XML
         XMLHeader* hdr;   // header (one)
         XMLElement* root; // root element (one)
 #endif
-
         bool SOnClose;
         // For Windows
-
-
     };
-
-
+//---------------------------------------------------------------------------
 // public functions
-size_t XMLGetString(const char* section,const char* Tattr,const char* defv,char*out,const size_t maxlen,const char* xml,XML* af = 0);
-int     XMLGetInt(const char* item,const char* attr,const int defv,const char* xml,XML* af = 0);
-unsigned int XMLGetUInt(const char* item,const char* attr,const unsigned int defv,const char* xml,XML* af = 0);
+//---------------------------------------------------------------------------
+size_t              XMLGetString(const char* section,const char* Tattr,const char* defv,char*out,const size_t maxlen,const char* xml,XML* af = 0);
+int                 XMLSetString(const char* section,const char* Tattr,char*out,const char* xml,XML* af = 0);
+int                 XMLGetInt(const char* item,const char* attr,const int defv,const char* xml,XML* af = 0);
+int                 XMLSetInt(const char* section,const char* attr,int v,const char* xml,XML* af = 0);
+unsigned int        XMLGetUInt(const char* item,const char* attr,const unsigned int defv,const char* xml,XML* af = 0);
+int                 XMLSetUInt(const char* section,const char* attr,unsigned int v,const char* xml,XML* af = 0);
+float               XMLGetFloat(const char* item,const char* attr,const float defv,const char* xml,XML* af = 0);
+int                 XMLSetFloat(const char* section,const char* attr,float v,const char* xml,XML* af = 0);
+size_t              XMLGetBinaryData(const char* item,const char* attr,const char* defv,char*out,const size_t maxlen,const char* xml,XML* af = 0);
+int                 XMLSetBinaryData(const char* section,const char* attr,char* data,int len,const char* xml,XML* af = 0);
+int                 XMLRenameElement(const char* section,const char* newname,const char* xml,XML* af = 0);
 #ifdef _WIN32
-long long XMLGetInt64(const char* item,const char* attr,const long long defv,const char* xml,XML* af = 0);
-unsigned long long XMLGetUInt64(const char* item,const char* attr,const unsigned long long defv,const char* xml,XML* af = 0);
+long long           XMLGetInt64(const char* item,const char* attr,const long long defv,const char* xml,XML* af = 0);
+int                 XMLSetInt64(const char* section,const char* attr,long long v,const char* xml,XML* af = 0);
+unsigned long long  XMLGetUInt64(const char* item,const char* attr,const unsigned long long defv,const char* xml,XML* af = 0);
+int                 XMLSetUInt64(const char* section,const char* attr,unsigned long long v,const char* xml,XML* af = 0);
+int                 XMLSetStringW(const char* section,const char* Tattr,wchar_t*out,const char* xml,XML* af = 0);
+#define             XMLSetStringA(...) XMLSetString(__VA_ARGS__)
 #endif
-float   XMLGetFloat(const char* item,const char* attr,const float defv,const char* xml,XML* af = 0);
-size_t     XMLGetBinaryData(const char* item,const char* attr,const char* defv,char*out,const size_t maxlen,const char* xml,XML* af = 0);
-
-int    XMLSetString(const char* section,const char* Tattr,char*out,const char* xml,XML* af = 0);
-int    XMLSetInt(const char* section,const char* attr,int v,const char* xml,XML* af = 0);
-int    XMLSetUInt(const char* section,const char* attr,unsigned int v,const char* xml,XML* af = 0);
-#ifdef _WIN32
-int    XMLSetString(const char* section,const char* Tattr,wchar_t*out,const char* xml,XML* af = 0);
-int    XMLSetInt64(const char* section,const char* attr,long long v,const char* xml,XML* af = 0);
-int    XMLSetUInt64(const char* section,const char* attr,unsigned long long v,const char* xml,XML* af = 0);
-#endif
-int    XMLSetFloat(const char* section,const char* attr,float v,const char* xml,XML* af = 0);
-int    XMLSetBinaryData(const char* section,const char* attr,char* data,int len,const char* xml,XML* af = 0);
-
-int XMLRenameElement(const char* section,const char* newname,const char* xml,XML* af = 0);
-
 #ifndef __SYMBIAN32__
 #ifdef XML_USE_STL
-int    XMLGetAllVariables(const char* section,vector<char*>* vnames,vector<char*>* vvalues,const char*xml);
-int    XMLGetAllItems(const char* section,vector<char*>* vnames,const char*xml);
+int                 XMLGetAllVariables(const char* section,vector<char*>* vnames,vector<char*>* vvalues,const char*xml);
+int                 XMLGetAllItems(const char* section,vector<char*>* vnames,const char*xml);
 #else
-int    XMLGetAllVariables(const char* section,char** vnames,char** vvalues,const char*xml);
-int    XMLGetAllItems(const char* section,char** vnames,const char*xml);
+int                 XMLGetAllVariables(const char* section,char** vnames,char** vvalues,const char*xml);
+int                 XMLGetAllItems(const char* section,char** vnames,const char*xml);
 #endif
 #endif
-
-
-
+//---------------------------------------------------------------------------
 // XMLTransform class
-
+//---------------------------------------------------------------------------
 class XMLTransformData
     {
     public:
         XMLTransformData() {}
     };
-
+//---------------------------------------------------------------------------
 class XMLTransform
     {
     public:
-
         XMLTransform(XMLTransformData*) { }
         virtual ~XMLTransform() {}
         virtual size_t Encrypt(const char*src,size_t srclen,int srctype,char* dst,size_t dstlen,XMLTransformData* data = 0) = 0;
         virtual size_t Decrypt(const char*src,size_t srclen,int srctype,char* dst,size_t dstlen,XMLTransformData* data = 0) = 0;
-
     };
+//---------------------------------------------------------------------------
 
 class XMLHelper
     {
     public:
-
         // static functions
         static char* FindXMLClose(char* s);
 #ifdef XML_USE_STL
@@ -1206,14 +1101,11 @@ class XMLHelper
 #endif
         static void AddBlankVariable(XMLElement* parent,char *a2,int Pos);
         static int pow(int P,int z);
-
-
-
     };
-
+//---------------------------------------------------------------------------
 #ifdef XML_USE_NAMESPACE
 };
 #endif
-
-
+//---------------------------------------------------------------------------
 #endif // _XML_H
+//---------------------------------------------------------------------------

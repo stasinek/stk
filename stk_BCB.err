@@ -1,6 +1,0 @@
-./stasm/stk_stasm.h(36): Warning! W725: col(160) "This compiler doesn't support GCC asm(\"\":::) inline asembler, directive ::asm(variable_name) will expand to nothing"
-./stasm/stk_stasm.h(36): Note! N393: col(160) included from ./koperek/./../stk_main.h(454)
-./stasm/stk_stasm.h(36): Note! N393: col(160) included from ./koperek/stk_kop32_class.h(5)
-./stasm/stk_stasm.h(36): Note! N393: col(160) included from ./koperek/stk_kop32_console.h(5)
-./stasm/stk_stasm.h(36): Note! N393: col(160) included from stk_BCB.cpp(4)
-./stasm/stk_stasm.h(40): Warning! W725: col(145) "This compiler doesnt support GCC __attribute__() macro, you must use different data packing directives"

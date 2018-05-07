@@ -1,4 +1,4 @@
-﻿/* rsa.c  -  RSA function
+/* rsa.c  -  RSA function
  *	Copyright (c) 1997,1998,1999 by Werner Koch (dd9jn)
  ***********************************************************************
  * ATTENTION: This code should not be exported to the United States
@@ -43,11 +43,11 @@
 #ifdef __alpha__
   #define SIZEOF_UNSIGNED_LONG 8
 #else
-  #define SIZEOF_UNSIGNED_LONG 4
+  #define SIZEOF_UNSIGNED_LONG sizeof(__int32)
 #endif
 #if defined(__mc68000__) || defined (__sparc__) || defined (__PPC__) \
     || (defined(__mips__) && (defined(MIPSEB) || defined (__MIPSEB__)) ) \
-    || defined(__hpux__)  /* should be replaced by the macro for the PA */
+    ||  defined(__hpux__)  /* should be replaced by the macro for the PA */
   #define BIG_ENDIAN_HOST 1
 #else
   #define LITTLE_ENDIAN_HOST 1
@@ -57,7 +57,6 @@ typedef unsigned long  uint32;
 typedef unsigned long  u32;
 typedef unsigned short uint16;
 typedef unsigned short u16;
-//-----------------------------------------------------------------------------
 typedef unsigned char  byte;
 //-----------------------------------------------------------------------------
 /* end configurable stuff */
@@ -74,17 +73,14 @@ const char * const gnupgext_version = "RSA ($Revision: 1.10 $)";
 #define BAD_KEY   7
 #define BAD_SIGN  8
 //-----------------------------------------------------------------------------
-
 struct mpi_struct { int hidden_stuff; };
 typedef struct mpi_struct *MPI;
 //-----------------------------------------------------------------------------
-
 typedef struct {
     MPI n;	    /* modulus */
     MPI e;	    /* exponent */
 } RSA_public_key;
 //-----------------------------------------------------------------------------
-
 typedef struct {
     MPI n;	    /* public modulus */
     MPI e;	    /* public exponent */
@@ -93,7 +89,6 @@ typedef struct {
     MPI q;	    /* prime  q. */
     MPI u;	    /* inverse of p mod q. */
 } RSA_secret_key;
-
 //-----------------------------------------------------------------------------
 /* imports */
 //-----------------------------------------------------------------------------

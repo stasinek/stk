@@ -255,10 +255,10 @@
         <CppCompile Include="stasm\stk_stasm.cpp">
             <BuildOrder>17</BuildOrder>
         </CppCompile>
-        <CppCompile Include="threads\stk_idle.cpp">
+        <CppCompile Include="sthreads\stk_idle.cpp">
             <BuildOrder>15</BuildOrder>
         </CppCompile>
-        <CppCompile Include="shreads\stk_threads.cpp">
+        <CppCompile Include="sthreads\stk_threads.cpp">
             <BuildOrder>16</BuildOrder>
         </CppCompile>
         <CppCompile Include="stk_bitset.cpp">

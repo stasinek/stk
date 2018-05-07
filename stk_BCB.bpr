@@ -41,7 +41,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="tlink32"/>
-    <USERDEFINES value="_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE;BUILD_STK_LIBRARY"/>
+    <USERDEFINES value="BUILD_STK_LIBRARY"/>
     <SYSDEFINES value="NO_STRICT;_NO_VCL"/>
     <MAINSOURCE value="stk_BCB.bpf"/>
     <INCLUDEPATH value="sthreads;threads;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl"/>
@@ -90,31 +90,34 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=6
-Item0=sthreads;threads;3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
-Item1=3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
-Item2=3D\;io\;3D;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
-Item3=3D\;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io\;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
-Item4=$(BCB)\include;$(BCB)\include\vcl
-Item5=$(BCB)\include;$(BCB)\include\vcl;D:\stasiek\My Projects\x86_libraries\STK
+Count=7
+Item0=sthreads;threads;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
+Item1=sthreads;threads;3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
+Item2=3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
+Item3=3D\;io\;3D;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
+Item4=3D\;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io\;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl
+Item5=$(BCB)\include;$(BCB)\include\vcl
+Item6=$(BCB)\include;$(BCB)\include\vcl;D:\stasiek\My Projects\x86_libraries\STK
 
 [HistoryLists\hlLibraryPath]
-Count=5
-Item0=sthreads;threads;3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
-Item1=3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
-Item2=3D\;io\;3D;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
-Item3=3D\;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io\;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
-Item4=$(BCB)\lib\obj;$(BCB)\lib
+Count=6
+Item0=sthreads;threads;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
+Item1=sthreads;threads;3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
+Item2=3D\;io\;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
+Item3=3D\;io\;3D;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
+Item4=3D\;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;io\;text;time;threads;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib
+Item5=$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=3
-Item0=_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE;BUILD_STK_LIBRARY
-Item1=_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE
-Item2=_DEBUG
+Count=4
+Item0=BUILD_STK_LIBRARY
+Item1=_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE;BUILD_STK_LIBRARY
+Item2=_DEBUG;BUILD_DLLIO;BUIlD_DLLDATABASE
+Item3=_DEBUG
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl

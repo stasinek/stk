@@ -128,7 +128,6 @@ SOURCES += \
     stk_map.cpp \
     cpu/stk_cpu.cpp \
 #    cipher/rsa/stk_rsa_single.c \
-#    cipher/rsa/stk_rsa.c \
     cipher/stk_base64.cpp \
     cipher/stk_cipher_mtf.cpp \
     cipher/stk_cipher_API.cpp \
@@ -164,6 +163,7 @@ SOURCES += \
     koperek/stk_kop32_socket_server.cpp \
     koperek/stk_kop32_API.cpp \
     mem/stk_mem.cpp \
+    mem/stk_btree.cpp \
     process_journal/stk_journal.cpp \
     pharser/stk_pharse_command_line.cpp \
     pharser/stk_pharse_math.cpp \
@@ -239,6 +239,7 @@ HEADERS += \
     koperek/stk_kop32_socket_server.h \
     koperek/stk_kop32_API.h \
     mem/stk_mem.h \
+    mem/stk_btree.h \
     pharser/stk_pharse_math.h \
     pharser/stk_pharse_command_line.h \
     process_journal/stk_journal.h \
