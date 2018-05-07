@@ -4,21 +4,25 @@
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 namespace stk {
+#endif
 //---------------------------------------------------------------------------
-class __math_pharser {
+class STK_IMPEXP __math_pharser {
 private:
-		char	*f_expression;
-		char	*f_splited_expression[10];
+        char	*f_expression;
+        char	*f_splited_expression[10];
         int32_t  f_splited_expression_count;
-        int32_t __stdcall f_decode_subexpression(const uint32_t a_index);
+        int32_t STK_IMPEXP  __stdcall f_decode_subexpression(const uint32_t a_index);
 public:
-		__stdcall  __math_pharser(void);
-		__stdcall ~__math_pharser(void);
-        int32_t __stdcall decode(const char *a_expression);
+        STK_IMPEXP  __stdcall  __math_pharser(void);
+        STK_IMPEXP  __stdcall ~__math_pharser(void);
+        int32_t STK_IMPEXP  __stdcall decode(const char *a_expression);
         int32_t result;
 };
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 }
+#endif
 //---------------------------------------------------------------------------
 #endif

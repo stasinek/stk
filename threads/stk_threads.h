@@ -13,7 +13,9 @@
 //---------------------------------------------------------------------------
 //#include "./../../pthreads-w32-2-9-1-release/pthreads.2/include/pthread.h"
 //---------------------------------------------------------------------------
-extern "C" { namespace stk { namespace thread {
+#ifdef __cplusplus
+namespace stk { namespace thread {
+#endif
 //---------------------------------------------------------------------------
 #define ATOMIC(num)\
 int64_t __unique##num;\
@@ -58,14 +60,11 @@ extern volatile int32_t __barier, __barier_locker;
         __barier_locker = 0;\
         } while(0);
 //---------------------------------------------------------------------------
-STK_IMPEXP int32_t __stdcall cmpxchg4(int32_t *addr, int32_t o, int32_t n);
-STK_IMPEXP int64_t __stdcall cmpxchg8(int64_t *addr, int64_t o, int64_t n);
-//---------------------------------------------------------------------------
 typedef unsigned long (__stdcall *ssthread_routine_t)(void*);
 typedef unsigned long (__stdcall *ssthread_char_routine_t)(char*);
 typedef unsigned long (__stdcall *ssthread_char_const_routine_t)(const char*);
 //---------------------------------------------------------------------------
-struct ssthread_arg_wrapper_t {
+struct STK_IMPEXP ssthread_arg_wrapper_t {
     int     argc;
     void**  argv;
     void*   contex_ptr;
@@ -80,13 +79,13 @@ struct ssthread_arg_wrapper_t {
         return 0;
     }
 };
-struct ssthread_attr_t {
+struct STK_IMPEXP ssthread_attr_t {
     bool active, idle, detached, terminated;
     uint64_t creation_time, user_time, system_time, end_time;
     uint32_t exit_code;
 };
 //---------------------------------------------------------------------------
-struct ssthread_t {
+struct STK_IMPEXP ssthread_t {
     unsigned long id;
     void *handle;
     struct ssthread_attr_t attr;
@@ -107,30 +106,35 @@ struct ssthread_t {
     };
 };
 //---------------------------------------------------------------------------
-STK_IMPEXP unsigned long    __stdcall onexit_common(void *arg);
+unsigned long    STK_IMPEXP  __stdcall onexit_common(void *arg);
 //---------------------------------------------------------------------------
-STK_IMPEXP bool             __stdcall create(struct ssthread_t *a_thread, ssthread_routine_t a_func,void *a_func_arg);
-STK_IMPEXP bool             __stdcall run(struct ssthread_t *a_thread);
-STK_IMPEXP bool             __stdcall suspend(struct ssthread_t *a_thread);
-STK_IMPEXP bool             __stdcall terminate(struct ssthread_t *a_thread,unsigned long a_exitcode);
-STK_IMPEXP unsigned long    __stdcall id(struct ssthread_t *a_thread);
-STK_IMPEXP bool             __stdcall joinable(struct ssthread_t *a_thread);
-STK_IMPEXP bool             __stdcall active(struct ssthread_t *a_thread);
-STK_IMPEXP void             __stdcall join(struct ssthread_t *a_thread);
-STK_IMPEXP void             __stdcall detach(struct ssthread_t *a_thread);
-STK_IMPEXP void             __stdcall atexit(struct ssthread_t *a_thread,ssthread_routine_t a_onexit,void *a_onexit_arg);
-STK_IMPEXP unsigned long    __stdcall this_id(void);
-STK_IMPEXP bool             __stdcall yeld(void);
-STK_IMPEXP void             __stdcall quit(unsigned long a_exitcode);
+int32_t          STK_IMPEXP  __stdcall cmpxchg4(int32_t *addr, int32_t o, int32_t n);
+int64_t          STK_IMPEXP  __stdcall cmpxchg8(int64_t *addr, int64_t o, int64_t n);
 //---------------------------------------------------------------------------
-}}}
+bool             STK_IMPEXP  __stdcall create(struct ssthread_t *a_thread, ssthread_routine_t a_func,void *a_func_arg);
+bool             STK_IMPEXP  __stdcall run(struct ssthread_t *a_thread);
+bool             STK_IMPEXP  __stdcall suspend(struct ssthread_t *a_thread);
+bool             STK_IMPEXP  __stdcall terminate(struct ssthread_t *a_thread,unsigned long a_exitcode);
+unsigned long    STK_IMPEXP  __stdcall id(struct ssthread_t *a_thread);
+bool             STK_IMPEXP  __stdcall joinable(struct ssthread_t *a_thread);
+bool             STK_IMPEXP  __stdcall active(struct ssthread_t *a_thread);
+void             STK_IMPEXP  __stdcall join(struct ssthread_t *a_thread);
+void             STK_IMPEXP  __stdcall detach(struct ssthread_t *a_thread);
+void             STK_IMPEXP  __stdcall atexit(struct ssthread_t *a_thread,ssthread_routine_t a_onexit,void *a_onexit_arg);
+unsigned long    STK_IMPEXP  __stdcall this_id(void);
+bool             STK_IMPEXP  __stdcall yeld(void);
+void             STK_IMPEXP  __stdcall quit(unsigned long a_exitcode);
+//---------------------------------------------------------------------------
+#ifdef __cplusplus
+}}
+#endif
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { namespace thread {
 //---------------------------------------------------------------------------
-inline bool      __stdcall create(struct ssthread_t *a_thread, ssthread_char_routine_t a_func,char *a_func_arg) {
+inline bool      STK_IMPEXP  __stdcall create(struct ssthread_t *a_thread, ssthread_char_routine_t a_func,char *a_func_arg) {
     return create(a_thread, (ssthread_routine_t)a_func, static_cast<void*>(const_cast<char*>(a_func_arg)));}
-inline bool      __stdcall create(struct ssthread_t *a_thread, ssthread_char_const_routine_t a_func,const char* a_func_arg) {
+inline bool      STK_IMPEXP  __stdcall create(struct ssthread_t *a_thread, ssthread_char_const_routine_t a_func,const char* a_func_arg) {
     return create(a_thread, (ssthread_routine_t)a_func, static_cast<void*>(const_cast<char*>(a_func_arg)));}
 //---------------------------------------------------------------------------
 }}

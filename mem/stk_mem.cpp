@@ -12,6 +12,10 @@
 #endif
 #include <malloc.h>
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
+namespace stk { namespace mem {
+#endif
+//---------------------------------------------------------------------------
 static int64_t g_mem_allocated = 0;
 static int64_t g_mem_max = 1<<30;
 static int32_t g_mem_size_align = 16;
@@ -43,18 +47,18 @@ struct __mem_tail {
 #pragma pack(pop)
 
 //---------------------------------------------------------------------------
-intmax_t __stdcall stk::mem::allocated(void)
+intmax_t __stdcall allocated(void)
 {
 return g_mem_allocated;
 }
 //---------------------------------------------------------------------------
-size_t __stdcall stk::mem::size(const void *a_ptr)
+size_t __stdcall size(const void *a_ptr)
 {
-	return ::_msize((void*)a_ptr);
+    return ::_msize((void*)a_ptr);
 }
 //---------------------------------------------------------------------------
 
-STK_IMPEXP void *__stdcall stk::mem::calloc(char a_size, const size_t a_count)
+void *__stdcall calloc(char a_size, const size_t a_count)
 {
 register size_t cnt = a_size * a_count;
 register void *ptr = alloc(cnt);
@@ -62,7 +66,7 @@ return  set(ptr,0,cnt);
 }
 //---------------------------------------------------------------------------
 
-STK_IMPEXP void *__stdcall stk::mem::alloc(const size_t a_count)
+void *__stdcall alloc(const size_t a_count)
 {
     register size_t l_n_tailed_count;
     register __mem_tail *n_t;
@@ -93,7 +97,7 @@ ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 /*
-STK_IMPEXP void *__stdcall stk::mem::crealloc(char a_znak, void *a_dst_ptr, const size_t a_count)
+STK_IMPEXP void *__stdcall crealloc(char a_znak, void *a_dst_ptr, const size_t a_count)
 {
 size_t s = size(a_dst_ptr);
 void  *ptr = realloc(a_dst_ptr,a_count);
@@ -103,7 +107,7 @@ else return ptr;
 */
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::realloc(void *a_dst_ptr,const size_t a_count)
+void *__stdcall realloc(void *a_dst_ptr,const size_t a_count)
 {
     register size_t l_p_tailed_count;
     register size_t l_n_tailed_count;
@@ -147,7 +151,7 @@ ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 
-STK_IMPEXP void __stdcall stk::mem::free(void *a_dst_ptr)
+void __stdcall free(void *a_dst_ptr)
 {
     register size_t l_p_tailed_count;
     register __mem_tail *o_t;
@@ -178,7 +182,7 @@ ATOMIC_UNLOCK(1)
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::set(void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count)
+void *__stdcall set(void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -192,7 +196,7 @@ return a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::setex(void *a_dst_ptr, const void *a_src_ptr, const int8_t a_element_size, const size_t a_count)
+void *__stdcall setex(void *a_dst_ptr, const void *a_src_ptr, const int8_t a_element_size, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -324,7 +328,7 @@ return NULL;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::mov(void *a_dst_ptr,const void *a_src_ptr, const size_t a_count)
+void *__stdcall mov(void *a_dst_ptr,const void *a_src_ptr, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -543,7 +547,7 @@ return a_dst_ptr;
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::shl(void *a_dst_ptr, size_t a_count)
+void *__stdcall shl(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -555,7 +559,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::shr(void *a_dst_ptr, size_t a_count)
+void *__stdcall shr(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -567,7 +571,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::ror(void *a_dst_ptr, size_t a_count)
+void *__stdcall ror(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -579,7 +583,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::rol(void *a_dst_ptr, size_t a_count)
+void *__stdcall rol(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -591,7 +595,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-void *__stdcall stk::mem::rev(void  *a_dst_ptr, const void *a_src_ptr, const size_t a_count)
+void *__stdcall rev(void  *a_dst_ptr, const void *a_src_ptr, const size_t a_count)
 {
       register char *r_src_start = (char*)a_src_ptr;
       register char *r_src_end = r_src_start + a_count - 1;
@@ -618,7 +622,7 @@ return a_dst_ptr;
  *     |.................. tail .................|...... head .......|
  */
 
-void *__stdcall stk::mem::swap(void *a_ptr, const size_t a_head_count, const size_t a_tail_count)
+void *__stdcall swap(void *a_ptr, const size_t a_head_count, const size_t a_tail_count)
 {
       stk::mem::rev(a_ptr,a_ptr, a_head_count);
       stk::mem::rev((char*)a_ptr+a_head_count,(char*)a_ptr+a_head_count, a_tail_count);
@@ -627,7 +631,7 @@ return a_ptr;
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall stk::mem::cmp(const void *a_ptr1, const void *a_ptr2, const size_t a_count)
+intmax_t __stdcall cmp(const void *a_ptr1, const void *a_ptr2, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -714,7 +718,7 @@ ret*/
 
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall stk::mem::chr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
+intmax_t __stdcall chr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -802,7 +806,7 @@ ptrchr_RETURN:
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall stk::mem::chrr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
+intmax_t __stdcall chrr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -830,7 +834,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall stk::mem::pos(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
+intmax_t __stdcall pos(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -1003,7 +1007,7 @@ size_t r;
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall stk::mem::posr(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
+intmax_t __stdcall posr(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -1019,7 +1023,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-intmax_t __stdcall stk::mem::pos_kmp(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size)
+intmax_t __stdcall pos_kmp(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_pattern_ptr, const size_t a_pattern_size)
 {
     // Allocate variables
     size_t *T, i;
@@ -1055,7 +1059,7 @@ intmax_t __stdcall stk::mem::pos_kmp(const void *a_src_ptr, const size_t a_src_s
     return r_result;
 }
 
-void __stdcall stk::mem::bit_mov(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const size_t a_bits_num)
+void __stdcall bit_mov(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const size_t a_bits_num)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -1214,7 +1218,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-void __stdcall stk::mem::bit_setex(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const uint8_t a_src_elsize, const size_t a_dst_count)
+void __stdcall bit_setex(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const uint8_t a_src_elsize, const size_t a_dst_count)
 {
 #ifdef __DEBUG_MEM32__
 __DEBUG_FUNC_CALLED("")
@@ -1463,7 +1467,7 @@ asm {
 #endif
 return 0;
 }
-	
+
 size_t __stdcall asciitdec (char *String)
  {
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
@@ -1521,6 +1525,11 @@ asm {
 #endif
     return 0;
 }
+//---------------------------------------------------------------------------
+#ifdef __cplusplus
+}} //namespace tsoft,mem
+#endif
+//---------------------------------------------------------------------------
 
 
 /*BIT SET MMX

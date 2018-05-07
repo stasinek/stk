@@ -14,22 +14,22 @@ class __password_text {
 		uint32_t f_size;
 		char *f_lp_hash_str, *f_lp_plain_str;
 		public:
-				   __stdcall  __password_text();
-				   __stdcall ~__password_text();
-				   __stdcall operator const char* ();
-		void   __stdcall operator= (const char *a_user_password);
-		int8_t __stdcall size();
-		const char  *__stdcall get_hash(void);
-		const char  *__stdcall get(void);
-		void   __stdcall set(const char *a_user_password);
+				   STK_IMPEXP  __stdcall  __password_text();
+				   STK_IMPEXP  __stdcall ~__password_text();
+				   STK_IMPEXP  __stdcall operator const char* ();
+		void   STK_IMPEXP  __stdcall operator= (const char *a_user_password);
+		int8_t STK_IMPEXP  __stdcall size();
+		const char   STK_IMPEXP *__stdcall get_hash(void);
+		const char   STK_IMPEXP *__stdcall get(void);
+		void   STK_IMPEXP  __stdcall set(const char *a_user_password);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------
 class __password {
 //---------------------------------------------------------------------------
 		public:
-	__stdcall  __password();
-	__stdcall ~__password();
+	STK_IMPEXP  __stdcall  __password();
+	STK_IMPEXP  __stdcall ~__password();
 //---------------------------------------------------------------------------
 		__password_text text;
 };

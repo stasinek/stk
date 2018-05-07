@@ -54,7 +54,7 @@ class  __kop32_class_options {
 				//password for file cripter
 				__password *password;
 				//------------------------------------
-				__stdcall  __kop32_class_options()
+				STK_IMPEXP  __stdcall  __kop32_class_options()
 				{
 						mask_list = new __database();
 						src_init_list = new __database();
@@ -64,7 +64,7 @@ class  __kop32_class_options {
 
 						reset();
 				}
-				__stdcall ~__kop32_class_options() {
+				STK_IMPEXP  __stdcall ~__kop32_class_options() {
 						delete mask_list;
 						delete src_init_list;
 						delete dst_init_list;
@@ -72,7 +72,7 @@ class  __kop32_class_options {
 						delete password;
 				}
 				//------------------------------------
-				void __stdcall reset() {
+				void STK_IMPEXP  __stdcall reset() {
 						operation = OPERATION_NULL;
 						ask_at_break = ASK_USER;
 						ask_at_error = ASK_USER;

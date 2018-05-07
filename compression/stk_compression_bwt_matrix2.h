@@ -18,22 +18,22 @@ public:
 		__bwt_compressor(const uint32_t ablock);
 	~__bwt_compressor();
 //---------------------------------------------------------------------------
-		uint32_t __stdcall generate(const char *a_src_ptr, const uint32_t a_rowsize);
-		uint32_t __stdcall sort(void);
-		uint32_t __stdcall save(char *a_dst_ptr);
+		uint32_t STK_IMPEXP  __stdcall generate(const char *a_src_ptr, const uint32_t a_rowsize);
+		uint32_t STK_IMPEXP  __stdcall sort(void);
+		uint32_t STK_IMPEXP  __stdcall save(char *a_dst_ptr);
 		char  *matrix_ptr;
 		uint32_t  *matrix_idx_ptr;
 		uint32_t   matrix_dim;
 #define BGN 0
 #define END 1
-        void __stdcall find_groups(const uint32_t acolumn,const uint32_t arow_bgn,const uint32_t arow_end, uint32_t *alist_bgn, uint32_t *alist_end);
+        void STK_IMPEXP  __stdcall find_groups(const uint32_t acolumn,const uint32_t arow_bgn,const uint32_t arow_end, uint32_t *alist_bgn, uint32_t *alist_end);
 		uint32_t *groups_bgn[2], *groups_end[2];
-		void __stdcall sort_groups(const uint32_t acolumn,const uint32_t arow_bgn,const uint32_t arow_end);
+		void STK_IMPEXP  __stdcall sort_groups(const uint32_t acolumn,const uint32_t arow_bgn,const uint32_t arow_end);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------
-}}
-//-------------------------------THE END-------------------------------------
+}}
+//-------------------------------THE END-------------------------------------
 /*
 typedef char byte;
 
@@ -120,7 +120,7 @@ delete indices,F;
 #endif
 //---------------------------------------------------------------------------
 /*
-void __stdcall bit_mov_08(void *a_dst_ptr,char adst_bit,void *a_src_ptr,char asrc_bit)
+void STK_IMPEXP  __stdcall bit_mov_08(void *a_dst_ptr,char adst_bit,void *a_src_ptr,char asrc_bit)
 {
 __asm {
 
@@ -153,7 +153,7 @@ bit_mov08_BIT_OK:
 }
 //---------------------------------------------------------------------------
 
-void __stdcall bit_mov_16(void *a_dst_ptr,char adst_bit,void *a_src_ptr,char asrc_bit)
+void STK_IMPEXP  __stdcall bit_mov_16(void *a_dst_ptr,char adst_bit,void *a_src_ptr,char asrc_bit)
 {
 __asm {
 
@@ -189,7 +189,7 @@ bit_mov16_BIT_OK:
 }
 //---------------------------------------------------------------------------
 
-void __stdcall bit_mov_24(void *a_dst_ptr,char adst_bit,void *a_src_ptr,char asrc_bit)
+void STK_IMPEXP  __stdcall bit_mov_24(void *a_dst_ptr,char adst_bit,void *a_src_ptr,char asrc_bit)
 {
 __asm {
 
@@ -231,7 +231,7 @@ bit_mov24_BIT_OK:
 }
 //---------------------------------------------------------------------------
 
-void __stdcall bit_mov_32(void *a_dst_ptr, char adst_bit,void *a_src_ptr, char asrc_bit)
+void STK_IMPEXP  __stdcall bit_mov_32(void *a_dst_ptr, char adst_bit,void *a_src_ptr, char asrc_bit)
 {
 __asm {
 

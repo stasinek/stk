@@ -4,7 +4,7 @@ contains(DEFINES, BUILD_STK_LIBRARY) {
     TARGET = stk
     TEMPLATE = lib
     CONFIG -= app_bundle
-    CONFIG += windows shared dll lib_bundle
+    CONFIG += windows shared lib_bundle
 }
 else {
     TARGET  = stk_tester
@@ -16,10 +16,10 @@ CONFIG -= qt
 QT -= core gui
 CONFIG += precompile_header
 #CONFIG -= static
-#CONFIG += warn_on
+CONFIG += warn_on
 #CONFIG += warn_off
-#CONFIG += exceptions
-#CONFIG += c++11
+CONFIG += exceptions
+CONFIG += c++11
 # -------------------------------------------------------------
 # External ASM .s compiler
 # -------------------------------------------------------------

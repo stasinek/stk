@@ -7,7 +7,7 @@
 //#pragma comment(lib, "C:\\Borland\\BCC55\\Lib\\PSDK\\winmm.lib")
 namespace stk {
 //---------------------------------------------------------------------------
-extern STK_IMPEXP int __stdcall start_kop32_server(char* ip, char* port);
+extern int STK_IMPEXP  __stdcall start_kop32_server(char* ip, char* port);
 //---------------------------------------------------------------------------
 }
 //---------------------------------------------------------------------------

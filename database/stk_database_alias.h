@@ -14,13 +14,13 @@ class __database_alias : public stk::__cstr_class {
 //-------------------------------
 	public:
 //-------------------------------
-	__stdcall  __database_alias(void)
+	STK_IMPEXP  __stdcall  __database_alias(void)
 	: stk::__cstr_class()
 	{}
-	__stdcall  __database_alias(const char *atext)
+	STK_IMPEXP  __stdcall  __database_alias(const char *atext)
 	: stk::__cstr_class(atext)
 	{ }
-		__stdcall ~__database_alias()
+		STK_IMPEXP  __stdcall ~__database_alias()
 	{}
 //-------------------------------
 	friend class __database;

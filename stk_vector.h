@@ -24,7 +24,7 @@ __DEBUG_FUNC_CALLED("")
     this->resize(a_count);
 }
 //---------------------------------------------------------------------------
-virtual inline  __stdcall ~__vector(void)
+virtual inline  STK_IMPEXP  __stdcall ~__vector(void)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -32,12 +32,12 @@ __DEBUG_FUNC_CALLED("")
     this->resize(0);
 }
 //---------------------------------------------------------------------------
-inline uint32_t __stdcall push(const T& a_new)
+inline uint32_t STK_IMPEXP  __stdcall push(const T& a_new)
 {
 return this->add(a_new);
 }
 //---------------------------------------------------------------------------
-uint32_t __stdcall add(const T& a_new)
+uint32_t STK_IMPEXP  __stdcall add(const T& a_new)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -49,18 +49,18 @@ __DEBUG_FUNC_CALLED("")
         return f_ptrs_ocupied;
 }
 //---------------------------------------------------------------------------
-T __stdcall pop()
+T STK_IMPEXP  __stdcall pop()
 {
 if (this->count()>0) return this->remove(this->count()-1);
 else return NULL;
 }
 //---------------------------------------------------------------------------
-inline void  __stdcall pop_all()
+inline void  STK_IMPEXP  __stdcall pop_all()
 {
 return this->resize(0);
 }
 //---------------------------------------------------------------------------
-T __stdcall remove(const uint32_t a_index)
+T STK_IMPEXP  __stdcall remove(const uint32_t a_index)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -77,7 +77,7 @@ __DEBUG_FUNC_CALLED("")
         return ret;
 }
 //---------------------------------------------------------------------------
-uint32_t __stdcall insert(const T& a_new,const uint32_t a_index)
+uint32_t STK_IMPEXP  __stdcall insert(const T& a_new,const uint32_t a_index)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -91,7 +91,7 @@ __DEBUG_FUNC_CALLED("")
         return f_ptrs_ocupied;
 }
 //---------------------------------------------------------------------------
-void __stdcall swap(const uint32_t a_index1,const uint32_t a_index2)
+void STK_IMPEXP  __stdcall swap(const uint32_t a_index1,const uint32_t a_index2)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -101,7 +101,7 @@ __DEBUG_FUNC_CALLED("")
         &f_ptrs[a_index1] = t;
 }
 //---------------------------------------------------------------------------
-inline T& __stdcall front(void) const
+inline T& STK_IMPEXP  __stdcall front(void) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -109,12 +109,12 @@ __DEBUG_FUNC_CALLED("")
     return f_ptrs[f_ptrs_ocupied];
 }
 //---------------------------------------------------------------------------
-inline T& __stdcall top(void) const
+inline T& STK_IMPEXP  __stdcall top(void) const
 {
     return front();
 }
 //---------------------------------------------------------------------------
-inline T& __stdcall back(void) const
+inline T& STK_IMPEXP  __stdcall back(void) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -122,12 +122,12 @@ __DEBUG_FUNC_CALLED("")
     return f_ptrs[0];
 }
 //---------------------------------------------------------------------------
-inline T& __stdcall bottom(void) const
+inline T& STK_IMPEXP  __stdcall bottom(void) const
 {
     return back();
 }
 //---------------------------------------------------------------------------
-inline T& __stdcall at(const uint32_t a_index) const
+inline T& STK_IMPEXP  __stdcall at(const uint32_t a_index) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -135,7 +135,7 @@ __DEBUG_FUNC_CALLED("")
     return f_ptrs[a_index];
 }
 //---------------------------------------------------------------------------
-inline T& __stdcall operator [] (const uint32_t a_index) const
+inline T& STK_IMPEXP  __stdcall operator [] (const uint32_t a_index) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -143,14 +143,14 @@ __DEBUG_FUNC_CALLED("")
     return f_ptrs[a_index];
 }
 //---------------------------------------------------------------------------
-inline T& __stdcall set(const uint32_t a_index, const T& a_value) const
+inline T& STK_IMPEXP  __stdcall set(const uint32_t a_index, const T& a_value) const
 {
     return f_ptrs[a_index] = a_value;
 }
 //---------------------------------------------------------------------------
 
 
-inline uint32_t __stdcall count(void)  const
+inline uint32_t STK_IMPEXP  __stdcall count(void)  const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -158,7 +158,7 @@ __DEBUG_FUNC_CALLED("")
     return f_ptrs_ocupied;
 }
 //---------------------------------------------------------------------------
-inline uint32_t __stdcall size(void)  const
+inline uint32_t STK_IMPEXP  __stdcall size(void)  const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -167,7 +167,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-inline uint32_t __stdcall max_size(void)
+inline uint32_t STK_IMPEXP  __stdcall max_size(void)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -175,19 +175,19 @@ __DEBUG_FUNC_CALLED("")
     return (2^16) / sizeof(T);  //65536 elements
 }
 //---------------------------------------------------------------------------
-virtual void __stdcall cleared(void)
+virtual void STK_IMPEXP  __stdcall cleared(void)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
 #endif
 }
 //---------------------------------------------------------------------------
-inline uint32_t __stdcall set_size(const uint32_t a_new_size)
+inline uint32_t STK_IMPEXP  __stdcall set_size(const uint32_t a_new_size)
 {
     return this->resize(a_new_size);
 }
 //---------------------------------------------------------------------------
-uint32_t __stdcall resize(const uint32_t a_new_size)
+uint32_t STK_IMPEXP  __stdcall resize(const uint32_t a_new_size)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -210,8 +210,8 @@ __DEBUG_FUNC_CALLED("")
     {
     f_ptrs = (T*)stk::mem::realloc(f_ptrs, a_new_size * sizeof(T));
     }
-	f_ptrs_reserved = a_new_size;
-	return a_new_size;
+    f_ptrs_reserved = a_new_size;
+    return a_new_size;
 }
 //---------------------------------------------------------------------------
 }; }

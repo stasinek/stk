@@ -28,17 +28,17 @@ public:
 		 __lzss_compressor(const uint32_t a_dict,const uint32_t a_dup_size);
 		~__lzss_compressor();
 //---------------------------------------------------------------------------
-		void __stdcall  initialize(const char *a_base_ptr);
+		void STK_IMPEXP  __stdcall  initialize(const char *a_base_ptr);
 //---------------------------------------------------------------------------
-		void __stdcall  update(const char *a_add_ptr, const uint32_t a_update_count, const bool a_insert);
-		void __stdcall  insert(void);
-		void __stdcall  skip(void);
-		void __stdcall  cut(const uint32_t a_choosen_ring_delete);
+		void STK_IMPEXP  __stdcall  update(const char *a_add_ptr, const uint32_t a_update_count, const bool a_insert);
+		void STK_IMPEXP  __stdcall  insert(void);
+		void STK_IMPEXP  __stdcall  skip(void);
+		void STK_IMPEXP  __stdcall  cut(const uint32_t a_choosen_ring_delete);
 //---------------------------------------------------------------------------
-		uint32_t __stdcall  search_forward(void);
-		void __stdcall  clear_forward_result(void);
-		uint32_t __stdcall  search_backward(void);
-		void __stdcall  clear_backward_result(void);
+		uint32_t STK_IMPEXP  __stdcall  search_forward(void);
+		void STK_IMPEXP  __stdcall  clear_forward_result(void);
+		uint32_t STK_IMPEXP  __stdcall  search_backward(void);
+		void STK_IMPEXP  __stdcall  clear_backward_result(void);
 //---------------------------------------------------------------------------
 		uint32_t small_offset;
 //---------------------------------------------------------------------------
@@ -48,8 +48,8 @@ public:
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------
-}}
-//-------------------------------THE END-------------------------------------
+}}
+//-------------------------------THE END-------------------------------------
 #endif
 //---------------------------------------------------------------------------
 

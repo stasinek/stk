@@ -159,27 +159,27 @@ typedef struct {
 
 class __lzstv4_header_coder {
 public:
-	__stdcall  __lzstv4_header_coder() {};
-	static int8_t __stdcall plain_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len);
-	static int8_t __stdcall plain_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr);
-	static int8_t __stdcall plain_price(const uint32_t axdata_uncoded_len);
+	STK_IMPEXP  __stdcall  __lzstv4_header_coder() {};
+	static int8_t STK_IMPEXP  __stdcall plain_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len);
+	static int8_t STK_IMPEXP  __stdcall plain_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr);
+	static int8_t STK_IMPEXP  __stdcall plain_price(const uint32_t axdata_uncoded_len);
 
-	static int8_t __stdcall pattern_encode(void *a_code_ptr,const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize);
-	static int8_t __stdcall pattern_decode(uint32_t *a_data_uncoded_counte,uint32_t *a_data_uncoded_elsize, const void *a_code_ptr);
-	static int8_t __stdcall pattern_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsizes);
+	static int8_t STK_IMPEXP  __stdcall pattern_encode(void *a_code_ptr,const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize);
+	static int8_t STK_IMPEXP  __stdcall pattern_decode(uint32_t *a_data_uncoded_counte,uint32_t *a_data_uncoded_elsize, const void *a_code_ptr);
+	static int8_t STK_IMPEXP  __stdcall pattern_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsizes);
 
-	static int8_t __stdcall dup_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len,const uint32_t axdata_uncoded_offset);
-	static int8_t __stdcall dup_decode(uint32_t *a_data_uncoded_len,uint32_t *a_data_uncoded_offset, const void *a_code_ptr);
-	static int8_t __stdcall dup_price(const uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset);
+	static int8_t STK_IMPEXP  __stdcall dup_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len,const uint32_t axdata_uncoded_offset);
+	static int8_t STK_IMPEXP  __stdcall dup_decode(uint32_t *a_data_uncoded_len,uint32_t *a_data_uncoded_offset, const void *a_code_ptr);
+	static int8_t STK_IMPEXP  __stdcall dup_price(const uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset);
 
-	static int32_t __stdcall check_dup_match_cost(const uint32_t aplain_len, const uint32_t adup_len, const uint32_t adup_offset);
-	static int32_t __stdcall check_pattern_match_cost(const uint32_t aplain_len, const uint32_t apattern_counte, const uint32_t apattern_elsize);
-	__stdcall ~__lzstv4_header_coder() {};
+	static int32_t STK_IMPEXP  __stdcall check_dup_match_cost(const uint32_t aplain_len, const uint32_t adup_len, const uint32_t adup_offset);
+	static int32_t STK_IMPEXP  __stdcall check_pattern_match_cost(const uint32_t aplain_len, const uint32_t apattern_counte, const uint32_t apattern_elsize);
+	STK_IMPEXP  __stdcall ~__lzstv4_header_coder() {};
 };
 #endif
 //---------------------------------------------------------------------------
-}}
-//---------------------------------------------------------------------------
+}}
+//---------------------------------------------------------------------------
 #endif
 //---------------------------------------------------------------------------
 

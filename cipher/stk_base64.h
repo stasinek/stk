@@ -201,8 +201,8 @@ ___ ___ ___ return;
     }
 }
 
-size_t __stdcall char2base64(char *Z, int s, char *out);
-int __stdcall base642char(char *Z, int s, char *out);
+size_t STK_IMPEXP  __stdcall char2base64(char *Z, int s, char *out);
+int STK_IMPEXP  __stdcall base642char(char *Z, int s, char *out);
 class  __base64 {
 private:
 //---------------------------------------------------------------------------
@@ -213,14 +213,14 @@ public:
         __base64(void);
        ~__base64(void);
 //---------------------------------------------------------------------------
-        void __stdcall  initialize(void);
+        void STK_IMPEXP  __stdcall  initialize(void);
 //---------------------------------------------------------------------------
-        char __stdcall  encode(const char a_ch);
-        char __stdcall  decode(const char a_ch);
+        char STK_IMPEXP  __stdcall  encode(const char a_ch);
+        char STK_IMPEXP  __stdcall  decode(const char a_ch);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------
-}}
-//-------------------------------THE END-------------------------------------
+}}
+//-------------------------------THE END-------------------------------------
 #endif
 //---------------------------------------------------------------------------

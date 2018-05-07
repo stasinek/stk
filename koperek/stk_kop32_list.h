@@ -9,20 +9,20 @@ namespace stk {
 class  __kop32_class_list {
 //---------------------------------------------------------------------------
 		public:
-				__stdcall  __kop32_class_list() {
+				STK_IMPEXP  __stdcall  __kop32_class_list() {
 						src_main_list = new __database();
 						dst_main_list = new __database();
 						output_formated_list = new __database();
 						sync_op_list  = new __database();
 						reset();
 						}
-				__stdcall ~__kop32_class_list() {
+				STK_IMPEXP  __stdcall ~__kop32_class_list() {
 						delete src_main_list;
 						delete dst_main_list;
 						delete output_formated_list;
 						delete sync_op_list;
 				}
-				void __stdcall reset() {
+				void STK_IMPEXP  __stdcall reset() {
 						src_main_list->clear();
 						dst_main_list->clear();
 						output_formated_list->clear();

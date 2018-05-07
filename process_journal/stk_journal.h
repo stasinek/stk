@@ -4,9 +4,11 @@
 //---------------------------------------------------------------------------
 #include ".\..\stk_MAIN.h"
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 namespace stk {
+#endif
 //---------------------------------------------------------------------------
-class __journal {
+class STK_IMPEXP __journal {
         time_t f_current_time;
         char f_current_time_asci[20+1];
         struct tm *f_current_time_info;
@@ -15,16 +17,16 @@ class __journal {
         uint32_t f_buffer_size;
         char *f_write_buffer;
 public:
-        __stdcall  __journal();
-        __stdcall ~__journal();
-        const FILE	*__stdcall create(void);
-        const FILE	*__stdcall open(void);
-        const FILE	*__stdcall get_stream(void);
-        int32_t __stdcall write_formated_line(const char* __restrict__ a_format, ...);
-        int32_t __stdcall write_line(const char *a_line);
-        int32_t __stdcall get_first_line(const time_t a_ttime);
-        int32_t __stdcall get_next_line(void);
-        const char 	*__stdcall read_line(const uint32_t a_line_number);
+        STK_IMPEXP  __stdcall  __journal();
+        STK_IMPEXP  __stdcall ~__journal();
+        const FILE	 STK_IMPEXP *__stdcall create(void);
+        const FILE	 STK_IMPEXP *__stdcall open(void);
+        const FILE	 STK_IMPEXP *__stdcall get_stream(void);
+        int32_t STK_IMPEXP  __stdcall write_formated_line(const char* __restrict__ a_format, ...);
+        int32_t STK_IMPEXP  __stdcall write_line(const char *a_line);
+        int32_t STK_IMPEXP  __stdcall get_first_line(const time_t a_ttime);
+        int32_t STK_IMPEXP  __stdcall get_next_line(void);
+        const char 	 STK_IMPEXP *__stdcall read_line(const uint32_t a_line_number);
         inline void operator << (const char a_char) {
             write_formated_line("%c",a_char);
         }
@@ -40,10 +42,12 @@ public:
         inline void operator << (const double a_double) {
             write_formated_line("%f",a_double);
         }
-        void	 __stdcall close(void);
+        void	 STK_IMPEXP  __stdcall close(void);
 };
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 }
+#endif
 //---------------------------------------------------------------------------
 #endif
 //---------------------------------------------------------------------------

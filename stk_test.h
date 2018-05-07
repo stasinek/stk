@@ -22,7 +22,7 @@
 #include "./io/stk_console.h"
 
 namespace stk { namespace test {
-extern "C" STK_IMPEXP int __stdcall start_test(int argc, char *argv[]);
+extern "C" STK_IMPEXP int STK_IMPEXP  __stdcall start_test(int argc, char *argv[]);
 #ifdef __WATCOMC__
 extern "C" void stk_atexit(void);
 #else

@@ -22,17 +22,17 @@ public:
 	        __static_huff_compressor(void);
 	       ~__static_huff_compressor();
 //---------------------------------------------------------------------------
-	void    __stdcall reconstruct(void);
-	void    __stdcall update(const char axdata_uncoded);
-	void    __stdcall initialize(void);
+	void    STK_IMPEXP  __stdcall reconstruct(void);
+	void    STK_IMPEXP  __stdcall update(const char axdata_uncoded);
+	void    STK_IMPEXP  __stdcall initialize(void);
 //---------------------------------------------------------------------------
-	char    __stdcall encode(char *a_code_ptr, const char a_code_ptr_bit, const char axdata_uncoded);
-	char    __stdcall decode(char *alpdata_uncoded, const char *a_code_ptr, const char a_code_ptr_bit);
+	char    STK_IMPEXP  __stdcall encode(char *a_code_ptr, const char a_code_ptr_bit, const char axdata_uncoded);
+	char    STK_IMPEXP  __stdcall decode(char *alpdata_uncoded, const char *a_code_ptr, const char a_code_ptr_bit);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------
-}}
-//-------------------------------THE END-------------------------------------
+}}
+//-------------------------------THE END-------------------------------------
 #endif
 //---------------------------------------------------------------------------
 

@@ -16,13 +16,13 @@ class __database_owner {
 //------------------------------------
 		public:
 //------------------------------------
-												   __stdcall __database_owner(const __database *a_owner);
-												   __stdcall __database_owner(void);
-				void						   __stdcall operator= (const __database *i);
-				void						   __stdcall set(const __database *i);
-												   __stdcall operator __database* ();
-												   __database *__stdcall get(void);
-												   __stdcall ~__database_owner(void);
+												   STK_IMPEXP  __stdcall __database_owner(const __database *a_owner);
+												   STK_IMPEXP  __stdcall __database_owner(void);
+				void						   STK_IMPEXP  __stdcall operator= (const __database *i);
+				void						   STK_IMPEXP  __stdcall set(const __database *i);
+												   STK_IMPEXP  __stdcall operator __database* ();
+												   __database  STK_IMPEXP *__stdcall get(void);
+												   STK_IMPEXP  __stdcall ~__database_owner(void);
 //------------------------------------
 				friend __database;
 //---------------------------------------------------------------------------

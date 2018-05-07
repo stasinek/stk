@@ -18,20 +18,20 @@ public:
 		uint32_t *dad; // pointers to parent nodes, except for the
 	// elements [TREE..TREE + N_CHAR - 1] which are used to get the positions of leaves corresponding to the codes.
 //---------------------------------------------------------------------------
-	__stdcall  __huff_compressor(void);
-	__stdcall ~__huff_compressor();
+	STK_IMPEXP  __stdcall  __huff_compressor(void);
+	STK_IMPEXP  __stdcall ~__huff_compressor();
 //---------------------------------------------------------------------------
-	void __stdcall reconstruct(void);
-	void __stdcall update(const int8_t axdata_uncoded);
-	void __stdcall initialize(void);
+	void STK_IMPEXP  __stdcall reconstruct(void);
+	void STK_IMPEXP  __stdcall update(const int8_t axdata_uncoded);
+	void STK_IMPEXP  __stdcall initialize(void);
 //---------------------------------------------------------------------------
-		int8_t __stdcall encode(int8_t *a_code_ptr, const int8_t a_code_ptr_bit, const int8_t axdata_uncoded);
-		int8_t __stdcall decode(int8_t *alpdata_uncoded, const int8_t *a_code_ptr, const int8_t a_code_ptr_bit);
+		int8_t STK_IMPEXP  __stdcall encode(int8_t *a_code_ptr, const int8_t a_code_ptr_bit, const int8_t axdata_uncoded);
+		int8_t STK_IMPEXP  __stdcall decode(int8_t *alpdata_uncoded, const int8_t *a_code_ptr, const int8_t a_code_ptr_bit);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------
-}}
-//-------------------------------THE END-------------------------------------
+}}
+//-------------------------------THE END-------------------------------------
 #endif
 //---------------------------------------------------------------------------
 
