@@ -543,12 +543,12 @@ if (f_write_file_thread_handle==NULL)
 for (d = 0; list->cur_i >= 0 && list->cur_i < (int32_t)list->src_main_list->items()->count() && progress->cancel==0; list->cur_i+=list->inc_i)
         {
          /// CHECK SRC
-         if (list->src_main_list->items()->get_number(list->cur_i,IS)!=EXISTS)
+         if (list->src_main_list->items()->get_numbers(list->cur_i,IS)!=EXISTS)
                         { continue; }
 
          if (options->operation==OPERATION_CHECKSUM || options->operation==OPERATION_COPY || options->operation==OPERATION_ENCODE || options->operation==OPERATION_DECODE || options->operation==OPERATION_MOVE)  {
          // CHECK DST
-         if (list->dst_main_list->items()->get_number(list->cur_i,IS)==EXISTS) {   // QUEST
+         if (list->dst_main_list->items()->get_numbers(list->cur_i,IS)==EXISTS) {   // QUEST
          if (options->ask_at_break==ASK_USER)
                 {
                  stk::cstr::mov(ret,do_event(ON_IO_BEFORE_REPLACE,OKYESALLCUSTOMNONOALLCANCEL,EMPTY)); // REPLACE
@@ -615,13 +615,13 @@ if (options->operation==OPERATION_MOVE)
 
         for (list->cur_i = list->start_i; progress->cancel==0; list->cur_i+=list->inc_i)
                 {
-                 if (list->src_main_list->items()->get_number(list->cur_i,IS)!=EXISTS)
+                 if (list->src_main_list->items()->get_numbers(list->cur_i,IS)!=EXISTS)
                          continue;
 
-                 if (all_nor_dir ? false : (list->src_main_list->items()->get_number(list->cur_i,ATTRIB) & FILE_ATTRIBUTE_DIRECTORY)!=0)
+                 if (all_nor_dir ? false : (list->src_main_list->items()->get_numbers(list->cur_i,ATTRIB) & FILE_ATTRIBUTE_DIRECTORY)!=0)
                         {continue;
                         }
-                 if (list->src_main_list->items()->get_number(list->cur_i,ATTRIB) & FILE_ATTRIBUTE_DIRECTORY)
+                 if (list->src_main_list->items()->get_numbers(list->cur_i,ATTRIB) & FILE_ATTRIBUTE_DIRECTORY)
                         {
                          if (SetFileAttributesA(list->src_main_list->items()->get_text(list->cur_i),FILE_ATTRIBUTE_NORMAL)==false) ret_i=false;
                          else
@@ -652,7 +652,7 @@ if (options->operation==OPERATION_LIST) // save list to file
 
                  if (stk::cstr::pos(templp->c_str(),0,"CLIPBOARD:")>=0 ? stk::cstr::compare(stk::cstr::mov(ret,stk::cstr::itoa(OpenClipboard(NULL))),"0")!=0 : 0)
                           {
-                          char *tStr = stk::cstr::dup(list->output_formated_list->items()->text("TEXT"));
+                          char *tStr = stk::cstr::dup(list->output_formated_list->items()->serialize("TEXT"));
                                  SetClipboardData(CF_TEXT,tStr);
                           CloseClipboard();
                           }
@@ -763,8 +763,8 @@ for (crt = aindex; crt < list->src_main_list->items()->count(); crt++) {
  if (stk::cstr::pos(list->src_main_list->items()->get_text(crt),0,templp->c_str())==-1)
          {break;
          }
- progress->src->all->size -= list->src_main_list->items()->get_number(crt,SIZE);
- list->src_main_list->items()->set_number(crt,IS,~EXISTS);
+ progress->src->all->size -= list->src_main_list->items()->get_numbers(crt,SIZE);
+ list->src_main_list->items()->set_numbers(crt,IS,~EXISTS);
 }
 if (options->operation!=OPERATION_CHECKSUM && options->operation!=OPERATION_COPY && options->operation!=OPERATION_MOVE && options->operation!=OPERATION_ENCODE && options->operation!=OPERATION_DECODE) {
 goto GOTO_execute_cleanup_OK;
@@ -780,8 +780,8 @@ for (crt = aindex; crt < list->dst_main_list->items()->count(); crt++) {
  if (stk::cstr::pos(list->dst_main_list->items()->get_text(crt),0,templp->c_str())==-1)
          {break;
          }
- progress->src->all->size -= list->dst_main_list->items()->get_number(crt,SIZE);
- list->dst_main_list->items()->set_number(crt,IS,~EXISTS);
+ progress->src->all->size -= list->dst_main_list->items()->get_numbers(crt,SIZE);
+ list->dst_main_list->items()->set_numbers(crt,IS,~EXISTS);
 }
 //
 // CLEAR & EXIT
@@ -814,20 +814,20 @@ stk::__cstr_class *templpStr2 = new stk::__cstr_class(512);
 //
 // CHECK IS THE SOURCE STILL EXISTS OR IT HAS BEEN SKIPPED BY USER?
 //
-if (list->src_main_list->items()->get_number(aindex,IS)!=EXISTS) {
+if (list->src_main_list->items()->get_numbers(aindex,IS)!=EXISTS) {
         goto GOTO_execute_cleanup_ERROR;
 }
 do_event(ON_IO_ONE_START,EMPTY,EMPTY);
 //
 // CHECK IS IT DIRECTORY OR FILE
 //
-if ((list->src_main_list->items()->get_number(aindex,ATTRIB) & FILE_ATTRIBUTE_DIRECTORY)==0) {
+if ((list->src_main_list->items()->get_numbers(aindex,ATTRIB) & FILE_ATTRIBUTE_DIRECTORY)==0) {
                 goto GOTO_execute_FILE; }
 else
 if (anaction==OPERATION_MOVE) {
         do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
-        if (list->dst_main_list->items()->get_number(aindex,IS)==EXISTS) {
-        if (SetFileAttributesA(list->dst_main_list->items()->get_text(aindex),list->src_main_list->items()->get_number(aindex,ATTRIB))==false)
+        if (list->dst_main_list->items()->get_numbers(aindex,IS)==EXISTS) {
+        if (SetFileAttributesA(list->dst_main_list->items()->get_text(aindex),list->src_main_list->items()->get_numbers(aindex,ATTRIB))==false)
                 {f_skip_one(aindex,false);
                  goto GOTO_execute_cleanup_ERROR;
                 }
@@ -875,8 +875,8 @@ if (anaction==OPERATION_REMOVE) {
 else
 if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERATION_ENCODE || anaction==OPERATION_DECODE) {
         do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
-        if (list->dst_main_list->items()->get_number(aindex,IS)==EXISTS) {
-        if (SetFileAttributesA(list->dst_main_list->items()->get_text(aindex),list->src_main_list->items()->get_number(aindex,ATTRIB))==false)
+        if (list->dst_main_list->items()->get_numbers(aindex,IS)==EXISTS) {
+        if (SetFileAttributesA(list->dst_main_list->items()->get_text(aindex),list->src_main_list->items()->get_numbers(aindex,ATTRIB))==false)
                 {f_skip_one(aindex,false);
                  goto GOTO_execute_cleanup_ERROR;
                 }
@@ -913,7 +913,7 @@ f_dst_file.hand = INVALID_HANDLE_VALUE;
 //
 if (anaction==OPERATION_LIST) {
 progress->src->one->readed  = 0;
-progress->src->one->size  = list->src_main_list->items()->get_number(aindex,SIZE);
+progress->src->one->size  = list->src_main_list->items()->get_numbers(aindex,SIZE);
 progress->dst->one->readed  = 0;
 progress->dst->one->size  = options->output_arguments_list->items()->count();
 do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
@@ -926,25 +926,25 @@ for (iT = 0; iT < (int32_t)options->output_arguments_list->items()->count(); iT+
          stk::cstr::replace(templpStr1->data(),"#index",
                                         stk::cstr::itoa(aindex));
          stk::cstr::replace(templpStr1->data(),"#base_file_path",
-                                        stk::cstr::mov_max(templpStr2->data(),list->src_main_list->items()->get_text(aindex),list->src_main_list->items()->get_number(aindex,FILENAME_BASE_PATH_LEN)));
+                                        stk::cstr::mov_max(templpStr2->data(),list->src_main_list->items()->get_text(aindex),list->src_main_list->items()->get_numbers(aindex,FILENAME_BASE_PATH_LEN)));
          stk::cstr::replace(templpStr1->data(),"#file_path",
                                         stk::cstr::get_file_path(templpStr2->data(),list->src_main_list->items()->get_text(aindex)));
          stk::cstr::replace(templpStr1->data(),"#file_path_and_name",
                                         list->src_main_list->items()->get_text(aindex));
          stk::cstr::replace(templpStr1->data(),"#relative_file_path_and_name",
-                                        stk::cstr::substr_end(templpStr2->data(),list->src_main_list->items()->get_text(aindex),list->src_main_list->items()->get_number(aindex,FILENAME_BASE_PATH_LEN)+1,strlen(list->src_main_list->items()->get_text(aindex))));
+                                        stk::cstr::substr_end(templpStr2->data(),list->src_main_list->items()->get_text(aindex),list->src_main_list->items()->get_numbers(aindex,FILENAME_BASE_PATH_LEN)+1,strlen(list->src_main_list->items()->get_text(aindex))));
          stk::cstr::replace(templpStr1->data(),"#file_name",
                                         stk::cstr::get_file_name(templpStr2->data(),list->src_main_list->items()->get_text(aindex)));
          stk::cstr::replace(templpStr1->data(),"#file_creation_time_t",
-                                        stk::cstr::itoa(list->src_main_list->items()->get_number(aindex,FILE_CREATION_DATE)));
+                                        stk::cstr::itoa(list->src_main_list->items()->get_numbers(aindex,FILE_CREATION_DATE)));
          stk::cstr::replace(templpStr1->data(),"#file_modified_time_t",
-                                        stk::cstr::itoa(list->src_main_list->items()->get_number(aindex,FILE_MODIFIED_DATE)));
+                                        stk::cstr::itoa(list->src_main_list->items()->get_numbers(aindex,FILE_MODIFIED_DATE)));
          stk::cstr::replace(templpStr1->data(),"#file_accessed_time_t",
-                                        stk::cstr::itoa(list->src_main_list->items()->get_number(aindex,FILE_ACCESSED_DATE)));
+                                        stk::cstr::itoa(list->src_main_list->items()->get_numbers(aindex,FILE_ACCESSED_DATE)));
          stk::cstr::replace(templpStr1->data(),"#attribute",
-                                        stk::cstr::itoa(list->src_main_list->items()->get_number(aindex,ATTRIB)));
+                                        stk::cstr::itoa(list->src_main_list->items()->get_numbers(aindex,ATTRIB)));
          stk::cstr::replace(templpStr1->data(),"#size",
-                                        stk::cstr::itoa(list->src_main_list->items()->get_number(aindex,SIZE)));
+                                        stk::cstr::itoa(list->src_main_list->items()->get_numbers(aindex,SIZE)));
          list->output_formated_list->items()->add_text(templpStr1->c_str());
 
          //out_list_item_size = stk::cstr::len(templpStr1->c_str());
@@ -961,16 +961,16 @@ if (anaction==OPERATION_MOVE) {
 if ((((char*)list->src_main_list->items()->get_text(aindex))[0] | 0x20L)==(((char*)list->dst_main_list->items()->get_text(aindex))[0] | 0x20L)) // | 0x20L dla uzyskania ma�ych liter
         {
         f_src_file.readed = 0;
-        f_src_file.size = list->src_main_list->items()->get_number(aindex,SIZE);
+        f_src_file.size = list->src_main_list->items()->get_numbers(aindex,SIZE);
         progress->src->one->readed = f_src_file.readed;
         progress->dst->one->size = f_dst_file.size;
         f_dst_file.readed = 0;
-        f_dst_file.size = list->dst_main_list->items()->get_number(aindex,SIZE);
+        f_dst_file.size = list->dst_main_list->items()->get_numbers(aindex,SIZE);
         progress->dst->one->readed = f_dst_file.readed;
         progress->dst->one->size = f_dst_file.size;
         do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
         //
-        if (list->dst_main_list->items()->get_number(aindex,IS)==EXISTS) {
+        if (list->dst_main_list->items()->get_numbers(aindex,IS)==EXISTS) {
         if (SetFileAttributesA(list->dst_main_list->items()->get_text(aindex),FILE_ATTRIBUTE_NORMAL)==false)
                 {f_skip_one(aindex,false);
                  goto GOTO_execute_cleanup_ERROR;
@@ -1008,7 +1008,7 @@ else
 else
 if (anaction==OPERATION_REMOVE) {
         f_src_file.readed = 0;
-        f_src_file.size = list->src_main_list->items()->get_number(aindex,SIZE);
+        f_src_file.size = list->src_main_list->items()->get_numbers(aindex,SIZE);
         progress->src->one->readed = f_src_file.readed;
         progress->src->one->size = f_src_file.size;
         do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
@@ -1039,21 +1039,21 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
         f_src_file.hand = INVALID_HANDLE_VALUE;
         f_src_file.hand_map = INVALID_HANDLE_VALUE;
         f_src_file.readed = 0;
-        f_src_file.size = list->src_main_list->items()->get_number(aindex,SIZE);
+        f_src_file.size = list->src_main_list->items()->get_numbers(aindex,SIZE);
         progress->src->one->readed  = 0;
         progress->src->one->size  = f_src_file.size;
         progress->src->all->readed += 0;
         f_dst_file.hand = INVALID_HANDLE_VALUE;
         f_dst_file.hand_map = INVALID_HANDLE_VALUE;
         f_dst_file.readed = 0;
-        f_dst_file.size = list->dst_main_list->items()->get_number(aindex,SIZE);
+        f_dst_file.size = list->dst_main_list->items()->get_numbers(aindex,SIZE);
         progress->dst->one->readed  = 0;
         progress->dst->one->size  = f_dst_file.size;
         progress->dst->all->readed += 0;
         do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
          //
         root[0] = ((char*)list->dst_main_list->items()->get_text(aindex))[0];
-        if (f_check_free_space(root,list->src_main_list->items()->get_number(aindex,SIZE),list->dst_main_list->items()->get_number(aindex,SIZE),true,false) < 0)
+        if (f_check_free_space(root,list->src_main_list->items()->get_numbers(aindex,SIZE),list->dst_main_list->items()->get_numbers(aindex,SIZE),true,false) < 0)
                 {abort();
                  goto GOTO_execute_io_cleanup_ERROR;
                 }
@@ -1065,7 +1065,7 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
                 {goto GOTO_execute_io_cleanup_ERROR;
                 }
          // Open dst >>
-        if (list->dst_main_list->items()->get_number(aindex,IS)==EXISTS)
+        if (list->dst_main_list->items()->get_numbers(aindex,IS)==EXISTS)
                         SetFileAttributesA(list->dst_main_list->items()->get_text(aindex),FILE_ATTRIBUTE_NORMAL);
         f_dst_file.hand = stk::file::create(list->dst_main_list->items()->get_text(aindex),
                                                                                 GENERIC_READ|GENERIC_WRITE, FILE_SHARE_DELETE, NULL, CREATE_ALWAYS,
@@ -1165,7 +1165,7 @@ if (anaction==OPERATION_CHECKSUM || anaction==OPERATION_COPY || anaction==OPERAT
         //
         do_event(ON_IO_ONE_PROGRESS,EMPTY,EMPTY);
                 root[0] = ((char*)list->dst_main_list->items()->get_text(aindex))[0];
-        if (f_check_free_space(root,f_dst_file.size,list->dst_main_list->items()->get_number(aindex,SIZE),true,false) < 0)
+        if (f_check_free_space(root,f_dst_file.size,list->dst_main_list->items()->get_numbers(aindex,SIZE),true,false) < 0)
                 {abort();
                  goto GOTO_execute_io_cleanup_ERROR;
                 }

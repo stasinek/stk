@@ -114,7 +114,7 @@ __DEBUG_FUNC_CALLED("load(const char*)")
         if (size==-1) {
                 return -1;
         }
-        DATA_FROM_C(this, a_format, lptemp);
+        DATABASE_FROM_CSTR(this, a_format, lptemp);
         stk::cstr::free(lptemp);
         _close(f_hand);
         return size;
@@ -131,7 +131,7 @@ __DEBUG_FUNC_CALLED("save(const char*) const")
                 return -1;
         }
         char *lptemp = new char[255];
-        C_FROM_DATA(lptemp, a_format, this);
+        CSTR_FROM_DATABASE(lptemp, a_format, this);
         int32_t size = stk::cstr::len(lptemp);
         size = _write(f_hand,lptemp,size);
         if (size==-1) {
@@ -147,7 +147,7 @@ int32_t __stdcall stk::__database::export_to(char *a_data, const char* __restric
 __DEBUG_FUNC_CALLED("export_to(char*,const char*)")
 #endif
         char *x = new char[32 * this->items()->count()];
-        C_FROM_DATA(x, a_format, this);
+        CSTR_FROM_DATABASE(x, a_format, this);
         stk::cstr::mov((char*)a_data,x);
 #ifdef __DEBUG_DATABASE__
 stk::con::prints("__database::export_to(a_data,a_format:%s)\r\nreturn len:%d\r\na_data:%s",a_format,stk::cstr::len(a_data),a_data);
@@ -162,7 +162,7 @@ int32_t __stdcall stk::__database::import_from(const char* __restrict__ a_data, 
 #ifdef __DEBUG_DATABASE__
 __DEBUG_FUNC_CALLED("import_from(const char*,const char*)")
 #endif
-        DATA_FROM_C(this, a_format, a_data);
+        DATABASE_FROM_CSTR(this, a_format, a_data);
 #ifdef __DEBUG_DATABASE__
 stk::con::prints("__database::import_from(a_data,a_format:%s)\r\na_data:%s\r\nreturn %d",a_format,a_data,items()->count());
 stk::con::print("\r\n\r\n");
@@ -185,10 +185,10 @@ __DEBUG_FUNC_CALLED("add(this*)")
 // SUPPORT, CONVERSIONS, OTHER FUNCTIONS
 //---------------------------------------------------------------------------
 
-char *__stdcall stk::C_FROM_DATA(char *a_text, const char* __restrict__ a_format, const stk::__database* __restrict__ a_database)
+char *__stdcall stk::CSTR_FROM_DATABASE(char *a_text, const char* __restrict__ a_format, const stk::__database* __restrict__ a_database)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("C_FROM_DATA(char*,const char*,const this*)")
+__DEBUG_FUNC_CALLED("CSTR_FROM_DATABASE(char*,const char*,const this*)")
 #endif
         register char *text = a_text;
         register int32_t text_alloc_size = 255 + 1;
@@ -243,10 +243,10 @@ __DEBUG_FUNC_CALLED("C_FROM_DATA(char*,const char*,const this*)")
 }
 //---------------------------------------------------------------------------
 
-stk::__database *__stdcall stk::DATA_FROM_C(stk::__database *a_data, const char* __restrict__ a_format, const char* __restrict__ a_text)
+stk::__database *__stdcall stk::DATABASE_FROM_CSTR(stk::__database *a_data, const char* __restrict__ a_format, const char* __restrict__ a_text)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("DATA_FROM_C(this*,const char*,const char*)")
+__DEBUG_FUNC_CALLED("DATABASE_FROM_CSTR(this*,const char*,const char*)")
 #endif
         int32_t pos, pos_chk, pos_end = stk::cstr::len(a_text);
         int32_t sep, t_pos, t_posend = 256;
@@ -312,6 +312,35 @@ __DEBUG_FUNC_CALLED("DATA_FROM_C(this*,const char*,const char*)")
                 stk::cstr::free(t_text);
         }
         return a_data;
+}
+//---------------------------------------------------------------------------
+
+const stk::__database* __stdcall stk::__database::owner(void) const
+{
+return f_owner;}
+//---------------------------------------------------------------------------
+
+const char* __stdcall stk::__database::alias(void) const
+{
+return f_alias->c_str();
+}
+//---------------------------------------------------------------------------
+
+stk::__database_items* __stdcall stk::__database::items(void)
+{
+return f_items;
+}
+//---------------------------------------------------------------------------
+
+const stk::__database_items* __stdcall stk::__database::items(void) const
+{
+return f_items;
+}
+//---------------------------------------------------------------------------
+
+void __stdcall stk::__database::clear()
+{
+items()->clear_all();
 }
 //---------------------------------------------------------------------------
 

@@ -1,0 +1,2 @@
+; C:\Qt\Qt5.5.1\Tools\mingw492_32\bin\dlltool.exe -z export.def -b D:\stasiek\My Projects\X86_LIBRARIES\STK\debug\stk.dll
+EXPORTS

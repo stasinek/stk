@@ -8,7 +8,9 @@
 #include "./../database/stk_database.h"
 #include "./../io/stk_file_io.h"
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 namespace stk {
+#endif
 //---------------------------------------------------------------------------
 #define IS							(int32_t)0
 #define FILE_CREATION_DATE			(int32_t)1
@@ -23,19 +25,19 @@ namespace stk {
 //------------------------------------
 #define EXISTS						0xFFFFFFFFL
 //---------------------------------------------------------------------------
-class __kop32_search {
+class STK_IMPEXP __kop32_search {
 //------------------------------------
 private:
 //------------------------------------
-        const stk::__database  *f_IMPEXPal_mask_list_ptr;
+        const stk::__database           *f_mask_list_ptr;
 //------------------------------------
-        int32_t __stdcall  f_seek_src				(const char *a_Source_ptr);
-        int32_t __stdcall  f_seek_src_file			(const char *a_Source_ptr, const int32_t a_Base_path_len);
-        stk::__database  *f_IMPEXPal_src_output_list_ptr;
-        stk::file::__file_open_struct  f_src_file;
+        int32_t         __stdcall        f_seek_src				(const char *a_Source_ptr);
+        int32_t         __stdcall        f_seek_src_file			(const char *a_Source_ptr, const int32_t a_Base_path_len);
+        stk::__database                 *f_src_output_list_ptr;
+        stk::file::__file_open_struct    f_src_file;
 //------------------------------------
-        int32_t __stdcall  f_seek_dst				(const char *a_Destination_ptr, const char *a_Extension_to_add_ptr, const char *a_Extension_to_delete_ptr);
-        stk::__database  *f_IMPEXPal_dst_output_list_ptr;
+        int32_t         __stdcall        f_seek_dst				(const char *a_Destination_ptr, const char *a_Extension_to_add_ptr, const char *a_Extension_to_delete_ptr);
+        stk::__database                 *f_dst_output_list_ptr;
         stk::file::__file_open_struct  f_dst_file;
         stk::__kop32_class *f_owner;
 //------------------------------------
@@ -53,7 +55,6 @@ public:
         __stdcall				 ~__kop32_search					(void);
 //------------------------------------
         class __options {
-        public:
         } options;
 //------------------------------------
         int32_t __stdcall exec						(const char* a_Source_path_ptr, const stk::__database* a_Mask_ptr, stk::__database* a_Destination_database_ptr);
@@ -68,7 +69,9 @@ public:
 #define ITS_DST					(int32_t)0x00000100L
 };
 //---------------------------------------------------------------------------
-}
+#ifdef __cplusplus
+} //namespace stk
+#endif
 //---------------------------------------------------------------------------
 #endif
 //---------------------------------------------------------------------------

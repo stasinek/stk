@@ -13,16 +13,17 @@ private:
         char	*f_expression;
         char	*f_splited_expression[10];
         int32_t  f_splited_expression_count;
-        int32_t STK_IMPEXP  __stdcall f_decode_subexpression(const uint32_t a_index);
+        int32_t            __stdcall f_decode_subexpression(const uint32_t a_index);
 public:
-        STK_IMPEXP  __stdcall  __math_pharser(void);
-        STK_IMPEXP  __stdcall ~__math_pharser(void);
-        int32_t STK_IMPEXP  __stdcall decode(const char *a_expression);
+                           __stdcall  __math_pharser(void);
+                           __stdcall ~__math_pharser(void);
+        int32_t            __stdcall decode(const char *a_expression);
         int32_t result;
 };
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
-}
+} //namespace stk
 #endif
 //---------------------------------------------------------------------------
 #endif
+//---------------------------------------------------------------------------

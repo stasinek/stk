@@ -6,8 +6,45 @@
 #include "./../mem/stk_mem.h"
 //---------------------------------------------------------------------------
 #include "stk_database.h"
-//---------------------------------------------------------------------------
 #include "stk_database_items.h"
+//---------------------------------------------------------------------------
+// DATABASE_ITEMS::ATOM
+//---------------------------------------------------------------------------
+__stdcall stk::__database_items::__atom::__atom(void)
+{
+text_size = ATOM_TEXT_SIZE;
+text = stk::cstr::allocex(text_size + 1,"\0");
+reset();
+}
+//---------------------------------------------------------------------------
+void __stdcall stk::__database_items::__atom::set(char* a_text)
+{
+register uint32_t a_text_len = stk::cstr::len(a_text);
+if (text_size < a_text_len) {
+    text_size = a_text_len;
+    text = stk::cstr::reallocex(text,text_size + 1,"\0");
+    }
+}
+//---------------------------------------------------------------------------
+
+void __stdcall stk::__database_items::__atom::reset(void)
+{
+for (register uint32_t i = 0; i < ATOM_NUMBERS_COUNT; i++) {
+    numbers[i]=0;
+    pointer[i] = NULL;
+    }
+if (text_size!=ATOM_TEXT_SIZE) {
+    text_size =ATOM_TEXT_SIZE;
+    text = stk::cstr::reallocex(text,text_size + 1,"\0");
+    }
+}
+//---------------------------------------------------------------------------
+__stdcall stk::__database_items::__atom::~__atom(void)
+{
+text_size = 0;
+stk::cstr::free(text);
+text = NULL;
+}
 //---------------------------------------------------------------------------
 // DATABASE_ITEMS
 //---------------------------------------------------------------------------
@@ -20,9 +57,10 @@ __stdcall  stk::__database_items::__database_items(void)
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
 #endif
-    f_temp_atom = new __atom();
+f_temp_atom = new __atom();
 }
 //---------------------------------------------------------------------------
+
 __stdcall  stk::__database_items::__database_items(const stk::__database *a_owner)
 :       f_this_class_owner((stk::__database*)a_owner),
         f_atom_matrix(NULL),
@@ -31,7 +69,7 @@ __stdcall  stk::__database_items::__database_items(const stk::__database *a_owne
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
 #endif
-    f_temp_atom = new __atom();
+f_temp_atom = new __atom();
 }
 //---------------------------------------------------------------------------
 
@@ -40,7 +78,7 @@ __stdcall stk::__database_items::~__database_items()
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
 #endif
-    delete f_temp_atom;
+delete f_temp_atom;
 }
 //---------------------------------------------------------------------------
 /*
@@ -89,14 +127,26 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
+void __stdcall stk::__database_items::clear(void)
+{
+set_count(0);
+}
+//---------------------------------------------------------------------------
+
+void __stdcall stk::__database_items::clear_all(void)
+{
+clear();
+}
+//---------------------------------------------------------------------------
+
 void __stdcall stk::__database_items::set(const uint32_t a_index_S, const stk::__database_items::__atom *a_atom)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
 #endif
         for (register uint32_t x = 0; x < ATOM_NUMBERS_COUNT; x++) {
-                f_atom_matrix[a_index_S]->number[x] = a_atom->number[x];
-                f_atom_matrix[a_index_S]->data_chunk[x]   = a_atom->data_chunk[x];
+                f_atom_matrix[a_index_S]->numbers[x] = a_atom->numbers[x];
+                f_atom_matrix[a_index_S]->pointer[x]   = a_atom->pointer[x];
         }
         set_text(a_index_S, a_atom->text);
 }
@@ -131,57 +181,67 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-void    __stdcall stk::__database_items::set_number(const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_value)
+void    __stdcall stk::__database_items::set_numbers(const uint32_t a_index_S, const uint32_t a_column_Y, const uint32_t a_value)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-stk::con::prints("__database_items::set_number(a_index_S:%d,a_column_Y:%d,a_value:%d)",a_index_S,a_column_Y,a_value);
+stk::con::prints("__database_items::set_numbers(a_index_S:%d,a_column_Y:%d,a_value:%d)",a_index_S,a_column_Y,a_value);
 stk::con::print("\r\n\r\n");
 #endif
-        f_atom_matrix[a_index_S]->number[a_column_Y] = a_value;
+        f_atom_matrix[a_index_S]->numbers[a_column_Y] = a_value;
 }
 //---------------------------------------------------------------------------
 
-void    __stdcall stk::__database_items::set_data_chunk(const uint32_t a_index_S, const uint32_t a_column_Y, void *a_pointer)
+void    __stdcall stk::__database_items::set_pointer(const uint32_t a_index_S, const uint32_t a_column_Y, void *a_pointer)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-stk::con::prints("__database_items::set_data_chunk(a_index_S:%d,a_column_Y:%d,a_pointer:%d)",a_index_S,a_column_Y,(uint32_t)a_pointer);
+stk::con::prints("__database_items::set_pointer(a_index_S:%d,a_column_Y:%d,a_pointer:%d)",a_index_S,a_column_Y,(uint32_t)a_pointer);
 stk::con::print("\r\n\r\n");
 #endif
-        f_atom_matrix[a_index_S]->data_chunk[a_column_Y] = a_pointer;
+        f_atom_matrix[a_index_S]->pointer[a_column_Y] = a_pointer;
 }
 //---------------------------------------------------------------------------
 
-int32_t __stdcall stk::__database_items::search_data_chunk_ex(const uint32_t a_istart, const uint32_t a_column_Y, const void *a_pointer) const
+int32_t __stdcall stk::__database_items::search_pointer_ex(const uint32_t a_istart, const uint32_t a_column_Y, const void *a_pointer) const
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
 #endif
         for (uint32_t iT = a_istart; iT < count(); iT++) {
-                if (f_atom_matrix[iT]->data_chunk[a_column_Y]==a_pointer) {
+                if (f_atom_matrix[iT]->pointer[a_column_Y]==a_pointer) {
                         return iT;
                 }
         }
         return -1;
 }
 //---------------------------------------------------------------------------
+int32_t __stdcall stk::__database_items::search_pointer(const uint32_t a_column_Y, const void* a_pointer) const
+{
+return search_pointer_ex(0,a_column_Y,a_pointer);
+}
+//---------------------------------------------------------------------------
 
-int32_t __stdcall stk::__database_items::search_number_ex(const uint32_t a_istart, const uint32_t a_column_Y, uint32_t a_number) const
+int32_t __stdcall stk::__database_items::search_numbers_ex(const uint32_t a_istart, const uint32_t a_column_Y, uint32_t a_numbers) const
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
 #endif
         for (uint32_t iT = a_istart; iT < count(); iT++) {
-                if (f_atom_matrix[iT]->number[a_column_Y]==a_number) {
+                if (f_atom_matrix[iT]->numbers[a_column_Y]==a_numbers) {
                         return iT;
                 }
         }
         return -1;
+}
+//---------------------------------------------------------------------------
+int32_t __stdcall stk::__database_items::search_numbers(const uint32_t a_column_Y, uint32_t a_numbers) const
+{
+return search_numbers_ex(0,a_column_Y,a_numbers);
 }
 //---------------------------------------------------------------------------
 
@@ -196,6 +256,11 @@ __DEBUG_FUNC_CALLED("")
                 }
         }
         return -1;
+}
+//---------------------------------------------------------------------------
+int32_t __stdcall stk::__database_items::search_text(const char* __restrict__ a_Char) const
+{
+return search_text_ex(0,a_Char);
 }
 //---------------------------------------------------------------------------
 
@@ -243,8 +308,8 @@ stk::con::prints("__database_items::insert(a_index:%d,a_atom->text=NULL)",a_inde
 stk::con::print("\r\n\r\n");
 #endif
 
-		set_count(count()+1);
-        // TODO: change static to something else for MULTITHREADED app
+        set_count(count()+1);
+     //TODO: change static to something else for MULTITHREADED app
         static stk::__database_items::__atom c_atom;
         stk::mem::mov(&c_atom,f_atom_matrix[count()-1],sizeof(stk::__database_items::__atom));
         for (uint32_t iT = count()-1; iT > a_index; iT--) {
@@ -288,7 +353,7 @@ void __stdcall stk::__database_items::sort_text()
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
 #endif
-        // simple slowest, bubble sort
+     //simple slowest, bubble sort
         for (uint32_t index1 = 0; index1 < count(); index1++)
         for (uint32_t index2 = index1 + 1; index2 < count(); index2++) {
                 if (stk::cstr::compare(f_atom_matrix[index1]->text,f_atom_matrix[index2]->text) > 0) {
@@ -298,7 +363,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-void __stdcall stk::__database_items::sort_number(const uint32_t a_column)
+void __stdcall stk::__database_items::sort_numbers(const uint32_t a_column)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
@@ -306,14 +371,14 @@ __DEBUG_FUNC_CALLED("")
         register uint32_t column = a_column;
         for (uint32_t index1 = 0; index1 < count(); index1++)
         for (uint32_t index2 = index1 + 1; index2 < count(); index2++) {
-                if (f_atom_matrix[index1]->number[column] > f_atom_matrix[index2]->number[column]) {
+                if (f_atom_matrix[index1]->numbers[column] > f_atom_matrix[index2]->numbers[column]) {
                         swap(index1, index2);
                 }
         }
 }
 //---------------------------------------------------------------------------
 
-void __stdcall stk::__database_items::sort_data_chunk(const uint32_t a_column)
+void __stdcall stk::__database_items::sort_pointer(const uint32_t a_column)
 {
 #ifdef __DEBUG_DATABASE_ITEMS__
 __DEBUG_FUNC_CALLED("")
@@ -321,19 +386,64 @@ __DEBUG_FUNC_CALLED("")
         register uint32_t column = a_column;
         for (uint32_t index1 = 0; index1 < count(); index1++)
         for (uint32_t index2 = index1 + 1; index2 < count(); index2++) {
-                if (f_atom_matrix[index1]->data_chunk[column] > f_atom_matrix[index2]->data_chunk[column]) {
+                if (f_atom_matrix[index1]->pointer[column] > f_atom_matrix[index2]->pointer[column]) {
                         swap(index1, index2);
                 }
         }
 }
 //---------------------------------------------------------------------------
 
-const char *__stdcall stk::__database_items::text(const char* __restrict__ a_format) const
+const char *__stdcall stk::__database_items::serialize(const char* __restrict__ a_format) const
 {
-return stk::C_FROM_DATA(f_temp_atom->text,a_format,this->f_this_class_owner);
+return stk::CSTR_FROM_DATABASE(f_temp_atom->text,a_format,this->f_this_class_owner);
 }
 //---------------------------------------------------------------------------
+
+const stk::__database_items::__atom* __stdcall stk::__database_items::operator [] (const uint32_t a_index) const
+{
+return f_atom_matrix[a_index];
+}
 //---------------------------------------------------------------------------
+
+const stk::__database_items::__atom*  __stdcall stk::__database_items::operator [] (const uint32_t a_index)
+{
+return f_atom_matrix[a_index];
+}
+//---------------------------------------------------------------------------
+
+const stk::__database_items::__atom* __stdcall stk::__database_items::get(const uint32_t a_index_G) const
+{
+return f_atom_matrix[a_index_G];
+}
+//---------------------------------------------------------------------------
+
+uint32_t __stdcall stk::__database_items::get_text_size(const uint32_t a_index_G) const
+{
+return  f_atom_matrix[a_index_G]->text_size;
+}
+//---------------------------------------------------------------------------
+
+const char* __stdcall stk::__database_items::get_text(const uint32_t a_index_G) const
+{
+return f_atom_matrix[a_index_G]->text;
+}
+//---------------------------------------------------------------------------
+
+void* __stdcall stk::__database_items::get_pointer(const uint32_t a_index_G, const uint32_t a_column_Y) const
+{
+return f_atom_matrix[a_index_G]->pointer[a_column_Y];
+}
+//---------------------------------------------------------------------------
+
+uint32_t __stdcall stk::__database_items::get_numbers(const uint32_t a_index_G, const uint32_t a_column_Y) const
+{
+ return f_atom_matrix[a_index_G]->numbers[a_column_Y];
+}
+//---------------------------------------------------------------------------
+uint32_t  __stdcall stk::__database_items::count() const
+{
+return f_atom_matrix_count;
+}
 //---------------------------------------------------------------------------
 
 stk::__database_items::__atom *__stdcall stk::C_TO_ATOM(stk::__database_items::__atom *a_atom, const char* __restrict__ a_text) {

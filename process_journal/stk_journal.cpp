@@ -26,6 +26,18 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
+__stdcall stk::__journal::~__journal()
+{
+#ifdef __DEBUG_JOURNAL__
+__DEBUG_FUNC_CALLED("")
+#endif
+    if (f_stream!=NULL) this->close();
+    delete f_write_buffer;
+    f_buffer_size = 0;
+    delete f_stream_name;
+}
+//---------------------------------------------------------------------------
+
 const FILE *__stdcall stk::__journal::create()
 {
 #ifdef __DEBUG_JOURNAL__
@@ -55,6 +67,7 @@ __DEBUG_FUNC_CALLED("")
     return f_stream;
 }
 //---------------------------------------------------------------------------
+
 const FILE	*__stdcall stk::__journal::get_stream(void)
 {
 #ifdef __DEBUG_JOURNAL__
@@ -122,7 +135,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-const char *__stdcall stk::__journal::read_line(const uint32_t aline_number)
+const char *__stdcall stk::__journal::get_line(const uint32_t aline_number)
 {
 #ifdef __DEBUG_JOURNAL__
 __DEBUG_FUNC_CALLED("")
@@ -139,18 +152,6 @@ __DEBUG_FUNC_CALLED("")
     if (f_stream!=NULL) fclose(f_stream);
     f_stream = NULL;
     f_stream_name[0] = '\0';
-}
-//---------------------------------------------------------------------------
-
-__stdcall stk::__journal::~__journal()
-{
-#ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
-#endif
-    if (f_stream!=NULL) this->close();
-    delete f_write_buffer;
-    f_buffer_size = 0;
-    delete f_stream_name;
 }
 //---------------------------------------------------------------------------
 

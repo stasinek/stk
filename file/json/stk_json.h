@@ -27,10 +27,11 @@
  * SUCH DAMAGE.
  */
 //---------------------------------------------------------------------------
-#ifndef __stk_JSON_H
-#define __stk_JSON_H
+#ifndef STK_JSON_H
+#define STK_JSON_H
 //---------------------------------------------------------------------------
 #include "../../mem/stk_mem.h"
+#include "../../stk_main.h"
 #include <stdlib.h>
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
@@ -53,8 +54,7 @@ namespace stk {
 #endif
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 //---------------------------------------------------------------------------
 typedef struct __json_settings {
@@ -210,15 +210,18 @@ typedef struct json_value {
    #endif
 } json_value;
 //---------------------------------------------------------------------------
-json_value* json_parse(const __json_char_t * json, size_t length);
-json_value* json_parse_ex(json_settings * settings, const __json_char_t * json, size_t length, char * error);
-void json_value_free(json_value *);
-void json_value_free_ex(json_settings * settings, json_value *);
+extern STK_IMPEXP json_value* json_parse(const __json_char_t * json, size_t length);
+extern STK_IMPEXP json_value* json_parse_ex(json_settings * settings, const __json_char_t * json, size_t length, char * error);
+extern STK_IMPEXP void json_value_free(json_value *);
+extern STK_IMPEXP void json_value_free_ex(json_settings * settings, json_value *);
 /* Not usually necessary, unless you used a custom mem_alloc and now want to
  * use a custom mem_free. */
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
-   } /* STK_extern "C" */
+   } // extern "C"
+#endif
+//---------------------------------------------------------------------------
+#ifdef __cplusplus
    } // namespace stk
 #endif
 //---------------------------------------------------------------------------

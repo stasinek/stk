@@ -14,12 +14,12 @@ public:
       __set_tree_node();
       __set_tree_node(__set_tree_node *owner);
      ~__set_tree_node();
-      __set_tree_node  STK_IMPEXP *__stdcall T_owner() const;
-      uint32_t	STK_IMPEXP  __stdcall T_level() const;
-      __set_tree_node  STK_IMPEXP *__stdcall L_child() const;
-      __set_tree_node  STK_IMPEXP *__stdcall R_child() const;
-      void STK_IMPEXP  __stdcall set_L_child(__set_tree_node *a_node);
-      void STK_IMPEXP  __stdcall set_R_child(__set_tree_node *a_node);
+      __set_tree_node  *__stdcall T_owner() const;
+      uint32_t          __stdcall T_level() const;
+      __set_tree_node  *__stdcall L_child() const;
+      __set_tree_node  *__stdcall R_child() const;
+      void              __stdcall set_L_child(__set_tree_node *a_node);
+      void              __stdcall set_R_child(__set_tree_node *a_node);
 private:
       __set_tree_node *f_owner;
       uint32_t f_level;

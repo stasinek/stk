@@ -4,18 +4,20 @@
 //---------------------------------------------------------------------------
 #include "./../../stk_main.h"
 //---------------------------------------------------------------------------
-#define B_OS_NAME_LEN 32
+#define VFS_NAME_LEN 32
 #define NUM_DIRECT_BLOCKS 8
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 namespace stk { namespace file { namespace vfs {
+#endif
 //---------------------------------------------------------------------------
 typedef struct data_stream {
         uint8_t direct[NUM_DIRECT_BLOCKS];
-        off_t max_direct_range; uint32_t indirect;
-        off_t max_indirect_range;
+        uint64_t max_direct_range; uint32_t indirect;
+        uint64_t max_indirect_range;
         uint8_t double_indirect;
-        off_t max_double_indirect_range;
-        off_t size;
+        uint64_t max_double_indirect_range;
+        uint64_t size;
 } data_stream;
 
 typedef struct bfs_inode { int32_t magic1;
@@ -37,7 +39,7 @@ typedef struct bfs_inode { int32_t magic1;
 } bfs_inode;
 
 typedef struct disk_super_block {
-        char name[B_OS_NAME_LEN];
+        char name[VFS_NAME_LEN];
         uint32_t magic1;
         uint32_t fs_byte_order;
         uint32_t block_size;
@@ -58,9 +60,9 @@ typedef struct disk_super_block {
         uint32_t indices;
         uint32_t pad[8];
 } disk_super_block;
-
-
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 }}}
+#endif
 //---------------------------------------------------------------------------
 #endif

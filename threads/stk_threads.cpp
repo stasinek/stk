@@ -7,6 +7,16 @@
 volatile int32_t stk::thread::__barier = 0, stk::thread::__barier_locker = 0;
 //---------------------------------------------------------------------------
 
+int __stdcall stk::thread::ssthread_arg_wrapper_t::request(char a_setget, int a_request_command, time_t a_request_time) {
+    static int *request_command;
+    static time_t *request_time;
+    static int request_count;
+    if (a_setget=='s') {}
+    if (a_setget=='g') {}
+    return 0;
+}
+//---------------------------------------------------------------------------
+
 int32_t __stdcall stk::thread::cmpxchg4(int32_t *addr, int32_t o, int32_t n) {
         int32_t was = *addr;
         if (was == o) *addr = n;

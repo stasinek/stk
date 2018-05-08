@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __vector_h
-#define __vector_h
+#ifndef __vector_H__
+#define __vector_H__
 //---------------------------------------------------------------------------
 #include "./mem/stk_mem.h"
 #include "./text/stk_cstr_utils.h"
@@ -9,22 +9,68 @@
 //---------------------------------------------------------------------------
 //implementation of std::vector, much simpler without iterator, allocator etc.
 //---------------------------------------------------------------------------
-namespace stk { template<class T> class __vector {
-#define __vector_RESERVED_AT_INIT(T) ((4096-32-32-4)/sizeof(T))
-private:
-    uint32_t f_ptrs_ocupied, f_ptrs_reserved; T *f_ptrs;
-public:
+#ifdef __cplusplus
+namespace stk { template<class TYPE> class  __vector {
+#define __vector_RESERVED_AT_INIT(TYPE) ((4096-32-32-4)/sizeof(TYPE))
 //---------------------------------------------------------------------------
-inline __vector(const uint32_t a_count = __vector_RESERVED_AT_INIT(T))
+private:
+uint32_t f_ptrs_ocupied, f_ptrs_reserved; TYPE *f_ptrs;
+//---------------------------------------------------------------------------
+public:
+                   __stdcall  __vector(const uint32_t a_count = __vector_RESERVED_AT_INIT(TYPE));
+virtual            __stdcall ~__vector(void);
+//---------------------------------------------------------------------------
+uint32_t           __stdcall  max_size(void);
+uint32_t           __stdcall  mem_size(void)  const;
+uint32_t           __stdcall  set_size(const uint32_t a_new_size);
+uint32_t           __stdcall  count(void)  const;
+//---------------------------------------------------------------------------
+virtual void       __stdcall  cleared(void);
+//---------------------------------------------------------------------------
+TYPE&              __stdcall  front(void) const;
+TYPE&              __stdcall  back(void) const;
+TYPE&              __stdcall  set(const uint32_t a_index, const TYPE& a_value) const;
+TYPE&              __stdcall  at(const uint32_t a_index) const;
+//---------------------------------------------------------------------------
+uint32_t           __stdcall  push(const TYPE& a_new);
+void               __stdcall  swap(const uint32_t a_index1,const uint32_t a_index2);
+TYPE               __stdcall  pop();
+void               __stdcall  pop_all();
+//---------------------------------------------------------------------------
+uint32_t           __stdcall  insert(const TYPE& a_new,const uint32_t a_index);
+TYPE               __stdcall  remove(const uint32_t a_index);
+//---------------------------------------------------------------------------
+// ALTERNATIVE FNCTION NAMES >>
+//---------------------------------------------------------------------------
+TYPE&              __stdcall  top(void) const;
+TYPE&              __stdcall  bottom(void) const;
+TYPE&              __stdcall  operator [] (const uint32_t a_index) const;
+uint32_t           __stdcall  add(const TYPE& a_new);
+void               __stdcall  exchange(const uint32_t a_index1,const uint32_t a_index2);
+uint32_t           __stdcall  resize(const uint32_t a_new_size);
+//---------------------------------------------------------------------------
+// <<
+//---------------------------------------------------------------------------
+};
+//---------------------------------------------------------------------------
+/*template<class TYPE>
+uint32_t __stdcall __vector<TYPE>::stk::__vector<int>::add(const int& a_new)
+{
+return 0;
+}*/
+//---------------------------------------------------------------------------
+
+template<class TYPE> __stdcall stk::__vector<TYPE>::__vector(const uint32_t a_count)
     : f_ptrs_ocupied(0), f_ptrs_reserved(0), f_ptrs(NULL)
     {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+    __DEBUG_FUNC_CALLED("")
 #endif
     this->resize(a_count);
 }
 //---------------------------------------------------------------------------
-virtual inline  STK_IMPEXP  __stdcall ~__vector(void)
+
+template<class TYPE>  __stdcall __vector<TYPE>::~__vector()
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -32,12 +78,71 @@ __DEBUG_FUNC_CALLED("")
     this->resize(0);
 }
 //---------------------------------------------------------------------------
-inline uint32_t STK_IMPEXP  __stdcall push(const T& a_new)
+
+template<class TYPE> uint32_t __stdcall __vector<TYPE>::count(void)  const
 {
-return this->add(a_new);
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+    return f_ptrs_ocupied;
 }
 //---------------------------------------------------------------------------
-uint32_t STK_IMPEXP  __stdcall add(const T& a_new)
+
+template<class TYPE> uint32_t __stdcall __vector<TYPE>::mem_size(void)  const
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+    return f_ptrs_reserved;
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> uint32_t __stdcall __vector<TYPE>::max_size(void)
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+    return (2^16) / sizeof(TYPE);  //65536 elements
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> uint32_t __stdcall __vector<TYPE>::set_size(const uint32_t a_new_size)
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+    if (f_ptrs_reserved == a_new_size) {
+    return a_new_size;
+    }
+    else
+    if (f_ptrs_reserved==0)
+    {
+    f_ptrs = (TYPE*)stk::mem::alloc(a_new_size * sizeof(TYPE));
+    }
+    else
+    if (a_new_size==0)
+    {
+    stk::mem::free(f_ptrs);
+    f_ptrs = NULL;
+    }
+    else
+    {
+    f_ptrs = (TYPE*)stk::mem::realloc(f_ptrs, a_new_size * sizeof(TYPE));
+    }
+    f_ptrs_reserved = a_new_size;
+    return a_new_size;
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> void __stdcall __vector<TYPE>::cleared(void)
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> uint32_t __stdcall __vector<TYPE>::push(const TYPE& a_new)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -49,18 +154,74 @@ __DEBUG_FUNC_CALLED("")
         return f_ptrs_ocupied;
 }
 //---------------------------------------------------------------------------
-T STK_IMPEXP  __stdcall pop()
+
+template<class TYPE> TYPE __stdcall __vector<TYPE>::pop()
 {
 if (this->count()>0) return this->remove(this->count()-1);
 else return NULL;
 }
 //---------------------------------------------------------------------------
-inline void  STK_IMPEXP  __stdcall pop_all()
+
+template<class TYPE> void  __stdcall __vector<TYPE>::pop_all()
 {
-return this->resize(0);
+this->resize(0);
 }
 //---------------------------------------------------------------------------
-T STK_IMPEXP  __stdcall remove(const uint32_t a_index)
+
+template<class TYPE> void __stdcall __vector<TYPE>::swap(const uint32_t a_index1,const uint32_t a_index2)
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+           TYPE t = f_ptrs[a_index1];
+        f_ptrs[a_index1] = f_ptrs[a_index2];
+        f_ptrs[a_index1] = t;
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> TYPE& __stdcall __vector<TYPE>::at(const uint32_t a_index) const
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+    return f_ptrs[a_index];
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> TYPE& __stdcall __vector<TYPE>::front(void) const
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+    return f_ptrs[f_ptrs_ocupied];
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> TYPE& __stdcall __vector<TYPE>::back(void) const
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+    return f_ptrs[0];
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> uint32_t __stdcall __vector<TYPE>::insert(const TYPE& a_new,const uint32_t a_index)
+{
+#ifdef __DEBUG_VECTOR__
+__DEBUG_FUNC_CALLED("")
+#endif
+        this->add(a_new);
+        if (f_ptrs_ocupied > 1) {
+        stk::mem::mov((void*)&f_ptrs[a_index+1],(void*)&f_ptrs[a_index],f_ptrs_ocupied-a_index-1);
+        TYPE tmp = f_ptrs[a_index];
+        f_ptrs[f_ptrs_ocupied-1] = tmp;
+        }
+        return f_ptrs_ocupied;
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> TYPE __stdcall __vector<TYPE>::remove(const uint32_t a_index)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -68,7 +229,7 @@ __DEBUG_FUNC_CALLED("")
         if (f_ptrs_ocupied==0) {
             return NULL;
         }
-        T ret = f_ptrs[a_index];
+        TYPE ret = f_ptrs[a_index];
         f_ptrs_ocupied--;
         if (f_ptrs_ocupied!=0 ? f_ptrs_ocupied-a_index > 0 : false) {
         stk::mem::mov((void*)&f_ptrs[a_index],(void*)&f_ptrs[a_index+1],f_ptrs_ocupied-a_index);
@@ -77,57 +238,16 @@ __DEBUG_FUNC_CALLED("")
         return ret;
 }
 //---------------------------------------------------------------------------
-uint32_t STK_IMPEXP  __stdcall insert(const T& a_new,const uint32_t a_index)
+// ALTERNATIVE FNCTION NAMES
+//---------------------------------------------------------------------------
+
+template<class TYPE> uint32_t __stdcall __vector<TYPE>::add(const TYPE& a_new)
 {
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
-#endif
-        this->add(a_new);
-        if (f_ptrs_ocupied > 1) {
-        stk::mem::mov((void*)&f_ptrs[a_index+1],(void*)&f_ptrs[a_index],f_ptrs_ocupied-a_index-1);
-        T tmp = f_ptrs[a_index];
-        f_ptrs[f_ptrs_ocupied-1] = tmp;
-        }
-        return f_ptrs_ocupied;
+return this->push(a_new);
 }
 //---------------------------------------------------------------------------
-void STK_IMPEXP  __stdcall swap(const uint32_t a_index1,const uint32_t a_index2)
-{
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
-#endif
-           T *t = &f_ptrs[a_index1];
-        &f_ptrs[a_index1] = &f_ptrs[a_index2];
-        &f_ptrs[a_index1] = t;
-}
-//---------------------------------------------------------------------------
-inline T& STK_IMPEXP  __stdcall front(void) const
-{
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
-#endif
-    return f_ptrs[f_ptrs_ocupied];
-}
-//---------------------------------------------------------------------------
-inline T& STK_IMPEXP  __stdcall top(void) const
-{
-    return front();
-}
-//---------------------------------------------------------------------------
-inline T& STK_IMPEXP  __stdcall back(void) const
-{
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
-#endif
-    return f_ptrs[0];
-}
-//---------------------------------------------------------------------------
-inline T& STK_IMPEXP  __stdcall bottom(void) const
-{
-    return back();
-}
-//---------------------------------------------------------------------------
-inline T& STK_IMPEXP  __stdcall at(const uint32_t a_index) const
+
+template<class TYPE> TYPE& __stdcall __vector<TYPE>::operator [] (const uint32_t a_index) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_FUNC_CALLED("")
@@ -135,85 +255,38 @@ __DEBUG_FUNC_CALLED("")
     return f_ptrs[a_index];
 }
 //---------------------------------------------------------------------------
-inline T& STK_IMPEXP  __stdcall operator [] (const uint32_t a_index) const
-{
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
-#endif
-    return f_ptrs[a_index];
-}
-//---------------------------------------------------------------------------
-inline T& STK_IMPEXP  __stdcall set(const uint32_t a_index, const T& a_value) const
+
+template<class TYPE> TYPE& __stdcall __vector<TYPE>::set(const uint32_t a_index, const TYPE& a_value) const
 {
     return f_ptrs[a_index] = a_value;
 }
 //---------------------------------------------------------------------------
 
-
-inline uint32_t STK_IMPEXP  __stdcall count(void)  const
+template<class TYPE> TYPE& __stdcall __vector<TYPE>::top(void) const
 {
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
-#endif
-    return f_ptrs_ocupied;
-}
-//---------------------------------------------------------------------------
-inline uint32_t STK_IMPEXP  __stdcall size(void)  const
-{
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
-#endif
-    return f_ptrs_reserved;
+    return front();
 }
 //---------------------------------------------------------------------------
 
-inline uint32_t STK_IMPEXP  __stdcall max_size(void)
+template<class TYPE> TYPE& __stdcall __vector<TYPE>::bottom(void) const
 {
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+    return back();
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> void __stdcall __vector<TYPE>::exchange(const uint32_t a_index1,const uint32_t a_index2)
+{
+return swap(a_index1,a_index2);
+}
+//---------------------------------------------------------------------------
+
+template<class TYPE> uint32_t __stdcall stk::__vector<TYPE>::resize(const uint32_t a_new_size)
+{
+    return set_size(a_new_size);
+}
+//---------------------------------------------------------------------------
+} // namespace stk
 #endif
-    return (2^16) / sizeof(T);  //65536 elements
-}
 //---------------------------------------------------------------------------
-virtual void STK_IMPEXP  __stdcall cleared(void)
-{
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
-#endif
-}
+#endif // __vector_H__
 //---------------------------------------------------------------------------
-inline uint32_t STK_IMPEXP  __stdcall set_size(const uint32_t a_new_size)
-{
-    return this->resize(a_new_size);
-}
-//---------------------------------------------------------------------------
-uint32_t STK_IMPEXP  __stdcall resize(const uint32_t a_new_size)
-{
-#ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
-#endif
-    if (f_ptrs_reserved == a_new_size) {
-    return a_new_size;
-    }
-    else
-    if (f_ptrs_reserved==0)
-    {
-    f_ptrs = (T*)stk::mem::alloc(a_new_size * sizeof(T));
-    }
-    else
-    if (a_new_size==0)
-    {
-    stk::mem::free(f_ptrs);
-    f_ptrs = NULL;
-    }
-    else
-    {
-    f_ptrs = (T*)stk::mem::realloc(f_ptrs, a_new_size * sizeof(T));
-    }
-    f_ptrs_reserved = a_new_size;
-    return a_new_size;
-}
-//---------------------------------------------------------------------------
-}; }
-//---------------------------------------------------------------------------
-#endif // __vector_H

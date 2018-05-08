@@ -1,18 +1,19 @@
-#ifndef __stk_xml_H
-#define __stk_xml_H
+#ifndef STK_XML_H
+#define STK_XML_H
 //---------------------------------------------------------------------------
 // xml.h
 // v.0x185
 // revision 03 - 05 - 2018
 //---------------------------------------------------------------------------
 #include "../../mem/stk_mem.h"
-// ANSI includes
+// ANSI C std includes
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <ctype.h>
 #include <assert.h>
+// ANSI C
+#include <ctype.h>
 #define XML_VERSION 0x170
 #define XML_VERSION_REVISION_DATE "30-05-2014"
 #define CRYPT_OID_INFO_HAS_EXTRA_FIELDS

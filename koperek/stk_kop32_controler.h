@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_kop32_controler_H
-#define __stk_kop32_controler_H
+#ifndef __stk_kop32_controler_H__
+#define __stk_kop32_controler_H__
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 //---------------------------------------------------------------------------
@@ -13,12 +13,12 @@ class STK_IMPEXP __kop32_class_progress_controler {
 //---------------------------------------------------------------------------
     class __stat {
     public:
-                STK_IMPEXP  __stdcall  __stat	(void);
-                STK_IMPEXP  __stdcall ~__stat	(void);
-    void 		STK_IMPEXP  __stdcall   reset	(void);
+                            __stdcall  __stat	(void);
+                            __stdcall ~__stat	(void);
+    void 		            __stdcall   reset	(void);
     //------------------------------------
     int64_t readed, size;
-    int32_t     STK_IMPEXP  __stdcall percent	(void);
+    int32_t                 __stdcall percent	(void);
     //------------------------------------
     };
 //---------------------------------------------------------------------------
@@ -26,47 +26,31 @@ private:
         stk::__kop32_class *f_owner;
         bool f_timer_freezed; uint32_t f_t1, f_t2; time_t f_t;
 public:
-        STK_IMPEXP  __stdcall  __kop32_class_progress_controler(stk::__kop32_class *aowner);
-        STK_IMPEXP  __stdcall ~__kop32_class_progress_controler();
-        struct	__stat_group {
-                __stat *one, *all;
-                STK_IMPEXP  __stdcall  __stat_group 	(void) {
-                    one = new __stat();
-                                all = new __stat();
-                }
-                STK_IMPEXP  __stdcall ~__stat_group 	(void) {
-                    delete one;
-                    delete all;
-            }
-                void STK_IMPEXP  __stdcall reset		(void) {
-                            one->reset();
-                                all->reset();
-                        }
-                        void STK_IMPEXP  __stdcall add_readed	(uint32_t areaded) {
-                            one->readed+=areaded;
-                                all->readed+=areaded;
-                        }
+                                        __stdcall  __kop32_class_progress_controler(stk::__kop32_class *aowner);
+                                        __stdcall ~__kop32_class_progress_controler();
+        struct	 STK_IMPEXP __stat_group {
+            __stat *one, *all;
+                             __stdcall  __stat_group(void);
+                             __stdcall ~__stat_group(void);
+            void             __stdcall reset(void);
+            void             __stdcall add_readed(uint32_t areaded);
         } *src, *dst;
         //------------------------------------
-        stk::__kop32_class  STK_IMPEXP *__stdcall owner		(void);
-        void STK_IMPEXP  __stdcall set_owner				(stk::__kop32_class *aowner);
+        stk::__kop32_class             *__stdcall owner                 (void);
+        void                            __stdcall set_owner             (stk::__kop32_class *aowner);
         //------------------------------------
-        void	STK_IMPEXP  __stdcall reset();
-        //------------------------------------
-        uint32_t STK_IMPEXP  __stdcall initialize_timer		(void);
-        void	STK_IMPEXP  __stdcall freeze_timer			(void);
-        void	STK_IMPEXP  __stdcall resume_timer			(void);
-        uint32_t STK_IMPEXP  __stdcall elapsed				(void);
-        uint32_t STK_IMPEXP  __stdcall actual_time			(void);
+        void                            __stdcall reset();
+        uint32_t                        __stdcall initialize_timer		(void);
+        void                            __stdcall freeze_timer			(void);
+        void                            __stdcall resume_timer			(void);
+        uint32_t                        __stdcall actual_time			(void);
+        uint32_t                        __stdcall elapsed				(void);
         bool cancel, pause;
         //------------------------------------
-        const char	STK_IMPEXP *__stdcall do_event(const char*, const char*, const char*);
-        //------------------------------------
+        const char *__stdcall                     do_event(const char*, const char*, const char*);
         typedef const char* (__stdcall __callback_event_handler)(__kop32_class*, const char *a_event, const char *a_code, const char *a_code_ex);
-        __callback_event_handler *callback_event_handler;
-         static const char*  __stdcall  default_callback_event_handler(__kop32_class*, const char*, const char*, const char*);
-};
-        //------------------------------------
+        static const char*  __stdcall             default_callback_event_handler(__kop32_class*, const char*, const char*, const char*);
+        __callback_event_handler                 *callback_event_handler;
         #define EMPTY								""
         #define ON_ERROR							"ERROR"
         #define ON_NOP								"NOP"
@@ -116,7 +100,7 @@ public:
         #define ON_SKIPPED_ONE						"SKIPPED_ONE"
         #define ON_BEFORE_ABORT						"BEFORE_ABORT"
         #define ON_FREE_SPACE						"FREE_SPACE"
-
+//---------------------------------------------------------------------------
         #define OK									"OK"
         #define OKCANCEL							"OK_CANCEL"
         #define YESNO								"YES_NO"
@@ -126,12 +110,12 @@ public:
         #define YESALLCUSTOMNONOALLCANCEL			"YES_ALL_CUSTOM_NO_NOALL_CANCEL"
         #define OKYESALLCUSTOMNONOALLCANCEL			"OK_YES_ALL_CUSTOM_NO_NOALL_CANCEL"
         #define INFO								"INFO"
-
+//---------------------------------------------------------------------------
+};
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
-}
+} //namespace stk
 #endif
 //---------------------------------------------------------------------------
 #endif
 //---------------------------------------------------------------------------
-

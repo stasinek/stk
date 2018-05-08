@@ -3,21 +3,18 @@ DEFINES += BUILD_STK_LIBRARY
 contains(DEFINES, BUILD_STK_LIBRARY) {
     TARGET = stk
     TEMPLATE = lib
-    CONFIG -= app_bundle
-    CONFIG += windows shared lib_bundle
+    CONFIG += lib_bundle dll shared
 }
 else {
     TARGET  = stk_tester
     TEMPLATE = app
-    CONFIG += console
-    CONFIG += app_bundle
+    CONFIG += app_bundle console
 }
-CONFIG -= qt
 QT -= core gui
+CONFIG -= qt
 CONFIG += precompile_header
 #CONFIG -= static
 CONFIG += warn_on
-#CONFIG += warn_off
 CONFIG += exceptions
 CONFIG += c++11
 # -------------------------------------------------------------
@@ -71,6 +68,7 @@ QMAKE_CFLAGS   += -Wno-unused-but-set-variable
 QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CFLAGS   += -Wunknown-pragmas
 
+--output-def,testdll.def
 }
 # -------------------------------------------------------------
 # VCC
@@ -113,9 +111,11 @@ QMAKE_CFLAGS   += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -
 QMAKE_CFLAGS   += -Wno-unused-but-set-variable
 QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CFLAGS   += -Wunknown-pragmas
+QMAKE_CFLAGS   += --output-def,exported.def
 
 QMAKE_LFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 QMAKE_LFLAGS -= -mthreads
+
 }
 # -------------------------------------------------------------
 SOURCES += \
@@ -123,8 +123,6 @@ SOURCES += \
     stk_test.cpp \
     stk_hash_chain.cpp \
     stk_list.cpp \
-    stk_vector.cpp \
-    stk_variable.cpp \
     stk_map.cpp \
     cpu/stk_cpu.cpp \
 #    cipher/rsa/stk_rsa_single.c \
@@ -146,7 +144,6 @@ SOURCES += \
     file/json/stk_json.cpp \
     file/vfs/stk_file_vfs.cpp \
     file/xml/stk_xml.cpp \
-    file/zip/miniz.c \
     hash/stk_hash_crc32.cpp \
     hash/stk_hash_md5.cpp \
     hash/stk_hash_password.cpp \
@@ -173,7 +170,10 @@ SOURCES += \
     text/stk_cstr_utils.cpp \
     time/stk_time.cpp \
     text/stk_cstr_class.cpp \
-    text/stk_cstr_stack.cpp
+    text/stk_cstr_stack.cpp \
+    koperek/stk_kop32_options.cpp \
+    koperek/stk_kop32_list.cpp \
+    file/zip/miniz.c
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
 SOURCES+=
@@ -232,7 +232,7 @@ HEADERS += \
     io/stk_rs232.h \
     io/stk_console.h \
     koperek/stk_kop32_class.h \
-    koperek/stk_kop32_search.cpp \
+    koperek/stk_kop32_search.h \
     koperek/stk_kop32_controler.h \
     koperek/stk_kop32_list.h \
     koperek/stk_kop32_options.h \
@@ -251,7 +251,8 @@ HEADERS += \
     text/stk_cstr_stack.h \
     text/stk_cstr_utils.h \
     text/stk_cstr.h \
-    stk_test.h
+    stk_test.h \
+    file/zip/miniz.h
 # -------------------------------------------------------------
 contains(DEFINES, QT_GUI) {
 CONFIG +=
@@ -262,39 +263,50 @@ RESOURCES +=
 }
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __GNUC__) {
-LIBS += -lkernel32
-LIBS += -lgdi32 -lcomctl32 -lshell32 -luser32 -luserenv
-LIBS += -lws2_32 -lwsock32
-LIBS += -lwinmm -limm32
-LIBS += -lole32 -loleaut32
-LIBS += -lcrypt32
-LIBS += -lgomp
-#LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
-#LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
+    LIBS += -lkernel32
+    LIBS += -lgdi32 -lcomctl32 -lshell32 -luser32 -luserenv
+    LIBS += -lws2_32 -lwsock32
+    LIBS += -lwinmm -limm32
+    LIBS += -lole32 -loleaut32
+    LIBS += -lcrypt32
+    LIBS += -lgomp
+    #LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
+    #LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
     contains(DEFINES, QT_GUI) {
-    LIBS += QtCored.a
+        LIBS += QtCored.a
     }
 }
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, _MSC_VER) {
-LIBS += vcompd.lib
-LIBS += kernel32.lib shell32.lib gdi32.lib
-LIBS += winmm.lib wsock32.lib ws2_32.lib crypt32.lib
-LIBS += user32.lib uuid.lib
-LIBS += ole32.lib oleaut32.lib
-LIBS -= gomp.lib
+    LIBS += vcompd.lib
+    LIBS += kernel32.lib shell32.lib gdi32.lib
+    LIBS += crypt32.lib
+    LIBS += winmm.lib
+    LIBS += wsock32.lib ws2_32.lib
+    LIBS += user32.lib uuid.lib
+    LIBS += ole32.lib oleaut32.lib
+    LIBS -= gomp.lib
     contains(DEFINES, QT_GUI) {
-    LIBS += QtCored.lib
+        LIBS += QtCored.lib
     }
 }
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES, __clang__) {
-LIBS +=
+    LIBS +=
     contains(DEFINES, QT_GUI) {
-    LIBS += QtCored.lib
+        LIBS += QtCored.lib
     }
 }
 # -------------------------------------------------------------
+win32: {
+    RC_FILE     =  stk_version.rc
+#-manifest file.manifest
+}
 OTHER_FILES +=
 DISTFILES += test.txt
 # -------------------------------------------------------------
+
+#postlink.target = .buildfile
+#postlink.commands = dlltool -d export.def -l $$postlink.target
+#QMAKE_EXTRA_TARGETS += postlink
+#QMAKE_POST_LINK += postlink
