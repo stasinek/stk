@@ -30,9 +30,9 @@
 #include "stk_json.h"
 //---------------------------------------------------------------------------
 #ifdef _MSC_VER
-   #ifndef _CRT_SECURE_NO_WARNINGS
-   #define _CRT_SECURE_NO_WARNINGS
-   #endif
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+#endif
 #endif
 //---------------------------------------------------------------------------
 #include <ctype.h>
@@ -135,9 +135,9 @@ static int new_value(stk::json_state * state, stk::json_value** top, stk::json_v
       {
          case stk::json_array:
 
-			if (value->u.array.length == 0) break;
-				 value->u.array.values = (stk::json_value **)json_alloc(state, value->u.array.length * sizeof (stk::json_value *), 0);
-			if (value->u.array.values == 0) return 0;
+            if (value->u.array.length == 0) break;
+                 value->u.array.values = (stk::json_value **)json_alloc(state, value->u.array.length * sizeof (stk::json_value *), 0);
+            if (value->u.array.values == 0) return 0;
 
             value->u.array.length = 0;
             break;
@@ -212,7 +212,7 @@ static int new_value(stk::json_state * state, stk::json_value** top, stk::json_v
    state.cur_line, state.cur_col
 //---------------------------------------------------------------------------
 
-stk::json_value* stk::json_parse_ex(stk::json_settings* settings, const __json_char_t* json, size_t length, char* error_buf)
+STK_EXPORT stk::json_value* stk::json_parse_ex(stk::json_settings* settings, const __json_char_t* json, size_t length, char* error_buf)
 {
    __json_char_t error [json_error_max];
    const __json_char_t * end;
@@ -930,14 +930,14 @@ e_failed:
 }
 //---------------------------------------------------------------------------
 
-stk::json_value* stk::json_parse(const __json_char_t* json, size_t length)
+STK_EXPORT stk::json_value* stk::json_parse(const __json_char_t* json, size_t length)
 {
    stk::json_settings settings;// = { 0 };
    return stk::json_parse_ex (&settings, json, length, 0);
 }
 //---------------------------------------------------------------------------
 
-void stk::json_value_free_ex(json_settings* settings, stk::json_value* value)
+STK_EXPORT void stk::json_value_free_ex(json_settings* settings, stk::json_value* value)
 {
    stk::json_value* cur_value;
 
@@ -987,7 +987,7 @@ void stk::json_value_free_ex(json_settings* settings, stk::json_value* value)
 }
 //---------------------------------------------------------------------------
 
-void stk::json_value_free(json_value* value)
+STK_EXPORT void stk::json_value_free(json_value* value)
 {
    stk::json_settings settings;// = { 0 };
    settings.mem_free = default_free;

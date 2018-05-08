@@ -7,21 +7,35 @@
 volatile int32_t stk::thread::__barier = 0, stk::thread::__barier_locker = 0;
 //---------------------------------------------------------------------------
 
-int32_t __stdcall stk::thread::cmpxchg4(int32_t *addr, int32_t o, int32_t n) {
+int __stdcall stk::thread::ssthread_arg_wrapper_t::request(char a_setget, int a_request_command, time_t a_request_time)
+{
+    static int *request_command;
+    static time_t *request_time;
+    static int request_count;
+    if (a_setget=='s') {}
+    if (a_setget=='g') {}
+    return 0;
+}
+//---------------------------------------------------------------------------
+
+int32_t __stdcall stk::thread::cmpxchg4(int32_t *addr, int32_t o, int32_t n)
+{
         int32_t was = *addr;
         if (was == o) *addr = n;
         return was;
     }
 //---------------------------------------------------------------------------
 
-int64_t __stdcall stk::thread::cmpxchg8(int64_t *addr, int64_t o, int64_t n) {
+int64_t __stdcall stk::thread::cmpxchg8(int64_t *addr, int64_t o, int64_t n)
+{
         int64_t was = *addr;
         if (was == o) *addr = n;
         return was;
     }
 //---------------------------------------------------------------------------
 
-unsigned long __stdcall stk::thread::this_id(void) {
+unsigned long __stdcall stk::thread::this_id(void)
+{
 #if defined(__WIN32__)
 unsigned long r = ::GetCurrentThreadId();
 return r!=0;
@@ -31,7 +45,8 @@ return r!=0;
 }
 //---------------------------------------------------------------------------
 
-void __stdcall stk::thread::quit(unsigned long a_exitcode) {
+void __stdcall stk::thread::quit(unsigned long a_exitcode)
+{
 #if defined(__WIN32__)
 ::ExitThread(a_exitcode);
 #else
@@ -40,7 +55,8 @@ void __stdcall stk::thread::quit(unsigned long a_exitcode) {
 }
 //---------------------------------------------------------------------------
 
-bool __stdcall stk::thread::yeld(void) {
+bool __stdcall stk::thread::yeld(void)
+{
 #if defined(__WIN32__)
 unsigned long r = ::SwitchToThread();
 return r!=0;
@@ -62,7 +78,8 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-bool __stdcall stk::thread::create(struct ssthread_t *a_thread, ssthread_routine_t a_func,void *a_func_arg) {
+bool __stdcall stk::thread::create(struct ssthread_t *a_thread, ssthread_routine_t a_func,void *a_func_arg)
+{
 #if defined(__WIN32__)
 a_thread->func = a_func;
 a_thread->func_arg = a_func_arg;
@@ -81,7 +98,8 @@ else return true;
 }
 //---------------------------------------------------------------------------
 
-bool __stdcall stk::thread::run(struct ssthread_t *a_thread) {
+bool __stdcall stk::thread::run(struct ssthread_t *a_thread)
+{
 #if defined(__WIN32__)
 if (a_thread->handle==NULL || a_thread->attr.detached==true)
 return false;
@@ -94,7 +112,8 @@ return r!=0;
 }
 //---------------------------------------------------------------------------
 
-bool __stdcall stk::thread::suspend(struct ssthread_t *a_thread) {
+bool __stdcall stk::thread::suspend(struct ssthread_t *a_thread)
+{
 #if defined(__WIN32__)
 if (a_thread->handle==NULL || a_thread->attr.detached==true)
 return false;
@@ -107,7 +126,8 @@ return r!=0;
 }
 //---------------------------------------------------------------------------
 
-bool __stdcall stk::thread::terminate(struct ssthread_t *a_thread,unsigned long a_exitcode) {
+bool __stdcall stk::thread::terminate(struct ssthread_t *a_thread,unsigned long a_exitcode)
+{
 #if defined(__WIN32__)
 // TODO sprawdzenie czy on jeszcze pracuje czy byl juz terminated
 if (a_thread->handle==NULL || a_thread->attr.detached==true)
@@ -131,7 +151,8 @@ return r;
 }
 //---------------------------------------------------------------------------
 
-unsigned long __stdcall stk::thread::id(struct ssthread_t *a_thread) {
+unsigned long __stdcall stk::thread::id(struct ssthread_t *a_thread)
+{
 #if defined(__WIN32__)
 if (a_thread->handle==NULL) return 0;
 return a_thread->id;
@@ -141,7 +162,8 @@ return a_thread->id;
 }
 //---------------------------------------------------------------------------
 
-bool __stdcall stk::thread::active(struct ssthread_t *a_thread) {
+bool __stdcall stk::thread::active(struct ssthread_t *a_thread)
+{
 #if defined(__WIN32__)
 unsigned long r;
 if (a_thread->handle==NULL)
@@ -163,7 +185,8 @@ return false;
 }
 //---------------------------------------------------------------------------
 
-bool __stdcall stk::thread::joinable(struct stk::thread::ssthread_t *a_thread) {
+bool __stdcall stk::thread::joinable(struct stk::thread::ssthread_t *a_thread)
+{
 #if defined(__WIN32__)
 if (id(a_thread)!=::stk::thread::this_id())
 return stk::thread::active(a_thread);
@@ -174,7 +197,8 @@ return false;
 }
 //---------------------------------------------------------------------------
 
-void __stdcall stk::thread::join(struct stk::thread::ssthread_t *a_thread) {
+void __stdcall stk::thread::join(struct stk::thread::ssthread_t *a_thread)
+{
 #if defined(__WIN32__)
 if (a_thread->handle==NULL)
 return;
@@ -190,7 +214,8 @@ if (a_thread->attr.terminated==false && a_thread->attr.detached==false) {
 }
 //---------------------------------------------------------------------------
 
-void __stdcall stk::thread::detach(struct stk::thread::ssthread_t *a_thread) {
+void __stdcall stk::thread::detach(struct stk::thread::ssthread_t *a_thread)
+{
 #if defined(__WIN32__)
 // TODO.. wymaga sprawdzenia o co kaman w detach() z std::thread
 // w C++11 nie istnieje attach() z tego wynika ze gdy wywolywacz konczy zywot struktura thread ulega zniszczeniu ale uchwyt i jego dzialanie powinien byæ nietkniety
@@ -204,7 +229,8 @@ a_thread->attr.detached = true;
 }
 //---------------------------------------------------------------------------
 
-void __stdcall stk::thread::atexit(struct stk::thread::ssthread_t *a_thread,ssthread_routine_t a_onexit,void *a_onexit_arg) {
+void __stdcall stk::thread::atexit(struct stk::thread::ssthread_t *a_thread,ssthread_routine_t a_onexit,void *a_onexit_arg)
+{
 ATOMIC(1)
 ATOMIC_LOCK(1)
 #if defined(__WIN32__)

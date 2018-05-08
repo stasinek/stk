@@ -79,7 +79,7 @@ __DEBUG_FUNC_CALLED("")
         else
         {
                 register uint32_t container_len = stk::cstr::len(a_text_to_clone);
-                if (__vector<char>::size() <=  container_len) {
+                if (__vector<char>::mem_size() <=  container_len) {
                     __vector<char>::resize(container_len + 1);
                 }
                 return stk::cstr::mov(&__vector<char>::bottom(), a_text_to_clone);
@@ -100,7 +100,7 @@ __DEBUG_FUNC_CALLED("")
                 add_size = 0;
         }
                 new_size = stk::cstr::len(&__vector<char>::bottom()) + add_size;
-        if (new_size > __vector<char>::size()) {
+        if (new_size > __vector<char>::mem_size()) {
                 __vector<char>::resize(new_size);
         }
         return stk::cstr::cat(&__vector<char>::bottom(),a_text_to_clone);
@@ -146,7 +146,7 @@ void __stdcall stk::__cstr_class::clear(void)
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED("")
 #endif
-if (__vector<char>::size()!=0) __vector<char>::bottom() = '\0';
+if (__vector<char>::count()!=0) __vector<char>::bottom() = '\0';
 }
 //---------------------------------------------------------------------------
 
@@ -155,7 +155,7 @@ void __stdcall stk::__cstr_class::shrink_to_fit(void)
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_FUNC_CALLED("")
 #endif
-if (__vector<char>::size()!=0) {
+if (__vector<char>::count()!=0) {
         __vector<char>::resize(stk::cstr::len(&__vector<char>::bottom())+1);
         }
 }

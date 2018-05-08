@@ -5,7 +5,6 @@ USEUNIT("stk_list.cpp");
 USEUNIT("stk_map.cpp");
 USEUNIT("stk_set.cpp");
 USEUNIT("stk_test.cpp");
-USEUNIT("stk_variable.cpp");
 USEUNIT("stk_vector.cpp");
 USEUNIT("koperek\stk_kop32_API.cpp");
 USEUNIT("koperek\stk_kop32_class.cpp");
@@ -53,6 +52,8 @@ USEUNIT("3D\stk_3Dvector.cpp");
 USEUNIT("compression\stk_compression_bwt_matrix2.cpp");
 USEUNIT("threads\stk_idle.cpp");
 USEUNIT("threads\stk_threads.cpp");
+USEUNIT("koperek\stk_kop32_options.cpp");
+USEUNIT("koperek\stk_kop32_list.cpp");
 //---------------------------------------------------------------------------
 This file is used by the project manager only and should be treated like the project file
 DllEntryPoint

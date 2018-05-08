@@ -117,7 +117,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-stk::__cstr_class *__stdcall stk::__cstr_stack::push(const uint32_t a_text_class_size)
+stk::__cstr_class* __stdcall stk::__cstr_stack::push(const uint32_t a_text_class_size)
 {
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_FUNC_CALLED("")
@@ -127,7 +127,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-stk::__cstr_class *__stdcall stk::__cstr_stack::push(const char *a_text_to_clone)
+stk::__cstr_class* __stdcall stk::__cstr_stack::push(const char *a_text_to_clone)
 {
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_FUNC_CALLED("")
@@ -139,7 +139,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-stk::__cstr_class *__stdcall stk::__cstr_stack::push(const uint32_t a_text_class_size, const char *a_text_to_clone)
+stk::__cstr_class* __stdcall stk::__cstr_stack::push(const uint32_t a_text_class_size, const char *a_text_to_clone)
 {
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_FUNC_CALLED("")
@@ -149,7 +149,7 @@ __DEBUG_FUNC_CALLED("")
         return t;
 }
 //---------------------------------------------------------------------------
-inline stk::__cstr_class *__stdcall stk::__cstr_stack::push(void)
+inline stk::__cstr_class* __stdcall stk::__cstr_stack::push(void)
 {
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_FUNC_CALLED("")

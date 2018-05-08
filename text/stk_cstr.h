@@ -4,4 +4,3 @@
 #include "stk_cstr_class.h"
 #include "stk_cstr_stack.h"
 #endif
-

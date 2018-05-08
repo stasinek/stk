@@ -7,7 +7,7 @@
 #include  <time.h>
 //---------------------------------------------------------------------------
 
-uint64_t __stdcall stk::time::time_us(void)
+STK_EXPORT uint64_t __stdcall stk::time::time_us(void)
 // cross-platform timeGetTime (on Windows minimum return is 1000us, on linux there is us acuracy (probably?) CLOCKS_PER_SEC >=1M
 {
 #ifdef __DEBUG_TIME__
@@ -22,7 +22,7 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-uint64_t __stdcall stk::time::time_ms(void) // cross-platform timeGetTime
+uint64_t STK_EXPORT __stdcall stk::time::time_ms(void) // cross-platform timeGetTime
 {
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED("")
@@ -36,10 +36,10 @@ void __stdcall stk::time::wait_ms(const uint64_t milliseconds) // cross-platform
 #ifdef __DEBUG_TIME__
 __DEBUG_FUNC_CALLED("")
 #endif
-	            #ifdef __WIN32__
-				register uint64_t ms = milliseconds;
-				for (; ms > 0x3FFFFFFF; ms-=0x3FFFFFFF) ::Sleep(0x3FFFFFFF);
-				::Sleep((DWORD)ms);
+                #ifdef __WIN32__
+                register uint64_t ms = milliseconds;
+                for (; ms > 0x3FFFFFFF; ms-=0x3FFFFFFF) ::Sleep(0x3FFFFFFF);
+                ::Sleep((DWORD)ms);
                 #else
                 _usleep(milliseconds * 1000);
                 #endif // win32
@@ -69,9 +69,9 @@ void __stdcall stk::time::wait_us(const uint64_t microseconds) // cross-platform
 __DEBUG_FUNC_CALLED("")
 #endif
                 #ifdef __WIN32__
-				register uint64_t ms = microseconds / 1000;
-				for (; ms > 0x3FFFFFFF; ms-=0x3FFFFFFF) ::Sleep(0x3FFFFFFF);
-				::Sleep((DWORD)ms);
+                register uint64_t ms = microseconds / 1000;
+                for (; ms > 0x3FFFFFFF; ms-=0x3FFFFFFF) ::Sleep(0x3FFFFFFF);
+                ::Sleep((DWORD)ms);
                 //MSDN: A value of zero causes the thread to relinquish the remainder of its time slice to any other thread that is ready to run
                 #else
         struct timespec req,rem;

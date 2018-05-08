@@ -5,7 +5,7 @@
     <VERSION value="BCB.05.03"/>
     <PROJECT value="stk_BCB.dll"/>
     <OBJFILES value="stk_bitset.obj stk_hash_chain.obj stk_list.obj stk_map.obj stk_set.obj 
-      stk_test.obj stk_variable.obj stk_vector.obj koperek\stk_kop32_API.obj 
+      stk_test.obj stk_vector.obj koperek\stk_kop32_API.obj 
       koperek\stk_kop32_class.obj koperek\stk_kop32_console_API.obj 
       koperek\stk_kop32_controler.obj koperek\stk_kop32_search.obj 
       koperek\stk_kop32_socket_server.obj mem\stk_bsearch.obj mem\stk_mem.obj 
@@ -25,7 +25,8 @@
       cipher\stk_base64.obj cipher\stk_cipher_API.obj cipher\stk_cipher_mtf.obj 
       cipher\stk_cipher_pair.obj cipher\stk_cipher_test.obj 3D\stk_3Dvector.obj 
       compression\stk_compression_bwt_matrix2.obj threads\stk_idle.obj 
-      threads\stk_threads.obj"/>
+      threads\stk_threads.obj koperek\stk_kop32_options.obj 
+      koperek\stk_kop32_list.obj"/>
     <RESFILES value="stk_BCB.res"/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES)"/>
@@ -44,8 +45,8 @@
     <USERDEFINES value="BUILD_STK_LIBRARY"/>
     <SYSDEFINES value="NO_STRICT;_NO_VCL"/>
     <MAINSOURCE value="stk_BCB.bpf"/>
-    <INCLUDEPATH value="sthreads;threads;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="sthreads;threads;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="3D\;io\;sthreads;threads;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="3D\;io\;sthreads;threads;3D;io;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
   </MACROS>
   <OPTIONS>

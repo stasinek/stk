@@ -8,9 +8,9 @@
 //---------------------------------------------------------------------------
 namespace stk { namespace hash { namespace ssc1 {
 //---------------------------------------------------------------------------
-extern void STK_IMPEXP  __stdcall reset_SSC1(void);
-const uint32_t*  STK_IMPEXP  __stdcall calc_SSC1(const void *a_data, const uint32_t a_len, const uint32_t a_bits);
-extern void STK_IMPEXP  __stdcall print_SSC1(void);
+extern STK_IMPEXP const uint32_t*   __stdcall calc_SSC1(const void *a_data, const uint32_t a_len, const uint32_t a_bits);
+extern STK_IMPEXP void              __stdcall print_SSC1(void);
+extern STK_IMPEXP void              __stdcall reset_SSC1(void);
 //---------------------------------------------------------------------------
 }}}
 //---------------------------------------------------------------------------
