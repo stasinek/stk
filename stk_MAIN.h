@@ -363,7 +363,7 @@
 //---------------------------------------------------------------------------
 // ASM MACROS
 //---------------------------------------------------------------------------
-#if defined(__POCC__) or defined(__BORLAND__) ? (__BORLANDC__ > 0x551) : 0
+#if defined(__POCC__) | defined(__BORLAND__) ? (__BORLANDC__ > 0x551) : 0
 #define __builtin_prefetch(x1,x2,x3)                    \
                 __asm { push ESI; mov ESI, x1; prefetchnta ESI+0; pop ESI; }
 #define __builtin___clear_cache(x1,x2)                  \

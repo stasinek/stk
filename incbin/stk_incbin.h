@@ -56,7 +56,7 @@
 // .rc
 //MY_RESOURCE RCDATA "file-with-data.txt"
 
-uint32_t STK_IMPEXP  __stdcall incbin_rc(char** resource_data, uint32_t RESOURCE_ID);
+uint32_t   __stdcall incbin_rc(char** resource_data, uint32_t RESOURCE_ID);
 #endif
 
 //---------------------------------------------------------------------------

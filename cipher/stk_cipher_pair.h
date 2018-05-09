@@ -8,7 +8,7 @@
 //---------------------------------------------------------------------------
 namespace stk { namespace cipher {
 //---------------------------------------------------------------------------
-class  __pair_cipher {
+class  STK_IMPEXP __pair_cipher {
 private:
 //---------------------------------------------------------------------------
         uint8_t  *order;
@@ -18,10 +18,10 @@ public:
         __pair_cipher(void);
        ~__pair_cipher(void);
 //---------------------------------------------------------------------------
-        void STK_IMPEXP  __stdcall  initialize(void);
+        void   __stdcall  initialize(void);
 //---------------------------------------------------------------------------
-        char STK_IMPEXP  __stdcall  encode(const char a_ch);
-        char STK_IMPEXP  __stdcall  decode(const char a_ch);
+        char   __stdcall  encode(const char a_ch);
+        char   __stdcall  decode(const char a_ch);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------

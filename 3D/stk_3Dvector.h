@@ -5,7 +5,7 @@
 #include <smmintrin.h>
 
 // Simple vector class
-_MM_ALIGN16 class __sse_3Dvector
+_MM_ALIGN16 class STK_IMPEXP __sse_3Dvector
 {
  public:
   // constructors
@@ -41,8 +41,8 @@ _MM_ALIGN16 class __sse_3Dvector
   inline __sse_3Dvector cross(const __sse_3Dvector& b) const
   {
    return _mm_sub_ps(
-	_mm_mul_ps(_mm_shuffle_ps(mmvalue, mmvalue, _MM_SHUFFLE(3, 0, 2, 1)), _mm_shuffle_ps(b.mmvalue, b.mmvalue, _MM_SHUFFLE(3, 1, 0, 2))),
-	_mm_mul_ps(_mm_shuffle_ps(mmvalue, mmvalue, _MM_SHUFFLE(3, 1, 0, 2)), _mm_shuffle_ps(b.mmvalue, b.mmvalue, _MM_SHUFFLE(3, 0, 2, 1)))
+    _mm_mul_ps(_mm_shuffle_ps(mmvalue, mmvalue, _MM_SHUFFLE(3, 0, 2, 1)), _mm_shuffle_ps(b.mmvalue, b.mmvalue, _MM_SHUFFLE(3, 1, 0, 2))),
+    _mm_mul_ps(_mm_shuffle_ps(mmvalue, mmvalue, _MM_SHUFFLE(3, 1, 0, 2)), _mm_shuffle_ps(b.mmvalue, b.mmvalue, _MM_SHUFFLE(3, 0, 2, 1)))
    );
   }
 

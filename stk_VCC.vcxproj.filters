@@ -252,12 +252,6 @@
     <ClCompile Include="stk_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stk_variable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stk_vector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="3D\stk_3Dvector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -409,6 +403,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stk_BCB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="koperek\stk_kop32_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="koperek\stk_kop32_options.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

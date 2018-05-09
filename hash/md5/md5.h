@@ -1,4 +1,4 @@
-﻿/*
+/*
   Copyright (C) 1999, 2002 Aladdin Enterprises.  All rights reserved.
 
   This software is provided 'as-is', without any express or implied
@@ -50,6 +50,8 @@
 #ifndef md5_INCLUDED
 #define md5_INCLUDED
 
+#include <stk_MAIN.h>
+
 /*
  * This package supports both compile-time and run-time determination of CPU
  * byte order.  If ARCH_IS_BIG_ENDIAN is defined as 0, the code will be
@@ -72,19 +74,19 @@ typedef struct md5_state_s {
 
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
-STK_extern "C"
+extern "C"
 {
 #endif
 //---------------------------------------------------------------------------
 /* Initialize the algorithm. */
-void md5_init(md5_state_t *pms);
+extern STK_IMPEXP void md5_init(md5_state_t *pms);
 /* Append a string to the message. */
-void md5_append(md5_state_t *pms, const md5_byte_t *data, int nbytes);
+extern STK_IMPEXP void md5_append(md5_state_t *pms, const md5_byte_t *data, int nbytes);
 /* Finish the message and return the digest. */
-void md5_finish(md5_state_t *pms, md5_byte_t digest[16]);
+extern STK_IMPEXP void md5_finish(md5_state_t *pms, md5_byte_t digest[16]);
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
-}  /* end STK_extern "C" */
+}  /* end extern "C" */
 #endif
 //---------------------------------------------------------------------------
 #endif /* md5_INCLUDED */

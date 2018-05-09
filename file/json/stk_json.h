@@ -78,7 +78,7 @@ typedef enum {
    json_boolean,
    json_null } json_type;
 //---------------------------------------------------------------------------
-extern const struct json_value json_value_none;
+extern STK_IMPEXP const struct json_value json_value_none;
 //---------------------------------------------------------------------------
 typedef struct __json_object_entry {
     __json_char_t* name;

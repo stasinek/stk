@@ -19,9 +19,9 @@
 namespace stk { namespace con {
 #endif
 //---------------------------------------------------------------------------
-extern char             STK_IMPEXP  __stdcall   getch                   (void);
-extern void             STK_IMPEXP  __stdcall   print                   (const char* __restrict__ atext);
-extern void             STK_IMPEXP  __stdcall   error                   (const char* __restrict__ atext);
+extern char               __stdcall   getch                   (void);
+extern void               __stdcall   print                   (const char* __restrict__ atext);
+extern void               __stdcall   error                   (const char* __restrict__ atext);
 
 extern void             STK_IMPEXP  __cdecl     prints  				(const char* __restrict__ a_format, ...);
 extern void             STK_IMPEXP  __cdecl     printe  				(const char* __restrict__ a_format, ...);
@@ -35,10 +35,10 @@ extern __getch_handler  STK_IMPEXP             *getch_handler;
 extern __print_handler  STK_IMPEXP             *print_handler;
 extern __error_handler  STK_IMPEXP             *error_handler;
 
-extern void             STK_IMPEXP  __stdcall   set_console_handlers	(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*));
-extern char             STK_IMPEXP  __stdcall   stdinp_handler  		(void);
-extern void             STK_IMPEXP  __stdcall   stdout_handler  		(const char* a_text);
-extern void             STK_IMPEXP  __stdcall   stderr_handler  		(const char* a_text);
+extern void               __stdcall   set_console_handlers	(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*));
+extern char               __stdcall   stdinp_handler  		(void);
+extern void               __stdcall   stdout_handler  		(const char* a_text);
+extern void               __stdcall   stderr_handler  		(const char* a_text);
 
 #ifdef __WATCOMC__
 extern void             STK_IMPEXP              con_atexit(void);

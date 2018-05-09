@@ -146,7 +146,7 @@ NO_WARNINGS_GNU += -fverbose-asm
 NO_WARNINGS_GNU += -fstrict-aliasing
 NO_WARNINGS_GNU += -dD
 NO_WARNINGS_GNU += -g
-NO_WARNINGS_GNU += -std=gnu++0x -pthread
+NO_WARNINGS_GNU += -pthread
 
 FLAGS_GNU += -fno-use-linker-plugin
 FLAGS_GNU += -malign-double
@@ -157,8 +157,8 @@ FLAGS_GNU += -m32 -mfpmath=sse -flto -O3
 FLAGS_GNU += -mpreferred-stack-boundary=8
 FLAGS_GNU += -mmmx -msse -msse2
 
-QMAKE_CXXFLAGS_DEBUG += $$FLAGS_GNU $$WARNINGS_GNU
-QMAKE_CXXFLAGS_RELEASE += $$FLAGS_GNU $$NO_WARNINGS_GNU
+QMAKE_CXXFLAGS_DEBUG += $$FLAGS_GNU $$WARNINGS_GNU -std=gnu++0x
+QMAKE_CXXFLAGS_RELEASE += $$FLAGS_GNU $$NO_WARNINGS_GNU -std=gnu++0x
 #QMAKE_CXXFLAGS -= -pipe
 #QMAKE_CXXFLAGS += -save-temps
 

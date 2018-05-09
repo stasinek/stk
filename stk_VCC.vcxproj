@@ -17,7 +17,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -58,6 +58,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -189,6 +190,8 @@
     <ClCompile Include="koperek\stk_kop32_class.cpp" />
     <ClCompile Include="koperek\stk_kop32_console_API.cpp" />
     <ClCompile Include="koperek\stk_kop32_controler.cpp" />
+    <ClCompile Include="koperek\stk_kop32_list.cpp" />
+    <ClCompile Include="koperek\stk_kop32_options.cpp" />
     <ClCompile Include="koperek\stk_kop32_search.cpp" />
     <ClCompile Include="koperek\stk_kop32_socket_server.cpp" />
     <ClCompile Include="mem\stk_bsearch.cpp" />
@@ -212,8 +215,6 @@
     <ClCompile Include="stk_map.cpp" />
     <ClCompile Include="stk_set.cpp" />
     <ClCompile Include="stk_test.cpp" />
-    <ClCompile Include="stk_variable.cpp" />
-    <ClCompile Include="stk_vector.cpp" />
     <ClCompile Include="text\stk_cstr_class.cpp" />
     <ClCompile Include="text\stk_cstr_stack.cpp" />
     <ClCompile Include="text\stk_cstr_utils.cpp" />

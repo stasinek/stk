@@ -36,7 +36,7 @@ volatile static int64_t __shared##num = 0;
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern volatile int32_t __barier, __barier_locker;
+extern STK_IMPEXP volatile int32_t __barier, __barier_locker;
 #ifdef __cplusplus
 }
 #endif

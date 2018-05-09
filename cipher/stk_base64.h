@@ -6,7 +6,9 @@
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 namespace stk { namespace cipher {
+#endif
 //---------------------------------------------------------------------------
 /******************************************************************************
  * BASE64
@@ -15,6 +17,7 @@ namespace stk { namespace cipher {
 #define TEST_MIME_CODES
 #define ___
 static const int cLineLen = 72;
+//---------------------------------------------------------------------------
 
 template <class in_iter_t, class out_iter_t>
 class __mime_coder
@@ -23,6 +26,7 @@ public:
     virtual out_iter_t Filter( out_iter_t out, in_iter_t in_head, in_iter_t in_end ) = 0;
     virtual out_iter_t Finish( out_iter_t out ) = 0;
 };
+//---------------------------------------------------------------------------
 
 template <class in_iter_t, class out_iter_t>
 class __base64_encoder : public __mime_coder<in_iter_t, out_iter_t>
@@ -37,6 +41,7 @@ private:
     int             itsLinePos;
     void EncodeCurr3( out_iter_t& out );
 };
+//---------------------------------------------------------------------------
 
 template <class in_iter_t, class out_iter_t>
 class __base64_decoder : public __mime_coder<in_iter_t, out_iter_t>
@@ -60,6 +65,7 @@ static const char c__base64Codes[] =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static const char CR = 13;
 static const char LF = 10;
+//---------------------------------------------------------------------------
 
 template <class in_iter_t, class out_iter_t>
 out_iter_t __base64_encoder<in_iter_t, out_iter_t>::Filter(
@@ -84,6 +90,7 @@ ___ ___ ___ ___ ___ return out;
     } // for (;;)
 //    return out;
 }
+//---------------------------------------------------------------------------
 
 template <class in_iter_t, class out_iter_t>
 out_iter_t __base64_encoder<in_iter_t, out_iter_t>::Finish( out_iter_t out )
@@ -201,26 +208,24 @@ ___ ___ ___ return;
     }
 }
 
-size_t STK_IMPEXP  __stdcall char2base64(char *Z, int s, char *out);
-int STK_IMPEXP  __stdcall base642char(char *Z, int s, char *out);
-class  __base64 {
+extern STK_IMPEXP size_t    __stdcall char2base64(char *Z, int s, char *out);
+extern STK_IMPEXP int       __stdcall base642char(char *Z, int s, char *out);
+//---------------------------------------------------------------------------
+class  STK_IMPEXP __base64 {
 private:
-//---------------------------------------------------------------------------
         uint8_t  *order;
-//---------------------------------------------------------------------------
 public:
-//---------------------------------------------------------------------------
-        __base64(void);
-       ~__base64(void);
-//---------------------------------------------------------------------------
-        void STK_IMPEXP  __stdcall  initialize(void);
-//---------------------------------------------------------------------------
-        char STK_IMPEXP  __stdcall  encode(const char a_ch);
-        char STK_IMPEXP  __stdcall  decode(const char a_ch);
-//---------------------------------------------------------------------------
+                         __base64(void);
+                        ~__base64(void);
+        void   __stdcall initialize(void);
+
+        char   __stdcall encode(const char a_ch);
+        char   __stdcall decode(const char a_ch);
 };
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 }}
+#endif
 //-------------------------------THE END-------------------------------------
 #endif
 //---------------------------------------------------------------------------

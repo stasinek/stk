@@ -6,8 +6,8 @@
 //---------------------------------------------------------------------------
 namespace stk { namespace hash { namespace md5 {
 //---------------------------------------------------------------------------
-extern void STK_IMPEXP  __stdcall reset_MD5(void);
-extern const uint32_t  STK_IMPEXP *__stdcall calc_MD5(const char *initial_msg, const uint32_t initial_len);
+extern STK_IMPEXP void              __stdcall reset_MD5(void);
+extern STK_IMPEXP const uint32_t   *__stdcall calc_MD5(const char *initial_msg, const uint32_t initial_len);
 //---------------------------------------------------------------------------
 }}}
 //---------------------------------------------------------------------------

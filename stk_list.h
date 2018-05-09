@@ -33,7 +33,7 @@ __DEBUG_FUNC_CALLED("stk::__list::~__list")
         this->resize(0);
     }
 //---------------------------------------------------------------------------
-    bool STK_IMPEXP  __stdcall push_back(T a_new)
+    bool   __stdcall push_back(T a_new)
     {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("stk::__list::push_back()")
@@ -50,7 +50,7 @@ __DEBUG_FUNC_CALLED("stk::__list::push_back()")
         return true;
     };
 //---------------------------------------------------------------------------
-    T STK_IMPEXP  __stdcall pop_front(void)
+    T   __stdcall pop_front(void)
     {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("stk::__list::pop_front()")
@@ -68,7 +68,7 @@ __DEBUG_FUNC_CALLED("stk::__list::pop_front()")
         return ret;
     };
 //---------------------------------------------------------------------------
-    T STK_IMPEXP  __stdcall front(void) const
+    T   __stdcall front(void) const
     {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("stk::__list::front() const")
@@ -79,7 +79,7 @@ __DEBUG_FUNC_CALLED("stk::__list::front() const")
     return ptrs[f_front];
 }
 //---------------------------------------------------------------------------
-    T STK_IMPEXP  __stdcall back(void) const
+    T   __stdcall back(void) const
     {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("stk::__list::back() const")
@@ -90,7 +90,7 @@ __DEBUG_FUNC_CALLED("stk::__list::back() const")
     return ptrs[f_back];
 }
 //---------------------------------------------------------------------------
-    uint32_t STK_IMPEXP  __stdcall count(void)  const
+    uint32_t   __stdcall count(void)  const
     {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("stk::__list::count() const")
@@ -100,7 +100,7 @@ __DEBUG_FUNC_CALLED("stk::__list::count() const")
         return (f_ptrs_size - f_front + f_back);
     }
 //---------------------------------------------------------------------------
-    uint32_t STK_IMPEXP  __stdcall size(void)  const
+    uint32_t   __stdcall size(void)  const
     {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("")
@@ -108,7 +108,7 @@ __DEBUG_FUNC_CALLED("")
         return f_ptrs_size;
     }
 //---------------------------------------------------------------------------
-    virtual void STK_IMPEXP  __stdcall overflowed(void)
+    virtual void   __stdcall overflowed(void)
     {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("stk::__list::overflowed()")
@@ -116,7 +116,7 @@ __DEBUG_FUNC_CALLED("stk::__list::overflowed()")
 
     }
 //---------------------------------------------------------------------------
-    virtual void STK_IMPEXP  __stdcall cleared(void)
+    virtual void   __stdcall cleared(void)
     {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("stk::__list::cleared()")
@@ -124,7 +124,7 @@ __DEBUG_FUNC_CALLED("stk::__list::cleared()")
 
     }
 //---------------------------------------------------------------------------
-    bool STK_IMPEXP  __stdcall is_full(void) const
+    bool   __stdcall is_full(void) const
     {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("stk::__list::is_full()")
@@ -132,7 +132,7 @@ __DEBUG_FUNC_CALLED("stk::__list::is_full()")
     return f_full;
     }
 //---------------------------------------------------------------------------
-    void STK_IMPEXP  __stdcall resize(uint32_t a_new_size)
+    void   __stdcall resize(uint32_t a_new_size)
      {
 #ifdef __DEBUG_LIST__
 __DEBUG_FUNC_CALLED("stk::__list::resize()")

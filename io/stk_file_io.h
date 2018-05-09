@@ -44,7 +44,7 @@ typedef struct {
 } __file_open_struct;
 //---------------------------------------------------------------------------
 
-extern HANDLE STK_IMPEXP WINAPI create(
+extern STK_IMPEXP HANDLE WINAPI create(
            LPCSTR lpFileName,
            DWORD dwDesiredAccess,
            DWORD dwShareMode,
@@ -55,7 +55,7 @@ extern HANDLE STK_IMPEXP WINAPI create(
 );
 //---------------------------------------------------------------------------
 
-extern BOOL STK_IMPEXP WINAPI write(
+extern STK_IMPEXP BOOL WINAPI write(
                    HANDLE hFile,
                    LPCVOID lpBuffer,
                   DWORD nNumberOfBytesToWrite,
@@ -64,7 +64,7 @@ extern BOOL STK_IMPEXP WINAPI write(
 );
 //---------------------------------------------------------------------------
 
-extern BOOL STK_IMPEXP WINAPI read(
+extern STK_IMPEXP BOOL WINAPI read(
                    HANDLE hFile,
                   LPVOID lpBuffer,
                    DWORD nNumberOfBytesToRead,
@@ -73,7 +73,7 @@ extern BOOL STK_IMPEXP WINAPI read(
 );
 //---------------------------------------------------------------------------
 
-extern HANDLE STK_IMPEXP WINAPI create_map(
+extern STK_IMPEXP HANDLE WINAPI create_map(
                 HANDLE hFile,
         LPSECURITY_ATTRIBUTES lpAttributes,
                 DWORD flProtect,
@@ -83,7 +83,7 @@ extern HANDLE STK_IMPEXP WINAPI create_map(
 );
 //---------------------------------------------------------------------------
 
-extern LPVOID STK_IMPEXP WINAPI create_map_view(
+extern STK_IMPEXP LPVOID WINAPI create_map_view(
    HANDLE hFileMappingObject,
         DWORD dwDesiredAccess,
         DWORD dwFileOffsetHigh,
@@ -92,23 +92,23 @@ extern LPVOID STK_IMPEXP WINAPI create_map_view(
 );
 //---------------------------------------------------------------------------
 
-extern BOOL STK_IMPEXP WINAPI flush_map_view(
+extern STK_IMPEXP BOOL WINAPI flush_map_view(
         LPCVOID lpBaseAddress,
         SIZE_T dwNumberOfBytesToFlush
 );
 //---------------------------------------------------------------------------
 
-extern BOOL STK_IMPEXP WINAPI close_map_view(
+extern STK_IMPEXP BOOL WINAPI close_map_view(
         LPCVOID lpBaseAddress
 );
 //---------------------------------------------------------------------------
 
-extern BOOL STK_IMPEXP WINAPI close(
+extern STK_IMPEXP BOOL WINAPI close(
         HANDLE hObject
 );
 //---------------------------------------------------------------------------
 
-extern BOOL STK_IMPEXP WINAPI close_map(
+extern STK_IMPEXP BOOL WINAPI close_map(
         HANDLE hObject
 );
 //---------------------------------------------------------------------------

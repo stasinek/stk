@@ -11,7 +11,7 @@ namespace stk { namespace time {
 #endif
 //---------------------------------------------------------------------------
 extern STK_IMPEXP uint64_t  __stdcall time_us(void);
-extern uint64_t  STK_IMPEXP __stdcall time_ms(void);
+extern STK_IMPEXP uint64_t  __stdcall time_ms(void);
 extern STK_IMPEXP void 		__stdcall wait_us(const uint64_t a_microseconds);
 extern STK_IMPEXP void 		__stdcall wait_ms(const uint64_t a_milliseconds);
 extern STK_IMPEXP void 		__stdcall wait_until(time_t a_time);
