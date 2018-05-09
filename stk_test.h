@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_test_h
-#define __stk_test_h
+#ifndef STK_TEST_H
+#define STK_TEST_H
 //---------------------------------------------------------------------------
 #include "./stk_MAIN.h"
 //---------------------------------------------------------------------------
@@ -20,15 +20,21 @@
 #include "./stk_tree.h"
 #include "./process_journal/stk_journal.h"
 #include "./io/stk_console.h"
-
+//---------------------------------------------------------------------------
+#ifdef __cplusplus
 namespace stk { namespace test {
-extern "C" STK_IMPEXP int STK_IMPEXP  __stdcall start_test(int argc, char *argv[]);
-#ifdef __WATCOMC__
-extern "C" void stk_atexit(void);
-#else
-void __cdecl stk_atexit(void);
 #endif
+//---------------------------------------------------------------------------
+extern int i;
+extern STK_IMPEXP int __stdcall start_test(int argc, char *argv[]);
+#ifdef __WATCOMC__
+extern void stk_atexit(void);
+#else
+extern STK_IMPEXP void __cdecl stk_atexit(void);
+#endif
+//---------------------------------------------------------------------------
+#ifdef __cplusplus
 }}
-
+#endif
 //---------------------------------------------------------------------------
 #endif

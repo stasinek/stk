@@ -559,11 +559,11 @@ Top=122
 Width=1080
 Height=502
 MaxLeft=-4
-MaxTop=100
+MaxTop=97
 MaxWidth=1288
-MaxHeight=676
+MaxHeight=679
 ClientWidth=1280
-ClientHeight=649
+ClientHeight=652
 LeftPanelSize=0
 RightPanelSize=0
 BottomPanelSize=52
@@ -748,7 +748,7 @@ LeftCol=1
 [View25]
 Module=D:\stasiek\My Projects\X86_LIBRARIES\STK\threads\stk_threads.cpp
 CursorX=154
-CursorY=258
+CursorY=245
 TopLine=245
 LeftCol=1
 
@@ -775,8 +775,8 @@ LeftCol=1
 
 [View29]
 Module=D:\X86_LIBRARIES\STK\koperek\stk_kop32_list.cpp
-CursorX=28
-CursorY=1
+CursorX=37
+CursorY=17
 TopLine=1
 LeftCol=1
 
@@ -1112,8 +1112,8 @@ Left=9
 Top=15
 Width=1271
 Height=105
-MaxLeft=-1
-MaxTop=-1
+MaxLeft=-4
+MaxTop=-4
 MaxWidth=1288
 MaxHeight=105
 ClientWidth=1280

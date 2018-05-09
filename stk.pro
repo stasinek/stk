@@ -1,19 +1,45 @@
+#
+# Qmake Qt5.5.1 file last modified 2018.5, Windows MSC2010,MinGW4.92,LLVM3.7 builds tester
+#
 DEFINES += BUILD_STK_LIBRARY
-
+# -------------------------------------------------------------
+# CONFIG: LIBRARY: STATIC, DLL OR EXE: TESTING.APP
+# -------------------------------------------------------------
 contains(DEFINES, BUILD_STK_LIBRARY) {
+message("Building STK LIBRARY")
     TARGET = stk
     TEMPLATE = lib
-    CONFIG += lib_bundle
-    CONFIG += staticlib
+#    CONFIG += lib_bundle
+#    CONFIG += staticlib
     CONFIG += embed_manifest_dll
-#    CONFIG += dll
+    CONFIG += dll
+    CONFIG -= warn_on
+    CONFIG += warn_off
 }
 else {
+message("Building STK TESTER PROGRAM")
     TARGET  = stk_tester
     TEMPLATE = app
-    CONFIG += app_bundle console
+#    CONFIG += app_bundle
+    CONFIG += console
     CONFIG += embed_manifest_exe
+    CONFIG -= warn_on
+    CONFIG += warn_off
 }
+# -------------------------------------------------------------
+# MESSAGE ABOUT TARGET
+# -------------------------------------------------------------
+contains(TEMPLATE, dll) {
+contains(CONFIG, dll) {
+message($$TARGET".dll")
+}
+contains(CONFIG, static) {
+message("lib"{$$TARGET}".lib")
+}
+}
+# -------------------------------------------------------------
+# MORE CONFIG
+# -------------------------------------------------------------
 QT -= core gui
 CONFIG -= qt
 CONFIG += precompile_header
@@ -22,29 +48,23 @@ CONFIG += warn_on
 CONFIG += exceptions
 CONFIG += c++11
 # -------------------------------------------------------------
-# External ASM .s compiler
-# -------------------------------------------------------------
-#QMAKE_CFLAGS_RELEASE += rtti_off stl_off exceptions_off
-#QMAKE_CXXFLAGS += -save-temps
-#QMAKE_CXXFLAGS += -fverbose-asm
-#QMAKE_CXXFLAGS -= -pipe
-#moc.depend_command = g++ -E -M ${QMAKE_FILE_NAME} | sed "s,^.*: ,,"
-#NASM.output  = ${QMAKE_FILE_BASE}_asm.o
-#NASM.commands = c:/nasm/nasm -f elf -g -F dwarf --prefix ${PWD}${QMAKE_FILE_NAME} -o ${PWD}/${QMAKE_FILE_OUT}
-#NASM.input = ASM_SOURCES
-#YASM.output  = ${QMAKE_FILE_BASE}_asm.o
-#YASM.commands = c:/YASM/YASM -f elf -g dwarf2 -w -o ${QMAKE_FILE_OUT} ${PWD}${QMAKE_FILE_NAME}
-#YASM.input = ASM_SOURCES
-#FASM.output  = ${QMAKE_FILE_BASE}_asm.o
-#FASM.commands = c:/fasm/fasm  ${PWD}${QMAKE_FILE_NAME} ${QMAKE_FILE_OUT}
-#FASM.input = ASM_SOURCES
-#QMAKE_EXTRA_COMPILERS += YASM
-#ASM_SOURCES += 	../STK/cpu/stk_cpu_nasm.asm
-# -------------------------------------------------------------
 # GCC
 # -------------------------------------------------------------
-contains(DEFINES, __GNUC__) {
-message("Building GCC compiler flags loaded")
+WARNINGS += -Wextra
+WARNINGS += -Wunknown-pragmas -Wundef
+WARNINGS += -Wold-style-cast
+WARNINGS += -Wdisabled-optimization -Wstrict-overflow=4
+WARNINGS += -Weffc++ -Wuseless-cast
+WARNINGS += -Winit-self -Wpointer-arith
+WARNINGS += -Wlogical-op
+WARNINGS += -Wunsafe-loop-optimizations -Wno-error=unsafe-loop-optimizations
+
+message(QMAKESPEC:$$QMAKESPEC)
+message(CONFIG:$$CONFIG)
+message(DEFINES:$$DEFINES)
+
+win32-g++: {
+message("GNU Compiler flags loaded")
 #QMAKE_CXXFLAGS -= -pipe
 #QMAKE_CXXFLAGS += -save-temps
 QMAKE_CXXFLAGS += -Wno-write-strings -Wno-multichar
@@ -52,14 +72,13 @@ QMAKE_CXXFLAGS += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -
 QMAKE_CXXFLAGS += -Wno-unused-but-set-variable
 QMAKE_CXXFLAGS += -Wattributes -Winline
 QMAKE_CXXFLAGS += -Wunknown-pragmas
-QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow
+QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CXXFLAGS += -fverbose-asm
 QMAKE_CXXFLAGS += -fstrict-aliasing
 QMAKE_CXXFLAGS += -dD
 QMAKE_CXXFLAGS += -g
 QMAKE_CXXFLAGS += -std=gnu++0x -pthread
 
-QMAKE_CXXFLAGS_RELEASE += -Wall
 QMAKE_CXXFLAGS_RELEASE += -fno-use-linker-plugin
 QMAKE_CXXFLAGS_RELEASE += -malign-double
 QMAKE_CXXFLAGS_RELEASE += -momit-leaf-frame-pointer
@@ -82,24 +101,25 @@ QMAKE_CFLAGS   += -Wunknown-pragmas
 # -------------------------------------------------------------
 # VCC
 # -------------------------------------------------------------
-contains(DEFINES, _MSC_VER) {
-message("Building Microsoft C compiler flags loaded")
+win32-msvc2010: {
+message("MSVC Microsoft Compiler flags loaded")
 QMAKE_CXXFLAGS_RELEASE += /arch:SSE2
 QMAKE_CXXFLAGS_RELEASE += /w
 QMAKE_CXXFLAGS += /W0
+QMAKE_CXXFLAGS -= /W3
 }
 # -------------------------------------------------------------
 # LLVM - Clang
 # -------------------------------------------------------------
-contains (DEFINES,__clang__) {
-message("Building LLVM C compiler flags loaded")
+win32-g++: {
+message("LLVM Clang Compiler flags loaded")
 QMAKE_CXX = clang++
 #QMAKE_CXXFLAGS -= -pipe
 #QMAKE_CXXFLAGS += -save-temps
 QMAKE_CXXFLAGS += -Wno-write-strings -Wno-multichar
 QMAKE_CXXFLAGS += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
 QMAKE_CXXFLAGS += -Wno-unused-but-set-variable
-QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow
+QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow -Wall
 QMAKE_CXXFLAGS += -Wunknown-pragmas
 QMAKE_CXXFLAGS += -fverbose-asm
 QMAKE_CXXFLAGS += -fstrict-aliasing
@@ -108,7 +128,6 @@ QMAKE_CXXFLAGS += -g
 QMAKE_CXXFLAGS += -std=gnu++0x -pthread
 QMAKE_CXXFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 
-QMAKE_CXXFLAGS_RELEASE += -Wall
 QMAKE_CXXFLAGS_RELEASE += -malign-double
 QMAKE_CXXFLAGS_RELEASE += -momit-leaf-frame-pointer
 QMAKE_CXXFLAGS_RELEASE += -fwrapv
@@ -187,20 +206,23 @@ SOURCES += \
     koperek/stk_kop32_list.cpp \
     file/zip/miniz.c
 # -------------------------------------------------------------
-contains(DEFINES, __GNUC__) {
+win32-g++: {
+message("ASM sources GNUC C compiler flags loaded")
 SOURCES+=
     cpu/stk_cpu_gas.s
 }
-contains(DEFINES, _MSC_VER) {
+win32-msvc2010: {
+message("ASM sources MSVC C compiler flags loaded")
 SOURCES+=
     cpu/stk_cpu_gas.s
 }
-contains(DEFINES, __clang__) {
+win32-g++: {
+message("ASM sources LLVM C compiler flags loaded")
 SOURCES+=
     cpu/stk_cpu_gas.s
 }
 # -------------------------------------------------------------
-PRECOMPILED_HEADER += stk_MAIN.h
+#PRECOMPILED_HEADER += $$PWD/stk_MAIN.h
 HEADERS += \
     stk_hash_chain.h \
     stk_list.h \
@@ -267,6 +289,7 @@ HEADERS += \
     file/zip/miniz.h
 # -------------------------------------------------------------
 contains(DEFINES, QT_GUI) {
+message("Qt GUI files loaded")
 CONFIG +=
 SOURCES +=
 HEADERS +=
@@ -274,14 +297,17 @@ FORMS +=
 RESOURCES +=
 }
 # -------------------------------------------------------------
-contains(DEFINES, __GNUC__) {
+win32-g++: {
+message("Linker GNUC libs loaded")
     LIBS += -lkernel32
     LIBS += -lgdi32 -lcomctl32 -lshell32 -luser32 -luserenv
     LIBS += -lws2_32 -lwsock32
     LIBS += -lwinmm -limm32
     LIBS += -lole32 -loleaut32
+    LIBS += -uiid -advapi32
     LIBS += -lcrypt32
     LIBS += -lgomp
+
     #LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
     #LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
     contains(DEFINES, QT_GUI) {
@@ -289,13 +315,14 @@ contains(DEFINES, __GNUC__) {
     }
 }
 # -------------------------------------------------------------
-contains(DEFINES, _MSC_VER) {
-    LIBS += vcompd.lib
-    LIBS += kernel32.lib shell32.lib gdi32.lib
+win32-msvc2010: {
+message("Linker MSVC libs loaded")
+#    LIBS += vcomp.lib
     LIBS += crypt32.lib
-    LIBS += winmm.lib
-    LIBS += wsock32.lib ws2_32.lib
+    LIBS += kernel32.lib shell32.lib gdi32.lib
     LIBS += user32.lib uuid.lib
+    LIBS += wsock32.lib ws2_32.lib
+    LIBS += winmm.lib
     LIBS += ole32.lib oleaut32.lib
     LIBS -= gomp.lib
     contains(DEFINES, QT_GUI) {
@@ -303,7 +330,8 @@ contains(DEFINES, _MSC_VER) {
     }
 }
 # -------------------------------------------------------------
-contains(DEFINES, __clang__) {
+win32-g++: {
+message("Linker LLVM libs loaded")
     LIBS +=
     contains(DEFINES, QT_GUI) {
         LIBS += QtCored.lib
@@ -311,12 +339,34 @@ contains(DEFINES, __clang__) {
 }
 # -------------------------------------------------------------
 win32: {
+message("Windows Resource files loaded")
     RC_FILE     =  stk_version.rc
 #-manifest file.manifest
 }
 OTHER_FILES +=
 DISTFILES += test.txt
 # -------------------------------------------------------------
+
+# -------------------------------------------------------------
+# External ASM .s compiler
+# -------------------------------------------------------------
+#QMAKE_CFLAGS_RELEASE += rtti_off stl_off exceptions_off
+#QMAKE_CXXFLAGS += -save-temps
+#QMAKE_CXXFLAGS += -fverbose-asm
+#QMAKE_CXXFLAGS -= -pipe
+#moc.depend_command = g++ -E -M ${QMAKE_FILE_NAME} | sed "s,^.*: ,,"
+#NASM.output  = ${QMAKE_FILE_BASE}_asm.o
+#NASM.commands = c:/nasm/nasm -f elf -g -F dwarf --prefix ${PWD}${QMAKE_FILE_NAME} -o ${PWD}/${QMAKE_FILE_OUT}
+#NASM.input = ASM_SOURCES
+#YASM.output  = ${QMAKE_FILE_BASE}_asm.o
+#YASM.commands = c:/YASM/YASM -f elf -g dwarf2 -w -o ${QMAKE_FILE_OUT} ${PWD}${QMAKE_FILE_NAME}
+#YASM.input = ASM_SOURCES
+#FASM.output  = ${QMAKE_FILE_BASE}_asm.o
+#FASM.commands = c:/fasm/fasm  ${PWD}${QMAKE_FILE_NAME} ${QMAKE_FILE_OUT}
+#FASM.input = ASM_SOURCES
+#QMAKE_EXTRA_COMPILERS += YASM
+#ASM_SOURCES += 	../STK/cpu/stk_cpu_nasm.asm
+
 
 #postlink.target = .buildfile
 #postlink.commands = dlltool -z --output-def,exported.def -l $$postlink.target

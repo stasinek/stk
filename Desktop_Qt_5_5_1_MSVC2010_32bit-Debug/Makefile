@@ -310,12 +310,12 @@ qmake_all: FORCE
 make_first: debug-make_first release-make_first  FORCE
 all: debug-all release-all  FORCE
 clean: debug-clean release-clean  FORCE
-	-$(DEL_FILE) stk_pch.pch
+	-$(DEL_FILE) stk.exp
 	-$(DEL_FILE) stk.ilk
 	-$(DEL_FILE) stk.idb
 distclean: debug-distclean release-distclean  FORCE
 	-$(DEL_FILE) Makefile
-	-$(DEL_FILE) stk.pdb
+	-$(DEL_FILE) stk.lib stk.pdb
 
 check: first
 FORCE:

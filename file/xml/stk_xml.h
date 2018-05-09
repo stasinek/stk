@@ -29,6 +29,7 @@
 #ifdef _WIN32
     #ifndef __SYMBIAN32__
     #include <windows.h>
+#define WINCRYPT32API
     #include <wincrypt.h>
     #include <commctrl.h>
     #include <wininet.h>
