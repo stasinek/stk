@@ -2,11 +2,12 @@
 # Qmake Qt5.5.1 file last modified 2018.5, Windows MSC2010,MinGW4.92,LLVM3.7 builds tester
 #
 DEFINES += BUILD_STK_LIBRARY
+#DEFINES += BUILD_STK_TESTER
 # -------------------------------------------------------------
 # CONFIG: LIBRARY: STATIC, DLL OR EXE: TESTING.APP
 # -------------------------------------------------------------
 contains(DEFINES, BUILD_STK_LIBRARY) {
-message("Building STK LIBRARY")
+message($$DEFINES)
     TARGET = stk
     TEMPLATE = lib
 #    CONFIG += lib_bundle
@@ -17,7 +18,7 @@ message("Building STK LIBRARY")
     CONFIG += warn_off
 }
 else {
-message("Building STK TESTER PROGRAM")
+message("BUILD_STK_TESTER")
     TARGET  = stk_tester
     TEMPLATE = app
 #    CONFIG += app_bundle
@@ -29,6 +30,8 @@ message("Building STK TESTER PROGRAM")
 # -------------------------------------------------------------
 # MESSAGE ABOUT TARGET
 # -------------------------------------------------------------
+message(QMAKESPEC:$$QMAKESPEC)
+message(CONFIG:$$CONFIG)
 contains(TEMPLATE, dll) {
 contains(CONFIG, dll) {
 message($$TARGET".dll")
@@ -47,107 +50,124 @@ CONFIG += precompile_header
 CONFIG += warn_on
 CONFIG += exceptions
 CONFIG += c++11
-# -------------------------------------------------------------
-# GCC
-# -------------------------------------------------------------
-WARNINGS += -Wextra
-WARNINGS += -Wunknown-pragmas -Wundef
-WARNINGS += -Wold-style-cast
-WARNINGS += -Wdisabled-optimization -Wstrict-overflow=4
-WARNINGS += -Weffc++ -Wuseless-cast
-WARNINGS += -Winit-self -Wpointer-arith
-WARNINGS += -Wlogical-op
-WARNINGS += -Wunsafe-loop-optimizations -Wno-error=unsafe-loop-optimizations
-
-message(QMAKESPEC:$$QMAKESPEC)
-message(CONFIG:$$CONFIG)
-message(DEFINES:$$DEFINES)
-
-win32-g++: {
-message("GNU Compiler flags loaded")
-#QMAKE_CXXFLAGS -= -pipe
-#QMAKE_CXXFLAGS += -save-temps
-QMAKE_CXXFLAGS += -Wno-write-strings -Wno-multichar
-QMAKE_CXXFLAGS += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
-QMAKE_CXXFLAGS += -Wno-unused-but-set-variable
-QMAKE_CXXFLAGS += -Wattributes -Winline
-QMAKE_CXXFLAGS += -Wunknown-pragmas
-QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow -Wall
-QMAKE_CXXFLAGS += -fverbose-asm
-QMAKE_CXXFLAGS += -fstrict-aliasing
-QMAKE_CXXFLAGS += -dD
-QMAKE_CXXFLAGS += -g
-QMAKE_CXXFLAGS += -std=gnu++0x -pthread
-
-QMAKE_CXXFLAGS_RELEASE += -fno-use-linker-plugin
-QMAKE_CXXFLAGS_RELEASE += -malign-double
-QMAKE_CXXFLAGS_RELEASE += -momit-leaf-frame-pointer
-QMAKE_CXXFLAGS_RELEASE += -fwrapv
-QMAKE_CXXFLAGS_RELEASE += -funroll-loops
-QMAKE_CXXFLAGS_RELEASE += -m32 -mfpmath=sse -flto -O3
-QMAKE_CXXFLAGS_RELEASE += -mpreferred-stack-boundary=8
-QMAKE_CXXFLAGS_RELEASE += -mmmx -msse -msse2
-
-#QMAKE_FLAGS -= -pipe
-#QMAKE_FLAGS += -save-temps
-QMAKE_CFLAGS   += -fno-use-linker-plugin
-QMAKE_CFLAGS   += -Wno-write-strings -Wno-multichar
-QMAKE_CFLAGS   += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
-QMAKE_CFLAGS   += -Wno-unused-but-set-variable
-QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
-QMAKE_CFLAGS   += -Wunknown-pragmas
-
-}
+contains(QMAKE_COMPILER_DEFINES,_MSC_VER) {
 # -------------------------------------------------------------
 # VCC
 # -------------------------------------------------------------
-win32-msvc2010: {
-message("MSVC Microsoft Compiler flags loaded")
-QMAKE_CXXFLAGS_RELEASE += /arch:SSE2
-QMAKE_CXXFLAGS_RELEASE += /w
-QMAKE_CXXFLAGS += /W0
+message("MSVC Microsoft Compiler FLAGS loaded")
+QMAKE_CXXFLAGS -= /W1
+QMAKE_CXXFLAGS -= /W2
 QMAKE_CXXFLAGS -= /W3
-}
+QMAKE_CXXFLAGS -= /W4
+QMAKE_CXXFLAGS_RELEASE += /w
+QMAKE_CXXFLAGS_DEBUG += /W0
+QMAKE_CXXFLAGS_RELEASE += /arch:SSE2
+} else {
+contains(QMAKE_COMPILER_DEFINES,__clang__) {
 # -------------------------------------------------------------
 # LLVM - Clang
 # -------------------------------------------------------------
-win32-g++: {
-message("LLVM Clang Compiler flags loaded")
-QMAKE_CXX = clang++
+message("LLVM Clang Compiler FLAGS loaded")
+
+WARNINGS_LLVM += -Wextra
+WARNINGS_LLVM += -Wunknown-pragmas -Wundef
+WARNINGS_LLVM += -Wold-style-cast
+WARNINGS_LLVM += -Wdisabled-optimization -Wstrict-overflow=4
+WARNINGS_LLVM += -Weffc++ #-Wuseless-cast
+WARNINGS_LLVM += -Winit-self -Wpointer-arith
+WARNINGS_LLVM += -Wlogical-op
+WARNINGS_LLVM += -Wunsafe-loop-optimizations -Wno-error=unsafe-loop-optimizations
+WARNINGS_LLVM += -Wno-write-strings -Wno-multichar
+
+NO_WARNINGS_LLVM += -Wno-write-strings -Wno-multichar
+NO_WARNINGS_LLVM += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
+NO_WARNINGS_LLVM += -Wno-unused-but-set-variable
+NO_WARNINGS_LLVM += -Wattributes -Winline
+NO_WARNINGS_LLVM += -Wunknown-pragmas
+NO_WARNINGS_LLVM += -Wattributes -Winline -Wshadow -Wall
+NO_WARNINGS_LLVM += -fverbose-asm
+NO_WARNINGS_LLVM += -fstrict-aliasing
+NO_WARNINGS_LLVM += -dD
+NO_WARNINGS_LLVM += -g
+NO_WARNINGS_LLVM += -std=gnu++0x -pthread
+NO_WARNINGS_LLVM += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
+
+FLAGS_LLVM += -fno-use-linker-plugin
+FLAGS_LLVM += -malign-double
+FLAGS_LLVM += -momit-leaf-frame-pointer
+FLAGS_LLVM += -fwrapv
+FLAGS_LLVM += -funroll-loops
+FLAGS_LLVM += -m32 -mfpmath=sse -flto -O3
+FLAGS_LLVM += -mpreferred-stack-boundary=8
+FLAGS_LLVM += -mmmx -msse -msse2
+FLAGS_LLVM -= -fno-keep-inline-dllexport
+FLAGS_LLVM -= -finline-small-functions
+
 #QMAKE_CXXFLAGS -= -pipe
 #QMAKE_CXXFLAGS += -save-temps
-QMAKE_CXXFLAGS += -Wno-write-strings -Wno-multichar
-QMAKE_CXXFLAGS += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
-QMAKE_CXXFLAGS += -Wno-unused-but-set-variable
-QMAKE_CXXFLAGS += -Wattributes -Winline -Wshadow -Wall
-QMAKE_CXXFLAGS += -Wunknown-pragmas
-QMAKE_CXXFLAGS += -fverbose-asm
-QMAKE_CXXFLAGS += -fstrict-aliasing
-QMAKE_CXXFLAGS += -dD
-QMAKE_CXXFLAGS += -g
-QMAKE_CXXFLAGS += -std=gnu++0x -pthread
-QMAKE_CXXFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
+QMAKE_CXXFLAGS += $$FLAGS_LLVM
+QMAKE_CXXFLAGS_RELEASE += $$NO_WARNINGS_LLVM
+QMAKE_CXXFLAGS_DEBUG += $$WARNINGS_LLVM
+QMAKE_CXXFLAGS += clang++
 
-QMAKE_CXXFLAGS_RELEASE += -malign-double
-QMAKE_CXXFLAGS_RELEASE += -momit-leaf-frame-pointer
-QMAKE_CXXFLAGS_RELEASE += -fwrapv
-QMAKE_CXXFLAGS_RELEASE += -funroll-loops
-QMAKE_CXXFLAGS_RELEASE += -m32 --32 -mfpmath=sse -flto -O3
-QMAKE_CXXFLAGS_RELEASE += -mpreferred-stack-boundary=8
-QMAKE_CXXFLAGS_RELEASE += -mmmx -msse -msse2
-QMAKE_CXXFLAGS_RELEASE -= -fno-keep-inline-dllexport
-QMAKE_CXXFLAGS_RELEASE -= -finline-small-functions
-
-QMAKE_CC  = clang
-QMAKE_CFLAGS   += -Wno-write-strings -Wno-multichar
-QMAKE_CFLAGS   += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
-QMAKE_CFLAGS   += -Wno-unused-but-set-variable
-QMAKE_CFLAGS   += -Wattributes -Winline -Wshadow -Wall
-QMAKE_CFLAGS   += -Wunknown-pragmas
+#QMAKE_CFLAGS -= -pipe
+#QMAKE_CFLAGS += -save-temps
+QMAKE_CFLAGS   += $$FLAGS_LLVM
+QMAKE_CFLAGS_RELEASE += $$NO_WARNINGS_LLVM
+QMAKE_CFLAGS_DEBUG += $$WARNINGS_LLVM
+QMAKE_CFLAGS += clang
 
 QMAKE_LFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 QMAKE_LFLAGS -= -mthreads
+} else {
+contains(QMAKE_COMPILER_DEFINES,__GNUC__) {
+# -------------------------------------------------------------
+# GCC
+# -------------------------------------------------------------
+message("GNUC FLAGS loaded")
+
+WARNINGS_GNU += -Wextra
+WARNINGS_GNU += -Wunknown-pragmas -Wundef
+WARNINGS_GNU += -Wold-style-cast
+WARNINGS_GNU += -Wdisabled-optimization -Wstrict-overflow=4
+WARNINGS_GNU += -Weffc++ #-Wuseless-cast
+WARNINGS_GNU += -Winit-self -Wpointer-arith
+WARNINGS_GNU += -Wlogical-op
+WARNINGS_GNU += -Wunsafe-loop-optimizations -Wno-error=unsafe-loop-optimizations
+WARNINGS_GNU += -Wno-write-strings -Wno-multichar
+
+NO_WARNINGS_GNU += -Wno-write-strings -Wno-multichar
+NO_WARNINGS_GNU += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
+NO_WARNINGS_GNU += -Wno-unused-but-set-variable
+NO_WARNINGS_GNU += -Wattributes -Winline
+NO_WARNINGS_GNU += -Wunknown-pragmas
+NO_WARNINGS_GNU += -Wattributes -Winline -Wshadow -Wall
+NO_WARNINGS_GNU += -fverbose-asm
+NO_WARNINGS_GNU += -fstrict-aliasing
+NO_WARNINGS_GNU += -dD
+NO_WARNINGS_GNU += -g
+NO_WARNINGS_GNU += -std=gnu++0x -pthread
+
+FLAGS_GNU += -fno-use-linker-plugin
+FLAGS_GNU += -malign-double
+FLAGS_GNU += -momit-leaf-frame-pointer
+FLAGS_GNU += -fwrapv
+FLAGS_GNU += -funroll-loops
+FLAGS_GNU += -m32 -mfpmath=sse -flto -O3
+FLAGS_GNU += -mpreferred-stack-boundary=8
+FLAGS_GNU += -mmmx -msse -msse2
+
+QMAKE_CXXFLAGS_DEBUG += $$FLAGS_GNU $$WARNINGS_GNU
+QMAKE_CXXFLAGS_RELEASE += $$FLAGS_GNU $$NO_WARNINGS_GNU
+#QMAKE_CXXFLAGS -= -pipe
+#QMAKE_CXXFLAGS += -save-temps
+
+QMAKE_CFLAGS_DEBUG += $$FLAGS_GNU $$WARNINGS_GNU
+QMAKE_CFLAGS_RELEASE += $$FLAGS_GNU $$NO_WARNINGS_GNU
+#QMAKE_FLAGS -= -pipe
+#QMAKE_FLAGS += -save-temps
 }
+}}
 # -------------------------------------------------------------
 SOURCES += \
     stk_set.cpp \
@@ -206,21 +226,22 @@ SOURCES += \
     koperek/stk_kop32_list.cpp \
     file/zip/miniz.c
 # -------------------------------------------------------------
-win32-g++: {
-message("ASM sources GNUC C compiler flags loaded")
+contains(QMAKE_COMPILER_DEFINES,__GNUC__) {
+message("GNUC GAS sources  loaded")
+SOURCES+=
+    cpu/stk_cpu_gas.s
+} else {
+contains(QMAKE_COMPILER_DEFINES,__clang__) {
+message("LLVM GAS sources loaded")
+SOURCES+=
+    cpu/stk_cpu_gas.s
+} else {
+contains(QMAKE_COMPILER_DEFINES,_MSC_VER) {
+message("AMSVC ASM sources loaded")
 SOURCES+=
     cpu/stk_cpu_gas.s
 }
-win32-msvc2010: {
-message("ASM sources MSVC C compiler flags loaded")
-SOURCES+=
-    cpu/stk_cpu_gas.s
-}
-win32-g++: {
-message("ASM sources LLVM C compiler flags loaded")
-SOURCES+=
-    cpu/stk_cpu_gas.s
-}
+}}
 # -------------------------------------------------------------
 #PRECOMPILED_HEADER += $$PWD/stk_MAIN.h
 HEADERS += \
@@ -289,7 +310,7 @@ HEADERS += \
     file/zip/miniz.h
 # -------------------------------------------------------------
 contains(DEFINES, QT_GUI) {
-message("Qt GUI files loaded")
+message("Qt GUI sources loaded")
 CONFIG +=
 SOURCES +=
 HEADERS +=
@@ -297,26 +318,8 @@ FORMS +=
 RESOURCES +=
 }
 # -------------------------------------------------------------
-win32-g++: {
-message("Linker GNUC libs loaded")
-    LIBS += -lkernel32
-    LIBS += -lgdi32 -lcomctl32 -lshell32 -luser32 -luserenv
-    LIBS += -lws2_32 -lwsock32
-    LIBS += -lwinmm -limm32
-    LIBS += -lole32 -loleaut32
-    LIBS += -uiid -advapi32
-    LIBS += -lcrypt32
-    LIBS += -lgomp
-
-    #LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
-    #LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
-    contains(DEFINES, QT_GUI) {
-        LIBS += QtCored.a
-    }
-}
-# -------------------------------------------------------------
-win32-msvc2010: {
-message("Linker MSVC libs loaded")
+contains(DEFINES, _MSC_VER) {
+message("MSVC libs loaded")
 #    LIBS += vcomp.lib
     LIBS += crypt32.lib
     LIBS += kernel32.lib shell32.lib gdi32.lib
@@ -328,15 +331,31 @@ message("Linker MSVC libs loaded")
     contains(DEFINES, QT_GUI) {
         LIBS += QtCored.lib
     }
-}
-# -------------------------------------------------------------
-win32-g++: {
-message("Linker LLVM libs loaded")
+} else {
+contains(QMAKE_COMPILER_DEFINES,__clang__) {
+message("LLVM libs loaded")
     LIBS +=
     contains(DEFINES, QT_GUI) {
         LIBS += QtCored.lib
     }
+} else {
+contains(QMAKE_COMPILER_DEFINES,__GNUC__) {
+message("GNUC libs loaded")
+    LIBS += -lkernel32
+    LIBS += -lgdi32 -lcomctl32 -lshell32 -luser32 -luserenv
+    LIBS += -lws2_32 -lwsock32
+    LIBS += -lwinmm -limm32
+    LIBS += -lole32 -loleaut32
+    LIBS += -ladvapi32
+    LIBS += -lcrypt32 -uiid
+    LIBS += -lgomp
+    #LIBS += L"../BHAPI/src/libs/freetype/objs/debug" -libfreetype
+    #LIBS += L"../../../../x86_libraries/BHAPI" -libBHAPI
+    contains(DEFINES, QT_GUI) {
+        LIBS += QtCored.a
+    }
 }
+}}
 # -------------------------------------------------------------
 win32: {
 message("Windows Resource files loaded")
@@ -346,7 +365,7 @@ message("Windows Resource files loaded")
 OTHER_FILES +=
 DISTFILES += test.txt
 # -------------------------------------------------------------
-
+message("END")
 # -------------------------------------------------------------
 # External ASM .s compiler
 # -------------------------------------------------------------

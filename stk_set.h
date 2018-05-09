@@ -33,7 +33,7 @@ struct STK_IMPEXP __set_tree {
     for (uint32_t c = 1; c <= a_level; c++) {
          f_ptrs_size = f_ptrs_size * 256;
         }
-    ptrs = (__set_tree_node**)stk::mem::alloc(f_ptrs_size*sizeof(stk::__set_tree_node*));
+    ptrs = static_cast<__set_tree_node**>(stk::mem::alloc(f_ptrs_size*sizeof(stk::__set_tree_node*)));
     for (uint32_t i = 0; i < f_ptrs_size; i++) {
          ptrs[i] = new stk::__set_tree_node(NULL);
         }

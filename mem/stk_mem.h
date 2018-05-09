@@ -54,7 +54,7 @@ inline uint8_t bitcount(uint32_t i)
         i = ((i & 0xF0F0F0F0L) >>  4) + (i & 0x0F0F0F0FL);
         i = ((i & 0xFF00FF00L) >>  8) + (i & 0x00FF00FFL);
         i = ((i & 0xFFFF0000L) >> 16) + (i & 0x0000FFFFL);
-        return (uint8_t)i;
+        return static_cast<uint8_t>(i);
 }
         extern  void          STK_IMPEXP  __stdcall bit_mov             (void *a_dst_ptr, const uint8_t a_bit_dst, const void *a_src_ptr, const uint8_t a_bit_src, const size_t a_bit_num);
         extern  void          STK_IMPEXP  __stdcall bit_setex           (void *a_dst_ptr, const uint8_t a_bit_dst, const void *a_src_ptr, const uint8_t a_bit_src, const uint8_t a_src_elelent_size, const size_t a_dst_count);

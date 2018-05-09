@@ -135,9 +135,9 @@ extern STK_IMPEXP void               __stdcall quit             (unsigned long a
 #ifdef __cplusplus // ONLY FOR C+++
 namespace stk { namespace thread {
         inline bool  __stdcall create(struct ssthread_t *a_thread, ssthread_char_routine_t a_func,char *a_func_arg)
-        { return create(a_thread, (ssthread_routine_t)a_func, static_cast<void*>(const_cast<char*>(a_func_arg)));}
+        { return create(a_thread, reinterpret_cast<ssthread_routine_t>(a_func), static_cast<void*>(const_cast<char*>(a_func_arg))); }
         inline bool  __stdcall create(struct ssthread_t *a_thread, ssthread_char_const_routine_t a_func,const char* a_func_arg)
-        { return create(a_thread, (ssthread_routine_t)a_func, static_cast<void*>(const_cast<char*>(a_func_arg)));}
+        { return create(a_thread, reinterpret_cast<ssthread_routine_t>(a_func), static_cast<void*>(const_cast<char*>(a_func_arg))); }
 }} //namespace stk,thread
 #endif
 //---------------------------------------------------------------------------
