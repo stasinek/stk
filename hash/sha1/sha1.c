@@ -1,4 +1,4 @@
-﻿/*
+/*
  * sha1.c
  *
  * Originally witten by Steve Reid <steve@edmweb.com>
@@ -24,6 +24,11 @@
  */
 
 #include "sha.h"
+#include <stk_main.h>
+// temporal workaround C/C++ names
+#define stk_mem_mov mov
+#define stk_mem_set set
+
 
 #define rol(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
 
@@ -115,7 +120,7 @@ void SHA1_Update(SHA_CTX *context, sha1_byte *data, unsigned int len) {
     if ((context->count[0] += len << 3) < (len << 3)) context->count[1]++;
     context->count[1] += (len >> 29);
     if ((j + len) > 63) {
-        memcpy(&context->buffer[j], data, (i = 64-j));
+        stk_mem_mov(&context->buffer[j], data, (i = 64-j));
         SHA1_Transform(context->state, context->buffer);
         for ( ; i + 63 < len; i += 64) {
             SHA1_Transform(context->state, &data[i]);
@@ -123,7 +128,7 @@ void SHA1_Update(SHA_CTX *context, sha1_byte *data, unsigned int len) {
         j = 0;
     }
     else i = 0;
-    memcpy(&context->buffer[j], &data[i], len - i);
+    stk_mem_mov(&context->buffer[j], &data[i], len - i);
 }
 
 
@@ -148,9 +153,9 @@ void SHA1_Final(sha1_byte digest[SHA1_DIGEST_LENGTH], SHA_CTX *context) {
     }
     /* Wipe variables */
     i = j = 0;
-    memset(context->buffer, 0, SHA1_BLOCK_LENGTH);
-    memset(context->state, 0, SHA1_DIGEST_LENGTH);
-    memset(context->count, 0, 8);
-    memset(&finalcount, 0, 8);
+    stk_mem_set(context->buffer, 0, SHA1_BLOCK_LENGTH);
+    stk_mem_set(context->state, 0, SHA1_DIGEST_LENGTH);
+    stk_mem_set(context->count, 0, 8);
+    stk_mem_set(&finalcount, 0, 8);
 }
 

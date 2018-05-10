@@ -34,3 +34,4 @@ debug/*
 realese/*
 *.err
 *.dll
+*.res

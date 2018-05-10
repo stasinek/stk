@@ -85,10 +85,10 @@ NO_WARNINGS_LLVM += -Wno-unused-but-set-variable
 NO_WARNINGS_LLVM += -Wattributes -Winline
 NO_WARNINGS_LLVM += -Wunknown-pragmas
 NO_WARNINGS_LLVM += -Wattributes -Winline -Wshadow -Wall
-NO_WARNINGS_LLVM += -fverbose-asm
-NO_WARNINGS_LLVM += -fstrict-aliasing
-NO_WARNINGS_LLVM += -dD
-NO_WARNINGS_LLVM += -g
+#NO_WARNINGS_LLVM += -fverbose-asm
+#NO_WARNINGS_LLVM += -fstrict-aliasing
+#NO_WARNINGS_LLVM += -dD
+#NO_WARNINGS_LLVM += -g
 NO_WARNINGS_LLVM += -std=gnu++0x -pthread
 NO_WARNINGS_LLVM += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 
@@ -142,10 +142,10 @@ NO_WARNINGS_GNU += -Wno-unused-but-set-variable
 NO_WARNINGS_GNU += -Wattributes -Winline
 NO_WARNINGS_GNU += -Wunknown-pragmas
 NO_WARNINGS_GNU += -Wattributes -Winline -Wshadow -Wall
-NO_WARNINGS_GNU += -fverbose-asm
-NO_WARNINGS_GNU += -fstrict-aliasing
-NO_WARNINGS_GNU += -dD
-NO_WARNINGS_GNU += -g
+#NO_WARNINGS_GNU += -fverbose-asm
+#NO_WARNINGS_GNU += -fstrict-aliasing
+#NO_WARNINGS_GNU += -dD
+#NO_WARNINGS_GNU += -g
 NO_WARNINGS_GNU += -pthread
 
 FLAGS_GNU += -fno-use-linker-plugin

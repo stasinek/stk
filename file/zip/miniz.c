@@ -134,8 +134,13 @@
 #ifndef MINIZ_HEADER_INCLUDED
 #define MINIZ_HEADER_INCLUDED
 
-#include <stdlib.h>
 #include "miniz.h"
+
+#include <stk_main.h>
+// temporal workaround C/C++ names
+#define stk_mem_mov mov
+#define stk_mem_set set
+#include <stdlib.h>
 
 #define MZ_VERSION          "9.1.14"
 #define MZ_VERNUM           0x91E0

@@ -18,7 +18,7 @@
  * 3. Neither the name of the copyright holder nor the names of contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR(S) AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -57,7 +57,11 @@
 #define __HMAC_SHA1_H
 
 #include "hmac_sha1.h"
-#include <string.h>
+
+#include <stk_main.h>
+// temporal workaround C/C++ names
+#define stk_mem_mov mov
+#define stk_mem_set set
 
 #ifdef  __cplusplus
 extern "C" {
@@ -69,124 +73,124 @@ extern "C" {
 #define ZERO_BYTE	0x00
 
 void HMAC_SHA1_Init(HMAC_SHA1_CTX *ctx) {
-	memset(&(ctx->key[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
-	memset(&(ctx->ipad[0]), IPAD_BYTE, HMAC_SHA1_BLOCK_LENGTH);
-	memset(&(ctx->opad[0]), OPAD_BYTE, HMAC_SHA1_BLOCK_LENGTH);
-	ctx->keylen = 0;
-	ctx->hashkey = 0;
+    stk_mem_set(&(ctx->key[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
+    stk_mem_set(&(ctx->ipad[0]), IPAD_BYTE, HMAC_SHA1_BLOCK_LENGTH);
+    stk_mem_set(&(ctx->opad[0]), OPAD_BYTE, HMAC_SHA1_BLOCK_LENGTH);
+    ctx->keylen = 0;
+    ctx->hashkey = 0;
 }
 
 void HMAC_SHA1_UpdateKey(HMAC_SHA1_CTX *ctx, unsigned char *key, unsigned int keylen) {
 
-	/* Do we have anything to work with?  If not, return right away. */
-	if (keylen < 1)
-		return;
+    /* Do we have anything to work with?  If not, return right away. */
+    if (keylen < 1)
+        return;
 
-	/*
-	 * Is the total key length (current data and any previous data)
-	 * longer than the hash block length?
-	 */
-	if (ctx->hashkey !=0 || (keylen + ctx->keylen) > HMAC_SHA1_BLOCK_LENGTH) {
-		/*
-		 * Looks like the key data exceeds the hash block length,
-		 * so that means we use a hash of the key as the key data
-		 * instead.
-		 */
-		if (ctx->hashkey == 0) {
-			/*
-			 * Ah, we haven't started hashing the key
-			 * data yet, so we must init. the hash
-			 * monster to begin feeding it.
-			 */
+    /*
+     * Is the total key length (current data and any previous data)
+     * longer than the hash block length?
+     */
+    if (ctx->hashkey !=0 || (keylen + ctx->keylen) > HMAC_SHA1_BLOCK_LENGTH) {
+        /*
+         * Looks like the key data exceeds the hash block length,
+         * so that means we use a hash of the key as the key data
+         * instead.
+         */
+        if (ctx->hashkey == 0) {
+            /*
+             * Ah, we haven't started hashing the key
+             * data yet, so we must init. the hash
+             * monster to begin feeding it.
+             */
 
-			/* Set the hash key flag to true (non-zero) */
-			ctx->hashkey = 1;
+            /* Set the hash key flag to true (non-zero) */
+            ctx->hashkey = 1;
 
-			/* Init. the hash beastie... */
-			SHA1_Init(&ctx->shactx);
+            /* Init. the hash beastie... */
+            SHA1_Init(&ctx->shactx);
 
-			/* If there's any previous key data, use it */
-			if (ctx->keylen > 0) {
-				SHA1_Update(&ctx->shactx, &(ctx->key[0]), ctx->keylen);
-			}
+            /* If there's any previous key data, use it */
+            if (ctx->keylen > 0) {
+                SHA1_Update(&ctx->shactx, &(ctx->key[0]), ctx->keylen);
+            }
 
-			/*
-			 * Reset the key length to the future true
-			 * key length, HMAC_SHA1_DIGEST_LENGTH
-			 */
-			ctx->keylen = HMAC_SHA1_DIGEST_LENGTH;
-		}
-		/* Now feed the latest key data to the has monster */
-		SHA1_Update(&ctx->shactx, key, keylen);
-	} else {
-		/*
-		 * Key data length hasn't yet exceeded the hash
-		 * block length (HMAC_SHA1_BLOCK_LENGTH), so theres
-		 * no need to hash the key data (yet).  Copy it
-		 * into the key buffer.
-		 */
-		memcpy(&(ctx->key[ctx->keylen]), key, keylen);
-		ctx->keylen += keylen;
-	}
+            /*
+             * Reset the key length to the future true
+             * key length, HMAC_SHA1_DIGEST_LENGTH
+             */
+            ctx->keylen = HMAC_SHA1_DIGEST_LENGTH;
+        }
+        /* Now feed the latest key data to the has monster */
+        SHA1_Update(&ctx->shactx, key, keylen);
+    } else {
+        /*
+         * Key data length hasn't yet exceeded the hash
+         * block length (HMAC_SHA1_BLOCK_LENGTH), so theres
+         * no need to hash the key data (yet).  Copy it
+         * into the key buffer.
+         */
+        stk_mem_mov(&(ctx->key[ctx->keylen]), key, keylen);
+        ctx->keylen += keylen;
+    }
 }
 
 void HMAC_SHA1_EndKey(HMAC_SHA1_CTX *ctx) {
-	unsigned char	*ipad, *opad, *key;
+    unsigned char	*ipad, *opad, *key;
     int		i;
     unsigned int j;
 
-	/* Did we end up hashing the key? */
-	if (ctx->hashkey) {
-		memset(&(ctx->key[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
-		/* Yes, so finish up and copy the key data */
-		SHA1_Final(&(ctx->key[0]), &ctx->shactx);
-		/* ctx->keylen was already set correctly */
-	}
-	/* Pad the key if necessary with zero bytes */
-	if ((i = HMAC_SHA1_BLOCK_LENGTH - ctx->keylen) > 0) {
-		memset(&(ctx->key[ctx->keylen]), ZERO_BYTE, i);
-	}
+    /* Did we end up hashing the key? */
+    if (ctx->hashkey) {
+        stk_mem_set(&(ctx->key[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
+        /* Yes, so finish up and copy the key data */
+        SHA1_Final(&(ctx->key[0]), &ctx->shactx);
+        /* ctx->keylen was already set correctly */
+    }
+    /* Pad the key if necessary with zero bytes */
+    if ((i = HMAC_SHA1_BLOCK_LENGTH - ctx->keylen) > 0) {
+        stk_mem_set(&(ctx->key[ctx->keylen]), ZERO_BYTE, i);
+    }
 
-	ipad = &(ctx->ipad[0]);
-	opad = &(ctx->opad[0]);
+    ipad = &(ctx->ipad[0]);
+    opad = &(ctx->opad[0]);
 
-	/* Precompute the respective pads XORed with the key */
-	key = &(ctx->key[0]);
+    /* Precompute the respective pads XORed with the key */
+    key = &(ctx->key[0]);
     for (j = 0; j < ctx->keylen; j++, key++) {
-		/* XOR the key byte with the appropriate pad filler byte */
-		*ipad++ ^= *key;
+        /* XOR the key byte with the appropriate pad filler byte */
+        *ipad++ ^= *key;
         *opad++ ^= *key;
-	}
+    }
 }
 
 void HMAC_SHA1_StartMessage(HMAC_SHA1_CTX *ctx) {
-	SHA1_Init(&ctx->shactx);
-	SHA1_Update(&ctx->shactx, &(ctx->ipad[0]), HMAC_SHA1_BLOCK_LENGTH);
+    SHA1_Init(&ctx->shactx);
+    SHA1_Update(&ctx->shactx, &(ctx->ipad[0]), HMAC_SHA1_BLOCK_LENGTH);
 }
 
 void HMAC_SHA1_UpdateMessage(HMAC_SHA1_CTX *ctx, unsigned char *data, unsigned int datalen) {
-	SHA1_Update(&ctx->shactx, data, datalen);
+    SHA1_Update(&ctx->shactx, data, datalen);
 }
 
 void HMAC_SHA1_EndMessage(unsigned char *out, HMAC_SHA1_CTX *ctx) {
-	unsigned char	buf[HMAC_SHA1_DIGEST_LENGTH];
-	SHA_CTX		*c = &ctx->shactx;
+    unsigned char	buf[HMAC_SHA1_DIGEST_LENGTH];
+    SHA_CTX		*c = &ctx->shactx;
 
-	SHA1_Final(&(buf[0]), c);
-	SHA1_Init(c);
-	SHA1_Update(c, &(ctx->opad[0]), HMAC_SHA1_BLOCK_LENGTH);
-	SHA1_Update(c, buf, HMAC_SHA1_DIGEST_LENGTH);
-	SHA1_Final(out, c);
+    SHA1_Final(&(buf[0]), c);
+    SHA1_Init(c);
+    SHA1_Update(c, &(ctx->opad[0]), HMAC_SHA1_BLOCK_LENGTH);
+    SHA1_Update(c, buf, HMAC_SHA1_DIGEST_LENGTH);
+    SHA1_Final(out, c);
 }
 
 void HMAC_SHA1_Done(HMAC_SHA1_CTX *ctx) {
-	/* Just to be safe, toast all context data */
-	memset(&(ctx->ipad[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
-	memset(&(ctx->ipad[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
-	memset(&(ctx->key[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
-	ctx->keylen = 0;
-	ctx->hashkey = 0;
-} 
+    /* Just to be safe, toast all context data */
+    stk_mem_set(&(ctx->ipad[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
+    stk_mem_set(&(ctx->ipad[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
+    stk_mem_set(&(ctx->key[0]), ZERO_BYTE, HMAC_SHA1_BLOCK_LENGTH);
+    ctx->keylen = 0;
+    ctx->hashkey = 0;
+}
 
 #ifdef  __cplusplus
 }
