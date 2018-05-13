@@ -496,58 +496,21 @@ char *__stdcall stk::cstr::fix_file_path(char *a_dst_ptr,const char *a_src_ptr)
 #ifdef __DEBUG_CSTR__
 __DEBUG_FUNC_CALLED("")
 #endif
-    register size_t                              lensrc = stk::cstr::len(a_src_ptr);
-    register size_t lendestination = lensrc;
+    register size_t lensrc = stk::cstr::len(a_src_ptr);
+    register size_t lendestination;
+    char *sb = const_cast<char*>(a_src_ptr),*se = const_cast<char*>(a_src_ptr) + lensrc;
     if (lensrc==0) {
         a_dst_ptr[0]='\0';
         return a_dst_ptr;
     }
-    while (a_src_ptr[lensrc-1]=='\\' || a_src_ptr[lensrc-1]==' ' || a_src_ptr[lensrc-1]=='"') {
-        stk::cstr::mov_max(a_dst_ptr,a_src_ptr,lensrc-1);
-        lensrc--;
-        a_dst_ptr[lensrc]='\0';
-        if (lensrc==0) break;
-    }
-    while (a_src_ptr[0]=='"' || a_src_ptr[0]==' ') {
-        stk::cstr::mov_max(a_dst_ptr,&a_src_ptr[1],lensrc-1);
-        lensrc--;
-        a_dst_ptr[lensrc]='\0';
-        if (lensrc==0) break;
-    }
-    if (lendestination==lensrc) stk::cstr::mov_max(a_dst_ptr,a_src_ptr,lensrc + 1);
-    return a_dst_ptr;
+    while (sb < se ? sb[0]=='\"' || sb[0]==' ' : false) sb++;
+    while (se > sb ? se[0]=='\"' || se[0]==' ' || se[0]=='\\' || se[0]=='/': false) se--;
+
+        lendestination = se-sb;
+    if (lendestination > 0) stk::cstr::mov_max(a_dst_ptr,sb,lendestination);
+    a_dst_ptr[lendestination]='\0'; return a_dst_ptr;
 }
 //---------------------------------------------------------------------------
-/*
-char *__stdcall stk::cstr::get_file_name(const char *a_src_ptr)
-{
-#ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
-#endif
-size_t delimiter = stk::cstr::chrr(a_src_ptr, '/');
-    if (delimiter <0) delimiter = stk::cstr::chrr(a_src_ptr, '\\');
-
-    if (delimiter>=0) {
-        return (char*)(a_src_ptr + delimiter + 1);
-    } else
-        return (char*)(a_src_ptr);
-}
-//---------------------------------------------------------------------------
-
-char *__stdcall stk::cstr::get_file_extt(const char *a_src_ptr)
-{
-#ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
-#endif
-
-size_t delimiter = stk::cstr::chrr(a_src_ptr, '.');
-    if (delimiter>=0) {
-        return (char*)(a_src_ptr + delimiter);
-    } else
-        return (char*)(a_src_ptr);
-}
-//---------------------------------------------------------------------------
-*/
 
 bool __stdcall stk::cstr::luhna_check(const char *digits)
 {
