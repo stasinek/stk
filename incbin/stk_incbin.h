@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_incbin_h
-#define __stk_incbin_h
+#ifndef __stk_incbin_H__
+#define __stk_incbin_H__
 #pragma once
 //---------------------------------------------------------------------------
 #include "./../stk_MAIN.h"

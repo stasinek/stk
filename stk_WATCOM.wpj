@@ -4,10 +4,10 @@ projectIdent
 VpeMain
 1
 WRect
-0
-0
-7680
-9216
+-32
+-51
+10304
+9984
 2
 MProject
 3
@@ -38,6 +38,6 @@ WRect
 WFileName
 14
 stk_WATCOM.tgt
-39
-42
+34
+49
 7

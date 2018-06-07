@@ -17,7 +17,7 @@
 void __stdcall stk::compression::test(void)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 	register int32_t o, i = 0;
 	char *src = stk::cstr::alloc(4096);
@@ -49,7 +49,7 @@ return;
 uint32_t __stdcall stk::compression::compress_LZS(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_src_count, const uint32_t a_block)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 	register int8_t* ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
 	register const int8_t* ptrs_end = static_cast<int8_t*> (const_cast<void*>(a_src_ptr)) + a_src_count;
@@ -204,7 +204,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::uncompress_LZS(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
@@ -303,7 +303,7 @@ __DEBUG_FUNC_CALLED("")
 uint32_t __stdcall stk::compression::compress_HUF(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const uint32_t ablock)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
@@ -331,7 +331,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::uncompress_HUF(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
@@ -357,7 +357,7 @@ __DEBUG_FUNC_CALLED("")
 uint32_t __stdcall stk::compression::compress_ARI(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const uint32_t ablock)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
@@ -389,7 +389,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::uncompress_ARI(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 	register int8_t *ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
@@ -417,7 +417,7 @@ __DEBUG_FUNC_CALLED("")
 uint32_t __stdcall stk::compression::compress_BWT(void *a_dst_ptr, const void *a_src_ptr, const uint32_t a_count, const uint32_t ablock)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 	register int8_t*  ptrs = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
@@ -446,7 +446,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::uncompress_BWT(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr)
 { 
 #ifdef __DEBUG_COMPRESSION_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 	register int8_t *ptrs	  = static_cast<int8_t*> (const_cast<void*>(a_src_ptr));
 	register int8_t *ptrd	  = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));

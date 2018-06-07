@@ -1,9 +1,9 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_database_items_h
-#define __stk_database_items_h
+#ifndef __stk_database_items_H__
+#define __stk_database_items_H__
 #pragma once
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
 #include "./../text/stk_cstr_class.h"
 #include "./../text/stk_cstr_utils.h"
 //---------------------------------------------------------------------------

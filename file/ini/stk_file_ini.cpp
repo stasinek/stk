@@ -13,7 +13,7 @@ DWORD __cdecl stk::file::get_wchar_value_at_ini_section(wchar_t *lpSection, wcha
 									   wchar_t *lpdefault, wchar_t *lpBuffer, DWORD dwBufSize, wchar_t *szPathAndFile)
 {
 #ifdef __DEBUG_FILE_INI__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 //As far as I know the corrent UNICODE line ending on windows platform is \r\n,
 //that is 0x000D000AL and ansii 0x0D0AL
@@ -95,7 +95,7 @@ DWORD __cdecl get_value_at_ini_section(wchar_t *lpSection, wchar_t *lpValue,
 	   wchar_t *lpdefault, wchar_t *lpBuffer, DWORD dwBufSize, wchar_t *szPathAndFile)
 {
 #ifdef __DEBUG_FILE_INI__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return 0;
 }

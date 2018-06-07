@@ -11,7 +11,7 @@
 void __stdcall stk::cipher::cript_MTF(void *a_dst_ptr, const uint32_t a_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 		__mtf_cipher *mtf = new __mtf_cipher();
 		register int8_t *ptrd	  = static_cast<int8_t*> (a_dst_ptr);
@@ -30,7 +30,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::cipher::uncript_MTF(void *a_dst_ptr, const uint32_t a_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 		__mtf_cipher *mtf = new __mtf_cipher();
 		register int8_t *ptrd	  = static_cast<int8_t*> (const_cast<void*>(a_dst_ptr));
@@ -49,7 +49,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::cipher::cript_XOR(void *a_dst_ptr, const uint32_t a_count, const char *alpHaslo, const uint32_t a_haslo_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #if (__BORLANDC__ > 0x551)
 		__asm {
@@ -87,7 +87,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::cipher::uncript_XOR(void *a_dst_ptr, const uint32_t a_count, const char *alpHaslo, const uint32_t a_haslo_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 		cript_XOR(a_dst_ptr,a_count,alpHaslo,a_haslo_count);
 }
@@ -96,7 +96,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::cipher::cript_ROT(void *a_dst_ptr,const uint32_t a_count, const uint32_t a_haslo_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 		if (a_haslo_count<=1) {
 				return;
@@ -159,7 +159,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::cipher::uncript_ROT(void *a_dst_ptr, const uint32_t a_count, const uint32_t a_haslo_count)
 {
 #ifdef __DEBUG_CIPHER_API__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 		cript_ROT(a_dst_ptr,a_count,a_haslo_count);
 }

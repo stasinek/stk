@@ -9,7 +9,7 @@
 stk::compression::__bwt_compressor::__bwt_compressor(const uint32_t ablock)
 { 
 #ifdef __DEBUG_BWT_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		matrix_dim = ablock;
@@ -25,7 +25,7 @@ __DEBUG_FUNC_CALLED("")
 uint32_t __stdcall stk::compression::__bwt_compressor::generate(const char *a_src_ptr, const uint32_t a_rowsize)
 { 
 #ifdef __DEBUG_BWT_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		matrix_dim = a_rowsize;
@@ -53,7 +53,7 @@ __DEBUG_FUNC_CALLED("")
 uint32_t __stdcall stk::compression::__bwt_compressor::save(char *a_dst_ptr)
 { 
 #ifdef __DEBUG_BWT_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		char *ptr = matrix_ptr;
@@ -77,7 +77,7 @@ __DEBUG_FUNC_CALLED("")
 uint32_t __stdcall stk::compression::__bwt_compressor::sort(void)
 { 
 #ifdef __DEBUG_BWT_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         register uint32_t *gl_end_cur = groups_end[0], *gl_end_new = groups_end[1];
@@ -130,7 +130,7 @@ BWT_MATRIX_FIND_FIRST_ROW:
 void __stdcall stk::compression::__bwt_compressor::sort_groups(const uint32_t acolumn,const uint32_t arow_bgn,const uint32_t arow_end)
 { 
 #ifdef __DEBUG_BWT_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         uint32_t  row, row_cmp, row_fnd, row_bgn = arow_bgn, row_end = arow_end;
@@ -158,7 +158,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__bwt_compressor::find_groups(const uint32_t acolumn,const uint32_t arow_bgn,const uint32_t arow_end, uint32_t *alist_bgn, uint32_t *alist_end)
 { 
 #ifdef __DEBUG_BWT_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         uint32_t  list_count = 0;
@@ -188,7 +188,7 @@ __DEBUG_FUNC_CALLED("")
 stk::compression::__bwt_compressor::~__bwt_compressor(void)
 { 
 #ifdef __DEBUG_BWT_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		stk::mem::free(groups_bgn[0]);

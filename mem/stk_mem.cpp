@@ -72,7 +72,7 @@ void *__stdcall alloc(const size_t a_count)
     register __mem_tail *n_t;
     register void *r;
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("stk::mem::alloc(size_t)")
+__DEBUG_CALLED("stk::mem::alloc(size_t)")
 #endif
     l_n_tailed_count  = a_count;
     l_n_tailed_count += sizeof(__mem_tail);
@@ -115,7 +115,7 @@ void *__stdcall realloc(void *a_dst_ptr,const size_t a_count)
 #ifdef __DEBUG_MEM32__
     register __mem_tail *o_t;
     register __mem_tail *n_t;
- __DEBUG_FUNC_CALLED("realloc(void*,const size_t)")
+ __DEBUG_CALLED("realloc(void*,const size_t)")
 #endif
 ATOMIC(1)
     l_p_tailed_count  = stk::mem::size(a_dst_ptr);
@@ -156,7 +156,7 @@ void __stdcall free(void *a_dst_ptr)
     register size_t l_p_tailed_count;
     register __mem_tail *o_t;
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 ATOMIC(1)
     l_p_tailed_count = stk::mem::size(a_dst_ptr);
@@ -185,7 +185,7 @@ ATOMIC_UNLOCK(1)
 void *__stdcall set(void *a_dst_ptr, const unsigned char a_znak_B, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 return stk::mem::setex(a_dst_ptr,&a_znak_B,1,a_count);
@@ -199,7 +199,7 @@ return a_dst_ptr;
 void *__stdcall setex(void *a_dst_ptr, const void *a_src_ptr, const int8_t a_element_size, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 if (a_element_size <= 1) {
@@ -331,7 +331,7 @@ return NULL;
 void *__stdcall mov(void *a_dst_ptr,const void *a_src_ptr, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
     __asm {
@@ -550,7 +550,7 @@ return a_dst_ptr;
 void *__stdcall shl(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t r_cmo = a_count-1;
     stk::mem::mov(a_dst_ptr,(void*)((int8_t*)a_dst_ptr+1),r_cmo);
@@ -562,7 +562,7 @@ __DEBUG_FUNC_CALLED("")
 void *__stdcall shr(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t r_cmo = a_count-1;
     stk::mem::mov((void*)((int8_t*)a_dst_ptr+1),a_dst_ptr,r_cmo);
@@ -574,7 +574,7 @@ __DEBUG_FUNC_CALLED("")
 void *__stdcall ror(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register char dE = ((char*)a_dst_ptr)[a_count-1];
     stk::mem::shr(a_dst_ptr,a_count);
@@ -586,7 +586,7 @@ __DEBUG_FUNC_CALLED("")
 void *__stdcall rol(void *a_dst_ptr, size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register char d0 = ((char*)a_dst_ptr)[0];
     stk::mem::shl(a_dst_ptr,a_count);
@@ -634,7 +634,7 @@ return a_ptr;
 intmax_t __stdcall cmp(const void *a_ptr1, const void *a_ptr2, const size_t a_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
     __asm {
@@ -721,7 +721,7 @@ ret*/
 intmax_t __stdcall chr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)  && (1==0)
     __asm {
@@ -809,7 +809,7 @@ ptrchr_RETURN:
 intmax_t __stdcall chrr(const void *a_dst_ptr, const char a_znak_B, const size_t a_max_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #define CHR_R_CHUNK (2 * 64)
     register const char  b = a_znak_B;
@@ -837,7 +837,7 @@ __DEBUG_FUNC_CALLED("")
 intmax_t __stdcall pos(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
 size_t src_size = a_src_size, fnd_size = a_search_size;
@@ -1010,7 +1010,7 @@ size_t r;
 intmax_t __stdcall posr(const void *a_src_ptr, const size_t a_src_size, const size_t a_start, const void *a_search_ptr, const size_t a_search_size)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register int32_t x = a_start, r = -1;
     do {
@@ -1062,7 +1062,7 @@ intmax_t __stdcall pos_kmp(const void *a_src_ptr, const size_t a_src_size, const
 void __stdcall bit_mov(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const size_t a_bits_num)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
     __asm {
@@ -1221,7 +1221,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall bit_setex(void *a_dst_ptr, const uint8_t adst_bit, const void *a_src_ptr, const uint8_t asrc_bit, const uint8_t a_src_elsize, const size_t a_dst_count)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #if (__BORLANDC__ > 0x551) & defined (__ASM_OPT__)
     __asm {

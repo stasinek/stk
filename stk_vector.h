@@ -5,7 +5,7 @@
 #include "./mem/stk_mem.h"
 #include "./text/stk_cstr_utils.h"
 #include "./io/stk_console.h"
-#include "./stk_main.h"
+#include <stk_main.h>
 //---------------------------------------------------------------------------
 //implementation of std::vector, much simpler without iterator, allocator etc.
 //---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ template<class TYPE> __stdcall stk::__vector<TYPE>::__vector(const uint32_t a_co
     : f_ptrs_ocupied(0), f_ptrs_reserved(0), f_ptrs(NULL)
     {
 #ifdef __DEBUG_VECTOR__
-    __DEBUG_FUNC_CALLED("")
+    __DEBUG_CALLED("")
 #endif
     this->resize(a_count);
 }
@@ -73,7 +73,7 @@ template<class TYPE> __stdcall stk::__vector<TYPE>::__vector(const uint32_t a_co
 template<class TYPE>  __stdcall __vector<TYPE>::~__vector()
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     this->resize(0);
 }
@@ -82,7 +82,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> uint32_t __stdcall __vector<TYPE>::count(void)  const
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return f_ptrs_ocupied;
 }
@@ -91,7 +91,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> uint32_t __stdcall __vector<TYPE>::mem_size(void)  const
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return f_ptrs_reserved;
 }
@@ -100,7 +100,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> uint32_t __stdcall __vector<TYPE>::max_size(void)
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return (2^16) / sizeof(TYPE);  //65536 elements
 }
@@ -109,7 +109,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> uint32_t __stdcall __vector<TYPE>::set_size(const uint32_t a_new_size)
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     if (f_ptrs_reserved == a_new_size) {
     return a_new_size;
@@ -137,7 +137,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> void __stdcall __vector<TYPE>::cleared(void)
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 }
 //---------------------------------------------------------------------------
@@ -145,7 +145,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> uint32_t __stdcall __vector<TYPE>::push(const TYPE& a_new)
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         if (f_ptrs_ocupied >= f_ptrs_reserved) {
             this->resize(2  * f_ptrs_reserved);
@@ -171,7 +171,7 @@ this->resize(0);
 template<class TYPE> void __stdcall __vector<TYPE>::swap(const uint32_t a_index1,const uint32_t a_index2)
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
            TYPE t = f_ptrs[a_index1];
         f_ptrs[a_index1] = f_ptrs[a_index2];
@@ -182,7 +182,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> TYPE& __stdcall __vector<TYPE>::at(const uint32_t a_index) const
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return f_ptrs[a_index];
 }
@@ -191,7 +191,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> TYPE& __stdcall __vector<TYPE>::front(void) const
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return f_ptrs[f_ptrs_ocupied];
 }
@@ -200,7 +200,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> TYPE& __stdcall __vector<TYPE>::back(void) const
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return f_ptrs[0];
 }
@@ -209,7 +209,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> uint32_t __stdcall __vector<TYPE>::insert(const TYPE& a_new,const uint32_t a_index)
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         this->add(a_new);
         if (f_ptrs_ocupied > 1) {
@@ -224,7 +224,7 @@ __DEBUG_FUNC_CALLED("")
 template<class TYPE> TYPE __stdcall __vector<TYPE>::remove(const uint32_t a_index)
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         if (f_ptrs_ocupied==0) {
             return NULL;
@@ -250,7 +250,7 @@ return this->push(a_new);
 template<class TYPE> TYPE& __stdcall __vector<TYPE>::operator [] (const uint32_t a_index) const
 {
 #ifdef __DEBUG_VECTOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return f_ptrs[a_index];
 }

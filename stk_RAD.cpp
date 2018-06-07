@@ -19,7 +19,7 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #pragma argsused
-#include "./../stk_main.h"
+#include <stk_main.h>
 //---------------------------------------------------------------------------
 
 int _libmain(unsigned long reason)

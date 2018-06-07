@@ -16,7 +16,7 @@
 __stdcall stk::__journal:: __journal()
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     f_write_buffer = new char[VA_DEFAULT_SIZE];
     f_buffer_size = VA_DEFAULT_SIZE;
@@ -29,7 +29,7 @@ __DEBUG_FUNC_CALLED("")
 __stdcall stk::__journal::~__journal()
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     if (f_stream!=NULL) this->close();
     delete f_write_buffer;
@@ -41,7 +41,7 @@ __DEBUG_FUNC_CALLED("")
 const FILE *__stdcall stk::__journal::create()
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     char *module_name = new char[MAX_PATH];
     int32_t s = ::GetModuleFileNameA( NULL, module_name, MAX_PATH);
@@ -71,7 +71,7 @@ __DEBUG_FUNC_CALLED("")
 const FILE	*__stdcall stk::__journal::get_stream(void)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return f_stream;
 }
@@ -80,7 +80,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::__journal::write_line(const char *aline)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     int32_t line_len = stk::cstr::len(aline);
     if (line_len==0) return 0;
@@ -99,7 +99,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::__journal::write_formated_line(const char* __restrict__ a_format, ...)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 do {
 va_list  param;
@@ -120,7 +120,7 @@ return this->write_line(f_write_buffer);
 int32_t __stdcall stk::__journal::get_first_line(const time_t attime)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return -1;
 }
@@ -129,7 +129,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::__journal::get_next_line(void)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return -1;
 }
@@ -138,7 +138,7 @@ __DEBUG_FUNC_CALLED("")
 const char *__stdcall stk::__journal::get_line(const uint32_t aline_number)
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return "";
 }
@@ -147,7 +147,7 @@ return "";
 void __stdcall stk::__journal::close()
 {
 #ifdef __DEBUG_JOURNAL__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     if (f_stream!=NULL) fclose(f_stream);
     f_stream = NULL;

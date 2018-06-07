@@ -9,7 +9,7 @@
 __stdcall stk::__math_pharser:: __math_pharser(void)
 {
 #ifdef __DEBUG_MATH_PHARSER__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 		result = 0;
 		f_expression = NULL;
@@ -21,7 +21,7 @@ __DEBUG_FUNC_CALLED("")
 __stdcall stk::__math_pharser::~__math_pharser(void)
 {
 #ifdef __DEBUG_MATH_PHARSER__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 }
 //---------------------------------------------------------------------------
@@ -29,7 +29,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::__math_pharser::f_decode_subexpression(const uint32_t a_index)
 {
 #ifdef __DEBUG_MATH_PHARSER__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return 0;
 }
@@ -38,7 +38,7 @@ return 0;
 int32_t __stdcall stk::__math_pharser::decode(const char *a_expression)
 {
 #ifdef __DEBUG_MATH_PHARSER__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 

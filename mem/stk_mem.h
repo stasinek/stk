@@ -3,7 +3,7 @@
 #define __stk_mem_h
 #pragma once
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { namespace mem {

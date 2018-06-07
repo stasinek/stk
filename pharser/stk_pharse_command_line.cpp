@@ -13,7 +13,7 @@
 __stdcall stk::__pharser:: __pharser(void)
 {
 #ifdef __DEBUG_PHARSER__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         for (register int32_t x = 0; x < 4; x++) f_result_positions[x]=-1;
 }
@@ -22,7 +22,7 @@ __DEBUG_FUNC_CALLED("")
 __stdcall stk::__pharser::~__pharser(void)
 {
 #ifdef __DEBUG_PHARSER__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 }
 //---------------------------------------------------------------------------
@@ -30,7 +30,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::__pharser::find(const char *lpsrc, const char *lpparameter_min, const char *lpparameter_normal, const char *lpparameter_alternative, char *r_lpsuboption)
 {
 #ifdef __DEBUG_PHARSER__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_PHARSER__
 stk::con::prints("__pharser::find(a_src_ptr:%s,lpparameter_min:%s,lpparameter_normal:%s,lpparameter_alternative:%s,",lpsrc,lpparameter_min,lpparameter_normal,lpparameter_alternative);
@@ -143,7 +143,7 @@ stk::con::print("\n");
 void __stdcall stk::__pharser::delete_found(char *lpsrc)
 {
 #ifdef __DEBUG_PHARSER__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 		if (lpsrc!=f_result_base) return;
 #ifdef __DEBUG_PHARSER__

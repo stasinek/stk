@@ -1,8 +1,59 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_file_io_H
-#define __stk_file_io_H
+#ifndef __stk_file_io_H__
+#define __stk_file_io_H__
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
+//---------------------------------------------------------------------------
+#ifndef WIN32
+    typedef bool BOOL;
+    typedef int32_t DWORD;
+    typedef int32_t* LPDWORD;
+    typedef int32_t HANDLE;
+    typedef char* LPCSTR;
+    typedef char* LPCTSTR;
+    typedef void* LPCVOID;
+    typedef void* LPVOID;
+    typedef void* PVOID;
+    #define WINAPI __stdcall
+    #define ULONG_PTR long*
+    #define SIZE_T size_t
+    #define TCHAR char*
+    #define MAX_PATH 260
+
+        typedef struct _FILETIME {
+        DWORD dwLowDateTime;
+        DWORD dwHighDateTime;
+    } FILETIME, *PFILETIME;
+    typedef struct _OVERLAPPED {
+        ULONG_PTR Internal;
+        ULONG_PTR InternalHigh;
+        union {
+            struct {
+            DWORD Offset;
+            DWORD OffsetHigh;
+            };
+            PVOID  Pointer;
+        };
+        HANDLE    hEvent;
+    } OVERLAPPED, *LPOVERLAPPED;
+    typedef struct _SECURITY_ATTRIBUTES {
+        DWORD  nLength;
+        LPVOID lpSecurityDescriptor;
+        BOOL   bInheritHandle;
+    } SECURITY_ATTRIBUTES, *PSECURITY_ATTRIBUTES, *LPSECURITY_ATTRIBUTES;
+    typedef struct _WIN32_FIND_DATAA {
+        DWORD    dwFileAttributes;
+        FILETIME ftCreationTime;
+        FILETIME ftLastAccessTime;
+        FILETIME ftLastWriteTime;
+        DWORD    nFileSizeHigh;
+        DWORD    nFileSizeLow;
+        DWORD    dwReserved0;
+        DWORD    dwReserved1;
+        TCHAR    cFileName[MAX_PATH];
+        TCHAR    cAlternateFileName[14];
+     } WIN32_FIND_DATAA, *PWIN32_FIND_DATAA, *LPWIN32_FIND_DATAA;
+#endif
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { namespace file {

@@ -54,7 +54,7 @@
 stk::compression::__lzss_compressor::__lzss_compressor(const uint32_t adict, const uint32_t asize)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //------------------------------------------
@@ -85,7 +85,7 @@ __DEBUG_FUNC_CALLED("")
 stk::compression::__lzss_compressor::~__lzss_compressor(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
                 stk::mem::free(dad);
@@ -101,7 +101,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__lzss_compressor::initialize(const char *aptr)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //------------------------------------------
@@ -136,7 +136,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__lzss_compressor::insert(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //insert from RIGHT to LEFT on RING BUFFER! (reverse order in dictionary vs buffer ocurances reality)
@@ -158,7 +158,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__lzss_compressor::skip(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
                 register uint32_t  r_skip = ring_insert;
@@ -171,7 +171,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__lzss_compressor::cut(const uint32_t choosen_ring_delete)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
                 register uint32_t del;
@@ -197,7 +197,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__lzss_compressor::update(const char *aadd_ptr, const uint32_t aupdate_count, const bool a_insert)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //------------------------------------------
@@ -241,7 +241,7 @@ __DEBUG_FUNC_CALLED("")
 uint32_t __stdcall stk::compression::__lzss_compressor::search_backward(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //----------------------
@@ -373,7 +373,7 @@ EXIT:
 void __stdcall  stk::compression::__lzss_compressor::clear_backward_result(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
                 backward_len = 0;
@@ -385,7 +385,7 @@ __DEBUG_FUNC_CALLED("")
 uint32_t __stdcall stk::compression::__lzss_compressor::search_forward(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
                 register char  *cur_ref = &((char*)ring_ptr)[ring_insert];
@@ -481,7 +481,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall  stk::compression::__lzss_compressor::clear_forward_result(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
                 forward_len =0;

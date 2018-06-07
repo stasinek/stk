@@ -48,7 +48,7 @@ __stdcall stk::__kop32_class::__kop32_class()
         default_progress(this)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("__kop32_class:__kop32_class()")
+__DEBUG_CALLED("__kop32_class:__kop32_class()")
 #endif
         options = new __kop32_class_options();
         options->mask_list->set_alias("OPTIONS_MASKS.mlst");
@@ -71,7 +71,7 @@ __DEBUG_FUNC_CALLED("__kop32_class:__kop32_class()")
 void __stdcall stk::__kop32_class::reset(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class:reset()");
@@ -92,7 +92,7 @@ stk::con::print("\r\n");
 void __stdcall stk::__kop32_class::abort(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class:abort()");
@@ -106,7 +106,7 @@ stk::con::print("\r\n");
 int32_t __stdcall stk::__kop32_class::prepare_options(const char *alpCommand)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class::prepare_options(alpCommand)\r\nalpCommand:%s",alpCommand);
@@ -346,7 +346,7 @@ return 1;
 int32_t __stdcall stk::__kop32_class::prepare_list(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 stk::__cstr_class  *temp_lpDestination = new stk::__cstr_class(512);
 stk::__cstr_class  *temp_lpSource = new stk::__cstr_class(512);
@@ -494,7 +494,7 @@ return 0;
 int32_t __stdcall stk::__kop32_class::exec_one(const uint32_t a_item)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class::execute_selected(a_item:%d)",a_item);
@@ -507,7 +507,7 @@ return f_exec_one(a_item, options->operation);
 int32_t __stdcall stk::__kop32_class::exec_all(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::print("__kop32_class::execute_all()");
@@ -697,7 +697,7 @@ else {
 int32_t __stdcall stk::__kop32_class::f_create_destination_list(const char *alpDestination)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class::f_create_destination_list(alpDestination:%s)",alpDestination);
@@ -739,7 +739,7 @@ return 1;
 int32_t __stdcall stk::__kop32_class::f_skip_one(const uint32_t aindex, const uint32_t a_skip_items_at_same_level)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class::f_skip_one(aindex:%d,a_skip_items_at_same_level:%d)",aindex,a_skip_items_at_same_level);
@@ -799,7 +799,7 @@ return 1;
 int32_t __stdcall stk::__kop32_class::f_exec_one(uint32_t aindex, uint32_t anaction)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class::f_exec_one(aindex:%d,anaction:%d)",aindex,anaction);
@@ -1639,7 +1639,7 @@ return 0;
 
 DWORD WINAPI stk::__kop32_class::f_write_file_thread(LPVOID a_caller) {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class::f_write_file_thread(a_caller=%d)",(int32_t)a_caller);
@@ -1692,7 +1692,7 @@ return 0;
 int64_t __stdcall stk::__kop32_class::f_check_free_space(const char *avolume_name, const int64_t anumber_of_source_bytes, const int64_t anumber_of_destination_bytes, const bool acheck_until_positive, const bool auser_could_ignore)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class::f_check_free_space(avolume_name:%s)",avolume_name);
@@ -1747,7 +1747,7 @@ return disk_real_free_space;
 const char* __stdcall stk::__kop32_class::do_event(const char *a_event, const char *a_code, const char *a_code_ex)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class_progress_controler::do_event(a_event,a_code,a_code_ex)\r\n");
@@ -1761,7 +1761,7 @@ return progress->do_event(a_event,a_code,a_code_ex);
 __stdcall stk::__kop32_class::~__kop32_class(void)
 {
 #ifdef __DEBUG_KOP32_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
 stk::con::prints("__kop32_class:~__kop32_class()");

@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-#ifndef __set_CLASS_H
-#define __set_CLASS_H
+#ifndef __set_set_H__
+#define __set_set_H__
 //---------------------------------------------------------------------------
-#include "./stk_main.h"
+#include <stk_main.h>
 #include "./mem/stk_mem.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
@@ -14,10 +14,10 @@ public:
       __set_tree_node();
       __set_tree_node(__set_tree_node *owner);
      ~__set_tree_node();
-      __set_tree_node  *__stdcall T_owner() const;
-      uint32_t          __stdcall T_level() const;
-      __set_tree_node  *__stdcall L_child() const;
-      __set_tree_node  *__stdcall R_child() const;
+      __set_tree_node  *__stdcall T_owner(void) const;
+      uint32_t          __stdcall T_level(void) const;
+      __set_tree_node  *__stdcall L_child(void) const;
+      __set_tree_node  *__stdcall R_child(void) const;
       void              __stdcall set_L_child(__set_tree_node *a_node);
       void              __stdcall set_R_child(__set_tree_node *a_node);
 private:

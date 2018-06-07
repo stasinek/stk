@@ -47,8 +47,6 @@
 +'stk_map.obj'
 +'stk_set.obj'
 +'stk_test.obj'
-+'stk_variable.obj'
-+'stk_vector.obj'
 +'stk_cstr_class.obj'
 +'stk_cstr_stack.obj'
 +'stk_cstr_utils.obj'

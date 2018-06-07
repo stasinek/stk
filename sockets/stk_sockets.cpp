@@ -17,7 +17,7 @@
 SOCKET __stdcall stk::socket::create_server_socket(const char *aipv4_port_s, const int atimeout_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         return create_server_socket("0.0.0.0",aipv4_port_s,atimeout_s);
 }
@@ -27,7 +27,7 @@ __DEBUG_FUNC_CALLED("")
 SOCKET __stdcall stk::socket::create_server_socket(const char *aipv4_addr_s, const char *aipv4_port_s, const int atimeout_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         SOCKET socket;
         SOCKET main_socket, accepted_socket;
@@ -85,7 +85,7 @@ NEW_GOTO_ERROR_SOCKET:
 SOCKET __stdcall stk::socket::create_client_socket(const char *aipv4_addr_s, const char *aipv4_port_s, const int atimeout_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         SOCKET socket;
         SOCKET main_socket, accepted_socket;
@@ -127,7 +127,7 @@ NEW_GOTO_ERROR_SOCKET:
 int32_t __stdcall stk::socket::close_socket(SOCKET amain_socket)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         register int ret = closesocket( amain_socket );
 #ifdef __WIN32__
@@ -140,7 +140,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::socket::send_for_sure(SOCKET amain_socket,const char *asend_lp, const int32_t alen, const int32_t ax)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
                 register int32_t s;
         register int32_t s_sum = 0;
@@ -164,7 +164,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::socket::recv_for_sure(SOCKET amain_socket, char *arecv_lp, const int32_t alen, const int32_t ax)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
                 register int32_t r;
                 register int32_t r_sum = 0;
@@ -189,7 +189,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::socket::start_tftp_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         SOCKET main_socket;
         SOCKET_BUFFER_CLASS buffer;
@@ -545,7 +545,7 @@ HTTP_GOTO_ERROR_SOCKET:
 int32_t __stdcall stk::socket::start_http_server(const char* path, const char *aipv4_addr_s, const char *aipv4_port_s)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         SOCKET main_socket;
         SOCKET_BUFFER_CLASS buffer;
@@ -610,7 +610,7 @@ HTTP_GOTO_ERROR_SOCKET:
 int32_t __stdcall stk::socket::get_file_size(const char* path)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         static struct _stat statbuf;
         _stat(path, &statbuf);
@@ -621,7 +621,7 @@ __DEBUG_FUNC_CALLED("")
 const char *__stdcall stk::socket::get_file_size_ansi(const char* path)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         static char a[12] = "";
         static struct _stat statbuf;
@@ -633,7 +633,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::socket::get_file_content(const char* path, char *filecontent, const int32_t max_size)
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         struct _stat statbuf;
         register int32_t t, filesize, filehandle = open(path, O_RDONLY|O_BINARY);
@@ -658,7 +658,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::socket::print_socket_error()
 {
 #ifdef __DEBUG_SOCKET__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 #ifdef __WIN32__
         int serrorno = WSAGetLastError();

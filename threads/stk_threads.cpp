@@ -229,7 +229,7 @@ a_thread->attr.detached = true;
 }
 //---------------------------------------------------------------------------
 
-void __stdcall stk::thread::atexit(struct stk::thread::ssthread_t *a_thread,ssthread_routine_t a_onexit,void *a_onexit_arg)
+void __stdcall stk::thread::onexit(struct stk::thread::ssthread_t *a_thread,ssthread_routine_t a_onexit,void *a_onexit_arg)
 {
 ATOMIC(1)
 ATOMIC_LOCK(1)

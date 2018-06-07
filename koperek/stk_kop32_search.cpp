@@ -11,7 +11,7 @@ __stdcall stk::__kop32_search::__kop32_search(stk::__kop32_class *aowner)
 : f_owner(aowner), options(), default_progress(aowner)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         progress = &default_progress;
@@ -22,7 +22,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::__kop32_search::set_owner(stk::__kop32_class *aowner)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         f_owner = aowner;
@@ -33,7 +33,7 @@ __DEBUG_FUNC_CALLED("")
 stk::__kop32_class* __stdcall stk::__kop32_search::owner(void)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         return f_owner;
@@ -42,7 +42,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::__kop32_search::exec(const char *a_dir, const stk::__database* a_mask_list_ptr, stk::__database* a_output_list_ptr)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         f_src_output_list_ptr = a_output_list_ptr;
@@ -99,7 +99,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::__kop32_search::f_seek_src(const char *a_lpSource)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         register int32_t current;
@@ -211,7 +211,7 @@ GOTO_seek_src_cleanup_ERROR:
 int32_t __stdcall stk::__kop32_search::f_seek_src_file(const char *a_lpSource, const int32_t base_path_len)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         register uint32_t current;
@@ -283,7 +283,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::__kop32_search::create_destination_list(const char *a_lpDestination, const char *a_lpExtension_to_add, const char *a_lpExtension_to_delete, __database* a_output_list_ptr)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         f_dst_output_list_ptr = a_output_list_ptr;
@@ -294,7 +294,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::__kop32_search::f_seek_dst(const char *a_lpDestination, const char *a_lpExtension_to_add, const char *a_lpExtension_to_delete)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         if (f_src_output_list_ptr->items()->count()==0)
@@ -380,7 +380,7 @@ __DEBUG_FUNC_CALLED("")
 __stdcall stk::__kop32_search::~__kop32_search(void)
 {
 #ifdef __DEBUG_KOP32_SEARCH__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 }

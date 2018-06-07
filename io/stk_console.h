@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_console_h
-#define __stk_console_h
+#ifndef __stk_console_H__
+#define __stk_console_H__
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
 //---------------------------------------------------------------------------
 #define PRINT_I64(val)  stk::con::prints(#val "= %1lld\n" ,       val);
 #define PRINT_UI64(val) stk::con::prints(#val "= %1llu\n" ,       val);

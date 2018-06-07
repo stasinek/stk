@@ -107,69 +107,69 @@ uint32_t LO, HI;
         pop edx;
         pop ecx;
         pop ebx;
-		pop eax;
-		popfd;
-	}
-	uint64_t r = HI;
-	r = r << 32;
-	r = r  | LO;
-	return r;
+        pop eax;
+        popfd;
+    }
+    uint64_t r = HI;
+    r = r << 32;
+    r = r  | LO;
+    return r;
 
 #elif defined(__GNUC__) || defined(__CLANG__)
 ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t LO, HI;
-	__stasm(eax,ebx,ecx,edx,esi,edi,
-	code,
-		pushfd;
-		push eax;
-		push ebx;
-		push ecx;
-		push edx;
-		push esi;
+    __stasm(eax,ebx,ecx,edx,esi,edi,
+    code,
+        pushfd;
+        push eax;
+        push ebx;
+        push ecx;
+        push edx;
+        push esi;
 
-		mov eax,0x00000001;
-		xor ecx,ecx;
-		cpuid;
-		mov ecx,0x00000001;
-		shl ecx,27;
-		and ecx,edx;
-		xor eax,eax;
-		xor edx,edx;
+        mov eax,0x00000001;
+        xor ecx,ecx;
+        cpuid;
+        mov ecx,0x00000001;
+        shl ecx,27;
+        and ecx,edx;
+        xor eax,eax;
+        xor edx,edx;
 
-	   test ecx,ecx;
-		 jz tsc_exit;
-		mov eax,1;
-		cpuid;
-		jmp tsc_intel_measure;
-		tsc_amd_measure:\n
-		sfence;
-		rdtsc;
+       test ecx,ecx;
+         jz tsc_exit;
+        mov eax,1;
+        cpuid;
+        jmp tsc_intel_measure;
+        tsc_amd_measure:\n
+        sfence;
+        rdtsc;
 
-		tsc_intel_measure:\n
-		sfence;
-		rdtsc;
+        tsc_intel_measure:\n
+        sfence;
+        rdtsc;
 
-		tsc_exit:\n
-		mov edi,__s_x86;
-		mov [edi+0],eax;
-		mov [edi+4],edx;
+        tsc_exit:\n
+        mov edi,__s_x86;
+        mov [edi+0],eax;
+        mov [edi+4],edx;
 
-		pop esi;
-		pop edx;
-		pop ecx;
-		pop ebx;
-		pop eax;
-		popfd;
-	)
-	uint64_t r = (uint64_t)__s_x86[1];
-	r = r << 32;
-	r = r  | (uint64_t)__s_x86[0];
-	ATOMIC_UNLOCK(1)
-	return r;
+        pop esi;
+        pop edx;
+        pop ecx;
+        pop ebx;
+        pop eax;
+        popfd;
+    )
+    uint64_t r = (uint64_t)__s_x86[1];
+    r = r << 32;
+    r = r  | (uint64_t)__s_x86[0];
+    ATOMIC_UNLOCK(1)
+    return r;
 #else
-		// OpenWatcom, Peles C
-	return 0;
+        // OpenWatcom, Peles C
+    return 0;
 #endif
 }
 //---------------------------------------------------------------------------
@@ -370,6 +370,44 @@ cpuid;
 #elif defined(__GNUC__) || defined(__CLANG__)
 __s_x86[0]        = a_feature;
 __s_x86[5]        = a_feature_ecx;
+
+#ifdef __x86_64__
+__stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
+    pushfd\n
+        push rax\n
+        push rbx\n
+        push rcx\n
+        push rdx\n
+        push rsi\n
+        push rdi\n
+    mov edi,__s_x86[0]\n
+    mov eax,dword ptr[edi+0*4]\n
+    and eax,0x80000000\n
+cpuid\n
+    mov rsi,rax\n
+    xor rax,rax\n
+    xor rbx,rbx\n
+    xor rcx,rcx\n
+    xor rdx,rdx\n
+    cmp esi,dword ptr[edi+0*4]\n
+    jb cpuid_save_result\n
+    mov eax,dword ptr[edi+0*4]\n
+    mov ecx,dword ptr[edi+5*4]\n
+cpuid\n
+    cpuid_save_result:\n
+    mov dword ptr[edi+1*4],eax\n
+    mov dword ptr[edi+2*4],ebx\n
+    mov dword ptr[edi+3*4],ecx\n
+    mov dword ptr[edi+4*4],edx\n
+        pop rdi\n
+        pop rsi\n
+        pop rdx\n
+        pop rcx\n
+        pop rbx\n
+        pop rax\n
+    popfd\n
+    )
+
 __stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
     pushfd\n
         push eax\n
@@ -405,6 +443,8 @@ cpuid\n
         pop eax\n
     popfd\n
     )
+#endif
+
 cached_eax = __s_x86[1];
     *a_eax = cached_eax;
 cached_ebx = __s_x86[2];
@@ -455,7 +495,7 @@ for (register uint32_t f = (0x80000002), i = 0; i < 12; f++, i+=4)
     {
     cpuidex(&n[i+0],&n[i+1],&n[i+2],&n[i+3],f,0);
     }
-stk::cstr::trim((char*)&n);
+stk::cstr::trim((char*)&n,' ');
 ATOMIC_UNLOCK(1)
 return  (char*)&n;
 }

@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------
 //----------------- "sstsoft.pl 2001-2017 -----------------------------------
 //---------------------------------------------------------------------------
-#ifndef __stk_compression_API_h
-#define __stk_compression_API_h
+#ifndef __stk_compression_API_H__
+#define __stk_compression_API_H__
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
 #include "./../file/eno/stk_file_lzst_header.h"
 /*
 //FOR DEBUGING, STATISTICS OF USE LENGHT CODES

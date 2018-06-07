@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-#ifndef STK_TEST_H
-#define STK_TEST_H
+#ifndef __STK_TEST_H__
+#define __STK_TEST_H__
 //---------------------------------------------------------------------------
-#include "./stk_MAIN.h"
+#include <stk_main.h>
 //---------------------------------------------------------------------------
 #include "./text/stk_cstr_utils.h"
 #include "./mem/stk_mem.h"
@@ -16,7 +16,7 @@
 #include "./cipher/stk_cipher_API.h"
 #include "./hash/stk_hash_API.h"
 #include "./stk_vector.h"
-#include "./3d/stk_3dvector.h"
+#include "./3D/stk_3Dvector.h"
 #include "./stk_tree.h"
 #include "./process_journal/stk_journal.h"
 #include "./io/stk_console.h"

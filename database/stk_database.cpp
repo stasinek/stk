@@ -11,7 +11,7 @@
 __stdcall stk::__database::__database(void)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("__database()")
+__DEBUG_CALLED("__database()")
 #endif
 f_owner = NULL;
 f_alias = new stk::__database_alias();
@@ -22,7 +22,7 @@ f_items = new stk::__database_items(this);
 __stdcall stk::__database::__database(const stk::__database *__restrict__ a_owner)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("__database(const this*)")
+__DEBUG_CALLED("__database(const this*)")
 #endif
 f_owner = (stk::__database *)a_owner;
 f_alias = new stk::__database_alias();
@@ -33,7 +33,7 @@ f_items = new stk::__database_items(this);
 __stdcall stk::__database::__database(const stk::__database *__restrict__ a_owner, const char* __restrict__ a_alias)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("__database(const this*,const char*)")
+__DEBUG_CALLED("__database(const this*,const char*)")
 #endif
 f_owner = (stk::__database *)a_owner;
 f_alias = new stk::__database_alias(owner()->alias());
@@ -44,7 +44,7 @@ f_items = new stk::__database_items(this);
 __stdcall stk::__database::~__database(void)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("~__database()")
+__DEBUG_CALLED("~__database()")
 #endif
 delete f_items;
 delete f_alias;
@@ -54,7 +54,7 @@ delete f_alias;
 const char* __stdcall stk::__database::set_alias(const char*a_alias)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("set_alias(const char*)")
+__DEBUG_CALLED("set_alias(const char*)")
 #endif
    if (a_alias==NULL) {
            f_alias->set("\0");
@@ -67,7 +67,7 @@ return f_alias->c_str();
 const stk::__database* __stdcall stk::__database::set_owner(stk::__database *a_owner)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("set_owner(this*)")
+__DEBUG_CALLED("set_owner(this*)")
 #endif
    if (a_owner==NULL) {
            f_alias->set("\0");
@@ -83,7 +83,7 @@ return f_owner;
 int32_t __stdcall stk::__database::set(stk::__database* __restrict__ a_database)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("set(this*)")
+__DEBUG_CALLED("set(this*)")
 #endif
         if (a_database==NULL) {
                 items()->set_count(0);
@@ -102,7 +102,7 @@ __DEBUG_FUNC_CALLED("set(this*)")
 int32_t __stdcall stk::__database::load(const char* __restrict__ a_format)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("load(const char*)")
+__DEBUG_CALLED("load(const char*)")
 #endif
         int f_hand = open(this->alias(),_O_BINARY|_O_RDONLY,_S_IREAD);
         if (f_hand==-1) {
@@ -124,7 +124,7 @@ __DEBUG_FUNC_CALLED("load(const char*)")
 int32_t __stdcall stk::__database::save(const char* __restrict__ a_format) const
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("save(const char*) const")
+__DEBUG_CALLED("save(const char*) const")
 #endif
         int f_hand = _sopen(this->alias(),_O_BINARY|_O_CREAT|_O_WRONLY,_S_IWRITE);
         if (f_hand==-1) {
@@ -144,7 +144,7 @@ __DEBUG_FUNC_CALLED("save(const char*) const")
 int32_t __stdcall stk::__database::export_to(char *a_data, const char* __restrict__ a_format) const
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("export_to(char*,const char*)")
+__DEBUG_CALLED("export_to(char*,const char*)")
 #endif
         char *x = new char[32 * this->items()->count()];
         CSTR_FROM_DATABASE(x, a_format, this);
@@ -160,7 +160,7 @@ stk::con::print("\r\n\r\n");
 int32_t __stdcall stk::__database::import_from(const char* __restrict__ a_data, const char* __restrict__ a_format)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("import_from(const char*,const char*)")
+__DEBUG_CALLED("import_from(const char*,const char*)")
 #endif
         DATABASE_FROM_CSTR(this, a_format, a_data);
 #ifdef __DEBUG_DATABASE__
@@ -174,7 +174,7 @@ stk::con::print("\r\n\r\n");
 int32_t __stdcall stk::__database::add(stk::__database* __restrict__ a_database)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("add(this*)")
+__DEBUG_CALLED("add(this*)")
 #endif
         for (int32_t i = 0, j = a_database->items()->count(); i < j; i++) {
                 items()->add(a_database->items()->get(i));
@@ -188,7 +188,7 @@ __DEBUG_FUNC_CALLED("add(this*)")
 char *__stdcall stk::CSTR_FROM_DATABASE(char *a_text, const char* __restrict__ a_format, const stk::__database* __restrict__ a_database)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("CSTR_FROM_DATABASE(char*,const char*,const this*)")
+__DEBUG_CALLED("CSTR_FROM_DATABASE(char*,const char*,const this*)")
 #endif
         register char *text = a_text;
         register int32_t text_alloc_size = 255 + 1;
@@ -246,7 +246,7 @@ __DEBUG_FUNC_CALLED("CSTR_FROM_DATABASE(char*,const char*,const this*)")
 stk::__database *__stdcall stk::DATABASE_FROM_CSTR(stk::__database *a_data, const char* __restrict__ a_format, const char* __restrict__ a_text)
 {
 #ifdef __DEBUG_DATABASE__
-__DEBUG_FUNC_CALLED("DATABASE_FROM_CSTR(this*,const char*,const char*)")
+__DEBUG_CALLED("DATABASE_FROM_CSTR(this*,const char*,const char*)")
 #endif
         int32_t pos, pos_chk, pos_end = stk::cstr::len(a_text);
         int32_t sep, t_pos, t_posend = 256;

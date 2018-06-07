@@ -12,7 +12,7 @@ __stdcall stk::__cstr_class::__cstr_class()
 f_subs_size(0), f_subs(NULL), f_ptr_dup(NULL)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 __init(0,"\0");
@@ -25,7 +25,7 @@ __stdcall stk::__cstr_class::__cstr_class(const uint32_t a_initial_size)
   f_subs_size(0), f_subs(NULL), f_ptr_dup(NULL)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 __init(a_initial_size,"\0");
@@ -38,7 +38,7 @@ __stdcall stk::__cstr_class::__cstr_class(const char* __restrict__ a_text_to_clo
   f_subs_size(0), f_subs(NULL), f_ptr_dup(NULL)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     __init(stk::cstr::len(a_text_to_clone)+1,a_text_to_clone);
 }
@@ -50,7 +50,7 @@ __stdcall stk::__cstr_class::__cstr_class(const uint32_t a_initial_size,const ch
   f_subs_size(0), f_subs(NULL), f_ptr_dup(NULL)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     __init(a_initial_size, a_text_to_clone);
 }
@@ -59,7 +59,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::__cstr_class::__init(const uint32_t a_initial_size, const char* __restrict__ a_text_to_clone)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 __vector<char>::resize(a_initial_size);
 f_subs_size = 64-4;
@@ -70,7 +70,7 @@ f_subs = stk::cstr::alloc(f_subs_size);
 const char* __stdcall stk::__cstr_class::set(const char* __restrict__ a_text_to_clone)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         if (a_text_to_clone==NULL) {
                         __vector<char>::at(0) = '\0';
@@ -90,7 +90,7 @@ __DEBUG_FUNC_CALLED("")
 const char *__stdcall stk::__cstr_class::add(const char* __restrict__ a_text_to_clone)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         register uint32_t add_size, new_size;
         if (a_text_to_clone!=NULL) {
@@ -109,7 +109,7 @@ __DEBUG_FUNC_CALLED("")
 const char	   *__stdcall	stk::__cstr_class::substr(uint32_t a_pos, uint32_t a_len) const
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 if (f_subs_size < a_len + 1)
 {
@@ -124,7 +124,7 @@ return f_subs;
 void __stdcall stk::__cstr_class::reserve(const uint32_t a_new_size)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         __vector<char>::resize(a_new_size);
 }
@@ -133,7 +133,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::__cstr_class::resize(const uint32_t a_new_len)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 register uint32_t lp = stk::cstr::len(&__vector<char>::bottom()) +1;
 if (a_new_len <= lp) __vector<char>::at(a_new_len) = '\0';
@@ -144,7 +144,7 @@ else stk::cstr::set_end(&__vector<char>::bottom(),'\0',lp,a_new_len);
 void __stdcall stk::__cstr_class::clear(void)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 if (__vector<char>::count()!=0) __vector<char>::bottom() = '\0';
 }
@@ -153,7 +153,7 @@ if (__vector<char>::count()!=0) __vector<char>::bottom() = '\0';
 void __stdcall stk::__cstr_class::shrink_to_fit(void)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 if (__vector<char>::count()!=0) {
         __vector<char>::resize(stk::cstr::len(&__vector<char>::bottom())+1);
@@ -164,7 +164,7 @@ if (__vector<char>::count()!=0) {
 __stdcall stk::__cstr_class::~__cstr_class(void)
 {
 #ifdef __DEBUG_CSTR_CLASS__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         if (f_subs!=NULL) delete f_subs;
         f_ptr_dup = NULL;

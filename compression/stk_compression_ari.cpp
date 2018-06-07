@@ -40,7 +40,7 @@ from which much have been borrowed.  */
 stk::compression::__ari_compressor::__ari_compressor(void)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         char_to_symb = (uint32_t*)stk::mem::alloc(sizeof(uint32_t)*(CNUM));
@@ -53,7 +53,7 @@ __DEBUG_FUNC_CALLED("")
 stk::compression::__ari_compressor::~__ari_compressor(void)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		stk::mem::free(char_to_symb);
@@ -66,7 +66,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__ari_compressor::initialize()
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //------------------
@@ -90,7 +90,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__ari_compressor::update(const uint32_t axdata_uncoded)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //------------------
@@ -130,7 +130,7 @@ __DEBUG_FUNC_CALLED("")
 uint32_t __stdcall stk::compression::__ari_compressor::search(const uint32_t x)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         register uint32_t l, h, c;
@@ -146,7 +146,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__ari_compressor::initialize_encoder(void)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		initialize();
@@ -156,7 +156,7 @@ __DEBUG_FUNC_CALLED("")
 uint8_t __stdcall stk::compression::__ari_compressor::encode(uint32_t *a_code_ptr, const uint8_t a_code_ptr_bit, const uint8_t axdata_uncoded)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //------------------
@@ -203,7 +203,7 @@ __DEBUG_FUNC_CALLED("")
 uint8_t __stdcall stk::compression::__ari_compressor::flush_encoder(uint32_t *a_code_ptr, const uint8_t a_code_ptr_bit)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //------------------
@@ -230,7 +230,7 @@ __DEBUG_FUNC_CALLED("")
 uint8_t __stdcall stk::compression::__ari_compressor::initialize_decoder(const uint32_t *a_code_ptr, const uint8_t  a_code_ptr_bit)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		initialize();
@@ -259,7 +259,7 @@ __DEBUG_FUNC_CALLED("")
 uint8_t __stdcall stk::compression::__ari_compressor::decode(char *alpdata_uncoded, const uint32_t *a_code_ptr, const uint8_t a_code_ptr_bit)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //------------------
@@ -309,7 +309,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__ari_compressor::flush_decoder(void)
 {
 #ifdef __DEBUG_ARI_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 }

@@ -2,7 +2,7 @@
 #ifndef __stk_kop32_file_search_H
 #define __stk_kop32_file_search_H
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
 //---------------------------------------------------------------------------
 #include "stk_kop32_controler.h"
 #include "./../database/stk_database.h"

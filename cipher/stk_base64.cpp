@@ -35,7 +35,7 @@ int __stdcall stk::cipher::base642char(char *Z, int s, char *out)
 stk::cipher::__base64::__base64(void)
 {
 #ifdef __DEBUG_BASE64__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         order = (uint8_t*)stk::mem::alloc(256*sizeof(uint8_t));
         this->initialize();
@@ -45,7 +45,7 @@ __DEBUG_FUNC_CALLED("")
 stk::cipher::__base64::~__base64(void)
 {
 #ifdef __DEBUG_BASE64__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         stk::mem::free(order);
 }
@@ -54,7 +54,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::cipher::__base64::initialize(void)
 {
 #ifdef __DEBUG_BASE64__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         for (uint8_t i = 0;; i++) {
                 order[i]=i;
@@ -67,7 +67,7 @@ __DEBUG_FUNC_CALLED("")
 char __stdcall stk::cipher::__base64::encode(const char a_ch)
 {
 #ifdef __DEBUG_BASE64__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         register uint8_t l_ch = (uint8_t)a_ch, r = stk::mem::chr(order,l_ch,256);
         stk::mem::ror(order,r);
@@ -79,7 +79,7 @@ __DEBUG_FUNC_CALLED("")
 char __stdcall stk::cipher::__base64::decode(const char a_ch)
 {
 #ifdef __DEBUG_BASE64__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         register uint8_t r = order[(uint8_t)a_ch];
         stk::mem::ror(order,r);

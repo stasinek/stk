@@ -2,7 +2,7 @@
 #ifndef __stk_mime_types_h
 #define __stk_mime_types_h
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { namespace file { namespace mime {

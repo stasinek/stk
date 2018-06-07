@@ -78,12 +78,14 @@ WARNINGS_LLVM += -Winit-self -Wpointer-arith
 WARNINGS_LLVM += -Wlogical-op
 WARNINGS_LLVM += -Wunsafe-loop-optimizations -Wno-error=unsafe-loop-optimizations
 WARNINGS_LLVM += -Wno-write-strings -Wno-multichar
+WARNINGS_LLVM += -Wno-ignored-attributes
 
 NO_WARNINGS_LLVM += -Wno-write-strings -Wno-multichar
 NO_WARNINGS_LLVM += -Wno-unused-variable -Wno-unused-parameter -Wno-unused-value -Wno-unused-label
 NO_WARNINGS_LLVM += -Wno-unused-but-set-variable
 NO_WARNINGS_LLVM += -Wattributes -Winline
 NO_WARNINGS_LLVM += -Wunknown-pragmas
+NO_WARNINGS_LLVM += -Wno-ignored-attributes
 NO_WARNINGS_LLVM += -Wattributes -Winline -Wshadow -Wall
 #NO_WARNINGS_LLVM += -fverbose-asm
 #NO_WARNINGS_LLVM += -fstrict-aliasing

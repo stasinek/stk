@@ -33,7 +33,7 @@ stk::mem::free(a_dst_ptr);
 char *__stdcall stk::cstr::dup(const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t sl = stk::cstr::len(a_src_ptr);
     return stk::cstr::mov_max(stk::cstr::alloc(sl+1),a_src_ptr,sl+1);
@@ -43,7 +43,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::dupex(char *a_dst_ptr, const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t sl = stk::cstr::len(a_src_ptr);
     return stk::cstr::mov_max(stk::cstr::realloc(a_dst_ptr,sl+1),a_src_ptr,sl+1);
@@ -53,7 +53,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::catex(char *a_dst_ptr, const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t dl = stk::cstr::len(a_dst_ptr);
     register size_t sl = stk::cstr::len(a_src_ptr);
@@ -64,7 +64,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::cat(char *a_dst_ptr, const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t l = stk::cstr::len(a_dst_ptr);
     return stk::cstr::mov((char*)(&a_dst_ptr[l]),a_src_ptr);
@@ -74,7 +74,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::mov(char *a_dst_ptr, const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register char *ptr_s = (char*)a_src_ptr;
     register char *ptr_d = (char*)a_dst_ptr;
@@ -90,7 +90,7 @@ return a_dst_ptr;
 char *__stdcall stk::cstr::mov_max(char *a_dst_ptr, const char *a_src_ptr, const size_t a_len)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t n = a_len;
     register char *ptr_s = (char*)a_src_ptr;
@@ -110,6 +110,9 @@ __DEBUG_FUNC_CALLED("")
 
 char* __stdcall stk::cstr::mov_if(char* a_dst_ptr, const char* a_src_ptr, const char c)
 {
+#ifdef __DEBUG_CSTR__
+__DEBUG_CALLED("")
+#endif
  register char *s = (char*)a_src_ptr;
  register char *d = a_dst_ptr;
  for (; *s; s++) if (*s!=c) *d++ = *s;
@@ -120,6 +123,9 @@ char* __stdcall stk::cstr::mov_if(char* a_dst_ptr, const char* a_src_ptr, const 
 
 char* __stdcall stk::cstr::mov_if_dups(char* dst, const char* src)
 {
+#ifdef __DEBUG_CSTR__
+__DEBUG_CALLED("")
+#endif
  register char *s = (char*)src;
  register char *d = dst;
  for (register char last = 0; *s; s++) if (*s != last) *d++ = last = *s;
@@ -131,7 +137,7 @@ char* __stdcall stk::cstr::mov_if_dups(char* dst, const char* src)
 char *__stdcall stk::cstr::insert(char *a_dst_ptr, const size_t astart, const char* const ainsert)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t insertlen = stk::cstr::len(ainsert), cellen = stk::cstr::len(a_dst_ptr);
     if (insertlen==0) return a_dst_ptr;
@@ -147,7 +153,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::cut(char *a_dst_ptr, const size_t astart, const size_t a_len)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t len = stk::cstr::len(a_dst_ptr);
     register size_t len_mov = len-astart-a_len;
@@ -160,7 +166,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::cut_end(char *a_dst_ptr, const size_t astart, const size_t aend)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t len = stk::cstr::len(a_dst_ptr);
     register size_t len_mov = len-(aend+1);
@@ -173,7 +179,7 @@ __DEBUG_FUNC_CALLED("")
 intmax_t __stdcall stk::cstr::pos(const char *a_src_ptr, const size_t a_start, const char *a_seach_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register int32_t src_size = stk::cstr::len(a_src_ptr), fnd_size = stk::cstr::len(a_seach_ptr);
     return stk::mem::pos(a_src_ptr, src_size, a_start, a_seach_ptr, fnd_size);
@@ -183,7 +189,7 @@ __DEBUG_FUNC_CALLED("")
 intmax_t __stdcall stk::cstr::pos_end(const char *a_src_ptr, const size_t a_start, const char *a_seach_ptr, const size_t aend)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t src_size = stk::cstr::len(a_src_ptr), fnd_size = stk::cstr::len(a_seach_ptr);
     if (src_size > aend) src_size = aend;
@@ -194,7 +200,7 @@ __DEBUG_FUNC_CALLED("")
 intmax_t __stdcall stk::cstr::posr(const char *a_src_ptr, const size_t a_start, const char *a_seach_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     size_t src_size = stk::cstr::len(a_src_ptr), fnd_size = stk::cstr::len(a_seach_ptr);
     return stk::mem::posr(a_src_ptr, src_size, a_start, a_seach_ptr, fnd_size);
@@ -204,7 +210,7 @@ __DEBUG_FUNC_CALLED("")
 /*size_t __stdcall stk::cstr::posr_end(const char *a_src_ptr, const size_t a_start, const char *a_seach_ptr, const size_t aend)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t src_size = stk::cstr::len(a_src_ptr), fnd_size = stk::cstr::len(a_seach_ptr);
     if (src_size > aend) src_size = aend;
@@ -215,7 +221,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::substr(char *a_dst_ptr, const char *a_src_ptr, const size_t astart, const size_t a_len)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     stk::cstr::mov_max(a_dst_ptr,(char*)(&a_src_ptr[astart]),a_len);
     a_dst_ptr[a_len] = '\0';
@@ -226,7 +232,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::substr_end(char *a_dst_ptr, const char *a_src_ptr, const size_t a_start, const size_t a_end)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     stk::cstr::mov_max(a_dst_ptr,(char*)(&a_src_ptr[a_start]),a_end-a_start);
     a_dst_ptr[a_end-a_start] = '\0';
@@ -243,7 +249,7 @@ intmax_t __stdcall stk::cstr::chr_end(const char *a_src_ptr, const char a_chr, c
 intmax_t __stdcall stk::cstr::chr(const char *a_src_ptr, const char a_chr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register char  c = a_chr;
     register char *src_e = (char*)a_src_ptr;
@@ -261,7 +267,7 @@ return -1;
 intmax_t __stdcall stk::cstr::chrr(const char *a_src_ptr, const char a_chr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     if (a_chr=='\0')
     return stk::cstr::chr(a_src_ptr,'\0');
@@ -280,7 +286,7 @@ return r;
 intmax_t __stdcall stk::cstr::chr_sum(const char* a_src_ptr, const char a_chr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     if (a_chr=='\0')
     return 1;
@@ -299,7 +305,7 @@ return sum;
 size_t __stdcall stk::cstr::len(const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return stk::cstr::chr(a_src_ptr,'\0');
 }
@@ -308,7 +314,7 @@ return stk::cstr::chr(a_src_ptr,'\0');
 char *__stdcall stk::cstr::brks(const char *a_src_ptr, const size_t a_start, const char *a_brk)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register char *r_brk = (char*)a_brk;
     register char *r_src = (char*)a_src_ptr + a_start;
@@ -335,7 +341,7 @@ intmax_t __stdcall stk::cstr::between_c(char* dst, const char* src, const char c
 intmax_t __stdcall stk::cstr::between_cc(char* dst, const char* src, const char l, const char r)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 if (src[0]=='\0')
 return -1;
@@ -354,7 +360,7 @@ return len;
 intmax_t __stdcall stk::cstr::between_words(char* dst, const char* src, const char *l, const char *r)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 register size_t src_len = stk::cstr::len(src);
 register size_t L_len = stk::cstr::len(l), R_len = stk::cstr::len(r);
@@ -376,7 +382,7 @@ return len;
 char *__stdcall stk::cstr::replace(char *a_dst_ptr, const char *a_seach_ptr, const char *a_exch_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     for (register intmax_t pos = 0, find, len_co = stk::cstr::len(a_seach_ptr), len_naco = stk::cstr::len(a_exch_ptr), lencel = stk::cstr::len(a_dst_ptr);; pos = find + len_naco) {
         if (a_dst_ptr[pos]=='\0')
@@ -393,7 +399,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::replace_chr(char *a_dst_ptr, const char a_seach_chr, const char a_exch_chr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     for (register size_t pos = 0;; pos++) {
      if (a_dst_ptr[pos]=='\0') return a_dst_ptr;
@@ -403,21 +409,21 @@ __DEBUG_FUNC_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-char *__stdcall stk::cstr::trim(char *a_ptr)
+char *__stdcall stk::cstr::trim(char *a_ptr,char c)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 register size_t len = stk::cstr::len(a_ptr);
 if (len==0)
-return a_ptr;
+    return a_ptr;
 register size_t c1 = 0;
-while (a_ptr[c1]==' ' && c1 < len) {
+while (a_ptr[c1]==c && c1 < len) {
     c1++;
 }
 register size_t c2 = len - 1;
-while (a_ptr[c2]==' ' && c2 > 0) {
+while (a_ptr[c2]==c && c2 > 0) {
     c2--;
 }
 register size_t len_mov = c2 - c1 + 1;
@@ -430,14 +436,14 @@ return a_ptr;
 char *__stdcall stk::cstr::get_file_root(char *a_dst_ptr, const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     intmax_t delimiter = stk::cstr::chr(a_src_ptr,'\\');
     if (delimiter>=0) {
         stk::cstr::substr_end(a_dst_ptr,a_src_ptr,0,delimiter);
         return a_dst_ptr;
     } else if (a_dst_ptr!=a_src_ptr) {
-         stk::cstr::mov(a_dst_ptr, a_src_ptr);
+        stk::cstr::mov(a_dst_ptr, a_src_ptr);
         return a_dst_ptr;
     }
     return a_dst_ptr;
@@ -447,7 +453,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::get_file_path(char *a_dst_ptr, const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     intmax_t delimiter = stk::cstr::chrr(a_src_ptr,'\\');
     if (delimiter>=0) {
@@ -464,7 +470,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::get_file_name(char *a_dst_ptr, const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     intmax_t delimiter = stk::cstr::chrr(a_src_ptr, '\\');
     if (delimiter>=0) {
@@ -479,7 +485,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::get_file_extt(char *a_dst_ptr, const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     intmax_t delimiter = stk::cstr::chrr(a_src_ptr, '.');
     if (delimiter>=0) {
@@ -494,7 +500,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::fix_file_path(char *a_dst_ptr,const char *a_src_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register size_t lensrc = stk::cstr::len(a_src_ptr);
     register size_t lendestination;
@@ -505,8 +511,8 @@ __DEBUG_FUNC_CALLED("")
     }
     while (sb < se ? sb[0]=='\"' || sb[0]==' ' : false) sb++;
     while (se > sb ? se[0]=='\"' || se[0]==' ' || se[0]=='\\' || se[0]=='/': false) se--;
+    lendestination = se-sb;
 
-        lendestination = se-sb;
     if (lendestination > 0) stk::cstr::mov_max(a_dst_ptr,sb,lendestination);
     a_dst_ptr[lendestination]='\0'; return a_dst_ptr;
 }
@@ -515,7 +521,7 @@ __DEBUG_FUNC_CALLED("")
 bool __stdcall stk::cstr::luhna_check(const char *digits)
 {
 #ifdef __DEBUG_MEM32__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     register bool alt = false;
     register intmax_t len = stk::cstr::len(digits);
@@ -539,7 +545,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::upr(char *a_dst_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
     register size_t l = stk::cstr::len(a_dst_ptr);
@@ -557,7 +563,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::lwr(char *a_dst_ptr)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
     register size_t l = stk::cstr::len(a_dst_ptr);
@@ -575,7 +581,7 @@ __DEBUG_FUNC_CALLED("")
 intmax_t  __stdcall stk::cstr::compare(const char *alp1, const char *alp2)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
     register size_t l1 = stk::cstr::len(alp1), l2 = stk::cstr::len(alp2),  r;
@@ -600,7 +606,7 @@ __DEBUG_FUNC_CALLED("")
 intmax_t  __stdcall stk::cstr::compare_max(const char *alp1, const char *alp2, const size_t a_end)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
     register size_t l1 = stk::cstr::len(alp1), l2 = stk::cstr::len(alp2),  r;
@@ -629,7 +635,7 @@ __DEBUG_FUNC_CALLED("")
 bool  __stdcall stk::cstr::test(const char *alp1, const char *alp2)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return compare(alp1,alp2)==0;
 }
@@ -638,7 +644,7 @@ return compare(alp1,alp2)==0;
 const char *__stdcall stk::cstr::itoa(const int a_int)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return stk::cstr::itoa(a_int,10);
 }
@@ -647,7 +653,7 @@ __DEBUG_FUNC_CALLED("")
 const char *__stdcall stk::cstr::itoa(const int a_int, const int8_t a_base)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     static char str[32];
     return stk::cstr::itoa(a_int,str,a_base);
@@ -657,7 +663,7 @@ __DEBUG_FUNC_CALLED("")
 const char *__stdcall stk::cstr::itoa(const int aint, char* astr, const int8_t abase)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
     const char *codes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -695,7 +701,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::cstr::atoi(const char *a_src)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
     return ::atol(a_src);
 }
@@ -704,7 +710,7 @@ __DEBUG_FUNC_CALLED("")
 char *__stdcall stk::cstr::set(char *alpdst, const char a_znak_byte, const size_t astart, const size_t alen)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 stk::mem::set((char*)alpdst+astart,a_znak_byte,alen);
 return alpdst;
@@ -714,7 +720,7 @@ return alpdst;
 char *__stdcall stk::cstr::set_end(char *alpdst, const char a_znak, const size_t astart, const size_t aend)
 {
 #ifdef __DEBUG_CSTR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 stk::mem::set((char*)alpdst+astart,a_znak,aend-astart);
 return alpdst;
@@ -732,7 +738,11 @@ character codes are representable characters:
 using namespace std;
 
 int main_ascii()
-{   int i,j;
+{
+#ifdef __DEBUG_CSTR__
+__DEBUG_CALLED("")
+#endif
+
     char cmd[32][4]= {"NUL","SOH","STX","ETX","EOT","ENQ","ACK","BEL","BS","TAB",
                       "LF","VT","FF","CR","SO","SI","DLE","DC1","DC2","DC3","DC4","NAK",
                       "SYN","ETB","CAN","EM","SUB","ESC","FS","GS","RS","US"};
@@ -740,6 +750,7 @@ int main_ascii()
      std::cout << "\n of which,the first 32 are control codes (non-printable), and the";
      std::cout << "\n remaining 96 charactercodes are representable characters:\n";
         std::cout << "*";
+    register int i,j;
     for( i = 0 ; i < 10 ; i++)
         std::cout << setw(4) << i;
 
@@ -783,6 +794,4 @@ The standard ASCII table defines 128 character codes (from 0 to 127),
 5| P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
 6| `   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
 7| p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~
-
-
 */

@@ -338,7 +338,7 @@
 
 #include "./time/stk_time.h"
 
-#define __DEBUG_FUNC_CALLED(__func)\
+#define __DEBUG_CALLED(__func)\
         static const int __entered_line = __LINE__;\
         static double __time_1 = stk::time::time_ms();\
         static int __entered_time = 1;\
@@ -353,7 +353,7 @@
         stk::con::prints("DEBUG: Return from function: %d, at: %d, spent %lfms:\n\0",__file_name__,__entered_line,__LINE__,__time_2);\
         } return var;
 #else
-#define __DEBUG_FUNC_CALLED("")
+#define __DEBUG_CALLED("")
 #define __DEBUG_RETURN(var) return var;
 #endif
 //---------------------------------------------------------------------------

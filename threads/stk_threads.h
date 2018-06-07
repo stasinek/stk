@@ -2,7 +2,7 @@
 #ifndef __stk_threads_H__
 #define __stk_threads_H__
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
 #include "./../time/stk_time.h"
 #include "./../cpu/stk_cpu.h"
 //#include "./../../pthreads-w32-2-9-1-release/pthreads.2/include/pthread.h"
@@ -120,7 +120,7 @@ extern STK_IMPEXP bool               __stdcall joinable         (struct ssthread
 extern STK_IMPEXP bool               __stdcall active           (struct ssthread_t *a_thread);
 extern STK_IMPEXP void               __stdcall join             (struct ssthread_t *a_thread);
 extern STK_IMPEXP void               __stdcall detach           (struct ssthread_t *a_thread);
-extern STK_IMPEXP void               __stdcall atexit           (struct ssthread_t *a_thread,ssthread_routine_t a_onexit,void *a_onexit_arg);
+extern STK_IMPEXP void               __stdcall onexit           (struct ssthread_t *a_thread, ssthread_routine_t a_onexit,void *a_onexit_arg);
 extern STK_IMPEXP unsigned long      __stdcall this_id          (void);
 extern STK_IMPEXP bool               __stdcall yeld             (void);
 extern STK_IMPEXP void               __stdcall quit             (unsigned long a_exitcode);

@@ -40,14 +40,34 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <BCC_AllCompatibilityFlags>true</BCC_AllCompatibilityFlags>
+        <BCC_WindowsVersionDefines>NTDDI_VERSION=NTDDI_WIN2KSP4;_WIN32_WINNT=_WIN32_WINNT_WIN2K</BCC_WindowsVersionDefines>
+        <BCC_AllCodeguardOptions>true</BCC_AllCodeguardOptions>
+        <BCC_OptimizeJumps>true</BCC_OptimizeJumps>
+        <VerInfo_PreRelease>true</VerInfo_PreRelease>
+        <TASM_FloatingPoint>Real</TASM_FloatingPoint>
+        <BCC_OptimizeVariables>true</BCC_OptimizeVariables>
+        <VerInfo_DLL>true</VerInfo_DLL>
+        <BCC_MonitorGlobalAndStackData>true</BCC_MonitorGlobalAndStackData>
+        <BCC_EliminateDuplicateExpressions>true</BCC_EliminateDuplicateExpressions>
+        <BCC_ExpandIntrinsics>true</BCC_ExpandIntrinsics>
+        <BCC_IncludePath>D:\x86_libraries\STK\;D:\x86_libraries\STK\;$(BCC_IncludePath)</BCC_IncludePath>
+        <BCC_NestedComments>true</BCC_NestedComments>
+        <TASM_DisplaySourceLines>true</TASM_DisplaySourceLines>
+        <VerInfo_MajorVer>3</VerInfo_MajorVer>
+        <BCC_PentiumInstructionScheduling>true</BCC_PentiumInstructionScheduling>
+        <BCC_MonitorInlinePtrAccess>true</BCC_MonitorInlinePtrAccess>
+        <BCC_MonitorThis>true</BCC_MonitorThis>
+        <BCC_AsmToObj>true</BCC_AsmToObj>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=SSTSOFT.pl;FileDescription=$(MSBuildProjectName);FileVersion=3.0.0.0;InternalName=STK;LegalCopyright=Stanislaw Stasiak;LegalTrademarks=;OriginalFilename=stk.lib;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <RunBCCOutOfProcess>true</RunBCCOutOfProcess>
         <SubProcessesNumber>2</SubProcessesNumber>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <Multithreaded>true</Multithreaded>
-        <ILINK_LibraryPath>file\xml\;file\json\;file\vfs\;file\eno\;file\ini\;3D\;cipher\;compression\;cpu\;database\;file\;hash\;incbin\;io\;koperek\;mem\;pharser\;process_journal\;sockets\;stasm\;sthreads\;text\;uuidxx\;time\;C:\x86_libraries\STK\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
-        <IncludePath>file\xml\;file\json\;file\vfs\;file\eno\;file\ini\;3D\;cipher\;compression\;cpu\;database\;file\;hash\;incbin\;io\;koperek\;mem\;pharser\;process_journal\;sockets\;stasm\;sthreads\;text\;uuidxx\;time\;C:\x86_libraries\STK\;$(IncludePath)</IncludePath>
+        <ILINK_LibraryPath>threads\;file\xml\;file\json\;file\vfs\;file\eno\;file\ini\;3D\;cipher\;compression\;cpu\;database\;file\;hash\;incbin\;io\;koperek\;mem\;pharser\;process_journal\;sockets\;stasm\;sthreads\;text\;uuidxx\;time\;C:\x86_libraries\STK\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <IncludePath>threads\;file\xml\;file\json\;file\vfs\;file\eno\;file\ini\;3D\;cipher\;compression\;cpu\;database\;file\;hash\;incbin\;io\;koperek\;mem\;pharser\;process_journal\;sockets\;stasm\;sthreads\;text\;uuidxx\;time\;C:\x86_libraries\STK\;$(IncludePath)</IncludePath>
         <_TCHARMapping>char</_TCHARMapping>
         <ILINK_GenerateImportLibrary>true</ILINK_GenerateImportLibrary>
         <SanitizedProjectName>stk_RAD</SanitizedProjectName>
@@ -112,6 +132,7 @@
         <TASM_Debugging>None</TASM_Debugging>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <BCC_IncludePath>D:\x86_libraries\STK\;D:\x86_libraries\STK\;$(BCC_IncludePath)</BCC_IncludePath>
         <Defines>BUILD_STK_LIBRARY;$(Defines)</Defines>
         <ILINK_KeepOutputFiles>true</ILINK_KeepOutputFiles>
         <BCC_VCCompatibility>true</BCC_VCCompatibility>
@@ -255,20 +276,11 @@
         <CppCompile Include="stasm\stk_stasm.cpp">
             <BuildOrder>17</BuildOrder>
         </CppCompile>
-        <CppCompile Include="sthreads\stk_idle.cpp">
-            <BuildOrder>15</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="sthreads\stk_threads.cpp">
-            <BuildOrder>16</BuildOrder>
-        </CppCompile>
         <CppCompile Include="stk_bitset.cpp">
             <BuildOrder>3</BuildOrder>
         </CppCompile>
         <CppCompile Include="stk_hash_chain.cpp">
             <BuildOrder>4</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="stk_lib.cpp">
-            <BuildOrder>5</BuildOrder>
         </CppCompile>
         <CppCompile Include="stk_list.cpp">
             <BuildOrder>6</BuildOrder>
@@ -279,21 +291,11 @@
         <CppCompile Include="stk_RAD.cpp">
             <BuildOrder>1</BuildOrder>
         </CppCompile>
-        <PCHCompile Include="stk_RADPCH1.h">
-            <BuildOrder>0</BuildOrder>
-            <PCH>true</PCH>
-        </PCHCompile>
         <CppCompile Include="stk_set.cpp">
             <BuildOrder>8</BuildOrder>
         </CppCompile>
         <CppCompile Include="stk_test.cpp">
             <BuildOrder>9</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="stk_variable.cpp">
-            <BuildOrder>10</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="stk_vector.cpp">
-            <BuildOrder>11</BuildOrder>
         </CppCompile>
         <CppCompile Include="text\stk_cstr_class.cpp">
             <BuildOrder>12</BuildOrder>
@@ -303,6 +305,12 @@
         </CppCompile>
         <CppCompile Include="text\stk_cstr_utils.cpp">
             <BuildOrder>14</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="threads\stk_idle.cpp">
+            <BuildOrder>55</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="threads\stk_threads.cpp">
+            <BuildOrder>56</BuildOrder>
         </CppCompile>
         <CppCompile Include="time\stk_time.cpp">
             <BuildOrder>12</BuildOrder>

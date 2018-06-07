@@ -3,7 +3,7 @@
 #define __stk_database_H__
 #pragma once
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
 //---------------------------------------------------------------------------
 #include "stk_database_alias.h"
 #include "stk_database_items.h"
@@ -12,8 +12,8 @@
 namespace stk {
 #endif
 //---------------------------------------------------------------------------
-#define CSV  				1
-#define LINES  				2
+#define EXPORT_CSV  		1
+#define EXPORT_LINES  		2
 #define DATA_COUNT_IN_ITEM  8
 //---------------------------------------------------------------------------
 class __database_alias;

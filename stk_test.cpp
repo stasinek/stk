@@ -5,9 +5,15 @@
 //---------------------------------------------------------------------------
 #include <iostream>
 #include <stdio.h>
-#include <conio.h>
 #include <stdio.h>
-#include <io.h>
+#ifdef WIN32
+    #include <conio.h>
+    #include <io.h>
+#else
+    #include <ncurses.h>
+    #include <sys/io.h>
+    #include <string.h>
+#endif
 //---------------------------------------------------------------------------
 #ifndef _USE_OLD_IOSTREAMS
 using namespace std;
@@ -109,9 +115,9 @@ int stk::test::i asm("i");
 int __stdcall stk::test::start_test(int argc, char *argv[])
 {
     int32_t argi, argl = 0;
-    for (argi = 0; argi < argc; argi++) argl += strlen(argv[argi]);
+    for (argi = 0; argi < argc; argi++) argl += stk::cstr::len(argv[argi]);
     char *args = new char[argl+1];
-    for (argi = 0; argi < argc; argi++) strcat(args,argv[argi]);
+    for (argi = 0; argi < argc; argi++) stk::cstr::cat(args,argv[argi]);
     args[0] = '\0';
 
     ::atexit(&stk::test::stk_atexit);

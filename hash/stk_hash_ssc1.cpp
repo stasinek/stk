@@ -155,7 +155,7 @@ static uint32_t h[32] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 void __stdcall stk::hash::ssc1::reset_SSC1(void)
 {
 #ifdef __DEBUG_HASH_SSC1__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 for (register uint32_t i = 0; i < 32; i++) h[i] = 0;
 }
@@ -164,7 +164,7 @@ for (register uint32_t i = 0; i < 32; i++) h[i] = 0;
 const uint32_t*  __stdcall stk::hash::ssc1::calc_SSC1(const void *a_data, const uint32_t a_len, const uint32_t a_bits)
 {
 #ifdef __DEBUG_HASH_SSC1__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
                 // initialize ALL 32x hash variables - simple count in nibbles:
                 int32_t n = (a_bits>>5) - 1;
@@ -221,7 +221,7 @@ __DEBUG_FUNC_CALLED("")
 void  __stdcall stk::hash::ssc1::print_SSC1(void)
 {
 #ifdef __DEBUG_HASH_SSC1__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
                 stk::con::prints("ssc1 HASH:\n");
                 for (int32_t n = 0; n<32; n++) {

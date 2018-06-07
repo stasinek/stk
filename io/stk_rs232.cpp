@@ -28,7 +28,7 @@ HANDLE __com_handle[255];
 int32_t __stdcall stk::com::open(const int8_t com_num, const int32_t baud, const char parity, const char data_bits, const char stop_bits)
 {
 #ifdef __DEBUG_RS232__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         if( (com_num < 1) || (com_num > 9)
                 ||
@@ -129,7 +129,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::com::close(const int8_t com_num)
 {
 #ifdef __DEBUG_RS232__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         DWORD i;
 #ifdef __WIN32__
@@ -145,7 +145,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::com::send(const int8_t com_num,void *data,const int32_t len)
 {
 #ifdef __DEBUG_RS232__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
   DWORD i;
 #ifdef __WIN32__
@@ -160,7 +160,7 @@ __DEBUG_FUNC_CALLED("")
 int32_t __stdcall stk::com::recv(int8_t com_num,void *data,int32_t len)
 {
 #ifdef __DEBUG_RS232__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
   DWORD i;
 #ifdef __WIN32__

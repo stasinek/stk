@@ -28,7 +28,7 @@
 stk::compression::__static_huff_compressor::__static_huff_compressor(void)
 {
 #ifdef __DEBUG_STATIC_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         son = (uint32_t*)stk::mem::alloc(sizeof(int32_t)*(TREE_SIZE));
@@ -40,7 +40,7 @@ __DEBUG_FUNC_CALLED("")
 stk::compression::__static_huff_compressor::~__static_huff_compressor(void)
 {
 #ifdef __DEBUG_STATIC_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		stk::mem::free(frq);
@@ -52,7 +52,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__static_huff_compressor::initialize(void)
 {
 #ifdef __DEBUG_STATIC_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		register int32_t  i, e;
@@ -83,7 +83,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__static_huff_compressor::update(const char axdata_uncoded)
 {
 #ifdef __DEBUG_STATIC_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 //------------------------------
@@ -136,7 +136,7 @@ HUFF_EXCHANGE_NODES:
 char __stdcall stk::compression::__static_huff_compressor::encode(char *a_code_ptr, const char a_code_ptr_bit, const char axdata_uncoded)
 {
 #ifdef __DEBUG_STATIC_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		register int32_t current_node = dad[TREE_SIZE + axdata_uncoded];
@@ -161,7 +161,7 @@ __DEBUG_FUNC_CALLED("")
 char __stdcall stk::compression::__static_huff_compressor::decode(char *alpdata_uncoded, const char *a_code_ptr, const char a_code_ptr_bit)
 {
 #ifdef __DEBUG_STATIC_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
 		register int32_t current_node = son[ROOT_NODE];				// begin on top of the huffman tree
@@ -191,7 +191,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::compression::__static_huff_compressor::reconstruct(void)
 {
 #ifdef __DEBUG_STATIC_HUFF_COMPRESSOR__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 
         register uint32_t i, e, k, f, l;

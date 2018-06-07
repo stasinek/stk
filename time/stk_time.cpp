@@ -11,7 +11,7 @@ STK_EXPORT uint64_t __stdcall stk::time::time_us(void)
 // cross-platform timeGetTime (on Windows minimum return is 1000us, on linux there is us acuracy (probably?) CLOCKS_PER_SEC >=1M
 {
 #ifdef __DEBUG_TIME__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
                 clock_t c = ::clock();
                 register uint64_t r = 1000000 * c;
@@ -25,7 +25,7 @@ __DEBUG_FUNC_CALLED("")
 uint64_t STK_EXPORT __stdcall stk::time::time_ms(void) // cross-platform timeGetTime
 {
 #ifdef __DEBUG_TIME__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         return time_us() / 1000;
 }
@@ -34,7 +34,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::time::wait_ms(const uint64_t milliseconds) // cross-platform sleep function
 {
 #ifdef __DEBUG_TIME__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
                 #ifdef __WIN32__
                 register uint64_t ms = milliseconds;
@@ -66,7 +66,7 @@ static void sleep_us(double microseconds) {
 void __stdcall stk::time::wait_us(const uint64_t microseconds) // cross-platform sleep function
 {
 #ifdef __DEBUG_TIME__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
                 #ifdef __WIN32__
                 register uint64_t ms = microseconds / 1000;
@@ -84,7 +84,7 @@ __DEBUG_FUNC_CALLED("")
 void __stdcall stk::time::wait_until(const time_t a_time)
 {
 #ifdef __DEBUG_TIME__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         time_t f_current_time = ::time(NULL);
                 #ifdef __WIN32__
@@ -99,7 +99,7 @@ __DEBUG_FUNC_CALLED("")
 time_t __stdcall stk::time::wait_idle(const time_t a_prev_time, const double a_percent_of_idle) // cross-platform sleep_until function
 {
 #ifdef __DEBUG_TIME__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         time_t f_current_time = ::time(NULL);
         wait_ms((uint64_t)(a_percent_of_idle * difftime(a_prev_time,f_current_time)) / 100);
@@ -111,7 +111,7 @@ __DEBUG_FUNC_CALLED("")
 time_t __stdcall stk::time::FILETIME_to_time_t(const FILETIME *ft)
 {
 #ifdef __DEBUG_TIME__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
                 ULARGE_INTEGER ull;
                 ull.HighPart = ft->dwHighDateTime;
@@ -122,7 +122,7 @@ __DEBUG_FUNC_CALLED("")
 FILETIME* __stdcall stk::time::time_t_to_FILETIME(time_t t, FILETIME *ft)
 {
 #ifdef __DEBUG_TIME__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 // Note that LONGLONG is a 64-bit value
                 LONGLONG ull;

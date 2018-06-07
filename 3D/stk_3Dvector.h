@@ -1,6 +1,6 @@
 #if defined(__SSE41__)
-#ifndef __sse_3Dvector_H
-#define __sse_3Dvector_H
+#ifndef __sse_3Dvector_H__
+#define __sse_3Dvector_H__
 
 #include <smmintrin.h>
 

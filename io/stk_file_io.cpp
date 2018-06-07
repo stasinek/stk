@@ -15,7 +15,7 @@ HANDLE WINAPI stk::file::create(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return CreateFileA(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
 }
@@ -30,7 +30,7 @@ BOOL WINAPI stk::file::write(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return WriteFile(hFile,lpBuffer,nNumberOfBytesToWrite,lpNumberOfBytesWritten,lpOverlapped);
 }
@@ -45,7 +45,7 @@ BOOL WINAPI stk::file::read(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return ReadFile(hFile,lpBuffer,nNumberOfBytesToRead,lpNumberOfBytesRead,lpOverlapped);
 }
@@ -61,7 +61,7 @@ HANDLE WINAPI stk::file::create_map(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return CreateFileMapping(hFile,lpAttributes,flProtect,dwMaximumSizeHigh,dwMaximumSizeLow,lpName);
 }
@@ -76,7 +76,7 @@ LPVOID WINAPI stk::file::create_map_view(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return MapViewOfFile(hFileMappingObject,dwDesiredAccess,dwFileOffsetHigh,dwFileOffsetLow,dwNumberOfBytesToMap);
 }
@@ -88,7 +88,7 @@ BOOL WINAPI stk::file::flush_map_view(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return FlushViewOfFile(lpBaseAddress,dwNumberOfBytesToFlush);
 
@@ -100,7 +100,7 @@ BOOL WINAPI stk::file::close_map_view(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return UnmapViewOfFile(lpBaseAddress);
 }
@@ -111,7 +111,7 @@ BOOL WINAPI stk::file::close(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return CloseHandle(hObject);
 }
@@ -122,7 +122,7 @@ BOOL WINAPI stk::file::close_map(
 )
 {
 #ifdef __DEBUG_FILE_IO_
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
 return CloseHandle(hObject);
 }

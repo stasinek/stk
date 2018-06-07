@@ -2,7 +2,7 @@
 #ifndef __stk_cstr_utils_H__
 #define __stk_cstr_utils_H__
 //---------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include <stk_main.h>
 #include "./../mem/stk_mem.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
@@ -48,7 +48,7 @@ namespace stk { namespace cstr {
        extern STK_IMPEXP char		    *__stdcall replace			(char *a_dst_ptr, const char *a_fnd_ptr, const char *a_exch_ptr);
        extern STK_IMPEXP char		    *__stdcall upr				(char *a_dst_ptr);
        extern STK_IMPEXP char		    *__stdcall lwr				(char *a_dst_ptr);
-       extern STK_IMPEXP char		    *__stdcall trim				(char *a_dst_ptr);
+       extern STK_IMPEXP char		    *__stdcall trim				(char *a_dst_ptr, char c);
 //---------------------------------------------------------------------------
        extern STK_IMPEXP char		    *__stdcall set				(char *a_dst_ptr, const char a_znak, const size_t a_start, const size_t a_count);
        extern STK_IMPEXP char		    *__stdcall set_end			(char *a_dst_ptr, const char a_znak, const size_t a_start, const size_t a_end);
@@ -68,7 +68,11 @@ namespace stk { namespace cstr {
        { register char *r = brks(s,0,set); if (r==NULL) return len(s); else return r - s;}
 //---------------------------------------------------------------------------
         extern STK_IMPEXP char          *__stdcall get_file_root    (char *a_dst_ptr, const char *a_src_ptr);
+        inline char          *__stdcall basename(char *a_dst_ptr, const char *a_src_ptr) {
+               return get_file_root(a_dst_ptr, a_src_ptr); }
         extern STK_IMPEXP char          *__stdcall get_file_path    (char *a_dst_ptr, const char *a_src_ptr);
+        inline char          *__stdcall dirname(char *a_dst_ptr, const char *a_src_ptr) {
+               return get_file_path(a_dst_ptr, a_src_ptr); }
         extern STK_IMPEXP char          *__stdcall get_file_name    (char *a_dst_ptr, const char *a_src_ptr);
         extern STK_IMPEXP char          *__stdcall get_file_extt    (char *a_dst_ptr, const char *a_src_ptr);
         //---------------------------------------------------------------------------

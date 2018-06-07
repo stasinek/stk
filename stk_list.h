@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------
-#ifndef __list_h
-#define __list_h
+#ifndef __list_H__
+#define __list_H__
 //---------------------------------------------------------------------------
 #include "./mem/stk_mem.h"
 #include "./io/stk_console.h"
-#include "./stk_main.h"
+#include <stk_main.h>
 //---------------------------------------------------------------------------
 //implementation of std::list ;)
 //---------------------------------------------------------------------------
@@ -20,7 +20,7 @@ public:
       f_full(false)
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::__list()")
+__DEBUG_CALLED("stk::__list::__list()")
 #endif
         this->resize(a_count);
     }
@@ -28,7 +28,7 @@ __DEBUG_FUNC_CALLED("stk::__list::__list()")
     ~__list(void)
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::~__list")
+__DEBUG_CALLED("stk::__list::~__list")
 #endif
         this->resize(0);
     }
@@ -36,7 +36,7 @@ __DEBUG_FUNC_CALLED("stk::__list::~__list")
     bool   __stdcall push_back(T a_new)
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::push_back()")
+__DEBUG_CALLED("stk::__list::push_back()")
 #endif
         if (f_full) {
             this->overflowed(); return false;
@@ -53,7 +53,7 @@ __DEBUG_FUNC_CALLED("stk::__list::push_back()")
     T   __stdcall pop_front(void)
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::pop_front()")
+__DEBUG_CALLED("stk::__list::pop_front()")
 #endif
          if (f_front==f_back && f_full==false) {
              return NULL;
@@ -71,7 +71,7 @@ __DEBUG_FUNC_CALLED("stk::__list::pop_front()")
     T   __stdcall front(void) const
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::front() const")
+__DEBUG_CALLED("stk::__list::front() const")
 #endif
          if (f_front==f_back && f_full==false) {
              return 0;
@@ -82,7 +82,7 @@ __DEBUG_FUNC_CALLED("stk::__list::front() const")
     T   __stdcall back(void) const
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::back() const")
+__DEBUG_CALLED("stk::__list::back() const")
 #endif
          if (f_front==f_back && f_full==false) {
              return 0;
@@ -93,7 +93,7 @@ __DEBUG_FUNC_CALLED("stk::__list::back() const")
     uint32_t   __stdcall count(void)  const
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::count() const")
+__DEBUG_CALLED("stk::__list::count() const")
 #endif
         if (f_full) return f_ptrs_size;
         if (f_back >=f_front) return (f_back - f_front);
@@ -103,7 +103,7 @@ __DEBUG_FUNC_CALLED("stk::__list::count() const")
     uint32_t   __stdcall size(void)  const
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("")
+__DEBUG_CALLED("")
 #endif
         return f_ptrs_size;
     }
@@ -111,7 +111,7 @@ __DEBUG_FUNC_CALLED("")
     virtual void   __stdcall overflowed(void)
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::overflowed()")
+__DEBUG_CALLED("stk::__list::overflowed()")
 #endif
 
     }
@@ -119,7 +119,7 @@ __DEBUG_FUNC_CALLED("stk::__list::overflowed()")
     virtual void   __stdcall cleared(void)
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::cleared()")
+__DEBUG_CALLED("stk::__list::cleared()")
 #endif
 
     }
@@ -127,7 +127,7 @@ __DEBUG_FUNC_CALLED("stk::__list::cleared()")
     bool   __stdcall is_full(void) const
     {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::is_full()")
+__DEBUG_CALLED("stk::__list::is_full()")
 #endif
     return f_full;
     }
@@ -135,7 +135,7 @@ __DEBUG_FUNC_CALLED("stk::__list::is_full()")
     void   __stdcall resize(uint32_t a_new_size)
      {
 #ifdef __DEBUG_LIST__
-__DEBUG_FUNC_CALLED("stk::__list::resize()")
+__DEBUG_CALLED("stk::__list::resize()")
 #endif
         if (f_ptrs_size==a_new_size)
         {

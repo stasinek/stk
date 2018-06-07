@@ -38,7 +38,7 @@ int32_t hist_e_pattern_max;
 int32_t __stdcall stk::__kop32::text_monitor_proc(stk::__kop32_class *akop)
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED("text_monitor_proc(this*)")
+__DEBUG_CALLED("text_monitor_proc(this*)")
 #endif
                 static char szPrb[13] = "[          ]";
                 static UINT nPos = 0;
@@ -86,7 +86,7 @@ __DEBUG_FUNC_CALLED("text_monitor_proc(this*)")
 const char *__stdcall stk::__kop32::text_event_handler(stk::__kop32_class *akop,const char *aevent, const char *acode, const char *acode_ex)
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED("console_event_handler(...)")
+__DEBUG_CALLED("console_event_handler(...)")
 #endif
                 if (stk::cstr::compare(aevent,"PROGRESS")==0)
                 {
@@ -207,7 +207,7 @@ __DEBUG_FUNC_CALLED("console_event_handler(...)")
 void __stdcall stk::__kop32::set_text_handlers(char (__stdcall *a_getch_event_handler)(void),void (__stdcall *a_print_event_handler)(const char*),void (__stdcall *a_error_event_handler)(const char*))
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED("set_console_handlers()")
+__DEBUG_CALLED("set_console_handlers()")
 #endif
 stk::con::set_console_handlers(a_getch_event_handler,a_print_event_handler,a_error_event_handler);
 }
@@ -216,7 +216,7 @@ stk::con::set_console_handlers(a_getch_event_handler,a_print_event_handler,a_err
 int32_t __stdcall stk::__kop32::start_in_text_mode(const char *args)
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED("start_in_console_mode()")
+__DEBUG_CALLED("start_in_console_mode()")
 #endif
                 int32_t ret = start(args,&stk::__kop32::text_event_handler);
                  return ret;
@@ -226,7 +226,7 @@ __DEBUG_FUNC_CALLED("start_in_console_mode()")
 int32_t __stdcall stk::__kop32::start(const char *args, const char* (__stdcall *a_kop32_event_handler)(stk::__kop32_class*,const char*,const char*,const char*))
 {
 #ifdef __DEBUG_KOP32_CONSOLE__
-__DEBUG_FUNC_CALLED("start()")
+__DEBUG_CALLED("start()")
 #endif
                 stk::__kop32_class *kop32 = new stk::__kop32_class;
                 if (a_kop32_event_handler!=NULL) kop32->progress->callback_event_handler = a_kop32_event_handler;
