@@ -43,11 +43,11 @@ char *__stdcall stk::file::mime::decode(char* a_file_name)
                 filecontent = new char[filecontent_size];
                 ::atexit(&stk::file::mime::atexit);
                 }
-        struct _stat statbuf;
+        struct stat statbuf;
         register int32_t file_c, filesize, filehandle = _open(mime_t_filename, O_RDONLY|O_BINARY);
         if (filehandle== -1)
                 return t;
-        if (_fstat(filehandle, &statbuf)==-1) {
+        if (fstat(filehandle, &statbuf)==-1) {
                 _close(filehandle);
                 return t;
         }

@@ -5,17 +5,16 @@
     <VERSION value="BCB.05.03"/>
     <PROJECT value="stk_BCB.dll"/>
     <OBJFILES value="stk_bitset.obj stk_hash_chain.obj stk_list.obj stk_map.obj stk_set.obj 
-      stk_test.obj stk_vector.obj koperek\stk_kop32_API.obj 
-      koperek\stk_kop32_class.obj koperek\stk_kop32_console_API.obj 
-      koperek\stk_kop32_controler.obj koperek\stk_kop32_search.obj 
-      koperek\stk_kop32_socket_server.obj mem\stk_bsearch.obj mem\stk_mem.obj 
-      mem\stk_qsort.obj pharser\stk_pharse_command_line.obj 
-      pharser\stk_pharse_math.obj process_journal\stk_journal.obj 
-      stasm\stk_stasm.obj time\stk_time.obj text\stk_cstr_class.obj 
-      text\stk_cstr_stack.obj text\stk_cstr_utils.obj io\stk_rs232.obj 
-      io\stk_file_io.obj io\stk_console.obj incbin\stk_incbin.obj 
-      hash\stk_hash_API.obj hash\stk_hash_crc32.obj hash\stk_hash_md5.obj 
-      hash\stk_hash_password.obj hash\stk_hash_ssc1.obj 
+      stk_test.obj koperek\stk_kop32_API.obj koperek\stk_kop32_class.obj 
+      koperek\stk_kop32_console_API.obj koperek\stk_kop32_controler.obj 
+      koperek\stk_kop32_search.obj koperek\stk_kop32_socket_server.obj 
+      mem\stk_bsearch.obj mem\stk_mem.obj mem\stk_qsort.obj 
+      pharser\stk_pharse_command_line.obj pharser\stk_pharse_math.obj 
+      process_journal\stk_journal.obj stasm\stk_stasm.obj time\stk_time.obj 
+      text\stk_cstr_class.obj text\stk_cstr_stack.obj text\stk_cstr_utils.obj 
+      io\stk_rs232.obj io\stk_file_io.obj io\stk_console.obj 
+      incbin\stk_incbin.obj hash\stk_hash_API.obj hash\stk_hash_crc32.obj 
+      hash\stk_hash_md5.obj hash\stk_hash_password.obj hash\stk_hash_ssc1.obj 
       file\stk_file_mime_types.obj file\eno\stk_file_lzst_header.obj 
       file\ini\stk_file_ini.obj database\stk_database.obj 
       database\stk_database_items.obj cpu\stk_cpu.obj 
@@ -28,6 +27,8 @@
       threads\stk_threads.obj koperek\stk_kop32_options.obj 
       koperek\stk_kop32_list.obj"/>
     <RESFILES value="stk_BCB.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES)"/>
     <LIBFILES value=""/>

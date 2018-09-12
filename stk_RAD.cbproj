@@ -51,7 +51,7 @@
         <BCC_MonitorGlobalAndStackData>true</BCC_MonitorGlobalAndStackData>
         <BCC_EliminateDuplicateExpressions>true</BCC_EliminateDuplicateExpressions>
         <BCC_ExpandIntrinsics>true</BCC_ExpandIntrinsics>
-        <BCC_IncludePath>D:\x86_libraries\STK\;D:\x86_libraries\STK\;$(BCC_IncludePath)</BCC_IncludePath>
+        <BCC_IncludePath>D:\stasiek\My Projects\x86_libraries\STK\;$(BCC_IncludePath)</BCC_IncludePath>
         <BCC_NestedComments>true</BCC_NestedComments>
         <TASM_DisplaySourceLines>true</TASM_DisplaySourceLines>
         <VerInfo_MajorVer>3</VerInfo_MajorVer>
@@ -132,7 +132,8 @@
         <TASM_Debugging>None</TASM_Debugging>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <BCC_IncludePath>D:\x86_libraries\STK\;D:\x86_libraries\STK\;$(BCC_IncludePath)</BCC_IncludePath>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
         <Defines>BUILD_STK_LIBRARY;$(Defines)</Defines>
         <ILINK_KeepOutputFiles>true</ILINK_KeepOutputFiles>
         <BCC_VCCompatibility>true</BCC_VCCompatibility>
@@ -140,7 +141,6 @@
         <BPILibOutputDir>D:\stasiek\My Projects\X86_LIBRARIES\STK\</BPILibOutputDir>
         <Manifest_File>(None)</Manifest_File>
         <BCC_OldBorlandClassLayout>true</BCC_OldBorlandClassLayout>
-        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <BCC_PCHCache>true</BCC_PCHCache>
     </PropertyGroup>
     <ItemGroup>

@@ -5,7 +5,6 @@ USEUNIT("stk_list.cpp");
 USEUNIT("stk_map.cpp");
 USEUNIT("stk_set.cpp");
 USEUNIT("stk_test.cpp");
-USEUNIT("stk_vector.cpp");
 USEUNIT("koperek\stk_kop32_API.cpp");
 USEUNIT("koperek\stk_kop32_class.cpp");
 USEUNIT("koperek\stk_kop32_console_API.cpp");
