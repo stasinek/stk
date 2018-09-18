@@ -442,8 +442,8 @@ typedef signed short mz_int16;
 typedef unsigned short mz_uint16;
 typedef unsigned int mz_uint32;
 typedef unsigned int mz_uint;
-typedef long long mz_int64;
-typedef unsigned long long mz_uint64;
+typedef __int64 mz_int64;
+typedef unsigned __int64 mz_uint64;
 typedef int mz_bool;
 
 #define MZ_FALSE (0)
@@ -929,7 +929,7 @@ typedef unsigned char mz_validate_uint64[sizeof(mz_uint64)==8 ? 1 : -1];
 #ifdef _MSC_VER
   #define MZ_FORCE_STATIC
 #elif defined(__GNUC__)
-  #define MZ_FORCE_STATIC __attribute__((__always_static__))
+  #define MZ_FORCE_STATIC static __attribute__((__always_static__))
 #else
   #define MZ_FORCE_STATIC static
 #endif
@@ -2223,7 +2223,7 @@ static int tdefl_flush_block(tdefl_compressor *d, int flush)
 
 #if MINIZ_USE_UNALIGNED_LOADS_AND_STORES
 #define TDEFL_READ_UNALIGNED_WORD(p) *(const mz_uint16*)(p)
-static MZ_FORCE_STATIC void tdefl_find_match(tdefl_compressor *d, mz_uint lookahead_pos, mz_uint max_dist, mz_uint max_match_len, mz_uint *pMatch_dist, mz_uint *pMatch_len)
+MZ_FORCE_STATIC void tdefl_find_match(tdefl_compressor *d, mz_uint lookahead_pos, mz_uint max_dist, mz_uint max_match_len, mz_uint *pMatch_dist, mz_uint *pMatch_len)
 {
   mz_uint dist, pos = lookahead_pos & TDEFL_LZ_DICT_SIZE_MASK, match_len = *pMatch_len, probe_pos = pos, next_probe_pos, probe_len;
   mz_uint num_probes_left = d->m_max_probes[match_len >= 32];
@@ -2425,7 +2425,7 @@ static mz_bool tdefl_compress_fast(tdefl_compressor *d)
 }
 #endif // MINIZ_USE_UNALIGNED_LOADS_AND_STORES && MINIZ_LITTLE_ENDIAN
 
-static MZ_FORCE_STATIC void tdefl_record_literal(tdefl_compressor *d, mz_uint8 lit)
+MZ_FORCE_STATIC void tdefl_record_literal(tdefl_compressor *d, mz_uint8 lit)
 {
   d->m_total_lz_bytes++;
   *d->m_pLZ_code_buf++ = lit;
@@ -2433,7 +2433,7 @@ static MZ_FORCE_STATIC void tdefl_record_literal(tdefl_compressor *d, mz_uint8 l
   d->m_huff_count[0][lit]++;
 }
 
-static MZ_FORCE_STATIC void tdefl_record_match(tdefl_compressor *d, mz_uint match_len, mz_uint match_dist)
+MZ_FORCE_STATIC void tdefl_record_match(tdefl_compressor *d, mz_uint match_len, mz_uint match_dist)
 {
   mz_uint32 s0, s1;
 
@@ -2834,8 +2834,8 @@ void *tdefl_write_image_to_png_file_in_memory(const void *pImage, int w, int h, 
     #define MZ_FCLOSE fclose
     #define MZ_FREAD fread
     #define MZ_FWRITE fwrite
-    #define MZ_FTELL64 ftello
-    #define MZ_FSEEK64 fseeko
+    #define MZ_FTELL64 ftell
+    #define MZ_FSEEK64 fseek
     #define MZ_FILE_STAT_STRUCT stat
     #define MZ_FILE_STAT stat
     #define MZ_FFLUSH fflush
@@ -2887,7 +2887,7 @@ struct mz_zip_internal_state_tag
 #define MZ_ZIP_ARRAY_SET_ELEMENT_SIZE(array_ptr, element_size) (array_ptr)->m_element_size = element_size
 #define MZ_ZIP_ARRAY_ELEMENT(array_ptr, element_type, index) ((element_type *)((array_ptr)->m_p))[index]
 
-static MZ_FORCE_STATIC void mz_zip_array_clear(mz_zip_archive *pZip, mz_zip_array *pArray)
+MZ_FORCE_STATIC void mz_zip_array_clear(mz_zip_archive *pZip, mz_zip_array *pArray)
 {
   pZip->m_pFree(pZip->m_pAlloc_opaque, pArray->m_p);
   memset(pArray, 0, sizeof(mz_zip_array));
@@ -2902,25 +2902,25 @@ static mz_bool mz_zip_array_ensure_capacity(mz_zip_archive *pZip, mz_zip_array *
   return MZ_TRUE;
 }
 
-static MZ_FORCE_STATIC mz_bool mz_zip_array_reserve(mz_zip_archive *pZip, mz_zip_array *pArray, size_t new_capacity, mz_uint growing)
+MZ_FORCE_STATIC mz_bool mz_zip_array_reserve(mz_zip_archive *pZip, mz_zip_array *pArray, size_t new_capacity, mz_uint growing)
 {
   if (new_capacity > pArray->m_capacity) { if (!mz_zip_array_ensure_capacity(pZip, pArray, new_capacity, growing)) return MZ_FALSE; }
   return MZ_TRUE;
 }
 
-static MZ_FORCE_STATIC mz_bool mz_zip_array_resize(mz_zip_archive *pZip, mz_zip_array *pArray, size_t new_size, mz_uint growing)
+MZ_FORCE_STATIC mz_bool mz_zip_array_resize(mz_zip_archive *pZip, mz_zip_array *pArray, size_t new_size, mz_uint growing)
 {
   if (new_size > pArray->m_capacity) { if (!mz_zip_array_ensure_capacity(pZip, pArray, new_size, growing)) return MZ_FALSE; }
   pArray->m_size = new_size;
   return MZ_TRUE;
 }
 
-static MZ_FORCE_STATIC mz_bool mz_zip_array_ensure_room(mz_zip_archive *pZip, mz_zip_array *pArray, size_t n)
+MZ_FORCE_STATIC mz_bool mz_zip_array_ensure_room(mz_zip_archive *pZip, mz_zip_array *pArray, size_t n)
 {
   return mz_zip_array_reserve(pZip, pArray, pArray->m_size + n, MZ_TRUE);
 }
 
-static MZ_FORCE_STATIC mz_bool mz_zip_array_push_back(mz_zip_archive *pZip, mz_zip_array *pArray, const void *pElements, size_t n)
+MZ_FORCE_STATIC mz_bool mz_zip_array_push_back(mz_zip_archive *pZip, mz_zip_array *pArray, const void *pElements, size_t n)
 {
   size_t orig_size = pArray->m_size; if (!mz_zip_array_resize(pZip, pArray, orig_size + n, MZ_TRUE)) return MZ_FALSE;
   memcpy((mz_uint8*)pArray->m_p + orig_size * pArray->m_element_size, pElements, n * pArray->m_element_size);
@@ -2993,7 +2993,7 @@ static mz_bool mz_zip_reader_init_internal(mz_zip_archive *pZip, mz_uint32 flags
   return MZ_TRUE;
 }
 
-static MZ_FORCE_STATIC mz_bool mz_zip_reader_filename_less(const mz_zip_array *pCentral_dir_array, const mz_zip_array *pCentral_dir_offsets, mz_uint l_index, mz_uint r_index)
+MZ_FORCE_STATIC mz_bool mz_zip_reader_filename_less(const mz_zip_array *pCentral_dir_array, const mz_zip_array *pCentral_dir_offsets, mz_uint l_index, mz_uint r_index)
 {
   const mz_uint8 *pL = &MZ_ZIP_ARRAY_ELEMENT(pCentral_dir_array, mz_uint8, MZ_ZIP_ARRAY_ELEMENT(pCentral_dir_offsets, mz_uint32, l_index)), *pE;
   const mz_uint8 *pR = &MZ_ZIP_ARRAY_ELEMENT(pCentral_dir_array, mz_uint8, MZ_ZIP_ARRAY_ELEMENT(pCentral_dir_offsets, mz_uint32, r_index));
@@ -3227,7 +3227,7 @@ mz_uint mz_zip_reader_get_num_files(mz_zip_archive *pZip)
   return pZip ? pZip->m_total_files : 0;
 }
 
-static MZ_FORCE_STATIC const mz_uint8 *mz_zip_reader_get_cdh(mz_zip_archive *pZip, mz_uint file_index)
+MZ_FORCE_STATIC const mz_uint8 *mz_zip_reader_get_cdh(mz_zip_archive *pZip, mz_uint file_index)
 {
   if ((!pZip) || (!pZip->m_pState) || (file_index >= pZip->m_total_files) || (pZip->m_zip_mode != MZ_ZIP_MODE_READING))
     return NULL;
@@ -3316,7 +3316,7 @@ mz_uint mz_zip_reader_get_filename(mz_zip_archive *pZip, mz_uint file_index, cha
   return n + 1;
 }
 
-static MZ_FORCE_STATIC mz_bool mz_zip_reader_string_equal(const char *pA, const char *pB, mz_uint len, mz_uint flags)
+MZ_FORCE_STATIC mz_bool mz_zip_reader_string_equal(const char *pA, const char *pB, mz_uint len, mz_uint flags)
 {
   mz_uint i;
   if (flags & MZ_ZIP_FLAG_CASE_SENSITIVE)
@@ -3327,7 +3327,7 @@ static MZ_FORCE_STATIC mz_bool mz_zip_reader_string_equal(const char *pA, const 
   return MZ_TRUE;
 }
 
-static MZ_FORCE_STATIC int mz_zip_reader_filename_compare(const mz_zip_array *pCentral_dir_array, const mz_zip_array *pCentral_dir_offsets, mz_uint l_index, const char *pR, mz_uint r_len)
+MZ_FORCE_STATIC int mz_zip_reader_filename_compare(const mz_zip_array *pCentral_dir_array, const mz_zip_array *pCentral_dir_offsets, mz_uint l_index, const char *pR, mz_uint r_len)
 {
   const mz_uint8 *pL = &MZ_ZIP_ARRAY_ELEMENT(pCentral_dir_array, mz_uint8, MZ_ZIP_ARRAY_ELEMENT(pCentral_dir_offsets, mz_uint32, l_index)), *pE;
   mz_uint l_len = MZ_READ_LE16(pL + MZ_ZIP_CDH_FILENAME_LEN_OFS);

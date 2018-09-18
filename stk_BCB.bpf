@@ -53,6 +53,8 @@ USEUNIT("threads\stk_idle.cpp");
 USEUNIT("threads\stk_threads.cpp");
 USEUNIT("koperek\stk_kop32_options.cpp");
 USEUNIT("koperek\stk_kop32_list.cpp");
+USEUNIT("file\json\stk_json.cpp");
+USEUNIT("file\zip\miniz.cpp");
 //---------------------------------------------------------------------------
 This file is used by the project manager only and should be treated like the project file
 DllEntryPoint

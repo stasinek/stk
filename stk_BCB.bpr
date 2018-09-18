@@ -25,7 +25,7 @@
       cipher\stk_cipher_pair.obj cipher\stk_cipher_test.obj 3D\stk_3Dvector.obj 
       compression\stk_compression_bwt_matrix2.obj threads\stk_idle.obj 
       threads\stk_threads.obj koperek\stk_kop32_options.obj 
-      koperek\stk_kop32_list.obj"/>
+      koperek\stk_kop32_list.obj file\json\stk_json.obj file\zip\miniz.obj"/>
     <RESFILES value="stk_BCB.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -36,7 +36,7 @@
     <SPARELIBS value=""/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi dclocx50.bpi bcb2kaxserver50.bpi 
       dclusr50.bpi REGULAREXPRESSIONCOMPONENTBCB5.bpi"/>
-    <PATHCPP value=".;koperek;mem;pharser;process_journal;stasm;time;text;io;incbin;hash;file;file\eno;file\ini;database;cpu;compression;cipher;3D;threads"/>
+    <PATHCPP value=".;koperek;mem;pharser;process_journal;stasm;time;text;io;incbin;hash;file;file\eno;file\ini;database;cpu;compression;cipher;3D;threads;file\json;file\zip"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -46,15 +46,16 @@
     <USERDEFINES value="BUILD_STK_LIBRARY"/>
     <SYSDEFINES value="NO_STRICT;_NO_VCL"/>
     <MAINSOURCE value="stk_BCB.bpf"/>
-    <INCLUDEPATH value="3D\;io\;3D;io;sthreads;threads;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl;."/>
-    <LIBPATH value="3D\;io\;3D;io;sthreads;threads;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib;."/>
+    <INCLUDEPATH value="file\zip;file\json;3D\;io\;3D;io;sthreads;threads;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\include;$(BCB)\include\vcl;."/>
+    <LIBPATH value="file\zip;file\json;3D\;io\;3D;io;sthreads;threads;cipher;compression;cpu;database;file\ini;file\eno;file;hash;incbin;text;time;stasm;process_journal;pharser;mem;koperek;$(BCB)\lib\obj;$(BCB)\lib;."/>
     <WARNINGS value="-w-par"/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I3D\. -Iio\. -I3D -Iio -Isthreads -Ithreads -Icipher -Icompression -Icpu 
-      -Idatabase -Ifile\ini -Ifile\eno -Ifile -Ihash -Iincbin -Itext -Itime 
-      -Istasm -Iprocess_journal -Ipharser -Imem -Ikoperek -I$(BCB)\include 
-      -I$(BCB)\include\vcl -I. -src_suffix cpp -DBUILD_STK_LIBRARY -boa"/>
+    <IDLCFLAGS value="-Ifile\zip -Ifile\json -I3D\. -Iio\. -I3D -Iio -Isthreads -Ithreads 
+      -Icipher -Icompression -Icpu -Idatabase -Ifile\ini -Ifile\eno -Ifile 
+      -Ihash -Iincbin -Itext -Itime -Istasm -Iprocess_journal -Ipharser -Imem 
+      -Ikoperek -I$(BCB)\include -I$(BCB)\include\vcl -I. -src_suffix cpp 
+      -DBUILD_STK_LIBRARY -boa"/>
     <CFLAG1 value="-WD -vGc -vGt -vGd -O2 -H=$(BCB)\lib\vcl50.csm -Hc -Q -w- -Vx -Ve -xf -xp 
       -VC -Vd -VF -C -ff -X- -ps -a8 -6 -b -d -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-$YD -$W -$R -$Q -v -JPHNE -M"/>
