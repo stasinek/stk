@@ -223,10 +223,10 @@ SOURCES += \
     text/stk_cstr_stack.cpp \
     koperek/stk_kop32_options.cpp \
     koperek/stk_kop32_list.cpp \
-    file/zip/miniz.c \
     hash/md5/md5.cpp \
     hash/sha1/hmac_sha1.cpp \
-    hash/sha1/sha1.cpp
+    hash/sha1/sha1.cpp \
+    file/zip/miniz.cpp
 # -------------------------------------------------------------
 contains(QMAKE_COMPILER_DEFINES,__GNUC__) {
 message("GNUC GAS sources  loaded")

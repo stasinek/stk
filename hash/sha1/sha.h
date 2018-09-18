@@ -1,9 +1,9 @@
-/*
+﻿/*
  * sha.h
  *
  * Originally taken from the public domain SHA1 implementation
  * written by by Steve Reid <steve@edmweb.com>
- * 
+ *
  * Modified by Aaron D. Gifford <agifford@infowest.com>
  *
  * NO COPYRIGHT - THIS IS 100% IN THE PUBLIC DOMAIN
@@ -28,7 +28,7 @@
 #define __SHA1_H
 
 #ifdef __cplusplus
-STK_extern "C" {
+extern "C" {
 #endif
 
 /* Define this if your machine is LITTLE_ENDIAN, otherwise #undef it: */
@@ -51,9 +51,9 @@ typedef unsigned char sha1_byte;	/* single byte type */
 
 /* The SHA1 structure: */
 typedef struct _SHA_CTX {
-	sha1_quadbyte	state[5];
-	sha1_quadbyte	count[2];
-	sha1_byte	buffer[SHA1_BLOCK_LENGTH];
+    sha1_quadbyte	state[5];
+    sha1_quadbyte	count[2];
+    sha1_byte	buffer[SHA1_BLOCK_LENGTH];
 } SHA_CTX;
 
 #ifndef NOPROTO

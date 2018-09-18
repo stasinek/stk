@@ -1,4 +1,4 @@
-/*
+﻿/*
  * hmac_sha1.c
  *
  * Version 1.0.0
@@ -60,8 +60,8 @@
 
 #include <stk_main.h>
 // temporal workaround C/C++ names
-#define stk_mem_mov mov
-#define stk_mem_set set
+#define stk_mem_mov memmove
+#define stk_mem_set memset
 
 #ifdef  __cplusplus
 extern "C" {

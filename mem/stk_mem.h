@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 #ifndef __stk_mem_h
 #define __stk_mem_h
 #pragma once
@@ -63,6 +63,7 @@ inline uint8_t bitcount(uint32_t i)
 }} //namespace tsoft,mem
 #endif
 //---------------------------------------------------------------------------
+#ifdef __cplusplus
 #if defined(__CLANG__)
 inline void* __cdecl operator new (const size_t a_count)
 {	return stk::mem::alloc(a_count); }
@@ -72,8 +73,7 @@ inline void __cdecl operator delete (void *a_ptr)
 {	stk::mem::free(a_ptr); }
 inline void __cdecl operator delete[] (void *a_ptr)
 {	stk::mem::free(a_ptr); }
-#else
-#if defined (__GNUC__)
+#elif defined (__GNUC__)
 #include <new>
 inline void* __cdecl operator new(const size_t a_count) _GLIBCXX_THROW (std::bad_alloc)
   {	return stk::mem::alloc(a_count); }
@@ -102,7 +102,7 @@ inline void __cdecl operator delete (void *a_ptr)
 inline void __cdecl operator delete[] (void *a_ptr)
 {	stk::mem::free(a_ptr); }
 #endif
-#endif
+#endif // __cplusplus
 //---------------------------------------------------------------------------
 #endif
 //---------------------------------------------------------------------------
