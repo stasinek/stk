@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __vector_H__
-#define __vector_H__
+#ifndef __stk_vector_h__
+#define __stk_vector_h__
 //---------------------------------------------------------------------------
 #include "./mem/stk_mem.h"
 #include "./text/stk_cstr_utils.h"
@@ -27,10 +27,10 @@ uint32_t           __stdcall  count(void)  const;
 //---------------------------------------------------------------------------
 virtual void       __stdcall  cleared(void);
 //---------------------------------------------------------------------------
+TYPE&              __stdcall  at(const uint32_t a_index) const;
 TYPE&              __stdcall  front(void) const;
 TYPE&              __stdcall  back(void) const;
 TYPE&              __stdcall  set(const uint32_t a_index, const TYPE& a_value) const;
-TYPE&              __stdcall  at(const uint32_t a_index) const;
 //---------------------------------------------------------------------------
 uint32_t           __stdcall  push(const TYPE& a_new);
 void               __stdcall  swap(const uint32_t a_index1,const uint32_t a_index2);

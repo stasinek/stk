@@ -1,4 +1,5 @@
 # Map files
+*.mbr
 *.tds
 *.map
 *.sdf

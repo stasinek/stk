@@ -38,7 +38,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\X86_LIBRARIES\STK;$(IncludePath)</IncludePath>
+    <IncludePath>C:\SRC\X86_LIBRARIES\STK;$(IncludePath)</IncludePath>
     <OutDir>.\</OutDir>
     <IntDir>.\</IntDir>
   </PropertyGroup>
@@ -54,11 +54,17 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;BUILD_STK_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <CallingConvention>StdCall</CallingConvention>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>LinkVerbose</ShowProgress>
+      <RegisterOutput>true</RegisterOutput>
+      <SetChecksum>false</SetChecksum>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,9 +148,9 @@
     <ClInclude Include="pharser\stk_pharse_math.h" />
     <ClInclude Include="process_journal\stk_journal.h" />
     <ClInclude Include="sockets\stk_sockets.h" />
-    <ClInclude Include="stasm\copy_of_stk_MAIN.h" />
     <ClInclude Include="stasm\stk_stasm.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="stk_MAIN.h" />
     <ClInclude Include="threads\stk_idle.h" />
     <ClInclude Include="threads\stk_threads.h" />
     <ClInclude Include="targetver.h" />

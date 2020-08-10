@@ -97,19 +97,19 @@ return (char)getchar();
 //---------------------------------------------------------------------------
 
 #ifdef __WATCOMC__
-void stk::test::stk_atexit(void)
-{
-}
+    void stk::test::stk_atexit(void)
+    {
+    }
 #else
-void __cdecl stk::test::stk_atexit(void)
-{
-#ifdef __BORLANDC__
-system("pause");
-#endif
-}
+    void __cdecl stk::test::stk_atexit(void)
+    {
+    #ifdef __BORLANDC__
+    system("pause");
+    #endif
+    }
 #endif
 //---------------------------------------------------------------------------
-int stk::test::i asm("i");
+//int stk::test::i asm("i");
 //---------------------------------------------------------------------------
 
 int __stdcall stk::test::start_test(int argc, char *argv[])
@@ -197,6 +197,7 @@ int __stdcall stk::test::start_test(int argc, char *argv[])
         stk::con::prints("not found between\n");
 
 delete args; return r;
+
 }
 //---------------------------------------------------------------------------
 

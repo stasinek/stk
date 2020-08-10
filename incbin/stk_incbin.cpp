@@ -26,7 +26,9 @@ HMODULE WINAPI GetModuleHandleEx(DWORD flag,LPCTSTR name,void *handle)
     return h_module;
 }
 #endif
+#ifndef GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS
 #define GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS 0x00000004
+#endif
 HMODULE WINAPI GetCurrentModule()
 {
         HMODULE h_module = NULL;
@@ -41,7 +43,7 @@ int __stdcall incbin_rc(char** resource_data, int RESOURCE_ID)
 {
     HRSRC       resource;
     HGLOBAL     resource_handle;
-	DWORD       resource_size;
+    DWORD       resource_size;
     resource = ::FindResource(GetCurrentModule(), MAKEINTRESOURCE(RESOURCE_ID), RT_RCDATA);
     if (resource==0)
         return 0;

@@ -62,17 +62,25 @@ namespace stk { namespace cstr {
        extern STK_IMPEXP char           *__stdcall brks             (const char *a_src_ptr, const size_t a_start, const char *a_brk);
        //---------------------------------------------------------------------------
        inline char                      *__stdcall brk              (const char *a_src_ptr, const char *a_brk)
-       { return brks(a_src_ptr,0,a_brk); }
+       {
+           return brks(a_src_ptr,0,a_brk);
+       }
        //---------------------------------------------------------------------------
        inline intmax_t                   __stdcall spn              (const char *s, const char *set)
-       { register char *r = brks(s,0,set); if (r==NULL) return len(s); else return r - s;}
+       {
+           register char *r = brks(s,0,set); if (r==NULL) return len(s); else return r - s;
+       }
 //---------------------------------------------------------------------------
         extern STK_IMPEXP char          *__stdcall get_file_root    (char *a_dst_ptr, const char *a_src_ptr);
-        inline char          *__stdcall basename(char *a_dst_ptr, const char *a_src_ptr) {
-               return get_file_root(a_dst_ptr, a_src_ptr); }
+        inline char                     *__stdcall basename(char *a_dst_ptr, const char *a_src_ptr)
+        {
+               return get_file_root(a_dst_ptr, a_src_ptr);
+        }
         extern STK_IMPEXP char          *__stdcall get_file_path    (char *a_dst_ptr, const char *a_src_ptr);
-        inline char          *__stdcall dirname(char *a_dst_ptr, const char *a_src_ptr) {
-               return get_file_path(a_dst_ptr, a_src_ptr); }
+        inline char                     *__stdcall dirname(char *a_dst_ptr, const char *a_src_ptr)
+        {
+               return get_file_path(a_dst_ptr, a_src_ptr);
+        }
         extern STK_IMPEXP char          *__stdcall get_file_name    (char *a_dst_ptr, const char *a_src_ptr);
         extern STK_IMPEXP char          *__stdcall get_file_extt    (char *a_dst_ptr, const char *a_src_ptr);
         //---------------------------------------------------------------------------
@@ -83,16 +91,20 @@ namespace stk { namespace cstr {
         extern STK_IMPEXP const char    *__stdcall itoa             (const int a_int, const int8_t abase);
         extern STK_IMPEXP const char    *__stdcall itoa             (const int a_int);
 //---------------------------------------------------------------------------
-inline int isupper(char c){
+inline int isupper(char c)
+{
     return (c >= 'A' && c <= 'Z');
 }
-inline int isalpha(char c){
+inline int isalpha(char c)
+{
     return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
 }
-inline int isspace(char c){
+inline int isspace(char c)
+{
     return (c == ' ' || c == '\t' || c == '\n' || c == '\12');
 }
-inline int isdigit(char c){
+inline int isdigit(char c)
+{
     return (c >= '0' && c <= '9');
 }
 //---------------------------------------------------------------------------

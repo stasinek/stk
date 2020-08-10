@@ -64,6 +64,20 @@ Makefile: ../stk.pro C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/win32-g++/qmake.conf
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/features/device_config.prf \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/common/angle.conf \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/qconfig.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dcore.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dcore_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dinput.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dinput_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dlogic.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dlogic_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquick.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquick_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquickinput.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquickinput_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquickrender.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquickrender_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3drender.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3drender_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_axbase.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_axbase_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_axcontainer.pri \
@@ -87,6 +101,10 @@ Makefile: ../stk.pro C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/win32-g++/qmake.conf
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_gui_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_help.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_help_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_labscontrols_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_labstemplates_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_location.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_location_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_multimedia.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_multimedia_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_multimediawidgets.pri \
@@ -115,8 +133,14 @@ Makefile: ../stk.pro C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/win32-g++/qmake.conf
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_quickparticles_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_quickwidgets.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_quickwidgets_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_script.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_script_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_scripttools.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_scripttools_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_sensors.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_sensors_private.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_serialbus.pri \
+		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_serialbus_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_serialport.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_serialport_private.pri \
 		C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_sql.pri \
@@ -167,6 +191,20 @@ C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/qdevice.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/features/device_config.prf:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/common/angle.conf:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/qconfig.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dcore.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dcore_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dinput.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dinput_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dlogic.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dlogic_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquick.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquick_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquickinput.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquickinput_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquickrender.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3dquickrender_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3drender.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_3drender_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_axbase.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_axbase_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_axcontainer.pri:
@@ -190,6 +228,10 @@ C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_gui.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_gui_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_help.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_help_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_labscontrols_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_labstemplates_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_location.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_location_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_multimedia.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_multimedia_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_multimediawidgets.pri:
@@ -218,8 +260,14 @@ C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_quick_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_quickparticles_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_quickwidgets.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_quickwidgets_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_script.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_script_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_scripttools.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_scripttools_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_sensors.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_sensors_private.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_serialbus.pri:
+C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_serialbus_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_serialport.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_serialport_private.pri:
 C:/Qt/Qt5.6.3/5.6.3/mingw49_32/mkspecs/modules/qt_lib_sql.pri:

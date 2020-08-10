@@ -1,3 +1,3 @@
-project : D:\X86_LIBRARIES\STK\stk_WATCOM.lib .SYMBOLIC
+project : C:\SRC\X86_LIBRARIES\STK\stk_WATCOM.lib .SYMBOLIC
 
-!include D:\X86_LIBRARIES\STK\stk_WATCOM.mk1
+!include C:\SRC\X86_LIBRARIES\STK\stk_WATCOM.mk1

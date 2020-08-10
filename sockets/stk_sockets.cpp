@@ -496,7 +496,7 @@ __DEBUG_CALLED("")
 //RFC 743
 /*Recipient specification
 */
-        if (stk::cstr::pos(buffer.recv_lp,0,"XRCP")==0) 
+        if (stk::cstr::pos(buffer.recv_lp,0,"XRCP")==0)
 {
         } else
 //RFC 775
@@ -612,8 +612,8 @@ int32_t __stdcall stk::socket::get_file_size(const char* path)
 #ifdef __DEBUG_SOCKET__
 __DEBUG_CALLED("")
 #endif
-        static struct _stat statbuf;
-        _stat(path, &statbuf);
+        static struct stat statbuf;
+        stat(path, &statbuf);
         return statbuf.st_size;
 }
 //---------------------------------------------------------------------------
@@ -624,8 +624,8 @@ const char *__stdcall stk::socket::get_file_size_ansi(const char* path)
 __DEBUG_CALLED("")
 #endif
         static char a[12] = "";
-        static struct _stat statbuf;
-        _stat(path, &statbuf);
+        static struct stat statbuf;
+        stat(path, &statbuf);
         return stk::cstr::itoa(statbuf.st_size,a,10);
 }
 //---------------------------------------------------------------------------
@@ -635,21 +635,21 @@ int32_t __stdcall stk::socket::get_file_content(const char* path, char *filecont
 #ifdef __DEBUG_SOCKET__
 __DEBUG_CALLED("")
 #endif
-        struct _stat statbuf;
+        struct stat statbuf;
         register int32_t t, filesize, filehandle = open(path, O_RDONLY|O_BINARY);
         if (filehandle== -1)
         return -1;
-        if (_fstat(filehandle, &statbuf)==-1) {
-        _close(filehandle);
+        if (fstat(filehandle, &statbuf)==-1) {
+        close(filehandle);
         return -1;
         }
         filesize = statbuf.st_size;
         if (filesize > max_size) {
-        _close(filehandle);
+        close(filehandle);
         return -1;
         }
-        t = read(filehandle, filecontent, filesize);
-        _close(filehandle);
+        t = _read(filehandle, filecontent, filesize);
+        close(filehandle);
         return  t;
 }
 
