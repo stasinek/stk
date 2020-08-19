@@ -76,7 +76,6 @@
     #include <vector>
     #include <string>
     #include <algorithm>
-    using namespace std;
 #endif
 //---------------------------------------------------------------------------
 #ifndef _Z_H

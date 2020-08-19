@@ -50,7 +50,7 @@
 #ifndef md5_INCLUDED
 #define md5_INCLUDED
 
-#include <stk_MAIN.h>
+#include "./../stk_main.h"
 
 /*
  * This package supports both compile-time and run-time determination of CPU

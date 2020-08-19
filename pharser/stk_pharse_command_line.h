@@ -2,7 +2,7 @@
 #ifndef __stk_pharser_HDR__
 #define __stk_pharser_HDR__
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk {

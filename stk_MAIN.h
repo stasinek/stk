@@ -34,7 +34,7 @@
 //---------------------------------------------------------------------------
 #ifdef BUILD_STK_LIBRARY
     #define STK_IMPEXP __EXPORT
-#else /* !BUILD_STK_LIBRARY */
+#else
     #define STK_IMPEXP __IMPORT
 #endif /* BUILD_STK_LIBRARY */
 //---------------------------------------------------------------------------
@@ -253,11 +253,11 @@
         typedef unsigned __int32    uint32_t;
     #endif
     #if !defined(_STD_USING)
-		typedef __int64             int64_t;
+        typedef __int64             int64_t;
         typedef unsigned __int64    uint64_t;
         typedef  __int64            intmax_t;
         typedef unsigned __int64    uintmax_t;
-	#endif
+    #endif
 #elif (__GNUC__ >= 3) || defined(__CLANG__)
 //    #include <stddef>
     #include <stdint.h>

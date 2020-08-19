@@ -15,9 +15,9 @@
     #include <string.h>
 #endif
 //---------------------------------------------------------------------------
-#ifndef _USE_OLD_IOSTREAMS
-using namespace std;
-#endif
+//#ifndef _USE_OLD_IOSTREAMS
+//using namespace std;
+//#endif
 //---------------------------------------------------------------------------
 #define TEST_INIT(t_size,r_times)\
 stk::cpu::tsc_init();\

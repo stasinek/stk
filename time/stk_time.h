@@ -4,7 +4,7 @@
 #ifdef __BORLANDC__
 #pragma once
 #endif
-#include <stk_main.h>
+#include "./../stk_main.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { namespace time {

@@ -136,7 +136,7 @@
 
 #include "miniz.h"
 
-#include <stk_main.h>
+#include "./../stk_main.h"
 // temporal workaround C/C++ names
 #define stk_mem_mov mov
 #define stk_mem_set set

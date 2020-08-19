@@ -3,6 +3,8 @@
 //---------------------------------------------------------------------------
 #include "stk_cstr_utils.h"
 #include "./../io/stk_console.h"
+#include <iomanip>
+
 //---------------------------------------------------------------------------
 
 char     *__stdcall stk::cstr::alloc(size_t a_size) {
@@ -735,7 +737,6 @@ character codes are representable characters:
 #ifndef __WATCOMC__
 #include <iostream>
 #include <iomanip>
-using namespace std;
 
 int main_ascii()
 {
@@ -752,28 +753,28 @@ __DEBUG_CALLED("")
         std::cout << "*";
     register int i,j;
     for( i = 0 ; i < 10 ; i++)
-        std::cout << setw(4) << i;
+        std::cout << std::setw(4) << i;
 
     for( i = 0x41 ; i < 0x47 ; i++)
-        std::cout << setw(4) << static_cast<char>(i);
+        std::cout << std::setw(4) << static_cast<char>(i);
         std::cout << std::endl << "-- ";
 
     for( i = 0 ; i < 16 ; i++)
-     std::cout << left << "--- ";
+     std::cout << std::left << "--- ";
 
     for( i = 0 ; i < 2 ; i++ )
         {
             std::cout << std::endl <<  i << "| " ;
 
     for(j = 0 ; j < 16 ; j++)
-        std::cout << setw(4) << left << cmd[i*16+j];
+        std::cout << std::setw(4) << std::left << cmd[i*16+j];
         }
     for( i = 2 ; i < 8 ; i++ )
         {
         std::cout << std::endl << i << "| " ;
     for( j = 0 ; j < 16 ; j++)
             if((i*16 + j) != 127 )
-         std::cout << setw(4) << left << static_cast<char>(i*16+j);
+         std::cout << std::setw(4) << std::left << static_cast<char>(i*16+j);
         }
     std::cout << std::endl << std::endl;
     return 0;

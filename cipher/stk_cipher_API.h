@@ -4,7 +4,7 @@
 #ifndef __stk_cipher_API_H__
 #define __stk_cipher_API_H__
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 #include "./../file/eno/stk_file_lzst_header.h"
 //---------------------------------------------------------------------------
 namespace stk { namespace cipher {

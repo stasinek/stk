@@ -1,9 +1,11 @@
+//---------------------------------------------------------------------------
 #if defined(__SSE41__)
-#ifndef __sse_3Dvector_H__
-#define __sse_3Dvector_H__
-
+//---------------------------------------------------------------------------
+#ifndef __stk_sse_3DVECTOR_H__
+#define __stk_sse_3DVECTOR_H__
+//---------------------------------------------------------------------------
 #include <smmintrin.h>
-
+//---------------------------------------------------------------------------
 // Simple vector class
 _MM_ALIGN16 class STK_IMPEXP __sse_3Dvector
 {
@@ -72,6 +74,7 @@ inline __sse_3Dvector operator-(float a, const __sse_3Dvector& b) { return __sse
 inline __sse_3Dvector operator*(float a, const __sse_3Dvector& b) { return b * a; }
 inline __sse_3Dvector operator/(float a, const __sse_3Dvector& b) { return __sse_3Dvector(_mm_set1_ps(a)) / b; }
 
-
-#endif // __sse_3Dvector_H
-#endif // ifdef __SSE__
+//---------------------------------------------------------------------------
+#endif // __sse_vector_H__
+#endif // ifdef __SSE4__
+//---------------------------------------------------------------------------

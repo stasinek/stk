@@ -2,7 +2,7 @@
 #ifndef __stk_threads_H__
 #define __stk_threads_H__
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 #include "./../time/stk_time.h"
 #include "./../cpu/stk_cpu.h"
 //#include "./../../pthreads-w32-2-9-1-release/pthreads.2/include/pthread.h"

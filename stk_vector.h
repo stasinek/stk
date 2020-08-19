@@ -5,7 +5,7 @@
 #include "./mem/stk_mem.h"
 #include "./text/stk_cstr_utils.h"
 #include "./io/stk_console.h"
-#include <stk_main.h>
+#include "./stk_main.h"
 //---------------------------------------------------------------------------
 //implementation of std::vector, much simpler without iterator, allocator etc.
 //---------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 #ifndef __stk_base64_H__
 #define __stk_base64_H__
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { namespace cipher {

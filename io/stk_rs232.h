@@ -2,7 +2,7 @@
 #ifndef __stk_rs232_H__
 #define __stk_rs232_H__
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { namespace com {

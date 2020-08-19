@@ -2,7 +2,7 @@
 #ifndef __STK_TEST_H__
 #define __STK_TEST_H__
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./stk_main.h"
 //---------------------------------------------------------------------------
 #include "./text/stk_cstr_utils.h"
 #include "./mem/stk_mem.h"

@@ -3,7 +3,7 @@
 #define __stk_cstr_class_h__
 #pragma once
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 #include "./stk_cstr_utils.h"
 #include "./../stk_vector.h"
 //---------------------------------------------------------------------------

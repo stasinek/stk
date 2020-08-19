@@ -319,9 +319,9 @@ perek\stk_kop32_options.cpp .AUTODEPEND
  @C:
  cd C:\SRC\X86_LIBRARIES\STK
  *wpp386 koperek\stk_kop32_options.cpp -i="C:\WATCOM/h;C:\WATCOM/h/nt;C:/SRC&
-/X86_LIBRARIES/STK" -fh -w1 -e25 -d__STL_LIMITED_DEFAULT_TEMPLATES -j -ei -z&
-p16 -zq -ox -ob -ol -ol+ -oc -oi -or -oh -om -d2 -hd -db -en -et -bm -fp6 -f&
-pi87 -6s -bt=nt -fo=.obj -mf -xs
+/X86_LIBRARIES/STK" -fh -w1 -e25 -d__STL_LIMITED_DEFAULT_TEMPLATES -dBUILD_S&
+TK_LIBRARY -j -ei -zp16 -zq -ox -ob -ol -ol+ -oc -oi -or -oh -om -d2 -hd -db&
+ -en -et -bm -fp6 -fpi87 -6s -bt=nt -fo=.obj -mf -xs
 
 C:\SRC\X86_LIBRARIES\STK\stk_kop32_search.obj : C:\SRC\X86_LIBRARIES\STK\kop&
 erek\stk_kop32_search.cpp .AUTODEPEND

@@ -151,7 +151,7 @@ uint32_t LO, HI;
         rdtsc;
 
         tsc_exit:\n
-        mov edi,__stasm_x86;
+        mov edi,__s_x86;
         mov [edi+0],eax;
         mov [edi+4],edx;
 
@@ -162,9 +162,9 @@ uint32_t LO, HI;
         pop eax;
         popfd;
     )
-    uint64_t r = (uint64_t)__stasm_x86[1];
+    uint64_t r = (uint64_t)__s_x86[1];
     r = r << 32;
-    r = r  | (uint64_t)__stasm_x86[0];
+    r = r  | (uint64_t)__s_x86[0];
     ATOMIC_UNLOCK(1)
     return r;
 #else
@@ -368,8 +368,8 @@ cpuid;
 *a_ecx = cached_ecx;
 *a_edx = cached_edx;
 #elif defined(__GNUC__) || defined(__CLANG__)
-__stasm_x86[0]        = a_feature;
-__stasm_x86[5]        = a_feature_ecx;
+__s_x86[0]        = a_feature;
+__s_x86[5]        = a_feature_ecx;
 
 #ifdef __x86_64__
 __stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
@@ -380,7 +380,7 @@ __stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
         push rdx\n
         push rsi\n
         push rdi\n
-    mov edi,__stasm_x86[0]\n
+    mov edi,__s_x86[0]\n
     mov eax,dword ptr[edi+0*4]\n
     and eax,0x80000000\n
 cpuid\n
@@ -416,7 +416,7 @@ __stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
         push edx\n
         push esi\n
         push edi\n
-    mov edi,__stasm_x86[0]\n
+    mov edi,__s_x86[0]\n
     mov eax,dword ptr[edi+0*4]\n
     and eax,0x80000000\n
 cpuid\n
@@ -445,13 +445,13 @@ cpuid\n
     )
 #endif
 
-cached_eax = __stasm_x86[1];
+cached_eax = __s_x86[1];
     *a_eax = cached_eax;
-cached_ebx = __stasm_x86[2];
+cached_ebx = __s_x86[2];
     *a_ebx = cached_ebx;
-cached_ecx = __stasm_x86[3];
+cached_ecx = __s_x86[3];
     *a_ecx = cached_ecx;
-cached_edx = __stasm_x86[4];
+cached_edx = __s_x86[4];
     *a_edx = cached_edx;
 
 #else

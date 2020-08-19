@@ -2,7 +2,7 @@
 #ifndef __stk_kop32_controler_H__
 #define __stk_kop32_controler_H__
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk {

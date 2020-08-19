@@ -58,7 +58,7 @@
 
 #include "hmac_sha1.h"
 
-#include <stk_main.h>
+#include "./../stk_main.h"
 // temporal workaround C/C++ names
 #define stk_mem_mov memmove
 #define stk_mem_set memset

@@ -3,7 +3,7 @@
 #define __stk_database_H__
 #pragma once
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 //---------------------------------------------------------------------------
 #include "stk_database_alias.h"
 #include "stk_database_items.h"

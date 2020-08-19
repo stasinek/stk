@@ -2,7 +2,7 @@
 #ifndef __stk_kop32_H__
 #define __stk_kop32_H__
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 //---------------------------------------------------------------------------
 #include "./../text/stk_cstr_stack.h"
 #include "./../database/stk_database.h"

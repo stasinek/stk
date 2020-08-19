@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_cstr_utils_H__
-#define __stk_cstr_utils_H__
+#ifndef __stk_cstr_utils_h
+#define __stk_cstr_utils_h
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 #include "./../mem/stk_mem.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus

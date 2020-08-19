@@ -2,7 +2,7 @@
 #ifndef __stk_text_stack_h
 #define __stk_text_stack_h
 //---------------------------------------------------------------------------
-#include <stk_main.h>
+#include "./../stk_main.h"
 //---------------------------------------------------------------------------
 #include "stk_cstr_class.h"
 #include "./../stk_vector.h"
