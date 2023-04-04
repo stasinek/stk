@@ -4,29 +4,12 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 //---------------------------------------------------------------------------
-struct bt_node
-{
- 	unsigned index;
-	void *value;
-	long left;
-	long right;
-	unsigned depth;
-};
-struct bt_tree
-{
- 	unsigned n;
-	unsigned buffer;
-	long current_root;
-	struct bt_node* nodes;
-	int freeslots;
-};
-//---------------------------------------------------------------------------
 // the function add() is the same for each case, and data type, it works just
 //with slots and returns the index of the new value if inserted
 // otherwise the index of the existing value. The handling of the "error" or whatelse
 // get done from the add_if_not_exists or other interface function (in my version I add also a pointer to function, one
 //for compare, for simplicity I don't put it here)
-long add(struct bt_tree*bt, unsigned root, unsigned newitemix);
+
 // the function below save first the data in a new slot. this get done
 //because I would generalize the function of the tree. So, when found, it
 //finds all the information in the proper slot. Without to modify the
@@ -34,13 +17,13 @@ long add(struct bt_tree*bt, unsigned root, unsigned newitemix);
 //interface function.
 //---------------------------------------------------------------------------
 
-unsigned add_if_not_exists(struct bt_tree* bt, char *name, void*value)
+long __stdcall add_if_not_exists(struct bt_tree* bt, char *name, void*value)
 {
 	//the function get_new_slot() pop a value from freeslots, if it has
 	// otherwise increase the counter of the tree, check if the buffer
 	//can satisfy the new request, otherwise realloc() the vector
-	res = get_new_slot(bt->freeslots);
-	unsigned tmp=add(bt, cur,res);
+	long res = get_new_slot(bt->freeslots);
+	unsigned long tmp = add(bt,cur,res);
 	bt->node[res].name=name; //I just paste the address of the name
 				    //i don't duplicate yet
 	bt->node[res].value=value;
@@ -64,7 +47,7 @@ unsigned add_if_not_exists(struct bt_tree* bt, char *name, void*value)
 //with the same key. What do with it is a matter of interface function (if raise an exception or
 //sum, or just add_if_not_exists)
 
-long add(struct bt_tree*bt,  unsigned newitemix)
+long __stdcall add(struct bt_tree*bt, unsigned long newitemix)
 {
 	int cmp;
 	long root=bt->cuurent_root;
@@ -104,7 +87,7 @@ long add(struct bt_tree*bt,  unsigned newitemix)
 }
 //---------------------------------------------------------------------------
 
-void propagate_depth(bt,newitemix)
+void __stdcall propagate_depth(bt,newitemix)
 {
    assert(newitemix>=0);
    unsigned i, depth;
@@ -118,7 +101,7 @@ void propagate_depth(bt,newitemix)
 }
 //---------------------------------------------------------------------------
 
-void bubble(struct bt_tree*bt, unsigned index)
+void __stdcall bubble(struct bt_tree*bt, unsigned index)
 {
 	unsigned parent=bt->nodes[index].parent;
 	struct bt_node*right,*left;
@@ -135,7 +118,7 @@ void bubble(struct bt_tree*bt, unsigned index)
 }
 //---------------------------------------------------------------------------
 
-unsigned rotate(struct bt_tree*bt,unsigned ix)
+long __stdcall rotate(struct bt_tree*bt,unsigned long ix)
 {  //we save first all the neighborhood in some comfortable variables
 	asser (ix>=0 && ix<bt->n);
    struct bt_node *me,*parent,*left,*right;
@@ -172,7 +155,7 @@ unsigned rotate(struct bt_tree*bt,unsigned ix)
 }
 //---------------------------------------------------------------------------
 
-void* find(struct bt_tree*bt,char *key)
+void* __stdcall find(struct bt_tree*bt,char *key)
 {
 	long current_root=bt->current_root;
 	int cmp;
@@ -190,7 +173,7 @@ void* find(struct bt_tree*bt,char *key)
 }
 //---------------------------------------------------------------------------
 
-void  fill_ratio(struct bt_tree*bt)
+void __stdcall fill_ratio(struct bt_tree*bt)
 {
 	unsigned depth=0:
 	long i,n,buf, fix;

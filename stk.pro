@@ -158,7 +158,6 @@ FLAGS_GNU += -funroll-loops
 FLAGS_GNU += -m32 -mfpmath=sse -flto -O3
 FLAGS_GNU += -mpreferred-stack-boundary=8
 FLAGS_GNU += -mmmx -msse -msse2
-
 QMAKE_CXXFLAGS_DEBUG += $$FLAGS_GNU $$WARNINGS_GNU -std=gnu++0x
 QMAKE_CXXFLAGS_RELEASE += $$FLAGS_GNU $$NO_WARNINGS_GNU -std=gnu++0x
 #QMAKE_CXXFLAGS -= -pipe

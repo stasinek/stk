@@ -14,111 +14,162 @@ static uint64_t tsc_STARTED = 0, tsc_PAUSED = 0, tsc_LAST_MEASURED = 0;
 static uint64_t tsc_ADJ = stk::cpu::tsc_init();
 static uint64_t tsc_ELAPSED = 0;
 //---------------------------------------------------------------------------
-
-#if !defined(__BORLANDC__) && !defined(__WATCOMC__)
+#if !defined(__WATCOMC__) && !defined(__BORLANDC__)
 uint64_t __cdecl stk::cpu::rdtscp(uint32_t *a_chip, uint32_t *a_core)
 {
-uint32_t HI, LO, CC;
+uint64_t ret;
+uint32_t ret_hi, ret_lo, ret_cc;
+// 32 bit parts of return value
+// TODO: return ret 64bit as 32 bit parts union
 #if defined(__GNUC__) || defined(__CLANG__)
-asm volatile("rdtscp" : "=a" (LO), "=d" (HI), "=c" (CC));
-#elif defined(_MSC_VER)
+    asm volatile("rdtscp" : "=a" (ret_lo), "=d" (ret_hi), "=c" (ret_cc));
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
     __asm {
         rdtscp;
-        mov [LO], eax;
-        mov [HI], edx;
-        mov [CC], ecx;
+        mov [ret_lo], eax;
+        mov [ret_hi], edx;
+        mov [ret_cc], ecx;
     }
 #else
-
-// Other compiler ERROR!
-
+    #error "Your compiler is not supported"
+    // TODO: Watcom, Peles C
+    return 0;
 #endif
-if (a_chip!=NULL) *a_chip = (CC & 0x00FFF000)>>12;
-if (a_core!=NULL) *a_core =  CC & 0x00000FFF;
-    register uint64_t r = HI;
-    r = r << 32;
-    r = r  | LO;
-    return r; //( (unsigned long long)lo)|( ((unsigned long long)hi)<<32 );
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
+if (a_chip!=NULL)
+   *a_chip = (ret_cc & 0x00FFF000)>>12;
+if (a_core!=NULL)
+   *a_core =  ret_cc & 0x00000FFF;
+ ret = ret_hi;
+ ret = ret << 32;
+ ret = ret  | ret_lo;
+return ret; //( (unsigned long long)ret_lo)|( ((unsigned long long)ret_hi)<<32 );
 }
-#endif
+#endif // endif !WATCOM entire function
 //---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::rdtsc(void)
 {
-uint32_t HI, LO;
+uint64_t ret;
+uint32_t ret_lo, ret_hi;
+// 32 bit parts of return value
+// TODO: return ret 64bit as 32 bit parts union
 #if defined(__GNUC__) || defined(__CLANG__)
-    asm volatile ("rdtsc" : "=a"(LO), "=d"(HI));
+
+    #if defined(__x86_64__) || defined(_WIN64) || defined(__i386)
+    /*
+     * cpuid -> ret_lo=EAX, ret_hu=EDX either on 64 and 32 bit CPU
+     */
+        asm volatile ("rdtsc" : "=a"(ret_lo), "=d"(ret_hi));
+    #elif defined(__ARM__)
+    /*
+     * According to ARM DDI 0487F.c, from Armv8.0 to Armv8.5 inclusive, the
+     * system counter is at least 56 bits wide; from Armv8.6, the counter
+     * must be 64 bits wide.  So the system counter could be less than 64
+     * bits wide and it is attributed with the flag 'cap_user_time_short'
+     * is true.
+     */
+        asm volatile("mrs %0, cntvct_el0" : "=r" (ret));
+        return ret;
+    #else
+        #error "Processor other than x86,x64 or ARM is not supporter YET"
+        return 0;
+    #endif
+
 #elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+
     __asm {
         rdtsc;
-        mov [LO], eax;
-        mov [HI], edx;
+        mov [ret_lo], eax;
+        mov [ret_hi], edx;
     }
+
+#elif defined(__WATCOMC__) // RDTSCP is not supported by older compilers but do exist on 32bit as well
+
+    #error "WATCOM1 compiler is not supported"
+    // TODO: Watcom 1
+
+#else
+
+    #error "Your compiler is not supported"
+    // TODO: OPEN Watcom, Peles C
+    return 0;
+
 #endif
-    register uint64_t r = HI;
-    r = r << 32;
-    r = r  | LO;
-    return r; //( (unsigned long long)lo)|( ((unsigned long long)hi)<<32 );
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
+ ret = ret_hi;
+ ret = ret << 32;
+ ret = ret  | ret_lo;
+return ret; //( (unsigned long long)ret_lo)|( ((unsigned long long)ret_hi)<<32 );
 }
 //---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::rdtscex(void)
 {
-#if defined(__ARM__) && (defined (__GNUC__) || defined(__CLANG__))
-uint32_t r;
-    asm volatile ("mcr p15, 0, %0, c15,  c9, 0\n" : : "r" (1));
-    asm volatile ("mrc p15, 0, %0, c15, c12, 1" : "=r" (r));
-  return r;
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
-uint32_t LO, HI;
-    __asm {
-    pushfd;
-        push eax;
-        push ebx;
-        push ecx;
-        push edx;
-        push esi;
-        mov eax,0x00000001;
-        xor ecx,ecx;
-        cpuid;
-        mov ecx,0x00000001;
-        shl ecx,27;
-        and ecx,edx;
-        xor eax,eax;
-        xor edx,edx;
+uint64_t ret;
+uint32_t ret_lo, ret_hi;
+// 32 bit parts of return value
+// TODO: return ret 64bit as 32 bit parts union
+#if defined(__GNUC__) || defined(__CLANG__)
 
-       test ecx,ecx;
+    #if defined(__x86_64__) || defined(_WIN64)
+    ATOMIC(1)
+    ATOMIC_LOCK(1)
+    __stasm(rax,rbx,rcx,rdx,rsi,rdi,
+    code,
+        pushfq;
+        push rax;
+        push rbx;
+        push rcx;
+        push rdx;
+        push rsi;
+
+        mov rax,0x00000001;
+        xor rcx,rcx;
+        cpuid;
+        mov rcx,0x00000001;
+        shl rcx,27;
+        and rcx,rdx;
+        xor rax,rax;
+        xor rdx,rdx;
+
+       test rcx,rcx;
          jz tsc_exit;
-        mov eax,1;
+        mov rax,1;
         cpuid;
         jmp tsc_intel_measure;
-        // AMD & other specific version
+        tsc_amd_measure:\n
         sfence;
         rdtsc;
 
-        tsc_intel_measure:
+        tsc_intel_measure:\n
         sfence;
         rdtsc;
 
-        tsc_exit:
-        mov [LO],eax;
-        mov [HI],edx;
-        pop esi;
-        pop edx;
-        pop ecx;
-        pop ebx;
-        pop eax;
-        popfd;
-    }
-    uint64_t r = HI;
-    r = r << 32;
-    r = r  | LO;
-    return r;
+        tsc_exit:\n
+        mov rdi,__stasm_x86;
+        mov [rdi+0],rax;
+        mov [rdi+4],rdx;
 
-#elif defined(__GNUC__) || defined(__CLANG__)
-ATOMIC(1)
-ATOMIC_LOCK(1)
-uint32_t LO, HI;
+        pop rsi;
+        pop rdx;
+        pop rcx;
+        pop rbx;
+        pop rax;
+        popfq;
+    )
+     ret = (uint64_t)__stasm_x86[1];
+     ret = ret << 32;
+     ret = ret  | (uint64_t)__stasm_x86[0];
+    ATOMIC_UNLOCK(1)
+    return ret;
+    #elif defined(__i386__)
+    ATOMIC(1)
+    ATOMIC_LOCK(1)
     __stasm(eax,ebx,ecx,edx,esi,edi,
     code,
         pushfd;
@@ -162,15 +213,84 @@ uint32_t LO, HI;
         pop eax;
         popfd;
     )
-    uint64_t r = (uint64_t)__stasm_x86[1];
-    r = r << 32;
-    r = r  | (uint64_t)__stasm_x86[0];
+    ret = (uint64_t)__stasm_x86[1];
+    ret = ret << 32;
+    ret = ret  | (uint64_t)__stasm_x86[0];
     ATOMIC_UNLOCK(1)
-    return r;
+    return ret;
+    #elif defined(__ARM__)
+        ATOMIC(1)
+        ATOMIC_LOCK(1)
+        uint32_t ret;
+        asm volatile ("mcr p15, 0, %0, c15,  c9, 0\n" : : "r" (1));
+        asm volatile ("mrc p15, 0, %0, c15, c12, 1" : "=r" (ret));
+        ATOMIC_UNLOCK(1)
+        return ret;
+    #else
+        #error "Processor is defined ARM but compilers other than GNU/CLANG are not supported"
+        return 0;
+    #endif
+
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+
+    ATOMIC(1)
+    ATOMIC_LOCK(1)
+    __asm {
+        pushfd;
+        push eax;
+        push ebx;
+        push ecx;
+        push edx;
+        push esi;
+        mov eax,0x00000001;
+        xor ecx,ecx;
+        cpuid;
+        mov ecx,0x00000001;
+        shl ecx,27;
+        and ecx,edx;
+        xor eax,eax;
+        xor edx,edx;
+
+       test ecx,ecx;
+         jz tsc_exit;
+        mov eax,1;
+        cpuid;
+        jmp tsc_intel_measure;
+        // AMD & other specific version
+        sfence;
+        rdtsc;
+
+        tsc_intel_measure:
+        sfence;
+        rdtsc;
+
+        tsc_exit:
+        mov [ret_lo],eax;
+        mov [ret_hi],edx;
+        pop esi;
+        pop edx;
+        pop ecx;
+        pop ebx;
+        pop eax;
+        popfd;
+    }
+    ret = ret_hi;
+    ret = ret << 32;
+    ret = ret  | ret_lo;
+    ATOMIC_UNLOCK(1)
+    return ret;
+
 #else
-        // OpenWatcom, Peles C
+
+    #error "Your compiler is not supported"
+    // TODO: Watcom, Peles C
     return 0;
+
 #endif
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
+return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -184,9 +304,9 @@ ATOMIC_LOCK(1)
     m1 = tsc_checkpoint();
     if (m1 > m0)
     tsc_ADJ = m1 - m0;
-register uint64_t r = tsc_ADJ;
+register uint64_t ret = tsc_ADJ;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
@@ -194,12 +314,12 @@ uint64_t __cdecl stk::cpu::tsc_start(void)
 {
 ATOMIC(1)
 ATOMIC_LOCK(1)
-    register uint64_t r = stk::cpu::rdtsc();
-    tsc_STARTED = r;
-    tsc_LAST_MEASURED = r;
+    register uint64_t ret = stk::cpu::rdtsc();
+    tsc_STARTED = ret;
+    tsc_LAST_MEASURED = ret;
     tsc_PAUSED = 0; tsc_ELAPSED = 0;
 ATOMIC_UNLOCK(1)
-    return r;
+    return ret;
 }
 //---------------------------------------------------------------------------
 
@@ -272,6 +392,8 @@ ATOMIC_UNLOCK(1)
 uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_ecx, uint32_t* a_edx,uint32_t a_feature,uint32_t a_feature_ecx)
 {
 #if defined(__GNUC__) || defined(__CLANG__)
+
+    #if defined(__x86_64__) || defined(_WIN64) ||  defined(__i386__)
     __asm__ __volatile__ (
     "movl %0, %%eax\n"
     "movl %1, %%ecx\n"
@@ -281,8 +403,18 @@ uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_e
     "mov %%eax, %2\n"
     "mov %%eax, %3\n"
      : "=m"(a_eax), "=m"(a_ebx), "=m"(a_ecx), "=m"(a_edx) : "m" (a_feature), "m" (a_feature_ecx) : "eax", "ebx", "ecx", "edx", "memory");
-#elif defined(__BORLANDC_) || defined(_MSC_VER)
-__asm {
+    #elif defined(__ARM__)
+        uint32_t ret;
+        asm("mrs %0, " s : "=r" (ret));
+        return ret;
+    #else
+        #error "Processor is defined ARM but compilers other than GNU/CLANG are not supported"
+        return 0;
+    #endif
+// end of GNU compiler section
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+
+   __asm {
         mov eax,a_feature;
         mov ecx,a_feature_ecx;
         and eax,0x80000000;
@@ -296,14 +428,22 @@ __asm {
         mov ESI,a_edx
         mov [ESI],edx
     }
+
+#else
+
+    #error "Your compiler is not supported"
+    // TODO: Watcom, Peles C
+    return 0;
+
 #endif
-register uint32_t r = a_eax[0];
-return r;
+register uint32_t ret = a_eax[0];
+return ret;
 }
 //---------------------------------------------------------------------------
 
 uint32_t __cdecl stk::cpu::cpuidex(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_ecx, uint32_t *a_edx,uint32_t a_feature,uint32_t a_feature_ecx)
 {
+// TODO: 64 bit section is unfinished! changed only popfd pushfd but not return values
 static uint32_t cached_eax asm("cached_eax") = 0;
 static uint32_t cached_ebx asm("cached_ebx") = 0;
 static uint32_t cached_ecx asm("cached_ecx") = 0;
@@ -317,17 +457,157 @@ if (a_feature==previous_feature && a_feature_ecx==previous_feature_ecx) {
     *a_ebx = cached_ebx;
     *a_ecx = cached_ecx;
     *a_edx = cached_edx;
-    register uint32_t r = cached_eax;
+    register uint32_t ret = cached_eax;
     ATOMIC_UNLOCK(1)
-    return   r;
+    return   ret;
 }
 else {
 previous_feature = a_feature;
 previous_feature_ecx = a_feature_ecx;
 }
 //-----------------------------
-#if (__BORLANDC__ > 0x551) || defined(_MSC_VER)
-__asm {
+#if defined(__GNUC__) || defined(__CLANG__)
+
+    #if defined(__x86_64__)
+    __stasm_x86[0]        = a_feature;
+    __stasm_x86[5]        = a_feature_ecx;
+    __stasm(rax,rbx,rcx,rdx,rsi,rdi,var_o,"=m",cached_eax,code,
+        pushfq\n
+        push rax\n
+        push rbx\n
+        push rcx\n
+        push rdx\n
+        push rsi\n
+        push rdi\n
+        mov rdi,__stasm_x86[0]\n
+        mov eax,dword ptr[rdi+0*4]\n
+        and eax,0x80000000\n
+        cpuid\n
+        mov rsi,rax\n
+        xor rax,rax\n
+        xor rbx,rbx\n
+        xor rcx,rcx\n
+        xor rdx,rdx\n
+        cmp esi,dword ptr[rdi+0*4]\n
+        jb cpuid_save_result\n
+        mov eax,dword ptr[rdi+0*4]\n
+        mov ecx,dword ptr[rdi+5*4]\n
+        cpuid\n
+        cpuid_save_result:\n
+        mov dword ptr[rdi+1*4],eax\n
+        mov dword ptr[rdi+2*4],ebx\n
+        mov dword ptr[rdi+3*4],ecx\n
+        mov dword ptr[rdi+4*4],edx\n
+        pop rdi\n
+        pop rsi\n
+        pop rdx\n
+        pop rcx\n
+        pop rbx\n
+        pop rax\n
+        popfq\n
+    )
+    // return gathered values section GNU 64 bit version
+    cached_eax = __stasm_x86[1];
+        *a_eax = cached_eax;
+    cached_ebx = __stasm_x86[2];
+        *a_ebx = cached_ebx;
+    cached_ecx = __stasm_x86[3];
+        *a_ecx = cached_ecx;
+    cached_edx = __stasm_x86[4];
+        *a_edx = cached_edx;
+    #elif defined(__i386__)
+    __stasm_x86[0]        = a_feature;
+    __stasm_x86[5]        = a_feature_ecx;
+    __stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
+        pushfd\n
+        push eax\n
+        push ebx\n
+        push ecx\n
+        push edx\n
+        push esi\n
+        push edi\n
+        mov edi,__stasm_x86[0]\n
+        mov eax,dword ptr[edi+0*4]\n
+        and eax,0x80000000\n
+        cpuid\n
+        mov esi,eax\n
+        xor eax,eax\n
+        xor ebx,ebx\n
+        xor ecx,ecx\n
+        xor edx,edx\n
+        cmp esi,dword ptr[edi+0*4]\n
+        jb cpuid_save_result%=\n
+        mov eax,dword ptr[edi+0*4]\n
+        mov ecx,dword ptr[edi+5*4]\n
+        cpuid\n
+        cpuid_save_result%=:\n
+        mov dword ptr[edi+1*4],eax\n
+        mov dword ptr[edi+2*4],ebx\n
+        mov dword ptr[edi+3*4],ecx\n
+        mov dword ptr[edi+4*4],edx\n
+        pop edi\n
+        pop esi\n
+        pop edx\n
+        pop ecx\n
+        pop ebx\n
+        pop eax\n
+        popfd\n
+        )
+        // return gathered values section GNU 32 bit version
+        cached_eax = __stasm_x86[1];
+        *a_eax = cached_eax;
+        cached_ebx = __stasm_x86[2];
+        *a_ebx = cached_ebx;
+        cached_ecx = __stasm_x86[3];
+        *a_ecx = cached_ecx;
+        cached_edx = __stasm_x86[4];
+        *a_edx = cached_edx;
+    #else
+        #error "Your processor is not x86, nor ARM and its not YET supported"
+        return 0;
+    #endif
+
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+
+    #if defined(__x86_64__)
+    __asm {
+        pushfq
+        push rax;
+        push rbx;
+        push rcx;
+        push rdx;
+        push rsi;
+        push rdi;
+        mov edi,a_feature;
+        mov eax,edi;
+        and eax,0x80000000;
+        cpuid;
+        mov        esi,eax;
+        xor        eax,eax;
+        xor        ebx,ebx;
+        xor        ecx,ecx;
+        xor        edx,edx;
+        cmp        esi,edi;
+        jb  cpuid_save_result;
+        mov        eax,edi;
+        mov        edi,a_feature_ecx;
+        mov        ecx,edi;
+        cpuid;
+        cpuid_save_result:
+        mov cached_eax,eax;
+        mov cached_ebx,ebx;
+        mov cached_ecx,ecx;
+        mov cached_edx,edx;
+        pop rdi;
+        pop rsi;
+        pop rdx;
+        pop rcx;
+        pop rbx;
+        pop rax;
+        popfq
+    }
+    #elif defined(__i386__)
+    __asm {
         pushfd
         push eax;
         push ebx;
@@ -335,9 +615,9 @@ __asm {
         push edx;
         push esi;
         push edi;
-    mov edi,a_feature;
-    mov eax,edi;
-    and eax,0x80000000;
+        mov edi,a_feature;
+        mov eax,edi;
+        and eax,0x80000000;
 cpuid;
      mov        esi,eax;
      xor        eax,eax;
@@ -363,109 +643,43 @@ cpuid;
         pop eax;
         popfd
   }
-*a_eax = cached_eax;
-*a_ebx = cached_ebx;
-*a_ecx = cached_ecx;
-*a_edx = cached_edx;
-#elif defined(__GNUC__) || defined(__CLANG__)
-__stasm_x86[0]        = a_feature;
-__stasm_x86[5]        = a_feature_ecx;
-
-#ifdef __x86_64__
-__stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
-    pushfd\n
-        push rax\n
-        push rbx\n
-        push rcx\n
-        push rdx\n
-        push rsi\n
-        push rdi\n
-    mov edi,__stasm_x86[0]\n
-    mov eax,dword ptr[edi+0*4]\n
-    and eax,0x80000000\n
-cpuid\n
-    mov rsi,rax\n
-    xor rax,rax\n
-    xor rbx,rbx\n
-    xor rcx,rcx\n
-    xor rdx,rdx\n
-    cmp esi,dword ptr[edi+0*4]\n
-    jb cpuid_save_result\n
-    mov eax,dword ptr[edi+0*4]\n
-    mov ecx,dword ptr[edi+5*4]\n
-cpuid\n
-    cpuid_save_result:\n
-    mov dword ptr[edi+1*4],eax\n
-    mov dword ptr[edi+2*4],ebx\n
-    mov dword ptr[edi+3*4],ecx\n
-    mov dword ptr[edi+4*4],edx\n
-        pop rdi\n
-        pop rsi\n
-        pop rdx\n
-        pop rcx\n
-        pop rbx\n
-        pop rax\n
-    popfd\n
-    )
-
-__stasm(eax,ebx,ecx,edx,esi,edi,var_o,"=m",cached_eax,code,
-    pushfd\n
-        push eax\n
-        push ebx\n
-        push ecx\n
-        push edx\n
-        push esi\n
-        push edi\n
-    mov edi,__stasm_x86[0]\n
-    mov eax,dword ptr[edi+0*4]\n
-    and eax,0x80000000\n
-cpuid\n
-    mov esi,eax\n
-    xor eax,eax\n
-    xor ebx,ebx\n
-    xor ecx,ecx\n
-    xor edx,edx\n
-    cmp esi,dword ptr[edi+0*4]\n
-    jb cpuid_save_result%=\n
-    mov eax,dword ptr[edi+0*4]\n
-    mov ecx,dword ptr[edi+5*4]\n
-cpuid\n
-    cpuid_save_result%=:\n
-    mov dword ptr[edi+1*4],eax\n
-    mov dword ptr[edi+2*4],ebx\n
-    mov dword ptr[edi+3*4],ecx\n
-    mov dword ptr[edi+4*4],edx\n
-        pop edi\n
-        pop esi\n
-        pop edx\n
-        pop ecx\n
-        pop ebx\n
-        pop eax\n
-    popfd\n
-    )
-#endif
-
-cached_eax = __stasm_x86[1];
+    #else
+    #error "Your processor is not x86, nor ARM and its not YET supported by Borland compiler"
+    return 0;
+    #endif
+    // return gathered values section Borland, Microsoft version
     *a_eax = cached_eax;
-cached_ebx = __stasm_x86[2];
     *a_ebx = cached_ebx;
-cached_ecx = __stasm_x86[3];
     *a_ecx = cached_ecx;
-cached_edx = __stasm_x86[4];
     *a_edx = cached_edx;
-
+    // end of Borland, Visual Studio compiler section
 #else
-//MS Visual Studio, OpenWatcom, PelesC
+    #if defined(__x86_64__)
+        // 64 bit Intel, AMD CPUs
+    #elif defined(__i386__)
+        // 32 bit x86
+    #else
+        // ARM, MIPS and other processors
+        #error "Your processor is not x86, nor ARM and its not YET supported"
+    #endif
+    #error "Regardless of architecture, Your compiler is also not YET supported"
+    // TODO: Watcom, Peles C
+    return 0;
 #endif
 //-----------------------------
-register uint32_t r = a_eax[0];
+// common to all compilers and architectures section
+//-----------------------------
+register uint32_t ret = a_eax[0];
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 char *__cdecl stk::cpu::cpu_vendor(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t v[4] = { 0,0,0,0 };
 ATOMIC(1)
 ATOMIC_LOCK(1)
@@ -480,6 +694,9 @@ return (char*)&v;
 
 char *__cdecl stk::cpu::cpu_name(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t n[13] = { 0,0,0,0,0,0,0,0,0,0,0,0 };
 if (n[0]!=0)
     return (char*)&n;
@@ -503,6 +720,9 @@ return  (char*)&n;
 
 uint32_t __cdecl stk::cpu::cpu_num_threads()
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -513,14 +733,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = ((f_ebx >> 16) & 0x000000FFL) + 1; // ebx[23:16]
-register uint32_t r = s_answer;
+register uint32_t ret = s_answer;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 uint32_t __cdecl stk::cpu::cpu_num_cores()
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -542,13 +765,16 @@ if (stk::mem::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
     // ecx[7:0] + 1
 }
 else   s_answer = cpu_num_threads();
-register uint32_t r = s_answer;
+register uint32_t ret = s_answer;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 //-----------------------------
 }
 uint32_t __cdecl stk::cpu::cpu_cache_size(uint8_t a_level)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -606,14 +832,17 @@ if (stk::mem::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
     s_answer =((f_edx>>18) & 0x00003FFFL) * 512;
     }
 }
-register uint32_t r = s_answer;
+register uint32_t ret = s_answer;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 uint32_t __cdecl stk::cpu::cpu_cache_line_size(uint8_t a_level)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -644,15 +873,18 @@ if (a_level==3) {
     s_answer = f_edx & 0x000000FFL;
     }
 }
-register uint32_t r = s_answer;
+register uint32_t ret = s_answer;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 //-----------------------------
 }
 //---------------------------------------------------------------------------
 
 uint32_t __cdecl stk::cpu::cpu_num_mhz(bool a_constant_update)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0;
 if (s_answer!=0 && a_constant_update==false)
     return s_answer;
@@ -668,7 +900,7 @@ ATOMIC_LOCK(1)
     register uint32_t i;
 
         uint64_t t,t1,t2,t3,t4;
-        register uint64_t r;
+        register uint64_t ret;
     register uint64_t rcor;
     for (i = 0; i < TIMES;i++) {
         stk::cpu::tsc_init(); //heat up CPU?
@@ -685,25 +917,25 @@ ATOMIC_LOCK(1)
         do {t4 = stk::time::time_ms();  // SYNC to clock-tick interval
         } while (t4<=t3);
         stk::cpu::tsc_checkpoint();
-        r = (uint64_t)stk::cpu::tsc_elapsed();
+        ret = (uint64_t)stk::cpu::tsc_elapsed();
         t = t4 - t2;
-        r = r - rcor;
-        r = r * 1000;
-        if (t!=0) r = r / t;
-           else r =0;
-        x[i]  =r;
+        ret = ret - rcor;
+        ret = ret * 1000;
+        if (t!=0) ret = ret / t;
+           else ret =0;
+        x[i]  =ret;
     }
     for (xmax = x[0], xmin = x[0], imin=0, imax=0, i = 0; i < TIMES; i++) {
          if (x[i] > xmax) {xmax = x[i];imax=i;}
          if (x[i] < xmin) {xmin = x[i];imin=i;}
     }
-    for (r = 0, i = 0; i < TIMES;i++) { if (i!=imin && i!=imax) r = r + x[i];
+    for (ret = 0, i = 0; i < TIMES;i++) { if (i!=imin && i!=imax) ret = ret + x[i];
     }
-r = (r / (TIMES-2)) / 1000000;
-s_answer = (uint32_t)r;
+ret = (ret / (TIMES-2)) / 1000000;
+s_answer = (uint32_t)ret;
 //-----------------------------
 ATOMIC_UNLOCK(1)
-return (uint32_t)r;
+return (uint32_t)ret;
 }
 //---------------------------------------------------------------------------
 
@@ -711,6 +943,9 @@ return (uint32_t)r;
 
 bool __cdecl stk::cpu::cpu_has_x87(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -742,6 +977,9 @@ return 0;
 
 bool __cdecl stk::cpu::cpu_has_mmx(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -752,14 +990,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<23);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_mmxext(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -776,14 +1017,17 @@ return 1;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<25); //Intel z SSE == MMX-ext
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_amd64(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -794,14 +1038,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<29);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_ht(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -812,14 +1059,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<28);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 uint32_t __cdecl stk::cpu::cpu_has_sse(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -848,14 +1098,17 @@ if (f_edx & (1<<25))
 s_answer = 10;
 else
 s_answer = 0;
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_sse4a(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -866,14 +1119,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<6);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 uint32_t __cdecl stk::cpu::cpu_has_avx(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -893,14 +1149,17 @@ s_answer = 1;
 else {
 s_answer = 0;
 }
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_popcnt(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -911,14 +1170,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<23);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_f16c(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -929,14 +1191,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<29);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 uint32_t __cdecl stk::cpu::cpu_has_cmpxchg(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -973,6 +1238,9 @@ return 1;
 
 bool __cdecl stk::cpu::cpu_has_vmx(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -983,14 +1251,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<5);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_smx(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1001,14 +1272,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<6);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_cmov(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1019,14 +1293,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<15);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_movbe(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1037,14 +1314,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<22);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 uint32_t __cdecl stk::cpu::cpu_has_bmi(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -1061,14 +1341,17 @@ if (f_ebx & (1<<3))
 s_answer = 1;
 else
 s_answer = 0;
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_erms(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1079,14 +1362,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<9);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 uint32_t __cdecl stk::cpu::cpu_has_3dnow(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -1103,14 +1389,17 @@ if (f_edx & (1<<31))
 s_answer = 1;
 else
 s_answer = 0;
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_3dnowprefetch(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1121,14 +1410,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<8);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_perftsc(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1139,14 +1431,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<27);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_sha(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1157,14 +1452,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<29);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_xop(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1175,14 +1473,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<11);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_avx512f(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1193,14 +1494,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<16);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_avx512bw(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1211,14 +1515,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<30);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_avx512er(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1229,14 +1536,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<27);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_avx512cd(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1247,14 +1557,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<28);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_avx512pf(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1265,14 +1578,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<26);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_avx512dq(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1283,14 +1599,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<17);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_avx512vl(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1301,14 +1620,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<31);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_avx512ifma(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1319,14 +1641,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<21);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_avx512vbmi(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1337,14 +1662,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<1);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_adx(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1355,14 +1683,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<19);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_lzcnt(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1373,14 +1704,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<5);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_tbm(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1391,14 +1725,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<21);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_clfsh(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1409,14 +1746,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<19);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_pclmulqdq(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1427,14 +1767,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<5);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_fxsr(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1445,14 +1788,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<24);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_ss(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1463,14 +1809,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<27);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_mtrr(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1481,14 +1830,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<12);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_msr(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1499,14 +1851,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<12);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_tsc(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1517,14 +1872,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<4);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_psn(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1535,14 +1893,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<18);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_xsave(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1553,14 +1914,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = ((f_ecx & (1<<26))>>26) & ((f_ecx & (1<<27))>>27);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_clmul(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1571,14 +1935,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<2);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 uint32_t *__cdecl stk::cpu::cpu_psn(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 static uint32_t sn[3] = { 0,0,0 };
 if (s_answer!=0xFFFFFFFFL)
@@ -1607,6 +1974,9 @@ return sn;
 
 uint32_t __cdecl stk::cpu::cpu_has_fma(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer;
@@ -1626,14 +1996,17 @@ s_answer = 3;
 else {
 s_answer = 0;
 }
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_aes(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1644,14 +2017,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<25);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_viaaes(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1662,14 +2038,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0xC0000001,0);
 //-----------------------------
 s_answer = f_edx & (1<<7);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_viarng(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1680,14 +2059,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0xC0000001,0);
 //-----------------------------
 s_answer = f_edx & (1<<3);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_viahash(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1698,14 +2080,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0xC0000001,0);
 //-----------------------------
 s_answer = f_edx & (1<<11);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_rdseed(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1716,14 +2101,17 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
 //-----------------------------
 s_answer = f_ebx & (1<<18);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 //---------------------------------------------------------------------------
 
 bool __cdecl stk::cpu::cpu_has_rdrand(void)
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 static uint32_t s_answer = 0xFFFFFFFFL;
 if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
@@ -1734,9 +2122,9 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
 s_answer = f_ecx & (1<<30);
-register bool r = s_answer!=0;
+register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return r;
+return ret;
 }
 #endif
 //---------------------------------------------------------------------------
@@ -1744,11 +2132,14 @@ return r;
 #define PRINT_CPUVENDOR(val) stk::con::prints("Vendor \"%s\"\n",val);
 #define PRINT_CPUNAME(val) stk::con::prints("Processor name \"%s\"\n",val);
 #define PRINT_CPUCURRENTMHZ(val) stk::con::prints("CPU Core Clock is %dMhz\n",val);
-#define PRINT_CPUID(val) r = val; if (r!=0) stk::con::prints("[SUPPORTED=%02d]%-10s%s\n",r," ",#val); else stk::con::prints("NOT%21s%s\n"," ",#val);
+#define PRINT_CPUID(val) ret = val; if (ret!=0) stk::con::prints("[SUPPORTED=%02d]%-10s%s\n",ret," ",#val); else stk::con::prints("NOT%21s%s\n"," ",#val);
 
 void __cdecl stk::cpu::cpu_print_info()
 {
-    int r;
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
+    uint32_t ret;
     PRINT_CPUVENDOR(stk::cpu::cpu_vendor());
     PRINT_CPUNAME(stk::cpu::cpu_name());
     PRINT_CPUCURRENTMHZ(stk::cpu::cpu_num_mhz(true));
@@ -1806,10 +2197,14 @@ void __cdecl stk::cpu::cpu_print_info()
     PRINT_CPUID(stk::cpu::cpu_has_vmx());
 #endif
 }
+//---------------------------------------------------------------------------
+
 void __cdecl stk::cpu::cpu_test()
 {
+//-----------------------------
+// common to all compilers and architectures section
+//-----------------------------
 cpu_print_info();
 }
 
 //---------------------------------------------------------------------------
-

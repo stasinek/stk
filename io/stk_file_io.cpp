@@ -17,7 +17,7 @@ HANDLE WINAPI stk::file::create(
 #ifdef __DEBUG_FILE_IO_
 __DEBUG_CALLED("")
 #endif
-return CreateFileA(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
+return ::CreateFileA(lpFileName,dwDesiredAccess,dwShareMode,lpSecurityAttributes,dwCreationDisposition,dwFlagsAndAttributes,hTemplateFile);
 }
 //---------------------------------------------------------------------------
 

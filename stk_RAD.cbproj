@@ -138,7 +138,7 @@
         <ILINK_KeepOutputFiles>true</ILINK_KeepOutputFiles>
         <BCC_VCCompatibility>true</BCC_VCCompatibility>
         <BCC_BackwardCompatibility>true</BCC_BackwardCompatibility>
-        <BPILibOutputDir>D:\stasiek\My Projects\X86_LIBRARIES\STK\</BPILibOutputDir>
+        <BPILibOutputDir>C:\SRC\X86_LIBRARIES\STK\</BPILibOutputDir>
         <Manifest_File>(None)</Manifest_File>
         <BCC_OldBorlandClassLayout>true</BCC_OldBorlandClassLayout>
         <BCC_PCHCache>true</BCC_PCHCache>
@@ -338,6 +338,16 @@
                     <ProjectProperties Name="VerifyPackages">True</ProjectProperties>
                     <ProjectProperties Name="IndexFiles">False</ProjectProperties>
                 </ProjectProperties>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\18.0\bpl\EssentialsCD240.bpl">TurboPack Essentials CBuilder Designtime package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\18.0\bpl\AsyncProCD240.bpl">TurboPack Async Professional CBuilder Designtime Package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\18.0\bpl\AbbreviaVCLCDesign240.bpl">TurboPack Abbrevia VCL Designtime CBuilder package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\18.0\bpl\LockBoxVCLCD240.bpl">TurboPack LockBox CBuilder VCL designtime package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\18.0\bpl\PngComponentsCDesign240.bpl">Png Components for CBuilder designtime</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\18.0\bpl\SynEditCD240.bpl">TurboPack SynEdit CBuilder designtime package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\18.0\bpl\OnGuardCD230.bpl">TurboPack OnGuard CBuilder Designtime package</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\18.0\bpl\LockBox3CD.bpl">TurboPack LockBox 3 CBuilder runtime package</Excluded_Packages>
+                </Excluded_Packages>
             </CPlusPlusBuilder.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>

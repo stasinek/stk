@@ -25,7 +25,7 @@ void __stdcall stk::con::set_console_handlers(char (__stdcall *a_getch_event_han
 
 char __stdcall stk::con::stdinp_handler(void)
 {
-    return (char)fgetc(stdin);
+    return (char)::fgetc(stdin);
 }
 //---------------------------------------------------------------------------
 

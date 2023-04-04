@@ -7,12 +7,18 @@
 //---------------------------------------------------------------------------
 namespace stk { namespace cpu {
 //---------------------------------------------------------------------------
+/*EAX 1, ->EAX 0-3	Stepping number
+4-7	Model number
+8-11	Family number
+12-13	Processor Type
+16-19	Extended Model Number
+20-27	Extended Family Number*/
 extern uint32_t  __cdecl    cpuid(uint32_t *a_eax,uint32_t *a_ebx,uint32_t *a_ecx,uint32_t* a_edx,uint32_t a_feature,uint32_t a_feature_ecx);
 extern uint32_t	 __cdecl	cpuidex(uint32_t *a_eax,uint32_t *a_ebx,uint32_t *a_ecx,uint32_t *a_adx,uint32_t a_feature,uint32_t a_feature_ecx);
 extern void		 __cdecl	cpu_print_info(void);
 extern void		 __cdecl	cpu_test(void);
 //---------------------------------------------------------------------------
-extern char		*__cdecl    	cpu_vendor(void);
+extern char		*__cdecl    cpu_vendor(void);
 extern char		*__cdecl    cpu_name(void);
 extern uint32_t  __cdecl	cpu_num_cores(void);
 extern uint32_t  __cdecl	cpu_num_threads(void);
@@ -75,23 +81,17 @@ extern bool 	 __cdecl	cpu_has_ht(void);
 extern bool		 __cdecl	cpu_has_psn(void);
 #endif
 //---------------------------------------------------------------------------
-/*EAX 1, ->EAX 0-3	Stepping number
-4-7	Model number
-8-11	Family number
-12-13	Processor Type
-16-19	Extended Model Number
-20-27	Extended Family Number*/
-//---------------------------------------------------------------------------
-#if !defined(__BORLANDC__) && !defined(__WATCOMC__)
-extern uint64_t  __cdecl    rdtscp(uint32_t *a_chip, uint32_t *a_core);
-#endif
 extern uint64_t  __cdecl    rdtsc(void);
 extern uint64_t	 __cdecl	rdtscex(void);
 //---------------------------------------------------------------------------
+#if !defined(__BORLANDC__) && !defined(__WATCOMC__) //RDTSCP is not supported by these older compilers
+extern uint64_t  __cdecl    rdtscp(uint32_t *a_chip, uint32_t *a_core);
+#endif
+//---------------------------------------------------------------------------
 extern uint64_t  __cdecl	tsc_init(void);
 extern uint64_t	 __cdecl	tsc_start(void);
-extern uint64_t  __cdecl	tsc_pause(void);
 extern uint64_t  __cdecl	tsc_start_paused(void);
+extern uint64_t  __cdecl	tsc_pause(void);
 extern uint64_t  __cdecl	tsc_resume(void);
 extern uint64_t  __cdecl	tsc_checkpoint(void);
 extern uint64_t  __cdecl	tsc_elapsed(void);

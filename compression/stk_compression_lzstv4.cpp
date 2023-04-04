@@ -394,6 +394,7 @@ __DEBUG_CALLED("")
                 register int8_t cur_els_max = 0;
 //------------------------------------------
 // calculate optimal (biggest) RLE element size
+
                 if (*((int32_t*)cur_ref)==*((int32_t*)(cur_ref+4))) {
                                 if (cur_els_max==0)
                                         {
@@ -442,6 +443,7 @@ __DEBUG_CALLED("")
                 register char  *cur_ptr_end;
                 if (backward_max_len < PATTERN_LEN_MAX) cur_ptr_end = cur_ref + backward_max_len;
                 else cur_ptr_end = cur_ref + PATTERN_LEN_MAX;
+
                 if (cur_els_max>=4 ? cur_els<=4 : false)
                                 while (cur_ptr <= cur_ptr_end -4) {
                                                 if (((int32_t*)cur_ref)[0]!=((int32_t*)cur_ptr)[0])
