@@ -200,7 +200,7 @@ void    __stdcall stk::__database_items::set_pointer(const uint32_t a_index_S, c
 __DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_DATABASE_ITEMS__
-stk::con::prints("__database_items::set_pointer(a_index_S:%d,a_column_Y:%d,a_pointer:%d)",a_index_S,a_column_Y,(uint32_t)a_pointer);
+stk::con::prints("__database_items::set_pointer(a_index_S:%d,a_column_Y:%d,a_pointer:%016llx)",a_index_S,a_column_Y,(uint64_t)a_pointer);
 stk::con::print("\r\n\r\n");
 #endif
         f_atom_matrix[a_index_S]->pointer[a_column_Y] = a_pointer;

@@ -187,13 +187,13 @@ Loop (for all the bytes in input)
 then in the end
 Crc_value = Crc_value XOR 0xFFFFFFFFL
 */
-uint32_t __stdcall stk::hash::crc32::calc_CRC32(const void *a_src_ptr,const uint32_t a_count)
+uint32_t __stdcall stk::hash::crc32::calc_CRC32(const void *a_src_ptr, const uint32_t a_count)
 {
-return calc_CRC32(a_src_ptr,a_count,0);
+return calc_CRC32_next(a_src_ptr,a_count,0);
 }
 //---------------------------------------------------------------------------
-
-uint32_t __stdcall stk::hash::crc32::calc_CRC32_bitwise(const void* a_src_ptr, const size_t a_count, const uint32_t a_previous = 0)
+/*
+uint32_t __stdcall stk::hash::crc32::calc_CRC32_bitwise(const void* a_src_ptr, const size_t a_count, const uint32_t a_previous)
 {
 #ifdef __DEBUG_HASH_CRC32__
 __DEBUG_CALLED("")
@@ -229,8 +229,8 @@ for (register uint32_t mask;r_src_ptr < r_src_ptr_end;) {
 return ~crc;
 }
 //---------------------------------------------------------------------------
-
-uint32_t __stdcall stk::hash::crc32::calc_CRC32(const void *a_src_ptr,const uint32_t a_count, const uint32_t a_previous = 0)
+*/
+uint32_t __stdcall stk::hash::crc32::calc_CRC32_next(const void *a_src_ptr,const uint32_t a_count, const uint32_t a_previous = 0)
 {
 #ifdef __DEBUG_HASH_CRC32__
 __DEBUG_CALLED("")
@@ -282,8 +282,10 @@ for (; r_src_ptr  < r_src_ptr_end_modulo_64;) { __builtin_prefetch(r_src_ptr + 6
 for (register  uint8_t prefetched_num = 0; prefetched_num < 64; prefetched_num++) {
          UPDATE8()
          r_src_ptr++;
-}}
-for (;r_src_ptr  < r_src_ptr_end;) {
+
+}}
+
+for (;r_src_ptr  < r_src_ptr_end;) {
          UPDATE8()
          r_src_ptr++;
 }

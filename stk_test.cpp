@@ -134,9 +134,9 @@ int __stdcall stk::test::start_test(int argc, char *argv[])
     stk::con::prints("[  %d]\t",__LINE__);
     if (stk::hash::crc32::test_CRC32(1)) stk::con::prints("CRC32 OK\n");
     stk::con::prints("[  %d]\t",__LINE__);
-    TEST(stk::hash::crc32::calc_CRC32(test_in,TEST_SIZE,0);)
-    stk::con::prints("[  %d]\t",__LINE__);
-    TEST(stk::hash::crc32::calc_CRC32_bitwise(test_in,TEST_SIZE,0);)
+    TEST(stk::hash::crc32::calc_CRC32_next(test_in,TEST_SIZE,0);)
+    //stk::con::prints("[  %d]\t",__LINE__);
+    //TEST(stk::hash::crc32::calc_CRC32_bitwise(test_in,TEST_SIZE,0);)
     stk::con::prints("[  %d]\t",__LINE__);
     TEST(stk::hash::adler32::calc_ADLER32(test_in,TEST_SIZE);)
 

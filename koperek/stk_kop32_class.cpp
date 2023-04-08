@@ -1642,7 +1642,7 @@ DWORD WINAPI stk::__kop32_class::f_write_file_thread(LPVOID a_caller) {
 __DEBUG_CALLED("")
 #endif
 #ifdef __DEBUG_KOP32_CLASS__
-stk::con::prints("__kop32_class::f_write_file_thread(a_caller=%d)",(int32_t)a_caller);
+stk::con::prints("__kop32_class::f_write_file_thread(a_caller=%016llx)",(int64_t)a_caller);
 stk::con::print("\r\n");
 #endif
 register stk::__kop32_class *caller_kop32 = (stk::__kop32_class*)a_caller;
