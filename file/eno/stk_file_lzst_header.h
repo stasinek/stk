@@ -84,76 +84,126 @@ typedef struct {
 } __eno_aid_header_struct;
 
 //---------------------------------------------------------------------------
+#define Bx0000 0x00
+#define Bx0001 0x01
+#define Bx0010 0x02
+#define Bx0011 0x03
+#define Bx0100 0x04
+#define Bx0101 0x05
+#define Bx0110 0x06
+#define Bx0111 0x07
+#define Bx1000 0x08
+#define Bx1001 0x09
+#define Bx1010 0x0A
+#define Bx1011 0x0B
+#define Bx1100 0x0C
+#define Bx1101 0x0D
+#define Bx1110 0x0E
+#define Bx1111 0x0F
+
 #ifdef  LZSSv4_HEAD
 
 //@normal codes 	-->>
-#define N_BITS				2
-#define N_CODE_MASK			0x03L
+#define N_CODE_MASK				0x03L //00000011
+#define N_CODE_BITS				2
 //
-#define N_PLAIN_CODE		0x00L
-#define N_PATTERN_CODE		0x01L
-#define N_DUP_CODE			0x02L
-#define N_DUP_OFFSET_MASK	0x0CL
-#define N_DUP_OFFSET_0		0x00L
-#define N_DUP_OFFSET_1		0x04L
-#define N_DUP_OFFSET_2		0x08L
-#define N_DUP_OFFSET_BITS	2
-#define N_DUP_LEN_MASK		0xF0L
-#define N_DUP_LEN_BITS		4
+#define N_PLAIN_CODE			0x00L //00000000
+#define N_PLAIN_CODE_BITS		N_CODE_BITS
+#define N_PLAIN_ENCODING_MASK	0x0CL //000011cc
+#define N_PLAIN_ENCODING_BITS	2 
+#define N_PLAIN_LEN_MASK		0xF0L //1111eecc
+#define N_PLAIN_LEN_BITS		4 
+//
+#define N_PATTERN_CODE			0x01L //00000001
+#define N_PATTERN_CODE_BITS		N_CODE_BITS
+#define N_PATTERN_DIAMETER_MASK	0x0CL //000011cc
+#define N_PATTERN_DIAMETER_BITS	2 
+#define N_PATTERN_LEN_MASK		0xF0L //1111sscc
+#define N_PATTERN_LEN_BITS		4 
+//
+#define N_DUP_CODE				0x02L //00000010
+#define N_DUP_CODE_BITS			N_CODE_BITS
+#define N_DUP_OFFSET_MASK		0x0CL //000011cc
+#define N_DUP_OFFSET_BITS		2	  	
+#define N_DUP_OFFSET_1			0x00L //000000cc
+#define N_DUP_OFFSET_2			0x04L //000001cc
+#define N_DUP_OFFSET_3			0x08L //000010cc
+#define N_DUP_OFFSET_W			0x0CL //000011cc
+#define N_DUP_LEN_MASK			0xF0L //1111oocc
+#define N_DUP_LEN_BITS			4
+//
+#define N_NEXT_CODE				N_CODE_MASK //00000011
+
 //@extended codes	-->>
-#define E_BITS				(N_BITS+2)
-#define E_CODE			 	N_CODE_MASK
-#define E_CODE_MASK			0x0FL
+#define E_CODE_MASK			 	0x0FL
+#define E_CODE_BITS				(2 + N_CODE_BITS)  
 //
-#define E_PLAIN_CODE		(0x00L | E_CODE)
-#define E_PATTERN_CODE		(0x04L | E_CODE)
-#define E_DUP_CODE			(0x08L | E_CODE)
-#define E_DUP_OFFSET_MASK	0x30L
-#define E_DUP_OFFSET_0		0x00L
-#define E_DUP_OFFSET_1		0x10L
-#define E_DUP_OFFSET_2		0x20L
-#define E_DUP_OFFSET_BITS	2
-#define E_DUP_LEN_MASK		0xC0L
-#define E_DUP_LEN_BITS		2
+#define E_PLAIN_CODE			0x03L
+#define E_PLAIN_BITS			4			
+//
+#define E_PATTERN_CODE			(0x04L | N_NEXT_CODE)
+#define E_PATTERN_BITS			4
+//
+#define E_DUP_CODE				(0x08L | N_NEXT_CODE)
+#define E_PATTERN_BITS			4
+#define E_DUP_OFFSET_MASK	 	0x30L
+#define E_DUP_OFFSET_0		 	0x00L
+#define E_DUP_OFFSET_1		 	0x10L
+#define E_DUP_OFFSET_2		 	0x20L
+#define E_DUP_OFFSET_BITS	 	2
+#define E_DUP_LEN_MASK		 	0xC0L
+#define E_DUP_LEN_BITS		 	2
+//
+#define E_NEXT_CODE		 	 	0x0FL //00001111
+
 //@reserved codes -->>
-#define R_BITS				(E_BITS+2)
-#define R_CODE				 E_CODE_MASK
-#define R_CODE_MASK			 0x3FL
+#define R_BITS					(2 + E_CODE_BITS)
+#define R_CODE_MASK			 	0x3FL
 //
-#define R_0_CODE			(0x00L | R_CODE)
-#define R_1_CODE			(0x10L | R_CODE)
-#define R_2_CODE			(0x20L | R_CODE)
-//@unknown, most extended & reserved for future use
-#define S_BITS				(R_BITS+2)
-#define S_CODE 				 R_CODE_MASK
-#define S_CODE_MASK			 0xFFL
+#define R_0_CODE				(0x00L | E_NEXT_CODE)
+#define R_1_CODE				(0x10L | E_NEXT_CODE)
+#define R_2_CODE				(0x20L | E_NEXT_CODE)
+#define R_3_CODE				(0x30L | E_NEXT_CODE)
+
+//@super & reserved for future use
+#define S_BITS				    (R_BITS+2)
+#define S_CODE_MASK			    0xFFL
 //
-#define S_0_CODE			(0x00L | S_CODE)
-#define S_1_CODE			(0x40L | S_CODE)
-#define S_2_CODE			(0x80L | S_CODE)
+#define S_0_CODE			    (0x00L | R_NEXT_CODE)
+#define S_1_CODE			    (0x40L | R_NEXT_CODE)
+#define S_2_CODE			    (0x80L | R_NEXT_CODE)
+#define S_3_CODE			    (0xC0L | R_NEXT_CODE)
+
 //@and so on codes ->>
-#define INFINITY_CODE 	 	 S_CODE_MASK
+#define I_EXTENDED_CODE 	   	S_3_CODE
 //
 
 #define PLAIN_LEN_MIN		(uint32_t)(0x00000001L)
-#define PLAIN_LEN_N			(uint32_t)(0x0000000FL)
-#define PLAIN_LEN_E			(uint32_t)(0x000003FFL)
+#define PLAIN_LEN_N			(uint32_t)(0x0000000FL) // 0000 xxxx + 0 BYTES = 16
+#define PLAIN_LEN_E			(uint32_t)(0x000003FFL) // 00xx xxxx + 1 BYTES = 1024
+#define PLAIN_LEN_R			(uint32_t)(0x0000FFFFL) // xxxx xxxx + 2 BYTES = 65536
+#define PLAIN_LEN_S			(uint32_t)(0x003FFFFFL) // xxxx xxxx + 0000 00xx + 2 BYTES = 4 194 304
 #define PLAIN_LEN_MAX		PLAIN_LEN_E
 
 #define PATTERN_LEN_MIN		(uint32_t)(0x00000002L)
-#define PATTERN_LEN_N		(uint32_t)(0x0000000FL)
-#define PATTERN_LEN_E		(uint32_t)(0x000003FFL)
+#define PATTERN_LEN_N		(uint32_t)(0x0000000FL) // 0000 xxxx + 0 BYTES = 16
+#define PATTERN_LEN_E		(uint32_t)(0x000003FFL) // 00xx xxxx + 1 BYTES = 1024
+#define PATTERN_LEN_R		(uint32_t)(0x0000FFFFL) // xxxx xxxx + 2 BYTES = 65536
+#define PATTERN_LEN_S		(uint32_t)(0x003FFFFFL) // xxxx xxxx + 0000 00xx + 2 BYTES = 4 194 304
 #define PATTERN_LEN_MAX		PATTERN_LEN_E
 
 #define DUP_LEN_MIN			(uint32_t)(0x00000004L)
-#define DUP_LEN_N			(uint32_t)(0x0000000FL)
-#define DUP_LEN_E			(uint32_t)(0x000003FFL)
+#define DUP_LEN_N			(uint32_t)(0x0000000FL) // 0000 xxxx = 16
+#define DUP_LEN_E			(uint32_t)(0x000003FFL) // 00xx xxxx + 1 BYTES = 1024
+#define DUP_LEN_R			(uint32_t)(0x0000FFFFL) // xxxx xxxx + 2 BYTES = 65536
+#define DUP_LEN_S			(uint32_t)(0x003FFFFFL) // xxxx xxxx + 0000 00xx + 2 BYTES = 4 194 304
 #define DUP_LEN_MAX			DUP_LEN_E
 
 #define DUP_OFFSET_MIN		(uint32_t)(0x00000004L)
-#define DUP_OFFSET_1  		(uint32_t)(0x000000FFL)
-#define DUP_OFFSET_2		(uint32_t)(0x0000FFFFL)
-#define DUP_OFFSET_3		(uint32_t)(0x00FFFFFFL)
+#define DUP_OFFSET_0  		(uint32_t)(0x000000FFL)
+#define DUP_OFFSET_1		(uint32_t)(0x0000FFFFL)
+#define DUP_OFFSET_2		(uint32_t)(0x00FFFFFFL)
+#define DUP_OFFSET_W		(uint32_t)(0xFFFFFFFFL)
 #define DUP_OFFSET_MAX		DUP_OFFSET_3
 
 class STK_IMPEXP __lzstv4_header_coder {
