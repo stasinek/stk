@@ -153,9 +153,11 @@ ehthumbs_vista.db
 # Folder config file
 [Dd]esktop.ini
 *.mbr
-/Desktop_*/*
-/build_*/*
-/Qt_*/*
+Desktop_*/*
+build_*/*
+Qt_*/*
 /LLVM_*/*
 *.tlog
 *.err
+Makefile
+Makefile.win

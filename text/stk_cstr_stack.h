@@ -1,11 +1,11 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_text_stack_h
-#define __stk_text_stack_h
+#ifndef __stk_text_stack_h__
+#define __stk_text_stack_h__
+#pragma once
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 //---------------------------------------------------------------------------
 #include "stk_cstr_class.h"
-#include "./../stk_vector.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk {
@@ -14,7 +14,7 @@ namespace stk {
 #define STACKCNT	(uint32_t)1024
 #define STACKSTR	(uint32_t)1024 // 64*1024=64kB ONE MEMORY SEGMENT
 //---------------------------------------------------------------------------
-class  STK_IMPEXP __cstr_stack : public stk::__vector<__cstr_class*> {
+class  STK_IMPEXP __cstr_stack : public stk::__stk_vector<__cstr_class*> {
 protected:
         void			            __stdcall	__init              	(const uint32_t a_count, const uint32_t a_text_class_size);
 private:

@@ -9,7 +9,7 @@
 
 __stdcall stk::__cstr_stack::__cstr_stack(void)
 :
-        stk::__vector<__cstr_class*>(0),
+        stk::__stk_vector<__cstr_class*>(0),
         f_text_class_size(0)
 {
 #ifdef __DEBUG_CSTR_STACK__
@@ -21,7 +21,7 @@ __DEBUG_CALLED("")
 
 __stdcall stk::__cstr_stack::__cstr_stack(const uint32_t a_size)
 :
-        stk::__vector<__cstr_class*>(a_size),
+        stk::__stk_vector<__cstr_class*>(a_size),
         f_text_class_size(0)
 {
 #ifdef __DEBUG_CSTR_STACK__
@@ -33,7 +33,7 @@ __DEBUG_CALLED("")
 
 __stdcall stk::__cstr_stack::__cstr_stack(const uint32_t a_size, const uint32_t a_text_size)
 :
-        stk::__vector<__cstr_class*>(a_size),
+        stk::__stk_vector<__cstr_class*>(a_size),
         f_text_class_size(0)
 {
 #ifdef __DEBUG_CSTR_STACK__
@@ -60,12 +60,12 @@ uint32_t __stdcall stk::__cstr_stack::set_size(const uint32_t a_size)
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_CALLED("")
 #endif
-        register uint32_t curs = stk::__vector<stk::__cstr_class*>::count();
+        register uint32_t curs = stk::__stk_vector<stk::__cstr_class*>::count();
         register uint32_t news = a_size;
         // first of all, change top stack pointer(count) to lower value than it's new size
         if (curs < news) {
             for (;;) {
-                stk::__vector<stk::__cstr_class*>::push(new stk::__cstr_class(f_text_class_size));
+                stk::__stk_vector<stk::__cstr_class*>::push(new stk::__cstr_class(f_text_class_size));
                         if (++curs == news)
                                 break;
                 }
@@ -73,7 +73,7 @@ __DEBUG_CALLED("")
         else
         if (curs > news) {
                 for (;;) {
-                delete stk::__vector<stk::__cstr_class*>::pop();
+                delete stk::__stk_vector<stk::__cstr_class*>::pop();
                         if (--curs == news)
                                 break;
                 }
@@ -102,7 +102,7 @@ register int32_t r_to_pop = a_count;
                 return;
         for (;;) {
                 r_to_pop--;
-                delete stk::__vector<stk::__cstr_class*>::pop();
+                delete stk::__stk_vector<stk::__cstr_class*>::pop();
                 if (r_to_pop==0) break;
         }
 }
@@ -122,8 +122,8 @@ stk::__cstr_class* __stdcall stk::__cstr_stack::push(const uint32_t a_text_class
 #ifdef __DEBUG_CSTR_STACK__
 __DEBUG_CALLED("")
 #endif
-        stk::__vector<stk::__cstr_class*>::push(new stk::__cstr_class(a_text_class_size));
-        return stk::__vector<stk::__cstr_class*>::top();
+        stk::__stk_vector<stk::__cstr_class*>::push(new stk::__cstr_class(a_text_class_size));
+        return stk::__stk_vector<stk::__cstr_class*>::top();
 }
 //---------------------------------------------------------------------------
 

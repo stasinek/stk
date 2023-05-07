@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_main_H__
-#define __stk_main_H__
+#ifndef __stk_main_h__
+#define __stk_main_h__
 //---------------------------------------------------------------------------
 // C++ Compiler name "redefinition"
 //---------------------------------------------------------------------------
@@ -17,17 +17,17 @@
 // IMPORT/EXPORT define what're You doing LINK LIBRARY or BUILD_STK_LIBRARY
 //---------------------------------------------------------------------------
 #if !defined(__EXPORT)
-    #ifdef __GNUC__
-        #define __EXPORT //__attribute__((dllexport)) //__attribute__((visibility("default")))
-    #else
+    #if defined(__GNUC__) // LLVM, GCC
+        #define __EXPORT  //__attribute__((dllexport)) //__attribute__((visibility("default")))
+    #else                 // Borland C++, WATCOM, Microsoft Visual C++
         #define __EXPORT __declspec(dllexport)
     #endif
 #define STK_EXPORT __EXPORT
 #endif /* __EXPORT */
 #if !defined(__IMPORT)
-    #ifdef __GNUC__
-        #define __IMPORT //__attribute__((dllimport))//__attribute__((visibility("default")))
-    #else
+    #if defined(__GNUC__) // LLVM, GCC
+        #define __IMPORT  //__attribute__((dllimport))//__attribute__((visibility("default")))
+    #else                 // Borland C++, WATCOM, Microsoft Visual C++
         #define __IMPORT __declspec(dllimport)
     #endif
 #define STK_IMPORT __IMPORT
@@ -37,7 +37,7 @@
     #define STK_IMPEXP __EXPORT
 #else
     #define STK_IMPEXP __IMPORT
-#endif /* BUILD_STK_LIBRARY */
+#endif /* Universal headers both for BUILD_STK_LIBRARY or IMPORT_STK_LIBRARY */
 //---------------------------------------------------------------------------
 //
 // C++ WARNINGS/ERRORS
@@ -230,7 +230,7 @@
                 #define   NOMINMAX
     #endif
     #include <winsock2.h>
-    #include <windows.h>
+    //#include <windows.h>
     #include <conio.h>
     #include <io.h>
     #include <direct.h>

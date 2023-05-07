@@ -2,15 +2,14 @@
 # Qmake Qt5.5.1 file last modified 2018.5, Windows MSC2010,MinGW4.92,LLVM3.7 builds tester
 #
 DEFINES += BUILD_STK_LIBRARY
-#DEFINES += BUILD_STK_TESTER
 # -------------------------------------------------------------
 # CONFIG: LIBRARY: STATIC, DLL OR EXE: TESTING.APP
 # -------------------------------------------------------------
 contains(DEFINES, BUILD_STK_LIBRARY) {
+message("TARGET STK: stk.DLL")
 message($$DEFINES)
     TARGET = stk
     TEMPLATE = lib
-#    CONFIG += lib_bundle
 #    CONFIG += staticlib
     CONFIG += embed_manifest_dll
     CONFIG += dll
@@ -18,27 +17,29 @@ message($$DEFINES)
     CONFIG += warn_off
 }
 else {
-message("BUILD_STK_TESTER")
-    TARGET  = stk_tester
+message("TARGET STK: Embedded into application")
+    TARGET  = stk_embedded
     TEMPLATE = app
-#    CONFIG += app_bundle
     CONFIG += console
     CONFIG += embed_manifest_exe
     CONFIG -= warn_on
     CONFIG += warn_off
 }
 # -------------------------------------------------------------
+CONFIG += precompiled_header
+# -------------------------------------------------------------
 # MESSAGE ABOUT TARGET
 # -------------------------------------------------------------
 message(QMAKESPEC:$$QMAKESPEC)
 message(CONFIG:$$CONFIG)
+
 contains(TEMPLATE, dll) {
-contains(CONFIG, dll) {
-message($$TARGET".dll")
-}
-contains(CONFIG, static) {
-message("lib"{$$TARGET}".lib")
-}
+    contains(CONFIG, dll) {
+        message($$TARGET".dll")
+    }
+    contains(CONFIG, static) {
+        message("lib"{$$TARGET}".lib")
+    }
 }
 # -------------------------------------------------------------
 # MORE CONFIG
@@ -52,9 +53,9 @@ CONFIG += exceptions
 CONFIG += c++11
 contains(QMAKE_COMPILER_DEFINES,_MSC_VER) {
 # -------------------------------------------------------------
-# VCC
+# Microsoft Visual C++
 # -------------------------------------------------------------
-message("MSVC Microsoft Compiler FLAGS loaded")
+message("Using MSVC Microsoft Compiler QMAKE_FLAGS")
 QMAKE_CXXFLAGS -= /W1
 QMAKE_CXXFLAGS -= /W2
 QMAKE_CXXFLAGS -= /W3
@@ -67,7 +68,7 @@ contains(QMAKE_COMPILER_DEFINES,__clang__) {
 # -------------------------------------------------------------
 # LLVM - Clang
 # -------------------------------------------------------------
-message("LLVM Clang Compiler FLAGS loaded")
+message("Using LLVM Clang Compiler QMAKE_FLAGS")
 
 WARNINGS_LLVM += -Wextra
 WARNINGS_LLVM += -Wunknown-pragmas -Wundef
@@ -104,29 +105,30 @@ FLAGS_LLVM += -mpreferred-stack-boundary=8
 FLAGS_LLVM += -mmmx -msse -msse2
 FLAGS_LLVM -= -fno-keep-inline-dllexport
 FLAGS_LLVM -= -finline-small-functions
+#FLAGS_LLVM -= -pipe
+#FLAGS_LLVM += -save-temps
 
-#QMAKE_CXXFLAGS -= -pipe
-#QMAKE_CXXFLAGS += -save-temps
+# C++ FLAGS
 QMAKE_CXXFLAGS += $$FLAGS_LLVM
 QMAKE_CXXFLAGS_RELEASE += $$NO_WARNINGS_LLVM
 QMAKE_CXXFLAGS_DEBUG += $$WARNINGS_LLVM
 QMAKE_CXXFLAGS += clang++
 
-#QMAKE_CFLAGS -= -pipe
-#QMAKE_CFLAGS += -save-temps
+# Pure C FLAGS
 QMAKE_CFLAGS   += $$FLAGS_LLVM
 QMAKE_CFLAGS_RELEASE += $$NO_WARNINGS_LLVM
 QMAKE_CFLAGS_DEBUG += $$WARNINGS_LLVM
 QMAKE_CFLAGS += clang
 
+# Linker FLAGS
 QMAKE_LFLAGS += -Qunused-arguments -Wno-error=unused-command-line-argument-hard-error-in-future
 QMAKE_LFLAGS -= -mthreads
 } else {
 contains(QMAKE_COMPILER_DEFINES,__GNUC__) {
 # -------------------------------------------------------------
-# GCC
+# MINGW / GCC
 # -------------------------------------------------------------
-message("GNUC FLAGS loaded")
+message("Using MinGW/GCC QMAKE_FLAGS")
 
 WARNINGS_GNU += -Wextra
 WARNINGS_GNU += -Wunknown-pragmas -Wundef
@@ -158,17 +160,22 @@ FLAGS_GNU += -funroll-loops
 FLAGS_GNU += -m32 -mfpmath=sse -flto -O3
 FLAGS_GNU += -mpreferred-stack-boundary=8
 FLAGS_GNU += -mmmx -msse -msse2
+FLAGS_GNU += -save-temps
+
 QMAKE_CXXFLAGS_DEBUG += $$FLAGS_GNU $$WARNINGS_GNU -std=gnu++0x
 QMAKE_CXXFLAGS_RELEASE += $$FLAGS_GNU $$NO_WARNINGS_GNU -std=gnu++0x
-#QMAKE_CXXFLAGS -= -pipe
-#QMAKE_CXXFLAGS += -save-temps
+QMAKE_CXXFLAGS_DEBUG -= -pipe
+QMAKE_CXXFLAGS_RELEASE -= -pipe
 
 QMAKE_CFLAGS_DEBUG += $$FLAGS_GNU $$WARNINGS_GNU
 QMAKE_CFLAGS_RELEASE += $$FLAGS_GNU $$NO_WARNINGS_GNU
-#QMAKE_FLAGS -= -pipe
-#QMAKE_FLAGS += -save-temps
-}
-}}
+QMAKE_CFLAGS_DEBUG -= -pipe
+QMAKE_CFLAGS_RELEASE -= -pipe
+}}}
+# -------------------------------------------------------------
+#
+# Common section SOURCES, HEADERS, OTHER FILES
+#
 # -------------------------------------------------------------
 SOURCES += \
     stk_set.cpp \
@@ -195,7 +202,7 @@ SOURCES += \
     file/eno/stk_file_lzst_header.cpp \
     file/json/stk_json.cpp \
     file/vfs/stk_file_vfs.cpp \
-    file/xml/stk_xml.cpp \
+    #file/xml/stk_xml.cpp \
     hash/stk_hash_crc32.cpp \
     hash/stk_hash_md5.cpp \
     hash/stk_hash_password.cpp \
@@ -231,24 +238,27 @@ SOURCES += \
     cipher/aes/stk_aes.cpp \
     incbin/stk_incbin.cpp
 # -------------------------------------------------------------
-contains(QMAKE_COMPILER_DEFINES,__GNUC__) {
-message("GNUC GAS sources  loaded")
+#
+# Both GCC and LLVM
+#
+# -------------------------------------------------------------
+contains(QMAKE_COMPILER_DEFINES,__clang__) {
+message("LLVM GAS Assembler SOURCES")
 SOURCES+=
     cpu/stk_cpu_gas.s
 } else {
-contains(QMAKE_COMPILER_DEFINES,__clang__) {
-message("LLVM GAS sources loaded")
+contains(QMAKE_COMPILER_DEFINES,__GNUC__) {
+message("GNUC GAS Asembler SOURCES")
 SOURCES+=
     cpu/stk_cpu_gas.s
 } else {
 contains(QMAKE_COMPILER_DEFINES,_MSC_VER) {
-message("AMSVC ASM sources loaded")
+message("Microsoft Visual C++ MASM SOURCES")
 SOURCES+=
     cpu/stk_cpu_gas.s
-}
-}}
+}}}
 # -------------------------------------------------------------
-#PRECOMPILED_HEADER += $$PWD/stk_MAIN.h
+PRECOMPILED_HEADER += stk_MAIN.h
 HEADERS += \
     stk_hash_chain.h \
     stk_list.h \
@@ -278,7 +288,7 @@ HEADERS += \
     file/eno/stk_file_lzst_header.h \
     file/json/stk_json.h \
     file/vfs/stk_file_vfs.h \
-    file/xml/stk_xml.h \
+    #file/xml/stk_xml.h \
     hash/stk_hash_ssc1.h \
     hash/stk_hash_crc32.h \
     hash/stk_hash_md5.h \
@@ -315,8 +325,10 @@ HEADERS += \
     stk_bitset.h \
     cipher/aes/stk_aes.h
 # -------------------------------------------------------------
+# QT GUI
+# -------------------------------------------------------------
 contains(DEFINES, QT_GUI) {
-message("Qt GUI sources loaded")
+message("QT5 GUI specific SOURCE")
 CONFIG +=
 SOURCES +=
 HEADERS +=
@@ -325,7 +337,7 @@ RESOURCES +=
 }
 # -------------------------------------------------------------
 contains(DEFINES, _MSC_VER) {
-message("MSVC libs loaded")
+message("LINKER Microsoft Visual C++ LIBS")
 #    LIBS += vcomp.lib
     LIBS += crypt32.lib
     LIBS += kernel32.lib shell32.lib gdi32.lib
@@ -339,14 +351,20 @@ message("MSVC libs loaded")
     }
 } else {
 contains(QMAKE_COMPILER_DEFINES,__clang__) {
-message("LLVM libs loaded")
-    LIBS +=
+message("LLVM LIBS")
+    LIBS += crypt32.lib
+    LIBS += kernel32.lib shell32.lib gdi32.lib
+    LIBS += user32.lib uuid.lib
+    LIBS += wsock32.lib ws2_32.lib
+    LIBS += winmm.lib
+    LIBS += ole32.lib oleaut32.lib
+    LIBS -= gomp.lib
     contains(DEFINES, QT_GUI) {
         LIBS += QtCored.lib
     }
 } else {
 contains(QMAKE_COMPILER_DEFINES,__GNUC__) {
-message("GNUC libs loaded")
+message("GNUC LIBS")
     LIBS += -lkernel32
     LIBS += -lgdi32 -lcomctl32 -lshell32 -luser32 -luserenv
     LIBS += -lws2_32 -lwsock32
@@ -364,14 +382,14 @@ message("GNUC libs loaded")
 }}
 # -------------------------------------------------------------
 win32: {
-message("Windows Resource files loaded")
+message("Windows RC Resource Files RC_FILE")
     RC_FILE     =  stk_version.rc
 #-manifest file.manifest
 }
 OTHER_FILES +=
 DISTFILES += test.txt
 # -------------------------------------------------------------
-message("END")
+message("QMAKE FINISH")
 # -------------------------------------------------------------
 # External ASM .s compiler
 # -------------------------------------------------------------

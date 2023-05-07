@@ -1,5 +1,27 @@
 //---------------------------------------------------------------------------
 #include "stk_set.h"
+#include "./mem/stk_mem.h"
+//---------------------------------------------------------------------------
+stk::__set_tree::__set_tree(uint32_t a_level)
+{
+for (uint32_t c = 1; c <= a_level; c++) {
+     f_ptrs_size = f_ptrs_size * 256;
+    }
+ptrs = static_cast<__set_tree_node**>(stk::mem::alloc(f_ptrs_size*sizeof(stk::__set_tree_node*)));
+for (uint32_t i = 0; i < f_ptrs_size; i++) {
+     ptrs[i] = new stk::__set_tree_node(NULL);
+    }
+}
+//---------------------------------------------------------------------------
+
+stk::__set_tree::~__set_tree(void)
+{
+for (uint32_t i = 0; i < f_ptrs_size; i++) {
+     delete ptrs[i];
+    }
+delete ptrs;
+f_ptrs_size = 0;
+}
 //---------------------------------------------------------------------------
 
 stk::__set_tree_node::__set_tree_node()
