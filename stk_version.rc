@@ -25,7 +25,7 @@ BEGIN
       VALUE "FileDescription", "Stasinek's' ToolKit"
       VALUE "FileVersion", "2.0.0.0"
       VALUE "InternalName", "libstk"
-      VALUE "LegalCopyright", "?2013 SSTSOFT"
+      VALUE "LegalCopyright", "Stanislaw Stasiak"
       VALUE "OriginalFilename", "libstk.dll"
       VALUE "ProductName", "SimpleToolKit"
       VALUE "ProductVersion", "2.0.0.0"

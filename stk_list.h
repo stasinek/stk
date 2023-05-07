@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_list_H__
-#define __stk_list_H__
+#ifndef __stk_list_h__
+#define __stk_list_h__
 //---------------------------------------------------------------------------
 #include "./mem/stk_mem.h"
 #include "./io/stk_console.h"

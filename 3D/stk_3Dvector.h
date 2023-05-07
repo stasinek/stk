@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
 #if defined(__SSE41__)
 //---------------------------------------------------------------------------
-#ifndef __stk_sse_3DVECTOR_H__
-#define __stk_sse_3DVECTOR_H__
+#ifndef __stk_sse_3DVECTOR_h__
+#define __stk_sse_3DVECTOR_h__
 //---------------------------------------------------------------------------
 #include <smmintrin.h>
 //---------------------------------------------------------------------------
@@ -75,6 +75,6 @@ inline __sse_3Dvector operator*(float a, const __sse_3Dvector& b) { return b * a
 inline __sse_3Dvector operator/(float a, const __sse_3Dvector& b) { return __sse_3Dvector(_mm_set1_ps(a)) / b; }
 
 //---------------------------------------------------------------------------
-#endif // __sse_vector_H__
+#endif // __sse_vector_h__
 #endif // ifdef __SSE4__
 //---------------------------------------------------------------------------

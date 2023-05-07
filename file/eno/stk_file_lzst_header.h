@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_file_lzst_header_H__
-#define __stk_file_lzst_header_H__
+#ifndef __stk_file_lzst_header_h__
+#define __stk_file_lzst_header_h__
 //---------------------------------------------------------------------------
 #include "./../../stk_main.h"
 //---------------------------------------------------------------------------
@@ -110,25 +110,25 @@ typedef struct {
 #define N_PLAIN_CODE			0x00L //00000000
 #define N_PLAIN_CODE_BITS		N_CODE_BITS
 #define N_PLAIN_ENCODING_MASK	0x0CL //000011cc
-#define N_PLAIN_ENCODING_BITS	2 
+#define N_PLAIN_ENCODING_BITS	2
 #define N_PLAIN_LEN_MASK		0xF0L //1111eecc
-#define N_PLAIN_LEN_BITS		4 
+#define N_PLAIN_LEN_BITS		4
 //
 #define N_PATTERN_CODE			0x01L //00000001
 #define N_PATTERN_CODE_BITS		N_CODE_BITS
 #define N_PATTERN_DIAMETER_MASK	0x0CL //000011cc
-#define N_PATTERN_DIAMETER_BITS	2 
+#define N_PATTERN_DIAMETER_BITS	2
 #define N_PATTERN_LEN_MASK		0xF0L //1111sscc
-#define N_PATTERN_LEN_BITS		4 
+#define N_PATTERN_LEN_BITS		4
 //
 #define N_DUP_CODE				0x02L //00000010
 #define N_DUP_CODE_BITS			N_CODE_BITS
 #define N_DUP_OFFSET_MASK		0x0CL //000011cc
-#define N_DUP_OFFSET_BITS		2	  	
-#define N_DUP_OFFSET_1			0x00L //000000cc
-#define N_DUP_OFFSET_2			0x04L //000001cc
-#define N_DUP_OFFSET_3			0x08L //000010cc
-#define N_DUP_OFFSET_W			0x0CL //000011cc
+#define N_DUP_OFFSET_BITS		2
+#define N_DUP_OFFSET_0			0x00L //000000cc
+#define N_DUP_OFFSET_1			0x04L //000001cc
+#define N_DUP_OFFSET_2			0x08L //000010cc
+#define N_DUP_OFFSET_3			0x0CL //000011cc
 #define N_DUP_LEN_MASK			0xF0L //1111oocc
 #define N_DUP_LEN_BITS			4
 //
@@ -136,10 +136,10 @@ typedef struct {
 
 //@extended codes	-->>
 #define E_CODE_MASK			 	0x0FL
-#define E_CODE_BITS				(2 + N_CODE_BITS)  
+#define E_CODE_BITS				(2 + N_CODE_BITS)
 //
 #define E_PLAIN_CODE			0x03L
-#define E_PLAIN_BITS			4			
+#define E_PLAIN_BITS			4
 //
 #define E_PATTERN_CODE			(0x04L | N_NEXT_CODE)
 #define E_PATTERN_BITS			4
@@ -174,7 +174,7 @@ typedef struct {
 #define S_2_CODE			    (0x80L | R_NEXT_CODE)
 #define S_3_CODE			    (0xC0L | R_NEXT_CODE)
 
-//@and so on codes ->>
+//@and so on codes super duper ->>
 #define I_EXTENDED_CODE 	   	S_3_CODE
 //
 
@@ -203,7 +203,7 @@ typedef struct {
 #define DUP_OFFSET_0  		(uint32_t)(0x000000FFL)
 #define DUP_OFFSET_1		(uint32_t)(0x0000FFFFL)
 #define DUP_OFFSET_2		(uint32_t)(0x00FFFFFFL)
-#define DUP_OFFSET_W		(uint32_t)(0xFFFFFFFFL)
+#define DUP_OFFSET_3		(uint32_t)(0xFFFFFFFFL)
 #define DUP_OFFSET_MAX		DUP_OFFSET_3
 
 class STK_IMPEXP __lzstv4_header_coder {

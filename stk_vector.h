@@ -7,7 +7,7 @@
 #include "./io/stk_console.h"
 #include "./stk_main.h"
 //---------------------------------------------------------------------------
-//implementation of std::vector, much simpler without iterator, allocator etc.
+//implementation of class simmilar to std::vector, much simpler without iterator, allocator etc.
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { template<class TYPE> class  __vector {
@@ -53,6 +53,9 @@ uint32_t           __stdcall  resize(const uint32_t a_new_size);
 //---------------------------------------------------------------------------
 };
 //---------------------------------------------------------------------------
+} // #endif namespace stk
+#endif
+//---------------------------------------------------------------------------
 /*template<class TYPE>
 uint32_t __stdcall __vector<TYPE>::stk::__vector<int>::add(const int& a_new)
 {
@@ -70,7 +73,7 @@ template<class TYPE> __stdcall stk::__vector<TYPE>::__vector(const uint32_t a_co
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE>  __stdcall __vector<TYPE>::~__vector()
+template<class TYPE>  __stdcall stk::__vector<TYPE>::~__vector()
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -79,7 +82,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> uint32_t __stdcall __vector<TYPE>::count(void)  const
+template<class TYPE> uint32_t __stdcall stk::__vector<TYPE>::count(void)  const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -88,7 +91,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> uint32_t __stdcall __vector<TYPE>::mem_size(void)  const
+template<class TYPE> uint32_t __stdcall stk::__vector<TYPE>::mem_size(void)  const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -97,7 +100,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> uint32_t __stdcall __vector<TYPE>::max_size(void)
+template<class TYPE> uint32_t __stdcall stk::__vector<TYPE>::max_size(void)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -106,7 +109,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> uint32_t __stdcall __vector<TYPE>::set_size(const uint32_t a_new_size)
+template<class TYPE> uint32_t __stdcall stk::__vector<TYPE>::set_size(const uint32_t a_new_size)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -134,7 +137,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> void __stdcall __vector<TYPE>::cleared(void)
+template<class TYPE> void __stdcall stk::__vector<TYPE>::cleared(void)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -142,7 +145,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> uint32_t __stdcall __vector<TYPE>::push(const TYPE& a_new)
+template<class TYPE> uint32_t __stdcall stk::__vector<TYPE>::push(const TYPE& a_new)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -155,20 +158,20 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> TYPE __stdcall __vector<TYPE>::pop()
+template<class TYPE> TYPE __stdcall stk::__vector<TYPE>::pop()
 {
 if (this->count()>0) return this->remove(this->count()-1);
 else return NULL;
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> void  __stdcall __vector<TYPE>::pop_all()
+template<class TYPE> void  __stdcall stk::__vector<TYPE>::pop_all()
 {
 this->resize(0);
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> void __stdcall __vector<TYPE>::swap(const uint32_t a_index1,const uint32_t a_index2)
+template<class TYPE> void __stdcall stk::__vector<TYPE>::swap(const uint32_t a_index1,const uint32_t a_index2)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -179,7 +182,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> TYPE& __stdcall __vector<TYPE>::at(const uint32_t a_index) const
+template<class TYPE> TYPE& __stdcall stk::__vector<TYPE>::at(const uint32_t a_index) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -188,7 +191,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> TYPE& __stdcall __vector<TYPE>::front(void) const
+template<class TYPE> TYPE& __stdcall stk::__vector<TYPE>::front(void) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -197,7 +200,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> TYPE& __stdcall __vector<TYPE>::back(void) const
+template<class TYPE> TYPE& __stdcall stk::__vector<TYPE>::back(void) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -206,7 +209,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> uint32_t __stdcall __vector<TYPE>::insert(const TYPE& a_new,const uint32_t a_index)
+template<class TYPE> uint32_t __stdcall stk::__vector<TYPE>::insert(const TYPE& a_new,const uint32_t a_index)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -221,7 +224,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> TYPE __stdcall __vector<TYPE>::remove(const uint32_t a_index)
+template<class TYPE> TYPE __stdcall stk::__vector<TYPE>::remove(const uint32_t a_index)
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -241,13 +244,13 @@ __DEBUG_CALLED("")
 // ALTERNATIVE FNCTION NAMES
 //---------------------------------------------------------------------------
 
-template<class TYPE> uint32_t __stdcall __vector<TYPE>::add(const TYPE& a_new)
+template<class TYPE> uint32_t __stdcall stk::__vector<TYPE>::add(const TYPE& a_new)
 {
 return this->push(a_new);
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> TYPE& __stdcall __vector<TYPE>::operator [] (const uint32_t a_index) const
+template<class TYPE> TYPE& __stdcall stk::__vector<TYPE>::operator [] (const uint32_t a_index) const
 {
 #ifdef __DEBUG_VECTOR__
 __DEBUG_CALLED("")
@@ -256,25 +259,25 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> TYPE& __stdcall __vector<TYPE>::set(const uint32_t a_index, const TYPE& a_value) const
+template<class TYPE> TYPE& __stdcall stk::__vector<TYPE>::set(const uint32_t a_index, const TYPE& a_value) const
 {
     return f_ptrs[a_index] = a_value;
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> TYPE& __stdcall __vector<TYPE>::top(void) const
+template<class TYPE> TYPE& __stdcall stk::__vector<TYPE>::top(void) const
 {
     return front();
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> TYPE& __stdcall __vector<TYPE>::bottom(void) const
+template<class TYPE> TYPE& __stdcall stk::__vector<TYPE>::bottom(void) const
 {
     return back();
 }
 //---------------------------------------------------------------------------
 
-template<class TYPE> void __stdcall __vector<TYPE>::exchange(const uint32_t a_index1,const uint32_t a_index2)
+template<class TYPE> void __stdcall stk::__vector<TYPE>::exchange(const uint32_t a_index1,const uint32_t a_index2)
 {
 return swap(a_index1,a_index2);
 }
@@ -285,8 +288,5 @@ template<class TYPE> uint32_t __stdcall stk::__vector<TYPE>::resize(const uint32
     return set_size(a_new_size);
 }
 //---------------------------------------------------------------------------
-} // namespace stk
-#endif
-//---------------------------------------------------------------------------
-#endif // __vector_H__
+#endif // __vector_h__
 //---------------------------------------------------------------------------

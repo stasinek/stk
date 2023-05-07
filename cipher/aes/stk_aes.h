@@ -1,7 +1,7 @@
-#ifndef __STK_AES_H
-#define __STK_AES_H
+#ifndef __stk_aes_h__
+#define __stk_aes_h__
 //-----------------------------------------------------------------------------
-#include "./../stk_main.h"
+#include "./../../stk_main.h"
 //-----------------------------------------------------------------------------
 #ifdef __GNUC__
 #include <stdint.h>

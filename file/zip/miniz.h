@@ -1,5 +1,5 @@
-#ifndef STK_MINIZ_H
-#define STK_MINIZ_H
+#ifndef __stk_miniz_h__
+#define __stk_miniz_h__
 
-#endif // STK_MINIZ_H
+#endif // __stk_miniz_h__
 

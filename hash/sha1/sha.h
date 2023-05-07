@@ -1,4 +1,4 @@
-﻿/*
+/*
  * sha.h
  *
  * Originally taken from the public domain SHA1 implementation
@@ -24,8 +24,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef __SHA1_H
-#define __SHA1_H
+#ifndef __sha1_h__
+#define __sha1_h__
 
 #ifdef __cplusplus
 extern "C" {

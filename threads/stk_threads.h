@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_threads_H__
-#define __stk_threads_H__
+#ifndef __stk_threads_h__
+#define __stk_threads_h__
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 #include "./../time/stk_time.h"

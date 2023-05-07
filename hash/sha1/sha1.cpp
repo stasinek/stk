@@ -1,4 +1,4 @@
-﻿/*
+/*
  * sha1.c
  *
  * Originally witten by Steve Reid <steve@edmweb.com>
@@ -24,7 +24,7 @@
  */
 
 #include "sha.h"
-#include "./../stk_main.h"
+#include "./../../stk_main.h"
 // temporal workaround C/C++ names
 #define stk_mem_mov memmove
 #define stk_mem_set memset

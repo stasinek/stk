@@ -40,7 +40,7 @@ inline const char*                  __stdcall   set(const uint32_t a_i_to_clone)
        const char*                  __stdcall	substr(uint32_t a_pos, uint32_t a_len)  const;
 inline      uint32_t                __stdcall   len(void) const
 {
-    return stk::cstr::len(&__vector<char>::bottom());
+    return stk::cstr::len(&stk::__vector<char>::bottom());
 }
         void			            __stdcall	reserve(const uint32_t a_new_size);
         void			            __stdcall	resize(const uint32_t a_new_len);
@@ -48,20 +48,20 @@ inline      uint32_t                __stdcall   len(void) const
         void			            __stdcall	clear();
 inline uint32_t                     __stdcall   i(void) const
 {
-    return stk::cstr::atoi(&__vector<char>::bottom());
+    return stk::cstr::atoi(&stk::__vector<char>::bottom());
 
 }
 inline       char*                  __stdcall   data()
 {
-    return &__vector<char>::bottom();
+    return &stk::__vector<char>::bottom();
 }
 inline const char*                  __stdcall   at(const uint32_t a_pos) const
 {
-    return const_cast<const char*>(&__vector<char>::at(a_pos));
+    return const_cast<const char*>(&stk::__vector<char>::at(a_pos));
 }
 inline const char*                  __stdcall   c_str(void) const
 {
-    return const_cast<const char*>(&__vector<char>::bottom());
+    return const_cast<const char*>(&stk::__vector<char>::bottom());
 }
 inline                              __stdcall   operator const char* () const
 {

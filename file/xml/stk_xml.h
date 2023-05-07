@@ -1,5 +1,5 @@
-#ifndef STK_XML_H
-#define STK_XML_H
+#ifndef __stk_xml_h__
+#define __stk_xml_h__
 //---------------------------------------------------------------------------
 // xml.h
 // v.0x185

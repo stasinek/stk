@@ -1,3 +1,4 @@
+//---------------------------------------------------------------------------
 #ifndef __stk_main_H__
 #define __stk_main_H__
 //---------------------------------------------------------------------------
@@ -350,20 +351,23 @@
 #include "./text/stk_cstr_utils.h"
 
 #define __DEBUG_CALLED(__func)\
+        {\
         static const int __entered_line = __LINE__;\
-        static double __time_1 = stk::time::time_ms();\
         static int __entered_time = 1;\
-        char *__file__ = __FILE__, *__file_name__;\
+        double __at_time_1 = stk::time::time_ms();\
+        char *__file__ = (char*)__FILE__, *__file_name__;\
         int64_t slash = stk::cstr::chrr(__file__,'/');\
         if (slash < 0) slash = stk::cstr::chrr(__file__,'\\');\
         if (slash < 0) __file_name__ = __file__;\
         else __file_name__ = &__file__[slash+1];\
-        stk::con::prints("DEBUG: %s: Enter function: %s@%d line, for %d time\n\0",__file_name__,__func,__entered_line,++__entered_time);
-//
+        stk::con::prints("DEBUG: %s: Enter function: %s@%d line at %lfms, for %d time\n\0",__file_name__,__func,__entered_line,__at_time_1, __entered_time++);\
+        }
 #define __DEBUG_RETURN(var)\
-        {double __time_2 = stk::time::time_ms() - __time_1;\
-        stk::con::prints("DEBUG: Return from function: %d, at: %d, spent %lfms:\n\0",__file_name__,__entered_line,__LINE__,__time_2);\
-        } return var;
+        {\
+        double __at_time_2 = stk::time::time_ms() - __at_time_1;\
+        stk::con::prints("DEBUG: Return from function: %d, at: %d, spent total time %lfms:\n\0",__file_name__,__entered_line,__LINE__,__at_time_2);\
+        }\
+        return var;
 #else
 #define __DEBUG_CALLED("")
 #define __DEBUG_RETURN(var) return var;

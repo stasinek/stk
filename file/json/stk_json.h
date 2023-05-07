@@ -27,12 +27,12 @@
  * SUCH DAMAGE.
  */
 //---------------------------------------------------------------------------
-#ifndef STK_JSON_H
-#define STK_JSON_H
+#ifndef __stk_json_h__
+#define __stk_json_h__
 //---------------------------------------------------------------------------
-#include "../../mem/stk_mem.h"
-#include "./../stk_main.h"
+#include "./../../stk_main.h"
 #include <stdlib.h>
+#include "../../mem/stk_mem.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk {

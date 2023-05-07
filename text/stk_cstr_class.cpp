@@ -135,7 +135,7 @@ void __stdcall stk::__cstr_class::resize(const uint32_t a_new_len)
 #ifdef __DEBUG_CSTR_CLASS__
 __DEBUG_CALLED("")
 #endif
-register uint32_t lp = stk::cstr::len(&__vector<char>::bottom()) +1;
+register uint32_t lp = stk::cstr::len(&stk::__vector<char>::bottom()) +1;
 if (a_new_len <= lp) stk::__vector<char>::at(a_new_len) = '\0';
 else stk::cstr::set_end(&stk::__vector<char>::bottom(),'\0',lp,a_new_len);
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * hmac_sha1.h
  *
  * Version 1.0.0
@@ -32,8 +32,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef HEADER_HMAC_SHA1_H
-#define HEADER_HMAC_SHA1_H
+#ifndef __hmac_sha1_h__
+#define __hmac_sha1_h__
 
 /*
  * Include SHA-1 stuff - CHOOSE WHICH SOURCE to use for the SHA1 functions

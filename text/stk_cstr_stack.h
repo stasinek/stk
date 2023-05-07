@@ -14,7 +14,7 @@ namespace stk {
 #define STACKCNT	(uint32_t)1024
 #define STACKSTR	(uint32_t)1024 // 64*1024=64kB ONE MEMORY SEGMENT
 //---------------------------------------------------------------------------
-class  STK_IMPEXP __cstr_stack : public __vector<__cstr_class*> {
+class  STK_IMPEXP __cstr_stack : public stk::__vector<__cstr_class*> {
 protected:
         void			            __stdcall	__init              	(const uint32_t a_count, const uint32_t a_text_class_size);
 private:
@@ -37,7 +37,7 @@ virtual                             __stdcall ~__cstr_stack				(void);
 };
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
-}
+} // #endif stk namespace
 #endif
 //---------------------------------------------------------------------------
 #endif
