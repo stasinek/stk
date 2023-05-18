@@ -84,7 +84,15 @@ extern bool		 __cdecl	cpu_has_psn(void);
 extern uint64_t  __cdecl    rdtsc(void);
 extern uint64_t	 __cdecl	rdtscex(void);
 //---------------------------------------------------------------------------
-#if !defined(__BORLANDC__) && !defined(__WATCOMC__) //RDTSCP is not supported by these older compilers
+#if defined(__WATCOMC__) // usupported
+    #define __CANT_COMPILE_RDTSCP__
+#endif
+#if defined(__BORLANDC__) // since version 550
+    #if (__BORLANDC__ < 0x550)
+        #define __CANT_COMPILE_RDTSCP__
+    #endif
+#endif
+#if !defined(__CANT_COMPILE_RDTSCP__)
 extern uint64_t  __cdecl    rdtscp(uint32_t *a_chip, uint32_t *a_core);
 #endif
 //---------------------------------------------------------------------------
@@ -99,3 +107,6 @@ extern uint64_t  __cdecl	tsc_elapsed(void);
 }}
 //---------------------------------------------------------------------------
 #endif
+
+
+

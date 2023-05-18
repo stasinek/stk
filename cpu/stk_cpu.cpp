@@ -14,7 +14,7 @@ static uint64_t tsc_STARTED = 0, tsc_PAUSED = 0, tsc_LAST_MEASURED = 0;
 static uint64_t tsc_ADJ = stk::cpu::tsc_init();
 static uint64_t tsc_ELAPSED = 0;
 //---------------------------------------------------------------------------
-#if !defined(__WATCOMC__) && !defined(__BORLANDC__)
+#if !defined(__CANT_COMPILE_RDTSCP__)
 uint64_t __cdecl stk::cpu::rdtscp(uint32_t *a_chip, uint32_t *a_core)
 {
 uint64_t ret;
@@ -23,7 +23,7 @@ uint32_t ret_hi, ret_lo, ret_cc;
 // TODO: return ret 64bit as 32 bit parts union
 #if defined(__GNUC__) || defined(__CLANG__)
     asm volatile("rdtscp" : "=a" (ret_lo), "=d" (ret_hi), "=c" (ret_cc));
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
     __asm {
         rdtscp;
         mov [ret_lo], eax;
@@ -32,7 +32,7 @@ uint32_t ret_hi, ret_lo, ret_cc;
     }
 #else
     #error "Your compiler is not supported"
-    // TODO: Watcom, Peles C
+    // TODO: Watcom, Peles C, Borland C++ Builder 3
     return 0;
 #endif
 //-----------------------------
@@ -78,7 +78,7 @@ uint32_t ret_lo, ret_hi;
         return 0;
     #endif
 
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
 
     __asm {
         rdtsc;
@@ -231,7 +231,7 @@ uint32_t ret_lo, ret_hi;
         return 0;
     #endif
 
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
 
     ATOMIC(1)
     ATOMIC_LOCK(1)
@@ -290,7 +290,6 @@ uint32_t ret_lo, ret_hi;
 //-----------------------------
 // common to all compilers and architectures section
 //-----------------------------
-return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -412,7 +411,7 @@ uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_e
         return 0;
     #endif
 // end of GNU compiler section
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
 
    __asm {
         mov eax,a_feature;
@@ -567,7 +566,7 @@ previous_feature_ecx = a_feature_ecx;
         return 0;
     #endif
 
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
 
     #if defined(__x86_64__)
     __asm {

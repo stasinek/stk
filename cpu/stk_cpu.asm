@@ -9,8 +9,8 @@
 	?debug	macro
 	endm
 	endif
-	?debug	S "K:\prc++\x86_libraries\STK\cpu\stk_cpu.cpp"
-	?debug	T "K:\prc++\x86_libraries\STK\cpu\stk_cpu.cpp"
+	?debug	S "E:\SRC\X86_LIBRARIES\stk\cpu\stk_cpu.cpp"
+	?debug	T "E:\SRC\X86_LIBRARIES\stk\cpu\stk_cpu.cpp"
 _TEXT	segment dword public use32 'CODE'
 _TEXT	ends
 _DATA	segment dword public use32 'DATA'
@@ -32,71 +32,123 @@ _DATA	segment dword public use32 'DATA'
 	align	4
 _tsc_STARTED	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 	align	4
 _tsc_PAUSED	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 	align	4
 _tsc_LAST_MEASURED	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 	align	4
 _tsc_ADJ	label	qword
 	db	8	dup(?)
+	db	1	dup(?)
 	align	4
 _tsc_ELAPSED	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
-@stk@cpu@rdtsc$qv	segment virtual
+@stk@cpu@rdtscp$qpuit1	segment virtual
 	align	2
-@@stk@cpu@rdtsc$qv	proc	near
+@@stk@cpu@rdtscp$qpuit1	proc	near
 ?live16385@0:
-	?debug L 43
+	?debug L 18
 	push      ebp
 	mov       ebp,esp
-	add       esp,-16
-	?debug L 50
-@1:
-	rdtsc	
-	?debug L 51
-	mov	 [dword ptr [ebp-8]], eax
-	?debug L 52
-	mov	 [dword ptr [ebp-4]], edx
-	?debug L 55
-	mov       eax,dword ptr [ebp-4]
-	xor       edx,edx
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 56
-	mov       edx,dword ptr [ebp-16]
-	xor       eax,eax
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 57
-	mov       eax,dword ptr [ebp-8]
-	xor       edx,edx
-	or        eax,dword ptr [ebp-16]
-	or        edx,dword ptr [ebp-12]
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 58
-	mov       eax,dword ptr [ebp-16]
-	mov       edx,dword ptr [ebp-12]
-	?debug L 59
-@3:
+	push      5457731
+	add       esp,-40
+	push      ebx
+	push      esi
+	mov       dword ptr [ebp-8],offset @1
+	mov       esi,dword ptr [ebp+12]
+	mov       ebx,dword ptr [ebp+8]
+	?debug L 28
 @2:
+	rdtscp	
+	?debug L 29
+	mov	 [dword ptr [ebp-36]], eax
+	?debug L 30
+	mov	 [dword ptr [ebp-28]], edx
+	?debug L 31
+	mov	 [dword ptr [ebp-44]], ecx
+	?debug L 41
+?live16385@80: ; EBX = a_chip, ESI = a_core
+	test      ebx,ebx
+	je        short @3
+	?debug L 42
+	mov       eax,dword ptr [ebp-44]
+	push      4
+	and       eax,16773120
+	push      ebx
+	shr       eax,12
+	push      0
+	call      _CG_DA_EPY
+	mov       dword ptr [ebx],eax
+	?debug L 43
+?live16385@112: ; ESI = a_core
+@3:
+	test      esi,esi
+	je        short @4
+	?debug L 44
+	mov       edx,dword ptr [ebp-44]
+	push      4
+	push      esi
+	push      0
+	and       edx,4095
+	call      _CG_DA_EPY
+	mov       dword ptr [esi],edx
+	?debug L 45
+?live16385@144: ; 
+@4:
+	mov       eax,dword ptr [ebp-28]
+	xor       edx,edx
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	?debug L 46
+	mov       edx,dword ptr [ebp-20]
+	xor       eax,eax
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	?debug L 47
+	mov       eax,dword ptr [ebp-36]
+	xor       edx,edx
+	or        eax,dword ptr [ebp-20]
+	or        edx,dword ptr [ebp-16]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	?debug L 48
+	mov       eax,dword ptr [ebp-20]
+	mov       edx,dword ptr [ebp-16]
+	?debug L 49
+@6:
+@5:
+	mov       dword ptr [ebp-4],ebp
+	pop       esi
+	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@1:
+	db        67,71,83,0
+	dd        @@stk@cpu@rdtscp$qpuit1+0
+	dd        @1+0
+	db        212,255,255,255,16,0,0,0,4,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0
 	?debug L 0
-@@stk@cpu@rdtsc$qv	endp
-@stk@cpu@rdtsc$qv	ends
+@@stk@cpu@rdtscp$qpuit1	endp
+@stk@cpu@rdtscp$qpuit1	ends
 _TEXT	ends
 $$BSYMS	segment byte public use32 'DEBSYM'
 	db	2
 	db	0
 	db	0
 	db	0
-	dw	64
+	dw	69
 	dw	517
 	dw	0
 	dw	0
@@ -107,11 +159,198 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dd	?patch1
 	dd	?patch2
 	dd	?patch3
-	df	@@stk@cpu@rdtsc$qv
+	df	@@stk@cpu@rdtscp$qpuit1
 	dw	0
 	dw	4096
 	dw	0
 	dw	1
+	dw	0
+	dw	0
+	dw	0
+	db	22
+	db	64
+	db	115
+	db	116
+	db	107
+	db	64
+	db	99
+	db	112
+	db	117
+	db	64
+	db	114
+	db	100
+	db	116
+	db	115
+	db	99
+	db	112
+	db	36
+	db	113
+	db	112
+	db	117
+	db	105
+	db	116
+	db	49
+	dw	18
+	dw	512
+	dw	8
+	dw	0
+	dw	1141
+	dw	0
+	dw	2
+	dw	0
+	dw	0
+	dw	0
+	dw	?patch4
+	dw	529
+	dw	?patch5
+	dd	?live16385@80-@@stk@cpu@rdtscp$qpuit1
+	dd	?live16385@112-?live16385@80
+	dw	20
+?patch5	equ	1
+?patch4	equ	14
+	dw	18
+	dw	512
+	dw	12
+	dw	0
+	dw	1141
+	dw	0
+	dw	3
+	dw	0
+	dw	0
+	dw	0
+	dw	?patch6
+	dw	529
+	dw	?patch7
+	dd	?live16385@80-@@stk@cpu@rdtscp$qpuit1
+	dd	?live16385@144-?live16385@80
+	dw	23
+?patch7	equ	1
+?patch6	equ	14
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	4
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	5
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	6
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65516
+	dw	65535
+	dw	119
+	dw	0
+	dw	7
+	dw	0
+	dw	0
+	dw	0
+?patch1	equ	@6-@@stk@cpu@rdtscp$qpuit1+65
+?patch2	equ	0
+?patch3	equ	@6-@@stk@cpu@rdtscp$qpuit1
+	dw	2
+	dw	6
+	dw	8
+	dw	531
+	dw	5
+	dw	65484
+	dw	65535
+$$BSYMS	ends
+_TEXT	segment dword public use32 'CODE'
+@stk@cpu@rdtsc$qv	segment virtual
+	align	2
+@@stk@cpu@rdtsc$qv	proc	near
+?live16386@0:
+	?debug L 53
+	push      ebp
+	mov       ebp,esp
+	push      5457731
+	add       esp,-32
+	mov       dword ptr [ebp-8],offset @7
+	?debug L 84
+@8:
+	rdtsc	
+	?debug L 85
+	mov	 [dword ptr [ebp-28]], eax
+	?debug L 86
+	mov	 [dword ptr [ebp-36]], edx
+	?debug L 104
+	mov       eax,dword ptr [ebp-36]
+	xor       edx,edx
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	?debug L 105
+	mov       edx,dword ptr [ebp-20]
+	xor       eax,eax
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	?debug L 106
+	mov       eax,dword ptr [ebp-28]
+	xor       edx,edx
+	or        eax,dword ptr [ebp-20]
+	or        edx,dword ptr [ebp-16]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	?debug L 107
+	mov       eax,dword ptr [ebp-20]
+	mov       edx,dword ptr [ebp-16]
+	?debug L 108
+@10:
+@9:
+	mov       dword ptr [ebp-4],ebp
+	mov       esp,ebp
+	pop       ebp
+	ret 
+	align 4        
+@7:
+	db        67,71,83,0
+	dd        @@stk@cpu@rdtsc$qv+0
+	dd        @7+0
+	db        220,255,255,255,8,0,0,0,3,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0
+	?debug L 0
+@@stk@cpu@rdtsc$qv	endp
+@stk@cpu@rdtsc$qv	ends
+_TEXT	ends
+$$BSYMS	segment byte public use32 'DEBSYM'
+	dw	64
+	dw	517
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+	dd	?patch8
+	dd	?patch9
+	dd	?patch10
+	df	@@stk@cpu@rdtsc$qv
+	dw	0
+	dw	4098
+	dw	0
+	dw	8
 	dw	0
 	dw	0
 	dw	0
@@ -135,146 +374,241 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
-	dw	65520
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	9
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	10
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65516
 	dw	65535
 	dw	119
 	dw	0
-	dw	2
+	dw	11
 	dw	0
 	dw	0
 	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
-	dw	117
-	dw	0
-	dw	3
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65532
-	dw	65535
-	dw	117
-	dw	0
-	dw	4
-	dw	0
-	dw	0
-	dw	0
-?patch1	equ	@3-@@stk@cpu@rdtsc$qv+4
-?patch2	equ	0
-?patch3	equ	@3-@@stk@cpu@rdtsc$qv
+?patch8	equ	@10-@@stk@cpu@rdtsc$qv+57
+?patch9	equ	0
+?patch10	equ	@10-@@stk@cpu@rdtsc$qv
 	dw	2
 	dw	6
 	dw	4
 	dw	531
 	dw	0
 $$BSYMS	ends
+_DATA	segment dword public use32 'DATA'
+	align	4
+$enckfcia	label	qword
+	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
+_DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@rdtscex$qv	segment virtual
 	align	2
 @@stk@cpu@rdtscex$qv	proc	near
-?live16386@0:
-	?debug L 62
+?live16387@0:
+	?debug L 111
 	push      ebp
 	mov       ebp,esp
-	add       esp,-16
+	push      5457731
+	add       esp,-44
 	push      ebx
 	push      esi
-	?debug L 73
-@4:
+	push      edi
+	mov       dword ptr [ebp-8],offset @11
+	mov       edi,offset $enckfcia
+@12:
+	jmp       short @14
+	?debug L 237
+?live16387@16: ; EDI = &$enckfcia
+@13:
+	push      0
+	push      0
+	call      @@stk@time@wait_us$qxuj
+@14:
+	push      8
+	push      edi
+	call      _CG_D_EP
+	cmp       dword ptr [edi+4],0
+	jne       short @13
+	cmp       dword ptr [edi],0
+@15:
+	jne       short @13
+	call      @@stk@cpu@rdtsc$qv
+	mov       dword ptr [ebp-48],eax
+	mov       dword ptr [ebp-44],edx
+	push      8
+	push      edi
+	call      _CG_D_EP
+	mov       eax,dword ptr [ebp-48]
+	mov       dword ptr [edi],eax
+	mov       eax,dword ptr [ebp-44]
+	mov       dword ptr [edi+4],eax
+	jmp       short @17
+@16:
+	push      0
+	push      0
+	call      @@stk@time@wait_us$qxuj
+@17:
+	push      8
+	push      edi
+	call      _CG_D_EP
+	cmp       dword ptr [edi+4],0
+	jne       short @20
+	cmp       dword ptr [edi],0
+@20:
+	je        short @18
+	push      8
+	push      edi
+	call      _CG_D_EP
+	mov       eax,dword ptr [edi]
+	mov       edx,dword ptr [edi+4]
+	cmp       edx,dword ptr [ebp-44]
+	jne       short @21
+	cmp       eax,dword ptr [ebp-48]
+@21:
+	setne     cl
+	and       ecx,1
+	jmp       short @19
+@18:
+	xor       ecx,ecx
+@19:
+	test      cl,cl
+	jne       short @16
+	?debug L 239
+?live16387@32: ; 
 	pushfd	
-	?debug L 74
+	?debug L 240
 	push	 eax
-	?debug L 75
+	?debug L 241
 	push	 ebx
-	?debug L 76
+	?debug L 242
 	push	 ecx
-	?debug L 77
+	?debug L 243
 	push	 edx
-	?debug L 78
+	?debug L 244
 	push	 esi
-	?debug L 79
+	?debug L 245
 	mov	 eax,000000001H
-	?debug L 80
+	?debug L 246
 	xor	 ecx,ecx
-	?debug L 81
+	?debug L 247
 	cpuid	
-	?debug L 82
+	?debug L 248
 	mov	 ecx,000000001H
-	?debug L 83
+	?debug L 249
 	shl	 ecx,27
-	?debug L 84
+	?debug L 250
 	and	 ecx,edx
-	?debug L 85
+	?debug L 251
 	xor	 eax,eax
-	?debug L 86
+	?debug L 252
 	xor	 edx,edx
-	?debug L 88
+	?debug L 254
 	test	 ecx,ecx
-	?debug L 89
-	je        @5
-	?debug L 90
+	?debug L 255
+?live16387@272: ; EDI = &$enckfcia
+	je        @22
+	?debug L 256
+?live16387@288: ; 
 	mov	 eax,1
-	?debug L 91
+	?debug L 257
 	cpuid	
-	?debug L 92
-	jmp       @6
-	?debug L 93
-tsc_amd_measure:
-	?debug L 94
+	?debug L 258
+?live16387@320: ; EDI = &$enckfcia
+	jmp       @23
+	?debug L 260
+?live16387@336: ; 
 	sfence	
-	?debug L 95
+	?debug L 261
 	rdtsc	
-	?debug L 97
-@6:
+	?debug L 263
+@23:
 tsc_intel_measure:
-	?debug L 98
+	?debug L 264
 	sfence	
-	?debug L 99
+	?debug L 265
 	rdtsc	
-	?debug L 101
-@5:
+	?debug L 267
+@22:
 tsc_exit:
-	?debug L 102
-	mov	 [dword ptr [ebp-4]],eax
-	?debug L 103
-	mov	 [dword ptr [ebp-8]],edx
-	?debug L 104
+	?debug L 268
+	mov	 [dword ptr [ebp-28]],eax
+	?debug L 269
+	mov	 [dword ptr [ebp-36]],edx
+	?debug L 270
 	pop	 esi
-	?debug L 105
+	?debug L 271
 	pop	 edx
-	?debug L 106
+	?debug L 272
 	pop	 ecx
-	?debug L 107
+	?debug L 273
 	pop	 ebx
-	?debug L 108
+	?debug L 274
 	pop	 eax
-	?debug L 109
+	?debug L 275
 	popfd	
-	?debug L 111
-	mov       eax,dword ptr [ebp-8]
+	?debug L 277
+?live16387@560: ; EDI = &$enckfcia
+	mov       eax,dword ptr [ebp-36]
 	xor       edx,edx
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 112
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	?debug L 278
+	mov       edx,dword ptr [ebp-20]
+	xor       eax,eax
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	?debug L 279
+	mov       eax,dword ptr [ebp-28]
+	xor       edx,edx
+	or        eax,dword ptr [ebp-20]
+	or        edx,dword ptr [ebp-16]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	?debug L 280
+	push      8
+	push      edi
+	call      _CG_D_EP
+	mov       dword ptr [edi],0
+	mov       dword ptr [edi+4],0
+	?debug L 281
+?live16387@624: ; 
+	mov       eax,dword ptr [ebp-20]
 	mov       edx,dword ptr [ebp-16]
-	xor       eax,eax
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 169
-	xor       eax,eax
-	xor       edx,edx
-	?debug L 170
-@8:
-@7:
+	?debug L 293
+@25:
+@24:
+	mov       dword ptr [ebp-4],ebp
+	pop       edi
 	pop       esi
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@11:
+	db        67,71,83,0
+	dd        @@stk@cpu@rdtscex$qv+0
+	dd        @11+0
+	db        208,255,255,255,8,0,0,0,4,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,208,255,255,255,8,0,0,0
 	?debug L 0
 @@stk@cpu@rdtscex$qv	endp
 @stk@cpu@rdtscex$qv	ends
@@ -288,14 +622,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch4
-	dd	?patch5
-	dd	?patch6
+	dd	?patch11
+	dd	?patch12
+	dd	?patch13
 	df	@@stk@cpu@rdtscex$qv
 	dw	0
-	dw	4098
+	dw	4100
 	dw	0
-	dw	5
+	dw	12
 	dw	0
 	dw	0
 	dw	0
@@ -319,154 +653,201 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	36
 	db	113
 	db	118
+	dw	22
+	dw	513
+	df	$enckfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	13
+	dw	0
+	dw	0
+	dw	0
 	dw	18
 	dw	512
-	dw	65520
+	dw	65488
+	dw	65535
+	dw	118
+	dw	0
+	dw	14
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	15
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	16
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65516
 	dw	65535
 	dw	119
 	dw	0
-	dw	6
+	dw	17
 	dw	0
 	dw	0
 	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
-	dw	117
-	dw	0
-	dw	7
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65532
-	dw	65535
-	dw	117
-	dw	0
-	dw	8
-	dw	0
-	dw	0
-	dw	0
-?patch4	equ	@8-@@stk@cpu@rdtscex$qv+6
-?patch5	equ	0
-?patch6	equ	@8-@@stk@cpu@rdtscex$qv
+?patch11	equ	@25-@@stk@cpu@rdtscex$qv+68
+?patch12	equ	0
+?patch13	equ	@25-@@stk@cpu@rdtscex$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
-	dw	5
-	dw	65512
+	dw	7
+	dw	65476
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$minofcia	label	qword
+$ehdkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@tsc_init$qv	segment virtual
 	align	2
 @@stk@cpu@tsc_init$qv	proc	near
-?live16387@0:
-	?debug L 173
-@9:
+?live16388@0:
+	?debug L 296
 	push      ebp
 	mov       ebp,esp
-	add       esp,-32
+	push      5457731
+	add       esp,-52
 	push      ebx
-	mov       ebx,offset $minofcia
-	jmp       short @11
-	?debug L 176
-?live16387@16: ; EBX = &$minofcia
-@10:
+	mov       dword ptr [ebp-8],offset @26
+@27:
+	mov       ebx,offset $ehdkfcia
+	jmp       short @29
+	?debug L 299
+?live16388@16: ; EBX = &$ehdkfcia
+@28:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@11:
+	call      @@stk@time@wait_us$qxuj
+@29:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @10
+	jne       short @28
 	cmp       dword ptr [ebx],0
-	jne       short @10
+	jne       short @28
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       eax,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       eax,dword ptr [ebp-20]
 	mov       dword ptr [ebx],eax
-	mov       eax,dword ptr [ebp-4]
+	mov       eax,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],eax
-	jmp       short @14
-@13:
+	jmp       short @32
+@31:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@14:
+	call      @@stk@time@wait_us$qxuj
+@32:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @17
+	jne       short @35
 	cmp       dword ptr [ebx],0
-@17:
-	je        short @15
+@35:
+	je        short @33
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @18
-	cmp       eax,dword ptr [ebp-8]
-@18:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @36
+	cmp       eax,dword ptr [ebp-20]
+@36:
 	setne     cl
 	and       ecx,1
-	jmp       short @16
-@15:
+	jmp       short @34
+@33:
 	xor       ecx,ecx
-@16:
+@34:
 	test      cl,cl
-	jne       short @13
-	?debug L 178
+	jne       short @31
+	?debug L 301
 	mov       dword ptr [_tsc_ADJ],0
 	mov       dword ptr [_tsc_ADJ+4],0
-	?debug L 179
+	?debug L 302
 	call      @@stk@cpu@tsc_start$qv
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 180
+	mov       dword ptr [ebp-32],eax
+	mov       dword ptr [ebp-28],edx
+	?debug L 303
 	call      @@stk@cpu@tsc_checkpoint$qv
-	mov       dword ptr [ebp-24],eax
-	mov       dword ptr [ebp-20],edx
-	?debug L 181
-	mov       eax,dword ptr [ebp-24]
-	mov       edx,dword ptr [ebp-20]
-	cmp       edx,dword ptr [ebp-12]
-	jne       short @20
-	cmp       eax,dword ptr [ebp-16]
-@20:
-	jbe       short @19
-	?debug L 182
-	mov       eax,dword ptr [ebp-24]
-	mov       edx,dword ptr [ebp-20]
-	sub       eax,dword ptr [ebp-16]
-	sbb       edx,dword ptr [ebp-12]
+	mov       dword ptr [ebp-44],eax
+	mov       dword ptr [ebp-40],edx
+	?debug L 304
+	mov       eax,dword ptr [ebp-44]
+	mov       edx,dword ptr [ebp-40]
+	cmp       edx,dword ptr [ebp-28]
+	jne       short @38
+	cmp       eax,dword ptr [ebp-32]
+@38:
+	jbe       short @37
+	?debug L 305
+	mov       eax,dword ptr [ebp-44]
+	mov       edx,dword ptr [ebp-40]
+	sub       eax,dword ptr [ebp-32]
+	sbb       edx,dword ptr [ebp-28]
 	mov       dword ptr [_tsc_ADJ],eax
 	mov       dword ptr [_tsc_ADJ+4],edx
-	?debug L 183
-@19:
+	?debug L 306
+@37:
 	mov       eax,dword ptr [_tsc_ADJ]
-	mov       dword ptr [ebp-32],eax
+	mov       dword ptr [ebp-56],eax
 	mov       eax,dword ptr [_tsc_ADJ+4]
-	mov       dword ptr [ebp-28],eax
-	?debug L 184
+	mov       dword ptr [ebp-52],eax
+	?debug L 307
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 185
-?live16387@144: ; 
-	mov       eax,dword ptr [ebp-32]
-	mov       edx,dword ptr [ebp-28]
-	?debug L 186
-@22:
-@21:
+	?debug L 308
+?live16388@144: ; 
+	mov       eax,dword ptr [ebp-56]
+	mov       edx,dword ptr [ebp-52]
+	?debug L 309
+@40:
+@39:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@26:
+	db        67,71,83,0
+	dd        @@stk@cpu@tsc_init$qv+0
+	dd        @26+0
+	db        200,255,255,255,8,0,0,0,4,0,0,0,236,255,255,255
+	db        8,0,0,0,224,255,255,255,8,0,0,0,212,255,255,255
+	db        8,0,0,0,200,255,255,255,8,0,0,0
 	?debug L 0
 @@stk@cpu@tsc_init$qv	endp
 @stk@cpu@tsc_init$qv	ends
@@ -480,14 +861,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch7
-	dd	?patch8
-	dd	?patch9
+	dd	?patch14
+	dd	?patch15
+	dd	?patch16
 	df	@@stk@cpu@tsc_init$qv
 	dw	0
-	dw	4100
+	dw	4103
 	dw	0
-	dw	9
+	dw	18
 	dw	0
 	dw	0
 	dw	0
@@ -514,159 +895,185 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
+	dw	65480
+	dw	65535
+	dw	119
+	dw	0
+	dw	19
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	119
+	dw	0
+	dw	20
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
 	dw	65504
 	dw	65535
 	dw	119
 	dw	0
-	dw	10
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65512
-	dw	65535
-	dw	119
-	dw	0
-	dw	11
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	119
-	dw	0
-	dw	12
+	dw	21
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$minofcia
+	df	$ehdkfcia
 	dw	0
 	dw	4102
 	dw	0
-	dw	13
+	dw	22
 	dw	0
 	dw	0
 	dw	0
 	dw	18
 	dw	512
-	dw	65528
+	dw	65516
 	dw	65535
 	dw	118
 	dw	0
-	dw	14
+	dw	23
 	dw	0
 	dw	0
 	dw	0
-?patch7	equ	@22-@@stk@cpu@tsc_init$qv+5
-?patch8	equ	0
-?patch9	equ	@22-@@stk@cpu@tsc_init$qv
+?patch14	equ	@40-@@stk@cpu@tsc_init$qv+64
+?patch15	equ	0
+?patch16	equ	@40-@@stk@cpu@tsc_init$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65500
+	dw	65476
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$emnofcia	label	qword
+$mkdkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@tsc_start$qv	segment virtual
 	align	2
 @@stk@cpu@tsc_start$qv	proc	near
-?live16388@0:
-	?debug L 189
-@23:
+?live16389@0:
+	?debug L 312
 	push      ebp
 	mov       ebp,esp
-	add       esp,-16
+	push      5457731
+	add       esp,-28
 	push      ebx
-	mov       ebx,offset $emnofcia
-	jmp       short @25
-	?debug L 192
-?live16388@16: ; EBX = &$emnofcia
-@24:
+	mov       dword ptr [ebp-8],offset @41
+@42:
+	mov       ebx,offset $mkdkfcia
+	jmp       short @44
+	?debug L 315
+?live16389@16: ; EBX = &$mkdkfcia
+@43:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@25:
+	call      @@stk@time@wait_us$qxuj
+@44:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @24
+	jne       short @43
 	cmp       dword ptr [ebx],0
-	jne       short @24
+	jne       short @43
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       eax,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       eax,dword ptr [ebp-20]
 	mov       dword ptr [ebx],eax
-	mov       eax,dword ptr [ebp-4]
+	mov       eax,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],eax
-	jmp       short @28
-@27:
+	jmp       short @47
+@46:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@28:
+	call      @@stk@time@wait_us$qxuj
+@47:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @31
+	jne       short @50
 	cmp       dword ptr [ebx],0
-@31:
-	je        short @29
+@50:
+	je        short @48
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @32
-	cmp       eax,dword ptr [ebp-8]
-@32:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @51
+	cmp       eax,dword ptr [ebp-20]
+@51:
 	setne     cl
 	and       ecx,1
-	jmp       short @30
-@29:
+	jmp       short @49
+@48:
 	xor       ecx,ecx
-@30:
+@49:
 	test      cl,cl
-	jne       short @27
-	?debug L 193
+	jne       short @46
+	?debug L 316
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 194
-	mov       eax,dword ptr [ebp-16]
+	mov       dword ptr [ebp-32],eax
+	mov       dword ptr [ebp-28],edx
+	?debug L 317
+	mov       eax,dword ptr [ebp-32]
 	mov       dword ptr [_tsc_STARTED],eax
-	mov       eax,dword ptr [ebp-12]
+	mov       eax,dword ptr [ebp-28]
 	mov       dword ptr [_tsc_STARTED+4],eax
-	?debug L 195
-	mov       edx,dword ptr [ebp-16]
+	?debug L 318
+	mov       edx,dword ptr [ebp-32]
 	mov       dword ptr [_tsc_LAST_MEASURED],edx
-	mov       edx,dword ptr [ebp-12]
+	mov       edx,dword ptr [ebp-28]
 	mov       dword ptr [_tsc_LAST_MEASURED+4],edx
-	?debug L 196
+	?debug L 319
 	mov       dword ptr [_tsc_PAUSED],0
 	mov       dword ptr [_tsc_PAUSED+4],0
 	mov       dword ptr [_tsc_ELAPSED],0
 	mov       dword ptr [_tsc_ELAPSED+4],0
-	?debug L 197
+	?debug L 320
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 198
-?live16388@112: ; 
-	mov       eax,dword ptr [ebp-16]
-	mov       edx,dword ptr [ebp-12]
-	?debug L 199
-@34:
-@33:
+	?debug L 321
+?live16389@112: ; 
+	mov       eax,dword ptr [ebp-32]
+	mov       edx,dword ptr [ebp-28]
+	?debug L 322
+@53:
+@52:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@41:
+	db        67,71,83,0
+	dd        @@stk@cpu@tsc_start$qv+0
+	dd        @41+0
+	db        224,255,255,255,8,0,0,0,2,0,0,0,236,255,255,255
+	db        8,0,0,0,224,255,255,255,8,0,0,0
 	?debug L 0
 @@stk@cpu@tsc_start$qv	endp
 @stk@cpu@tsc_start$qv	ends
@@ -680,14 +1087,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch10
-	dd	?patch11
-	dd	?patch12
+	dd	?patch17
+	dd	?patch18
+	dd	?patch19
 	df	@@stk@cpu@tsc_start$qv
 	dw	0
-	dw	4103
+	dw	4105
 	dw	0
-	dw	15
+	dw	24
 	dw	0
 	dw	0
 	dw	0
@@ -715,172 +1122,199 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
-	dw	65520
+	dw	65504
 	dw	65535
 	dw	119
 	dw	0
-	dw	16
+	dw	25
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$emnofcia
+	df	$mkdkfcia
 	dw	0
 	dw	4102
 	dw	0
-	dw	17
+	dw	26
 	dw	0
 	dw	0
 	dw	0
 	dw	18
 	dw	512
-	dw	65528
+	dw	65516
 	dw	65535
 	dw	118
 	dw	0
-	dw	18
+	dw	27
 	dw	0
 	dw	0
 	dw	0
-?patch10	equ	@34-@@stk@cpu@tsc_start$qv+5
-?patch11	equ	0
-?patch12	equ	@34-@@stk@cpu@tsc_start$qv
+?patch17	equ	@53-@@stk@cpu@tsc_start$qv+49
+?patch18	equ	0
+?patch19	equ	@53-@@stk@cpu@tsc_start$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65516
+	dw	65500
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mpnofcia	label	qword
+$eodkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@tsc_checkpoint$qv	segment virtual
 	align	2
 @@stk@cpu@tsc_checkpoint$qv	proc	near
-?live16389@0:
-	?debug L 202
-@35:
+?live16390@0:
+	?debug L 325
 	push      ebp
 	mov       ebp,esp
-	add       esp,-32
+	push      5457731
+	add       esp,-52
 	push      ebx
-	mov       ebx,offset $mpnofcia
-	jmp       short @37
-	?debug L 205
-?live16389@16: ; EBX = &$mpnofcia
-@36:
+	mov       dword ptr [ebp-8],offset @54
+@55:
+	mov       ebx,offset $eodkfcia
+	jmp       short @57
+	?debug L 328
+?live16390@16: ; EBX = &$eodkfcia
+@56:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@37:
+	call      @@stk@time@wait_us$qxuj
+@57:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @36
+	jne       short @56
 	cmp       dword ptr [ebx],0
-	jne       short @36
+	jne       short @56
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       eax,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       eax,dword ptr [ebp-20]
 	mov       dword ptr [ebx],eax
-	mov       eax,dword ptr [ebp-4]
+	mov       eax,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],eax
-	jmp       short @40
-@39:
+	jmp       short @60
+@59:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@40:
+	call      @@stk@time@wait_us$qxuj
+@60:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @43
+	jne       short @63
 	cmp       dword ptr [ebx],0
-@43:
-	je        short @41
+@63:
+	je        short @61
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @44
-	cmp       eax,dword ptr [ebp-8]
-@44:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @64
+	cmp       eax,dword ptr [ebp-20]
+@64:
 	setne     cl
 	and       ecx,1
-	jmp       short @42
-@41:
+	jmp       short @62
+@61:
 	xor       ecx,ecx
-@42:
+@62:
 	test      cl,cl
-	jne       short @39
-	?debug L 206
+	jne       short @59
+	?debug L 329
 	mov       eax,dword ptr [_tsc_PAUSED]
-	mov       dword ptr [ebp-16],eax
+	mov       dword ptr [ebp-32],eax
 	mov       eax,dword ptr [_tsc_PAUSED+4]
-	mov       dword ptr [ebp-12],eax
-	?debug L 209
-	cmp       dword ptr [ebp-12],0
-	jne       short @45
-	cmp       dword ptr [ebp-16],0
-	jne       short @45
-	?debug L 210
+	mov       dword ptr [ebp-28],eax
+	?debug L 332
+	cmp       dword ptr [ebp-28],0
+	jne       short @65
+	cmp       dword ptr [ebp-32],0
+	jne       short @65
+	?debug L 333
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 212
-@45:
+	mov       dword ptr [ebp-32],eax
+	mov       dword ptr [ebp-28],edx
+	?debug L 335
+@65:
 	mov       eax,dword ptr [_tsc_STARTED]
 	mov       edx,dword ptr [_tsc_STARTED+4]
 	sub       eax,dword ptr [_tsc_ADJ]
 	sbb       edx,dword ptr [_tsc_ADJ+4]
-	mov       dword ptr [ebp-24],eax
-	mov       dword ptr [ebp-20],edx
-	?debug L 213
-	mov       eax,dword ptr [ebp-16]
-	mov       edx,dword ptr [ebp-12]
-	cmp       edx,dword ptr [ebp-20]
-	jne       short @48
-	cmp       eax,dword ptr [ebp-24]
-@48:
-	jbe       short @47
-	mov       eax,dword ptr [ebp-16]
-	mov       edx,dword ptr [ebp-12]
-	sub       eax,dword ptr [ebp-24]
-	sbb       edx,dword ptr [ebp-20]
-	mov       dword ptr [ebp-32],eax
-	mov       dword ptr [ebp-28],edx
-	jmp       short @49
-	?debug L 215
-@47:
-	mov       dword ptr [ebp-32],0
-	mov       dword ptr [ebp-28],0
-	?debug L 217
-@49:
-	mov       eax,dword ptr [ebp-16]
-	mov       dword ptr [_tsc_LAST_MEASURED],eax
-	mov       eax,dword ptr [ebp-12]
-	mov       dword ptr [_tsc_LAST_MEASURED+4],eax
-	?debug L 218
-	mov       edx,dword ptr [ebp-32]
-	mov       dword ptr [_tsc_ELAPSED],edx
+	mov       dword ptr [ebp-44],eax
+	mov       dword ptr [ebp-40],edx
+	?debug L 336
+	mov       eax,dword ptr [ebp-32]
 	mov       edx,dword ptr [ebp-28]
+	cmp       edx,dword ptr [ebp-40]
+	jne       short @68
+	cmp       eax,dword ptr [ebp-44]
+@68:
+	jbe       short @67
+	mov       eax,dword ptr [ebp-32]
+	mov       edx,dword ptr [ebp-28]
+	sub       eax,dword ptr [ebp-44]
+	sbb       edx,dword ptr [ebp-40]
+	mov       dword ptr [ebp-56],eax
+	mov       dword ptr [ebp-52],edx
+	jmp       short @69
+	?debug L 338
+@67:
+	mov       dword ptr [ebp-56],0
+	mov       dword ptr [ebp-52],0
+	?debug L 340
+@69:
+	mov       eax,dword ptr [ebp-32]
+	mov       dword ptr [_tsc_LAST_MEASURED],eax
+	mov       eax,dword ptr [ebp-28]
+	mov       dword ptr [_tsc_LAST_MEASURED+4],eax
+	?debug L 341
+	mov       edx,dword ptr [ebp-56]
+	mov       dword ptr [_tsc_ELAPSED],edx
+	mov       edx,dword ptr [ebp-52]
 	mov       dword ptr [_tsc_ELAPSED+4],edx
-	?debug L 219
+	?debug L 342
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 220
-?live16389@176: ; 
-	mov       eax,dword ptr [ebp-16]
-	mov       edx,dword ptr [ebp-12]
-	?debug L 221
-@51:
-@50:
+	?debug L 343
+?live16390@176: ; 
+	mov       eax,dword ptr [ebp-32]
+	mov       edx,dword ptr [ebp-28]
+	?debug L 344
+@71:
+@70:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@54:
+	db        67,71,83,0
+	dd        @@stk@cpu@tsc_checkpoint$qv+0
+	dd        @54+0
+	db        200,255,255,255,8,0,0,0,4,0,0,0,236,255,255,255
+	db        8,0,0,0,224,255,255,255,8,0,0,0,212,255,255,255
+	db        8,0,0,0,200,255,255,255,8,0,0,0
 	?debug L 0
 @@stk@cpu@tsc_checkpoint$qv	endp
 @stk@cpu@tsc_checkpoint$qv	ends
@@ -894,14 +1328,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch13
-	dd	?patch14
-	dd	?patch15
+	dd	?patch20
+	dd	?patch21
+	dd	?patch22
 	df	@@stk@cpu@tsc_checkpoint$qv
 	dw	0
-	dw	4105
+	dw	4107
 	dw	0
-	dw	19
+	dw	28
 	dw	0
 	dw	0
 	dw	0
@@ -934,82 +1368,94 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
+	dw	65480
+	dw	65535
+	dw	119
+	dw	0
+	dw	29
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	119
+	dw	0
+	dw	30
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
 	dw	65504
 	dw	65535
 	dw	119
 	dw	0
-	dw	20
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65512
-	dw	65535
-	dw	119
-	dw	0
-	dw	21
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	119
-	dw	0
-	dw	22
+	dw	31
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mpnofcia
+	df	$eodkfcia
 	dw	0
 	dw	4102
 	dw	0
-	dw	23
+	dw	32
 	dw	0
 	dw	0
 	dw	0
 	dw	18
 	dw	512
-	dw	65528
+	dw	65516
 	dw	65535
 	dw	118
 	dw	0
-	dw	24
+	dw	33
 	dw	0
 	dw	0
 	dw	0
-?patch13	equ	@51-@@stk@cpu@tsc_checkpoint$qv+5
-?patch14	equ	0
-?patch15	equ	@51-@@stk@cpu@tsc_checkpoint$qv
+?patch20	equ	@71-@@stk@cpu@tsc_checkpoint$qv+67
+?patch21	equ	0
+?patch22	equ	@71-@@stk@cpu@tsc_checkpoint$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65500
+	dw	65476
 	dw	65535
 $$BSYMS	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@tsc_elapsed$qv	segment virtual
 	align	2
 @@stk@cpu@tsc_elapsed$qv	proc	near
-?live16390@0:
-	?debug L 224
-@52:
+?live16391@0:
+	?debug L 347
 	push      ebp
 	mov       ebp,esp
-	?debug L 226
+	push      5457731
+	push      ecx
+	mov       dword ptr [ebp-8],offset @72
+	?debug L 349
+@73:
 	mov       eax,dword ptr [_tsc_ELAPSED]
 	mov       edx,dword ptr [_tsc_ELAPSED+4]
-	?debug L 227
-@54:
-@53:
+	?debug L 350
+@75:
+@74:
+	mov       dword ptr [ebp-4],ebp
+	pop       ecx
+	pop       ecx
 	pop       ebp
 	ret 
+	align 4        
+@72:
+	db        67,71,83,0
+	dd        @@stk@cpu@tsc_elapsed$qv+0
+	dd        @72+0
+	db        248,255,255,255,8,0,0,0,0,0,0,0
 	?debug L 0
 @@stk@cpu@tsc_elapsed$qv	endp
 @stk@cpu@tsc_elapsed$qv	ends
@@ -1023,14 +1469,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch16
-	dd	?patch17
-	dd	?patch18
+	dd	?patch23
+	dd	?patch24
+	dd	?patch25
 	df	@@stk@cpu@tsc_elapsed$qv
 	dw	0
-	dw	4107
+	dw	4109
 	dw	0
-	dw	25
+	dw	34
 	dw	0
 	dw	0
 	dw	0
@@ -1058,96 +1504,125 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	36
 	db	113
 	db	118
-?patch16	equ	@54-@@stk@cpu@tsc_elapsed$qv+2
-?patch17	equ	0
-?patch18	equ	@54-@@stk@cpu@tsc_elapsed$qv
+?patch23	equ	@75-@@stk@cpu@tsc_elapsed$qv+32
+?patch24	equ	0
+?patch25	equ	@75-@@stk@cpu@tsc_elapsed$qv
 	dw	2
 	dw	6
+	dw	4
+	dw	531
+	dw	0
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$edoofcia	label	qword
+$mbekfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@tsc_pause$qv	segment virtual
 	align	2
 @@stk@cpu@tsc_pause$qv	proc	near
-?live16391@0:
-	?debug L 230
-@55:
+?live16392@0:
+	?debug L 353
 	push      ebp
 	mov       ebp,esp
-	add       esp,-16
+	push      5457731
+	add       esp,-28
 	push      ebx
-	mov       ebx,offset $edoofcia
-	jmp       short @57
-	?debug L 233
-?live16391@16: ; EBX = &$edoofcia
-@56:
+	mov       dword ptr [ebp-8],offset @76
+@77:
+	mov       ebx,offset $mbekfcia
+	jmp       short @79
+	?debug L 356
+?live16392@16: ; EBX = &$mbekfcia
+@78:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@57:
+	call      @@stk@time@wait_us$qxuj
+@79:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @56
+	jne       short @78
 	cmp       dword ptr [ebx],0
-	jne       short @56
+	jne       short @78
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       eax,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       eax,dword ptr [ebp-20]
 	mov       dword ptr [ebx],eax
-	mov       eax,dword ptr [ebp-4]
+	mov       eax,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],eax
-	jmp       short @60
-@59:
+	jmp       short @82
+@81:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@60:
+	call      @@stk@time@wait_us$qxuj
+@82:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @63
+	jne       short @85
 	cmp       dword ptr [ebx],0
-@63:
-	je        short @61
+@85:
+	je        short @83
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @64
-	cmp       eax,dword ptr [ebp-8]
-@64:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @86
+	cmp       eax,dword ptr [ebp-20]
+@86:
 	setne     cl
 	and       ecx,1
-	jmp       short @62
-@61:
+	jmp       short @84
+@83:
 	xor       ecx,ecx
-@62:
+@84:
 	test      cl,cl
-	jne       short @59
-	?debug L 234
+	jne       short @81
+	?debug L 357
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 235
-	mov       eax,dword ptr [ebp-16]
+	mov       dword ptr [ebp-32],eax
+	mov       dword ptr [ebp-28],edx
+	?debug L 358
+	mov       eax,dword ptr [ebp-32]
 	mov       dword ptr [_tsc_PAUSED],eax
-	mov       eax,dword ptr [ebp-12]
+	mov       eax,dword ptr [ebp-28]
 	mov       dword ptr [_tsc_PAUSED+4],eax
-	?debug L 236
+	?debug L 359
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 237
-?live16391@80: ; 
-	mov       eax,dword ptr [ebp-16]
-	mov       edx,dword ptr [ebp-12]
-	?debug L 238
-@66:
-@65:
+	?debug L 360
+?live16392@80: ; 
+	mov       eax,dword ptr [ebp-32]
+	mov       edx,dword ptr [ebp-28]
+	?debug L 361
+@88:
+@87:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@76:
+	db        67,71,83,0
+	dd        @@stk@cpu@tsc_pause$qv+0
+	dd        @76+0
+	db        224,255,255,255,8,0,0,0,2,0,0,0,236,255,255,255
+	db        8,0,0,0,224,255,255,255,8,0,0,0
 	?debug L 0
 @@stk@cpu@tsc_pause$qv	endp
 @stk@cpu@tsc_pause$qv	ends
@@ -1161,14 +1636,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch19
-	dd	?patch20
-	dd	?patch21
+	dd	?patch26
+	dd	?patch27
+	dd	?patch28
 	df	@@stk@cpu@tsc_pause$qv
 	dw	0
-	dw	4109
+	dw	4111
 	dw	0
-	dw	26
+	dw	35
 	dw	0
 	dw	0
 	dw	0
@@ -1196,150 +1671,178 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
-	dw	65520
+	dw	65504
 	dw	65535
 	dw	119
 	dw	0
-	dw	27
+	dw	36
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$edoofcia
+	df	$mbekfcia
 	dw	0
 	dw	4102
 	dw	0
-	dw	28
+	dw	37
 	dw	0
 	dw	0
 	dw	0
 	dw	18
 	dw	512
-	dw	65528
+	dw	65516
 	dw	65535
 	dw	118
 	dw	0
-	dw	29
+	dw	38
 	dw	0
 	dw	0
 	dw	0
-?patch19	equ	@66-@@stk@cpu@tsc_pause$qv+5
-?patch20	equ	0
-?patch21	equ	@66-@@stk@cpu@tsc_pause$qv
+?patch26	equ	@88-@@stk@cpu@tsc_pause$qv+51
+?patch27	equ	0
+?patch28	equ	@88-@@stk@cpu@tsc_pause$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65516
+	dw	65500
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mgoofcia	label	qword
+$efekfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@tsc_resume$qv	segment virtual
 	align	2
 @@stk@cpu@tsc_resume$qv	proc	near
-?live16392@0:
-	?debug L 241
-@67:
+?live16393@0:
+	?debug L 364
 	push      ebp
 	mov       ebp,esp
-	add       esp,-40
+	push      5457731
+	add       esp,-64
 	push      ebx
-	mov       ebx,offset $mgoofcia
-	jmp       short @69
-	?debug L 244
-?live16392@16: ; EBX = &$mgoofcia
-@68:
+	mov       dword ptr [ebp-8],offset @89
+@90:
+	mov       ebx,offset $efekfcia
+	jmp       short @92
+	?debug L 367
+?live16393@16: ; EBX = &$efekfcia
+@91:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@69:
+	call      @@stk@time@wait_us$qxuj
+@92:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @68
+	jne       short @91
 	cmp       dword ptr [ebx],0
-	jne       short @68
+	jne       short @91
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       eax,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       eax,dword ptr [ebp-20]
 	mov       dword ptr [ebx],eax
-	mov       eax,dword ptr [ebp-4]
+	mov       eax,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],eax
-	jmp       short @72
-@71:
+	jmp       short @95
+@94:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@72:
+	call      @@stk@time@wait_us$qxuj
+@95:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @75
+	jne       short @98
 	cmp       dword ptr [ebx],0
-@75:
-	je        short @73
+@98:
+	je        short @96
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @76
-	cmp       eax,dword ptr [ebp-8]
-@76:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @99
+	cmp       eax,dword ptr [ebp-20]
+@99:
 	setne     cl
 	and       ecx,1
-	jmp       short @74
-@73:
+	jmp       short @97
+@96:
 	xor       ecx,ecx
-@74:
+@97:
 	test      cl,cl
-	jne       short @71
-	?debug L 245
+	jne       short @94
+	?debug L 368
 	mov       eax,dword ptr [_tsc_STARTED]
-	mov       dword ptr [ebp-16],eax
-	mov       eax,dword ptr [_tsc_STARTED+4]
-	mov       dword ptr [ebp-12],eax
-	?debug L 246
-	mov       edx,dword ptr [_tsc_PAUSED]
-	mov       dword ptr [ebp-24],edx
-	mov       edx,dword ptr [_tsc_PAUSED+4]
-	mov       dword ptr [ebp-20],edx
-	?debug L 247
-	call      @@stk@cpu@rdtsc$qv
 	mov       dword ptr [ebp-32],eax
-	mov       dword ptr [ebp-28],edx
-	?debug L 248
-	mov       eax,dword ptr [ebp-32]
-	mov       edx,dword ptr [ebp-28]
-	sub       eax,dword ptr [ebp-24]
-	sbb       edx,dword ptr [ebp-20]
-	add       eax,dword ptr [ebp-16]
-	adc       edx,dword ptr [ebp-12]
-	mov       dword ptr [ebp-40],eax
-	mov       dword ptr [ebp-36],edx
-	?debug L 249
-	mov       eax,dword ptr [ebp-40]
+	mov       eax,dword ptr [_tsc_STARTED+4]
+	mov       dword ptr [ebp-28],eax
+	?debug L 369
+	mov       edx,dword ptr [_tsc_PAUSED]
+	mov       dword ptr [ebp-44],edx
+	mov       edx,dword ptr [_tsc_PAUSED+4]
+	mov       dword ptr [ebp-40],edx
+	?debug L 370
+	call      @@stk@cpu@rdtsc$qv
+	mov       dword ptr [ebp-56],eax
+	mov       dword ptr [ebp-52],edx
+	?debug L 371
+	mov       eax,dword ptr [ebp-56]
+	mov       edx,dword ptr [ebp-52]
+	sub       eax,dword ptr [ebp-44]
+	sbb       edx,dword ptr [ebp-40]
+	add       eax,dword ptr [ebp-32]
+	adc       edx,dword ptr [ebp-28]
+	mov       dword ptr [ebp-68],eax
+	mov       dword ptr [ebp-64],edx
+	?debug L 372
+	mov       eax,dword ptr [ebp-68]
 	mov       dword ptr [_tsc_STARTED],eax
-	mov       eax,dword ptr [ebp-36]
+	mov       eax,dword ptr [ebp-64]
 	mov       dword ptr [_tsc_STARTED+4],eax
 	mov       dword ptr [_tsc_PAUSED],0
 	mov       dword ptr [_tsc_PAUSED+4],0
-	?debug L 250
+	?debug L 373
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 251
-?live16392@128: ; 
-	mov       eax,dword ptr [ebp-32]
-	mov       edx,dword ptr [ebp-28]
-	?debug L 252
-@78:
-@77:
+	?debug L 374
+?live16393@128: ; 
+	mov       eax,dword ptr [ebp-56]
+	mov       edx,dword ptr [ebp-52]
+	?debug L 375
+@101:
+@100:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@89:
+	db        67,71,83,0
+	dd        @@stk@cpu@tsc_resume$qv+0
+	dd        @89+0
+	db        188,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,224,255,255,255,8,0,0,0,212,255,255,255
+	db        8,0,0,0,200,255,255,255,8,0,0,0,188,255,255,255
+	db        8,0,0,0
 	?debug L 0
 @@stk@cpu@tsc_resume$qv	endp
 @stk@cpu@tsc_resume$qv	ends
@@ -1353,14 +1856,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch22
-	dd	?patch23
-	dd	?patch24
+	dd	?patch29
+	dd	?patch30
+	dd	?patch31
 	df	@@stk@cpu@tsc_resume$qv
 	dw	0
-	dw	4111
+	dw	4113
 	dw	0
-	dw	30
+	dw	39
 	dw	0
 	dw	0
 	dw	0
@@ -1389,11 +1892,31 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
-	dw	65496
+	dw	65468
 	dw	65535
 	dw	119
 	dw	0
-	dw	31
+	dw	40
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65480
+	dw	65535
+	dw	119
+	dw	0
+	dw	41
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	119
+	dw	0
+	dw	42
 	dw	0
 	dw	0
 	dw	0
@@ -1403,157 +1926,163 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	65535
 	dw	119
 	dw	0
-	dw	32
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65512
-	dw	65535
-	dw	119
-	dw	0
-	dw	33
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	119
-	dw	0
-	dw	34
+	dw	43
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mgoofcia
+	df	$efekfcia
 	dw	0
 	dw	4102
 	dw	0
-	dw	35
+	dw	44
 	dw	0
 	dw	0
 	dw	0
 	dw	18
 	dw	512
-	dw	65528
+	dw	65516
 	dw	65535
 	dw	118
 	dw	0
-	dw	36
+	dw	45
 	dw	0
 	dw	0
 	dw	0
-?patch22	equ	@78-@@stk@cpu@tsc_resume$qv+5
-?patch23	equ	0
-?patch24	equ	@78-@@stk@cpu@tsc_resume$qv
+?patch29	equ	@101-@@stk@cpu@tsc_resume$qv+75
+?patch30	equ	0
+?patch31	equ	@101-@@stk@cpu@tsc_resume$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65492
+	dw	65464
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ekoofcia	label	qword
+$miekfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@tsc_start_paused$qv	segment virtual
 	align	2
 @@stk@cpu@tsc_start_paused$qv	proc	near
-?live16393@0:
-	?debug L 255
-@79:
+?live16394@0:
+	?debug L 378
 	push      ebp
 	mov       ebp,esp
-	add       esp,-16
+	push      5457731
+	add       esp,-28
 	push      ebx
-	mov       ebx,offset $ekoofcia
-	jmp       short @81
-	?debug L 258
-?live16393@16: ; EBX = &$ekoofcia
-@80:
+	mov       dword ptr [ebp-8],offset @102
+@103:
+	mov       ebx,offset $miekfcia
+	jmp       short @105
+	?debug L 381
+?live16394@16: ; EBX = &$miekfcia
+@104:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@81:
+	call      @@stk@time@wait_us$qxuj
+@105:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @80
+	jne       short @104
 	cmp       dword ptr [ebx],0
-	jne       short @80
+	jne       short @104
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       eax,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       eax,dword ptr [ebp-20]
 	mov       dword ptr [ebx],eax
-	mov       eax,dword ptr [ebp-4]
+	mov       eax,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],eax
-	jmp       short @84
-@83:
+	jmp       short @108
+@107:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@84:
+	call      @@stk@time@wait_us$qxuj
+@108:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @87
+	jne       short @111
 	cmp       dword ptr [ebx],0
-@87:
-	je        short @85
+@111:
+	je        short @109
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @88
-	cmp       eax,dword ptr [ebp-8]
-@88:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @112
+	cmp       eax,dword ptr [ebp-20]
+@112:
 	setne     cl
 	and       ecx,1
-	jmp       short @86
-@85:
+	jmp       short @110
+@109:
 	xor       ecx,ecx
-@86:
+@110:
 	test      cl,cl
-	jne       short @83
-	?debug L 259
+	jne       short @107
+	?debug L 382
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-16],eax
-	mov       dword ptr [ebp-12],edx
-	?debug L 260
-	mov       eax,dword ptr [ebp-16]
+	mov       dword ptr [ebp-32],eax
+	mov       dword ptr [ebp-28],edx
+	?debug L 383
+	mov       eax,dword ptr [ebp-32]
 	mov       dword ptr [_tsc_LAST_MEASURED],eax
-	mov       eax,dword ptr [ebp-12]
+	mov       eax,dword ptr [ebp-28]
 	mov       dword ptr [_tsc_LAST_MEASURED+4],eax
-	?debug L 261
-	mov       edx,dword ptr [ebp-16]
+	?debug L 384
+	mov       edx,dword ptr [ebp-32]
 	mov       dword ptr [_tsc_STARTED],edx
-	mov       edx,dword ptr [ebp-12]
+	mov       edx,dword ptr [ebp-28]
 	mov       dword ptr [_tsc_STARTED+4],edx
-	?debug L 262
+	?debug L 385
 	mov       dword ptr [_tsc_ELAPSED],0
 	mov       dword ptr [_tsc_ELAPSED+4],0
-	mov       eax,dword ptr [ebp-16]
+	mov       eax,dword ptr [ebp-32]
 	mov       dword ptr [_tsc_PAUSED],eax
-	mov       eax,dword ptr [ebp-12]
+	mov       eax,dword ptr [ebp-28]
 	mov       dword ptr [_tsc_PAUSED+4],eax
-	?debug L 263
+	?debug L 386
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 264
-?live16393@112: ; 
-	mov       eax,dword ptr [ebp-16]
-	mov       edx,dword ptr [ebp-12]
-	?debug L 265
-@90:
-@89:
+	?debug L 387
+?live16394@112: ; 
+	mov       eax,dword ptr [ebp-32]
+	mov       edx,dword ptr [ebp-28]
+	?debug L 388
+@114:
+@113:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@102:
+	db        67,71,83,0
+	dd        @@stk@cpu@tsc_start_paused$qv+0
+	dd        @102+0
+	db        224,255,255,255,8,0,0,0,2,0,0,0,236,255,255,255
+	db        8,0,0,0,224,255,255,255,8,0,0,0
 	?debug L 0
 @@stk@cpu@tsc_start_paused$qv	endp
 @stk@cpu@tsc_start_paused$qv	ends
@@ -1567,14 +2096,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch25
-	dd	?patch26
-	dd	?patch27
+	dd	?patch32
+	dd	?patch33
+	dd	?patch34
 	df	@@stk@cpu@tsc_start_paused$qv
 	dw	0
-	dw	4113
+	dw	4115
 	dw	0
-	dw	37
+	dw	46
 	dw	0
 	dw	0
 	dw	0
@@ -1609,62 +2138,109 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
-	dw	65520
+	dw	65504
 	dw	65535
 	dw	119
 	dw	0
-	dw	38
+	dw	47
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ekoofcia
+	df	$miekfcia
 	dw	0
 	dw	4102
 	dw	0
-	dw	39
+	dw	48
 	dw	0
 	dw	0
 	dw	0
 	dw	18
 	dw	512
-	dw	65528
+	dw	65516
 	dw	65535
 	dw	118
 	dw	0
-	dw	40
+	dw	49
 	dw	0
 	dw	0
 	dw	0
-?patch25	equ	@90-@@stk@cpu@tsc_start_paused$qv+5
-?patch26	equ	0
-?patch27	equ	@90-@@stk@cpu@tsc_start_paused$qv
+?patch32	equ	@114-@@stk@cpu@tsc_start_paused$qv+51
+?patch33	equ	0
+?patch34	equ	@114-@@stk@cpu@tsc_start_paused$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65516
+	dw	65500
 	dw	65535
 $$BSYMS	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpuid$qpuit1t1t1uiui	segment virtual
 	align	2
 @@stk@cpu@cpuid$qpuit1t1t1uiui	proc	near
-?live16394@0:
-	?debug L 268
-@91:
+?live16395@0:
+	?debug L 391
 	push      ebp
 	mov       ebp,esp
-	?debug L 296
+	push      5457731
+	push      ecx
+	push      ebx
+	push      esi
+	mov       dword ptr [ebp-8],offset @115
+	?debug L 417
+@116:
+	mov	 eax,dword ptr [ebp+24]
+	?debug L 418
+	mov	 ecx,dword ptr [ebp+28]
+	?debug L 419
+	and	 eax,080000000H
+	?debug L 420
+	cpuid	
+	?debug L 421
+	mov	 ESI,dword ptr [ebp+8]
+	?debug L 422
+	mov	 [ESI],eax
+	?debug L 423
+	mov	 ESI,dword ptr [ebp+12]
+	?debug L 424
+	mov	 [ESI],ebx
+	?debug L 425
+	mov	 ESI,dword ptr [ebp+16]
+	?debug L 426
+	mov	 [ESI],ecx
+	?debug L 427
+	mov	 ESI,dword ptr [ebp+20]
+	?debug L 428
+	mov	 [ESI],edx
+	?debug L 438
 	mov       eax,dword ptr [ebp+8]
+	push      4
+	push      eax
+	push      0
+	call      _CG_DA_EPY
 	mov       eax,dword ptr [eax]
-	?debug L 298
-@93:
-@92:
+	?debug L 440
+@118:
+@117:
+	mov       dword ptr [ebp-4],ebp
+	pop       esi
+	pop       ebx
+	pop       ecx
+	pop       ecx
 	pop       ebp
 	ret 
+	align 4        
+@115:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpuid$qpuit1t1t1uiui+0
+	dd        @115+0
+	db        248,255,255,255,32,0,0,0,6,0,0,0,28,0,0,0
+	db        4,0,0,0,24,0,0,0,4,0,0,0,20,0,0,0
+	db        4,0,0,0,16,0,0,0,4,0,0,0,12,0,0,0
+	db        4,0,0,0,8,0,0,0,4,0,0,0
 	?debug L 0
 @@stk@cpu@cpuid$qpuit1t1t1uiui	endp
 @stk@cpu@cpuid$qpuit1t1t1uiui	ends
@@ -1678,14 +2254,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch28
-	dd	?patch29
-	dd	?patch30
+	dd	?patch35
+	dd	?patch36
+	dd	?patch37
 	df	@@stk@cpu@cpuid$qpuit1t1t1uiui
 	dw	0
-	dw	4115
+	dw	4117
 	dw	0
-	dw	41
+	dw	50
 	dw	0
 	dw	0
 	dw	0
@@ -1725,7 +2301,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	1141
 	dw	0
-	dw	42
+	dw	51
 	dw	0
 	dw	0
 	dw	0
@@ -1735,7 +2311,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	1141
 	dw	0
-	dw	43
+	dw	52
 	dw	0
 	dw	0
 	dw	0
@@ -1745,7 +2321,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	1141
 	dw	0
-	dw	44
+	dw	53
 	dw	0
 	dw	0
 	dw	0
@@ -1755,7 +2331,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	1141
 	dw	0
-	dw	45
+	dw	54
 	dw	0
 	dw	0
 	dw	0
@@ -1765,7 +2341,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	117
 	dw	0
-	dw	46
+	dw	55
 	dw	0
 	dw	0
 	dw	0
@@ -1775,7 +2351,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	117
 	dw	0
-	dw	47
+	dw	56
 	dw	0
 	dw	0
 	dw	0
@@ -1784,245 +2360,305 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	117
 	dw	0
 	dw	17
-	dw	48
+	dw	57
 	dw	0
 	dw	0
 	dw	0
-?patch28	equ	@93-@@stk@cpu@cpuid$qpuit1t1t1uiui+2
-?patch29	equ	0
-?patch30	equ	@93-@@stk@cpu@cpuid$qpuit1t1t1uiui
+?patch35	equ	@118-@@stk@cpu@cpuid$qpuit1t1t1uiui+83
+?patch36	equ	0
+?patch37	equ	@118-@@stk@cpu@cpuid$qpuit1t1t1uiui
 	dw	2
 	dw	6
+	dw	8
+	dw	531
+	dw	5
+	dw	65520
+	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mnoofcia	label	dword
+$emekfcia	label	dword
 	dd	0
+	db	1	dup(?)
 	align	4
-$ebpofcia	label	dword
+$mpekfcia	label	dword
 	dd	0
+	db	1	dup(?)
 	align	4
-$mepofcia	label	dword
+$edfkfcia	label	dword
 	dd	0
+	db	1	dup(?)
 	align	4
-$eipofcia	label	dword
+$mgfkfcia	label	dword
 	dd	0
+	db	1	dup(?)
 	align	4
-$mlpofcia	label	dword
+$ekfkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$eppofcia	label	dword
+$mnfkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mcapfcia	label	qword
+$ebgkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpuidex$qpuit1t1t1uiui	segment virtual
 	align	2
 @@stk@cpu@cpuidex$qpuit1t1t1uiui	proc	near
-?live16395@0:
-	?debug L 301
+?live16396@0:
+	?debug L 443
 	push      ebp
 	mov       ebp,esp
-	add       esp,-8
+	push      5457731
+	add       esp,-16
 	push      ebx
 	push      esi
 	push      edi
-@94:
-	jmp       short @96
-	?debug L 310
-@95:
+	mov       dword ptr [ebp-8],offset @119
+@120:
+	jmp       short @122
+	?debug L 453
+@121:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@96:
-	cmp       dword ptr [$mcapfcia+4],0
-	jne       short @95
-	cmp       dword ptr [$mcapfcia],0
-@97:
-	jne       short @95
+	call      @@stk@time@wait_us$qxuj
+@122:
+	cmp       dword ptr [$ebgkfcia+4],0
+	jne       short @121
+	cmp       dword ptr [$ebgkfcia],0
+@123:
+	jne       short @121
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       eax,dword ptr [ebp-8]
-	mov       dword ptr [$mcapfcia],eax
-	mov       eax,dword ptr [ebp-4]
-	mov       dword ptr [$mcapfcia+4],eax
-	jmp       short @99
-@98:
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	mov       eax,dword ptr [ebp-20]
+	mov       dword ptr [$ebgkfcia],eax
+	mov       eax,dword ptr [ebp-16]
+	mov       dword ptr [$ebgkfcia+4],eax
+	jmp       short @125
+@124:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@99:
-	cmp       dword ptr [$mcapfcia+4],0
-	jne       short @102
-	cmp       dword ptr [$mcapfcia],0
-@102:
-	je        short @100
-	mov       eax,dword ptr [$mcapfcia]
-	mov       edx,dword ptr [$mcapfcia+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @103
-	cmp       eax,dword ptr [ebp-8]
-@103:
+	call      @@stk@time@wait_us$qxuj
+@125:
+	cmp       dword ptr [$ebgkfcia+4],0
+	jne       short @128
+	cmp       dword ptr [$ebgkfcia],0
+@128:
+	je        short @126
+	mov       eax,dword ptr [$ebgkfcia]
+	mov       edx,dword ptr [$ebgkfcia+4]
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @129
+	cmp       eax,dword ptr [ebp-20]
+@129:
 	setne     cl
 	and       ecx,1
-	jmp       short @101
-@100:
+	jmp       short @127
+@126:
 	xor       ecx,ecx
-@101:
+@127:
 	test      cl,cl
-	jne       short @98
-	?debug L 311
+	jne       short @124
+	?debug L 454
 	mov       eax,dword ptr [ebp+24]
-	cmp       eax,dword ptr [$mlpofcia]
-	jne       short @104
+	cmp       eax,dword ptr [$ekfkfcia]
+	jne       short @130
 	mov       edx,dword ptr [ebp+28]
-	cmp       edx,dword ptr [$eppofcia]
-	jne       short @104
-	?debug L 312
+	cmp       edx,dword ptr [$mnfkfcia]
+	jne       short @130
+	?debug L 455
 	mov       eax,dword ptr [ebp+8]
-	mov       edx,dword ptr [$mnoofcia]
+	push      4
+	push      eax
+	push      0
+	call      _CG_DA_EPY
+	mov       edx,dword ptr [$emekfcia]
 	mov       dword ptr [eax],edx
-	?debug L 313
+	?debug L 456
 	mov       ecx,dword ptr [ebp+12]
-	mov       eax,dword ptr [$ebpofcia]
+	push      4
+	push      ecx
+	push      0
+	call      _CG_DA_EPY
+	mov       eax,dword ptr [$mpekfcia]
 	mov       dword ptr [ecx],eax
-	?debug L 314
+	?debug L 457
 	mov       edx,dword ptr [ebp+16]
-	mov       ecx,dword ptr [$mepofcia]
+	push      4
+	push      edx
+	push      0
+	call      _CG_DA_EPY
+	mov       ecx,dword ptr [$edfkfcia]
 	mov       dword ptr [edx],ecx
-	?debug L 315
+	?debug L 458
 	mov       eax,dword ptr [ebp+20]
-	mov       edx,dword ptr [$eipofcia]
+	push      4
+	push      eax
+	push      0
+	call      _CG_DA_EPY
+	mov       edx,dword ptr [$mgfkfcia]
 	mov       dword ptr [eax],edx
-	?debug L 316
-@105:
-	mov       eax,dword ptr [$mnoofcia]
-	?debug L 317
-?live16395@128: ; EAX = r
-	mov       dword ptr [$mcapfcia],0
-	mov       dword ptr [$mcapfcia+4],0
-	?debug L 318
-	jmp       @106
-	?debug L 319
-?live16395@160: ; 
-@107:
-	jmp       short @108
-	?debug L 321
-@104:
+	?debug L 459
+@131:
+	mov       eax,dword ptr [$emekfcia]
+	?debug L 460
+?live16396@128: ; EAX = ret
+	mov       dword ptr [$ebgkfcia],0
+	mov       dword ptr [$ebgkfcia+4],0
+	?debug L 461
+	jmp       @132
+	?debug L 462
+?live16396@160: ; 
+@133:
+	jmp       short @134
+	?debug L 464
+@130:
 	mov       edx,dword ptr [ebp+24]
-	?debug L 322
+	?debug L 465
 	mov       ecx,dword ptr [ebp+28]
-	?debug L 321
-	mov       dword ptr [$mlpofcia],edx
-	?debug L 322
-	mov       dword ptr [$eppofcia],ecx
-	?debug L 327
-@108:
+	?debug L 464
+	mov       dword ptr [$ekfkfcia],edx
+	?debug L 465
+	mov       dword ptr [$mnfkfcia],ecx
+	?debug L 610
+@134:
 	pushfd	
-	?debug L 328
+	?debug L 611
 	push	 eax
-	?debug L 329
+	?debug L 612
 	push	 ebx
-	?debug L 330
+	?debug L 613
 	push	 ecx
-	?debug L 331
+	?debug L 614
 	push	 edx
-	?debug L 332
+	?debug L 615
 	push	 esi
-	?debug L 333
+	?debug L 616
 	push	 edi
-	?debug L 334
+	?debug L 617
 	mov	 edi,dword ptr [ebp+24]
-	?debug L 335
+	?debug L 618
 	mov	 eax,edi
-	?debug L 336
+	?debug L 619
 	and	 eax,080000000H
-	?debug L 337
+	?debug L 620
 	cpuid	
-	?debug L 338
+	?debug L 621
 	mov	        esi,eax
-	?debug L 339
+	?debug L 622
 	xor	        eax,eax
-	?debug L 340
+	?debug L 623
 	xor	        ebx,ebx
-	?debug L 341
+	?debug L 624
 	xor	        ecx,ecx
-	?debug L 342
+	?debug L 625
 	xor	        edx,edx
-	?debug L 343
+	?debug L 626
 	cmp	        esi,edi
-	?debug L 344
-	jb        short @109
-	?debug L 345
+	?debug L 627
+	jb        short @135
+	?debug L 628
 	mov	        eax,edi
-	?debug L 346
+	?debug L 629
 	mov	        edi,dword ptr [ebp+28]
-	?debug L 347
+	?debug L 630
 	mov	        ecx,edi
-	?debug L 348
+	?debug L 631
 	cpuid	
-	?debug L 349
-@109:
+	?debug L 632
+@135:
 cpuid_save_result:
-	?debug L 350
-	mov	 dword ptr $mnoofcia,eax
-	?debug L 351
-	mov	 dword ptr $ebpofcia,ebx
-	?debug L 352
-	mov	 dword ptr $mepofcia,ecx
-	?debug L 353
-	mov	 dword ptr $eipofcia,edx
-	?debug L 354
+	?debug L 633
+	mov	 dword ptr $emekfcia,eax
+	?debug L 634
+	mov	 dword ptr $mpekfcia,ebx
+	?debug L 635
+	mov	 dword ptr $edfkfcia,ecx
+	?debug L 636
+	mov	 dword ptr $mgfkfcia,edx
+	?debug L 637
 	pop	 edi
-	?debug L 355
+	?debug L 638
 	pop	 esi
-	?debug L 356
+	?debug L 639
 	pop	 edx
-	?debug L 357
+	?debug L 640
 	pop	 ecx
-	?debug L 358
+	?debug L 641
 	pop	 ebx
-	?debug L 359
+	?debug L 642
 	pop	 eax
-	?debug L 360
+	?debug L 643
 	popfd	
-	?debug L 362
+	?debug L 650
 	mov       eax,dword ptr [ebp+8]
-	mov       edx,dword ptr [$mnoofcia]
+	push      4
+	push      eax
+	push      0
+	call      _CG_DA_EPY
+	mov       edx,dword ptr [$emekfcia]
 	mov       dword ptr [eax],edx
-	?debug L 363
+	?debug L 651
 	mov       ecx,dword ptr [ebp+12]
-	mov       eax,dword ptr [$ebpofcia]
+	push      4
+	push      ecx
+	push      0
+	call      _CG_DA_EPY
+	mov       eax,dword ptr [$mpekfcia]
 	mov       dword ptr [ecx],eax
-	?debug L 364
+	?debug L 652
 	mov       edx,dword ptr [ebp+16]
-	mov       ecx,dword ptr [$mepofcia]
+	push      4
+	push      edx
+	push      0
+	call      _CG_DA_EPY
+	mov       ecx,dword ptr [$edfkfcia]
 	mov       dword ptr [edx],ecx
-	?debug L 365
+	?debug L 653
 	mov       eax,dword ptr [ebp+20]
-	mov       edx,dword ptr [$eipofcia]
+	push      4
+	push      eax
+	push      0
+	call      _CG_DA_EPY
+	mov       edx,dword ptr [$mgfkfcia]
 	mov       dword ptr [eax],edx
-	?debug L 417
+	?debug L 671
 	mov       ecx,dword ptr [ebp+8]
+	push      4
+	push      ecx
+	push      0
+	call      _CG_DA_EPY
 	mov       eax,dword ptr [ecx]
-	?debug L 418
-?live16395@864: ; EAX = r
-	mov       dword ptr [$mcapfcia],0
-	mov       dword ptr [$mcapfcia+4],0
-	?debug L 420
-?live16395@880: ; 
-@110:
-@106:
+	?debug L 672
+?live16396@864: ; EAX = ret
+	mov       dword ptr [$ebgkfcia],0
+	mov       dword ptr [$ebgkfcia+4],0
+	?debug L 674
+?live16396@880: ; 
+@136:
+@132:
+	mov       dword ptr [ebp-4],ebp
 	pop       edi
 	pop       esi
 	pop       ebx
-	pop       ecx
-	pop       ecx
+	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@119:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpuidex$qpuit1t1t1uiui+0
+	dd        @119+0
+	db        236,255,255,255,32,0,0,0,7,0,0,0,28,0,0,0
+	db        4,0,0,0,24,0,0,0,4,0,0,0,20,0,0,0
+	db        4,0,0,0,16,0,0,0,4,0,0,0,12,0,0,0
+	db        4,0,0,0,8,0,0,0,4,0,0,0,236,255,255,255
+	db        8,0,0,0
 	?debug L 0
 @@stk@cpu@cpuidex$qpuit1t1t1uiui	endp
 @stk@cpu@cpuidex$qpuit1t1t1uiui	ends
@@ -2036,14 +2672,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch31
-	dd	?patch32
-	dd	?patch33
+	dd	?patch38
+	dd	?patch39
+	dd	?patch40
 	df	@@stk@cpu@cpuidex$qpuit1t1t1uiui
 	dw	0
-	dw	4117
+	dw	4119
 	dw	0
-	dw	49
+	dw	58
 	dw	0
 	dw	0
 	dw	0
@@ -2085,7 +2721,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	1141
 	dw	0
-	dw	50
+	dw	59
 	dw	0
 	dw	0
 	dw	0
@@ -2095,7 +2731,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	1141
 	dw	0
-	dw	51
+	dw	60
 	dw	0
 	dw	0
 	dw	0
@@ -2105,7 +2741,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	1141
 	dw	0
-	dw	52
+	dw	61
 	dw	0
 	dw	0
 	dw	0
@@ -2115,7 +2751,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	1141
 	dw	0
-	dw	53
+	dw	62
 	dw	0
 	dw	0
 	dw	0
@@ -2125,7 +2761,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	117
 	dw	0
-	dw	54
+	dw	63
 	dw	0
 	dw	0
 	dw	0
@@ -2135,115 +2771,8 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	117
 	dw	0
-	dw	55
-	dw	0
-	dw	0
-	dw	0
-	dw	16
-	dw	2
-	dw	117
-	dw	0
-	dw	17
-	dw	56
-	dw	0
-	dw	0
-	dw	0
-	dw	?patch34
-	dw	529
-	dw	?patch35
-	dd	?live16395@864-@@stk@cpu@cpuidex$qpuit1t1t1uiui
-	dd	?live16395@880-?live16395@864
-	dw	17
-?patch35	equ	1
-?patch34	equ	14
-	dw	22
-	dw	513
-	df	$mcapfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	57
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
-	dw	118
-	dw	0
-	dw	58
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$eppofcia
-	dw	0
-	dw	117
-	dw	0
-	dw	59
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mlpofcia
-	dw	0
-	dw	117
-	dw	0
-	dw	60
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$eipofcia
-	dw	0
-	dw	117
-	dw	0
-	dw	61
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mepofcia
-	dw	0
-	dw	117
-	dw	0
-	dw	62
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$ebpofcia
-	dw	0
-	dw	117
-	dw	0
-	dw	63
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mnoofcia
-	dw	0
-	dw	117
-	dw	0
 	dw	64
 	dw	0
-	dw	0
-	dw	0
-	dw	24
-	dw	519
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-	dd	?patch36
-	df	@105
 	dw	0
 	dw	0
 	dw	16
@@ -2255,134 +2784,283 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch37
+	dw	?patch41
 	dw	529
-	dw	?patch38
-	dd	?live16395@128-@@stk@cpu@cpuidex$qpuit1t1t1uiui
-	dd	?live16395@160-?live16395@128
+	dw	?patch42
+	dd	?live16396@864-@@stk@cpu@cpuidex$qpuit1t1t1uiui
+	dd	?live16396@880-?live16396@864
 	dw	17
-?patch38	equ	1
-?patch37	equ	14
-?patch36	equ	@107-@105
+?patch42	equ	1
+?patch41	equ	14
+	dw	22
+	dw	513
+	df	$ebgkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	66
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65516
+	dw	65535
+	dw	118
+	dw	0
+	dw	67
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mnfkfcia
+	dw	0
+	dw	117
+	dw	0
+	dw	68
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$ekfkfcia
+	dw	0
+	dw	117
+	dw	0
+	dw	69
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mgfkfcia
+	dw	0
+	dw	117
+	dw	0
+	dw	70
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$edfkfcia
+	dw	0
+	dw	117
+	dw	0
+	dw	71
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mpekfcia
+	dw	0
+	dw	117
+	dw	0
+	dw	72
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$emekfcia
+	dw	0
+	dw	117
+	dw	0
+	dw	73
+	dw	0
+	dw	0
+	dw	0
+	dw	24
+	dw	519
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+	dd	?patch43
+	df	@131
+	dw	0
+	dw	0
+	dw	16
+	dw	2
+	dw	117
+	dw	0
+	dw	17
+	dw	74
+	dw	0
+	dw	0
+	dw	0
+	dw	?patch44
+	dw	529
+	dw	?patch45
+	dd	?live16396@128-@@stk@cpu@cpuidex$qpuit1t1t1uiui
+	dd	?live16396@160-?live16396@128
+	dw	17
+?patch45	equ	1
+?patch44	equ	14
+?patch43	equ	@133-@131
 	dw	2
 	dw	6
-?patch31	equ	@110-@@stk@cpu@cpuidex$qpuit1t1t1uiui+7
-?patch32	equ	0
-?patch33	equ	@110-@@stk@cpu@cpuidex$qpuit1t1t1uiui
+?patch38	equ	@136-@@stk@cpu@cpuidex$qpuit1t1t1uiui+91
+?patch39	equ	0
+?patch40	equ	@136-@@stk@cpu@cpuidex$qpuit1t1t1uiui
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	7
-	dw	65516
+	dw	65504
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$egapfcia	label	dword
+$megkfcia	label	dword
 	dd	0
 	dd	0
 	dd	0
 	dd	0
+	db	1	dup(?)
 	align	4
-$mjapfcia	label	qword
+$eigkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_vendor$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_vendor$qv	proc	near
-?live16396@0:
-	?debug L 423
-@111:
+?live16397@0:
+	?debug L 677
 	push      ebp
 	mov       ebp,esp
-	add       esp,-8
+	push      5457731
+	add       esp,-16
 	push      ebx
 	push      esi
-	mov       ebx,offset $mjapfcia
-	mov       esi,offset $egapfcia
-	jmp       short @113
-	?debug L 427
-?live16396@16: ; EBX = &$mjapfcia, ESI = &$egapfcia
-@112:
+	mov       dword ptr [ebp-8],offset @137
+@138:
+	mov       ebx,offset $eigkfcia
+	mov       esi,offset $megkfcia
+	jmp       short @140
+	?debug L 684
+?live16397@16: ; EBX = &$eigkfcia, ESI = &$megkfcia
+@139:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@113:
+	call      @@stk@time@wait_us$qxuj
+@140:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @112
+	jne       short @139
 	cmp       dword ptr [ebx],0
-	jne       short @112
+	jne       short @139
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       eax,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       eax,dword ptr [ebp-20]
 	mov       dword ptr [ebx],eax
-	mov       eax,dword ptr [ebp-4]
+	mov       eax,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],eax
-	jmp       short @116
-@115:
+	jmp       short @143
+@142:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@116:
+	call      @@stk@time@wait_us$qxuj
+@143:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @119
+	jne       short @146
 	cmp       dword ptr [ebx],0
-@119:
-	je        short @117
+@146:
+	je        short @144
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @120
-	cmp       eax,dword ptr [ebp-8]
-@120:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @147
+	cmp       eax,dword ptr [ebp-20]
+@147:
 	setne     cl
 	and       ecx,1
-	jmp       short @118
-@117:
+	jmp       short @145
+@144:
 	xor       ecx,ecx
-@118:
+@145:
 	test      cl,cl
-	jne       short @115
-	?debug L 428
+	jne       short @142
+	?debug L 685
 	push      0
+	push      0
+	push      esi
+	push      4
+	call      _CG_A_PY
 	lea       eax,dword ptr [esi+4]
-	push      0
 	push      eax
+	push      esi
+	push      8
+	call      _CG_A_PY
 	lea       edx,dword ptr [esi+8]
-	lea       eax,dword ptr [esi+12]
 	push      edx
 	push      esi
+	push      esi
+	push      12
+	call      _CG_A_PY
+	lea       eax,dword ptr [esi+12]
 	push      eax
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 429
+	?debug L 686
+	push      4
+	push      esi
+	call      _CG_D_EP
 	cmp       dword ptr [esi],0
-	je        short @121
-	?debug L 430
+	je        short @148
+	?debug L 687
+	push      4
+	push      esi
+	push      12
+	call      _CG_DA_EPY
 	xor       edx,edx
 	mov       dword ptr [esi+12],edx
-	?debug L 432
-@121:
+	?debug L 689
+@148:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
-	?debug L 433
-?live16396@96: ; ESI = &$egapfcia
+	?debug L 690
+?live16397@96: ; ESI = &$megkfcia
 	mov       eax,esi
-	?debug L 432
-?live16396@112: ; EBX = &$mjapfcia, ESI = &$egapfcia
+	?debug L 689
+?live16397@112: ; EBX = &$eigkfcia, ESI = &$megkfcia
 	mov       dword ptr [ebx+4],0
-	?debug L 434
-?live16396@128: ; 
-@123:
-@122:
+	?debug L 691
+?live16397@128: ; 
+@150:
+@149:
+	mov       dword ptr [ebp-4],ebp
 	pop       esi
 	pop       ebx
-	pop       ecx
-	pop       ecx
+	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@137:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_vendor$qv+0
+	dd        @137+0
+	db        236,255,255,255,8,0,0,0,1,0,0,0,236,255,255,255
+	db        8,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_vendor$qv	endp
 @stk@cpu@cpu_vendor$qv	ends
@@ -2396,14 +3074,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch39
-	dd	?patch40
-	dd	?patch41
+	dd	?patch46
+	dd	?patch47
+	dd	?patch48
 	df	@@stk@cpu@cpu_vendor$qv
 	dw	0
-	dw	4119
+	dw	4121
 	dw	0
-	dw	66
+	dw	75
 	dw	0
 	dw	0
 	dw	0
@@ -2432,48 +3110,48 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	22
 	dw	513
-	df	$mjapfcia
+	df	$eigkfcia
 	dw	0
 	dw	4102
 	dw	0
-	dw	67
+	dw	76
 	dw	0
 	dw	0
 	dw	0
 	dw	18
 	dw	512
-	dw	65528
+	dw	65516
 	dw	65535
 	dw	118
 	dw	0
-	dw	68
+	dw	77
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$egapfcia
+	df	$megkfcia
 	dw	0
-	dw	4121
+	dw	4123
 	dw	0
-	dw	69
+	dw	78
 	dw	0
 	dw	0
 	dw	0
-?patch39	equ	@123-@@stk@cpu@cpu_vendor$qv+6
-?patch40	equ	0
-?patch41	equ	@123-@@stk@cpu@cpu_vendor$qv
+?patch46	equ	@150-@@stk@cpu@cpu_vendor$qv+41
+?patch47	equ	0
+?patch48	equ	@150-@@stk@cpu@cpu_vendor$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	5
-	dw	65520
+	dw	65508
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$enapfcia	label	dword
+$echkfcia	label	dword
 	dd	0
 	dd	0
 	dd	0
@@ -2487,148 +3165,178 @@ $enapfcia	label	dword
 	dd	0
 	dd	0
 	db	4	dup(?)
+	db	1	dup(?)
 	align	4
-$mabpfcia	label	qword
+$mfhkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_name$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_name$qv	proc	near
-?live16397@0:
-	?debug L 437
-@124:
+?live16398@0:
+	?debug L 694
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
+	push      5457731
+	add       esp,-48
 	push      ebx
 	push      esi
 	push      edi
-	mov       edi,offset $enapfcia
-	?debug L 440
-?live16397@16: ; EDI = &$enapfcia
+	mov       dword ptr [ebp-8],offset @151
+@152:
+	mov       edi,offset $echkfcia
+	?debug L 700
+?live16398@16: ; EDI = &$echkfcia
+	push      4
+	push      edi
+	call      _CG_D_EP
 	cmp       dword ptr [edi],0
-	je        short @128
-	?debug L 441
+	je        short @156
+	?debug L 701
 	mov       eax,edi
-	jmp       @126
-	?debug L 443
-@127:
+	jmp       @154
+	?debug L 703
+@155:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@128:
-	cmp       dword ptr [$mabpfcia+4],0
-	jne       short @127
-	cmp       dword ptr [$mabpfcia],0
-	jne       short @127
+	call      @@stk@time@wait_us$qxuj
+@156:
+	cmp       dword ptr [$mfhkfcia+4],0
+	jne       short @155
+	cmp       dword ptr [$mfhkfcia],0
+	jne       short @155
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
-	mov       dword ptr [$mabpfcia],edx
-	mov       edx,dword ptr [ebp-4]
-	mov       dword ptr [$mabpfcia+4],edx
-	jmp       short @131
-@130:
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	mov       edx,dword ptr [ebp-20]
+	mov       dword ptr [$mfhkfcia],edx
+	mov       edx,dword ptr [ebp-16]
+	mov       dword ptr [$mfhkfcia+4],edx
+	jmp       short @159
+@158:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@131:
-	cmp       dword ptr [$mabpfcia+4],0
-	jne       short @134
-	cmp       dword ptr [$mabpfcia],0
-@134:
-	je        short @132
-	mov       eax,dword ptr [$mabpfcia]
-	mov       edx,dword ptr [$mabpfcia+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @135
-	cmp       eax,dword ptr [ebp-8]
-@135:
+	call      @@stk@time@wait_us$qxuj
+@159:
+	cmp       dword ptr [$mfhkfcia+4],0
+	jne       short @162
+	cmp       dword ptr [$mfhkfcia],0
+@162:
+	je        short @160
+	mov       eax,dword ptr [$mfhkfcia]
+	mov       edx,dword ptr [$mfhkfcia+4]
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @163
+	cmp       eax,dword ptr [ebp-20]
+@163:
 	setne     cl
 	and       ecx,1
-	jmp       short @133
-@132:
+	jmp       short @161
+@160:
 	xor       ecx,ecx
-@133:
+@161:
 	test      cl,cl
-	jne       short @130
-	?debug L 446
+	jne       short @158
+	?debug L 706
 	push      0
 	push      -2147483648
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
 	cmp       eax,-2147483644
-	jae       short @136
-	?debug L 447
-	mov       dword ptr [$mabpfcia],0
-	mov       dword ptr [$mabpfcia+4],0
-	?debug L 448
+	jae       short @164
+	?debug L 707
+	mov       dword ptr [$mfhkfcia],0
+	mov       dword ptr [$mfhkfcia+4],0
+	?debug L 708
 	push      12
 	push      offset s@
 	push      edi
-	call      @@stk@mem@mov$qqspvpxvxui
-	jmp       short @126
-	?debug L 450
-@136:
+	call      @@stk@mem@mov$qpvpxvxui
+	jmp       @154
+	?debug L 710
+@164:
 	mov       esi,-2147483646
 	xor       ebx,ebx
-	?debug L 452
-?live16397@128: ; EBX = i, ESI = f, EDI = &$enapfcia
-@137:
+	?debug L 712
+?live16398@128: ; EBX = i, ESI = f, EDI = &$echkfcia
+@165:
 	lea       eax,dword ptr [ebx+3]
 	push      0
 	shl       eax,2
 	push      esi
 	add       eax,edi
+	push      offset $echkfcia
+	push      eax
+	call      _CG_A_BP
+	push      eax
 	lea       edx,dword ptr [ebx+2]
 	shl       edx,2
-	push      eax
-	lea       ecx,dword ptr [ebx+1]
-	mov       eax,ebx
-	shl       ecx,2
 	add       edx,edi
-	shl       eax,2
-	add       ecx,edi
+	push      offset $echkfcia
 	push      edx
+	call      _CG_A_BP
+	push      edx
+	lea       ecx,dword ptr [ebx+1]
+	shl       ecx,2
+	add       ecx,edi
+	push      offset $echkfcia
 	push      ecx
+	call      _CG_A_BP
+	push      ecx
+	mov       eax,ebx
+	shl       eax,2
 	add       eax,edi
+	push      offset $echkfcia
+	push      eax
+	call      _CG_A_BP
 	push      eax
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 450
+	?debug L 710
 	inc       esi
 	add       ebx,4
 	cmp       ebx,12
-	jb        short @137
-	?debug L 454
-?live16397@160: ; EDI = &$enapfcia
+	jb        short @165
+	?debug L 714
+?live16398@160: ; EDI = &$echkfcia
+	push      32
 	push      edi
-	call      @@stk@cstr@trim$qqspc
-	?debug L 455
-	mov       dword ptr [$mabpfcia],0
-	mov       dword ptr [$mabpfcia+4],0
-	?debug L 456
+	call      @@stk@cstr@trim$qpcc
+	?debug L 715
+	mov       dword ptr [$mfhkfcia],0
+	mov       dword ptr [$mfhkfcia+4],0
+	?debug L 716
 	mov       eax,edi
-	?debug L 457
-?live16397@208: ; 
-@140:
-@126:
+	?debug L 717
+?live16398@208: ; 
+@168:
+@154:
+	mov       dword ptr [ebp-4],ebp
 	pop       edi
 	pop       esi
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@151:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_name$qv+0
+	dd        @151+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_name$qv	endp
 @stk@cpu@cpu_name$qv	ends
@@ -2642,14 +3350,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch42
-	dd	?patch43
-	dd	?patch44
+	dd	?patch49
+	dd	?patch50
+	dd	?patch51
 	df	@@stk@cpu@cpu_name$qv
 	dw	0
-	dw	4122
+	dw	4124
 	dw	0
-	dw	70
+	dw	79
 	dw	0
 	dw	0
 	dw	0
@@ -2679,42 +3387,82 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	117
 	dw	0
 	dw	20
-	dw	71
+	dw	80
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch45
+	dw	?patch52
 	dw	529
-	dw	?patch46
-	dd	?live16397@128-@@stk@cpu@cpu_name$qv
-	dd	?live16397@160-?live16397@128
+	dw	?patch53
+	dd	?live16398@128-@@stk@cpu@cpu_name$qv
+	dd	?live16398@160-?live16398@128
 	dw	20
-?patch46	equ	1
-?patch45	equ	14
+?patch53	equ	1
+?patch52	equ	14
 	dw	16
 	dw	2
 	dw	117
 	dw	0
 	dw	23
-	dw	72
+	dw	81
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch47
+	dw	?patch54
 	dw	529
-	dw	?patch48
-	dd	?live16397@128-@@stk@cpu@cpu_name$qv
-	dd	?live16397@160-?live16397@128
+	dw	?patch55
+	dd	?live16398@128-@@stk@cpu@cpu_name$qv
+	dd	?live16398@160-?live16398@128
 	dw	23
-?patch48	equ	1
-?patch47	equ	14
+?patch55	equ	1
+?patch54	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	73
+	dw	82
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	83
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	84
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	85
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mfhkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	86
 	dw	0
 	dw	0
 	dw	0
@@ -2722,179 +3470,174 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	74
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	75
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	76
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mabpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	77
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	78
+	dw	87
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$enapfcia
+	df	$echkfcia
 	dw	0
-	dw	4124
+	dw	4126
 	dw	0
-	dw	79
+	dw	88
 	dw	0
 	dw	0
 	dw	0
-?patch42	equ	@140-@@stk@cpu@cpu_name$qv+7
-?patch43	equ	0
-?patch44	equ	@140-@@stk@cpu@cpu_name$qv
+?patch49	equ	@168-@@stk@cpu@cpu_name$qv+75
+?patch50	equ	0
+?patch51	equ	@168-@@stk@cpu@cpu_name$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	7
-	dw	65500
+	dw	65472
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eebpfcia	label	dword
+$mphkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mhbpfcia	label	qword
+$edikfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_num_threads$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_num_threads$qv	proc	near
-?live16398@0:
-	?debug L 460
-@141:
+?live16399@0:
+	?debug L 720
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 463
-?live16398@16: ; EBX = &$mhbpfcia
-	mov       eax,dword ptr [$eebpfcia]
-	cmp       eax,-1
-	?debug L 460
-?live16398@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mhbpfcia
-	?debug L 463
-?live16398@48: ; EBX = &$mhbpfcia
-	jne       @143
-	?debug L 464
-?live16398@64: ; EAX = @temp4
-	jmp       short @145
-	?debug L 466
-?live16398@80: ; EBX = &$mhbpfcia
-@144:
+	mov       dword ptr [ebp-8],offset @169
+@170:
+	mov       ebx,offset $edikfcia
+	?debug L 726
+?live16399@16: ; EBX = &$edikfcia
+	mov       eax,dword ptr [$mphkfcia]
+	cmp       eax,-1
+	jne       @172
+	?debug L 727
+?live16399@32: ; EAX = @temp4
+	jmp       short @174
+	?debug L 729
+?live16399@48: ; EBX = &$edikfcia
+@173:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@145:
+	call      @@stk@time@wait_us$qxuj
+@174:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @144
+	jne       short @173
 	cmp       dword ptr [ebx],0
-	jne       short @144
+	jne       short @173
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],edx
-	jmp       short @148
-@147:
+	jmp       short @177
+@176:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@148:
+	call      @@stk@time@wait_us$qxuj
+@177:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @151
+	jne       short @180
 	cmp       dword ptr [ebx],0
-@151:
-	je        short @149
+@180:
+	je        short @178
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @152
-	cmp       eax,dword ptr [ebp-8]
-@152:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @181
+	cmp       eax,dword ptr [ebp-20]
+@181:
 	setne     cl
 	and       ecx,1
-	jmp       short @150
-@149:
+	jmp       short @179
+@178:
 	xor       ecx,ecx
-@150:
+@179:
 	test      cl,cl
-	jne       short @147
-	?debug L 469
+	jne       short @176
+	?debug L 732
 	push      0
 	push      1
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
+	?debug L 734
+	mov       eax,dword ptr [ebp-44]
+	?debug L 732
 	add       esp,24
-	?debug L 471
-	mov       eax,dword ptr [ebp-20]
+	?debug L 734
 	shr       eax,16
 	and       eax,255
+	?debug L 736
+?live16399@128: ; EBX = &$edikfcia, EAX = @temp3
+	push      8
+	?debug L 734
+?live16399@144: ; EBX = &$edikfcia
 	inc       eax
-	mov       dword ptr [$eebpfcia],eax
-	?debug L 473
-?live16398@128: ; EBX = &$mhbpfcia, EAX = @temp3
+	?debug L 736
+?live16399@160: ; EBX = &$edikfcia, EAX = @temp3
+	push      ebx
+	?debug L 734
+?live16399@176: ; EBX = &$edikfcia
+	mov       dword ptr [$mphkfcia],eax
+	?debug L 736
+?live16399@192: ; EBX = &$edikfcia, EAX = @temp3
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 475
-?live16398@144: ; 
-@153:
-@143:
+	?debug L 738
+?live16399@208: ; 
+@182:
+@172:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@169:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_num_threads$qv+0
+	dd        @169+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_num_threads$qv	endp
 @stk@cpu@cpu_num_threads$qv	ends
@@ -2908,14 +3651,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch49
-	dd	?patch50
-	dd	?patch51
+	dd	?patch56
+	dd	?patch57
+	dd	?patch58
 	df	@@stk@cpu@cpu_num_threads$qv
 	dw	0
-	dw	4125
+	dw	4127
 	dw	0
-	dw	80
+	dw	89
 	dw	0
 	dw	0
 	dw	0
@@ -2952,17 +3695,57 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	117
 	dw	0
 	dw	17
-	dw	81
+	dw	90
 	dw	0
 	dw	0
 	dw	0
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	82
+	dw	91
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	92
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	93
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	94
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$edikfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	95
 	dw	0
 	dw	0
 	dw	0
@@ -2970,229 +3753,214 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	83
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	84
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	85
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mhbpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	86
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	87
+	dw	96
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eebpfcia
+	df	$mphkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	88
+	dw	97
 	dw	0
 	dw	0
 	dw	0
-?patch49	equ	@153-@@stk@cpu@cpu_num_threads$qv+5
-?patch50	equ	0
-?patch51	equ	@153-@@stk@cpu@cpu_num_threads$qv
+?patch56	equ	@182-@@stk@cpu@cpu_num_threads$qv+75
+?patch57	equ	0
+?patch58	equ	@182-@@stk@cpu@cpu_num_threads$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$elbpfcia	label	dword
+$mgikfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mobpfcia	label	qword
+$ekikfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_num_cores$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_num_cores$qv	proc	near
-?live16399@0:
-	?debug L 478
-@154:
+?live16400@0:
+	?debug L 741
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 481
-?live16399@16: ; EBX = &$mobpfcia
-	mov       eax,dword ptr [$elbpfcia]
-	cmp       eax,-1
-	?debug L 478
-?live16399@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mobpfcia
-	?debug L 481
-?live16399@48: ; EBX = &$mobpfcia
-	jne       @156
-	?debug L 482
-?live16399@64: ; EAX = @temp3
-	jmp       short @158
-	?debug L 484
-?live16399@80: ; EBX = &$mobpfcia
-@157:
+	mov       dword ptr [ebp-8],offset @183
+@184:
+	mov       ebx,offset $ekikfcia
+	?debug L 747
+?live16400@16: ; EBX = &$ekikfcia
+	mov       eax,dword ptr [$mgikfcia]
+	cmp       eax,-1
+	jne       @186
+	?debug L 748
+?live16400@32: ; EAX = @temp3
+	jmp       short @188
+	?debug L 750
+?live16400@48: ; EBX = &$ekikfcia
+@187:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@158:
+	call      @@stk@time@wait_us$qxuj
+@188:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @157
+	jne       short @187
 	cmp       dword ptr [ebx],0
-	jne       short @157
+	jne       short @187
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],edx
-	jmp       short @161
-@160:
+	jmp       short @191
+@190:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@161:
+	call      @@stk@time@wait_us$qxuj
+@191:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @164
+	jne       short @194
 	cmp       dword ptr [ebx],0
-@164:
-	je        short @162
+@194:
+	je        short @192
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @165
-	cmp       eax,dword ptr [ebp-8]
-@165:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @195
+	cmp       eax,dword ptr [ebp-20]
+@195:
 	setne     cl
 	and       ecx,1
-	jmp       short @163
-@162:
+	jmp       short @193
+@192:
 	xor       ecx,ecx
-@163:
+@193:
 	test      cl,cl
-	jne       short @160
-	?debug L 487
+	jne       short @190
+	?debug L 753
 	push      12
 	push      offset s@+13
 	call      @@stk@cpu@cpu_vendor$qv
 	push      eax
-	call      @@stk@mem@cmp$qqspxvt1xui
+	call      @@stk@mem@cmp$qpxvt1xui
 	cmp       edx,0
-	jne       short @166
+	jne       short @196
 	cmp       eax,0
-	jne       short @166
-	?debug L 489
+	jne       short @196
+	?debug L 755
 	push      0
 	push      4
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 490
-	mov       ecx,dword ptr [ebp-24]
+	?debug L 756
+	mov       ecx,dword ptr [ebp-52]
 	shr       ecx,26
 	and       ecx,63
 	inc       ecx
-	mov       dword ptr [$elbpfcia],ecx
-	?debug L 492
-	jmp       short @168
-	?debug L 494
-@166:
+	mov       dword ptr [$mgikfcia],ecx
+	?debug L 758
+	jmp       short @198
+	?debug L 760
+@196:
 	push      12
 	push      offset s@+26
 	call      @@stk@cpu@cpu_vendor$qv
 	push      eax
-	call      @@stk@mem@cmp$qqspxvt1xui
+	call      @@stk@mem@cmp$qpxvt1xui
 	cmp       edx,0
-	jne       short @169
+	jne       short @199
 	cmp       eax,0
-	jne       short @169
-	?debug L 496
+	jne       short @199
+	?debug L 762
 	push      0
 	push      -2147483647
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       ecx,dword ptr [ebp-20]
+	lea       ecx,dword ptr [ebp-44]
 	push      ecx
-	lea       eax,dword ptr [ebp-24]
+	lea       eax,dword ptr [ebp-52]
 	push      eax
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 497
-	mov       edx,dword ptr [ebp-16]
+	?debug L 763
+	mov       edx,dword ptr [ebp-36]
 	and       edx,255
 	inc       edx
-	mov       dword ptr [$elbpfcia],edx
-	?debug L 499
-	jmp       short @168
-	?debug L 500
-@169:
+	mov       dword ptr [$mgikfcia],edx
+	?debug L 765
+	jmp       short @198
+	?debug L 766
+@199:
 	call      @@stk@cpu@cpu_num_threads$qv
-	mov       dword ptr [$elbpfcia],eax
-	?debug L 501
-@168:
-	mov       eax,dword ptr [$elbpfcia]
-	?debug L 502
-?live16399@256: ; EBX = &$mobpfcia, EAX = r
+	mov       dword ptr [$mgikfcia],eax
+	?debug L 767
+@198:
+	mov       eax,dword ptr [$mgikfcia]
+	?debug L 768
+?live16400@224: ; EBX = &$ekikfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 505
-?live16399@272: ; 
-@171:
-@156:
+	?debug L 771
+?live16400@240: ; 
+@201:
+@186:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@183:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_num_cores$qv+0
+	dd        @183+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_num_cores$qv	endp
 @stk@cpu@cpu_num_cores$qv	ends
@@ -3206,14 +3974,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch52
-	dd	?patch53
-	dd	?patch54
+	dd	?patch59
+	dd	?patch60
+	dd	?patch61
 	df	@@stk@cpu@cpu_num_cores$qv
 	dw	0
-	dw	4127
+	dw	4129
 	dw	0
-	dw	89
+	dw	98
 	dw	0
 	dw	0
 	dw	0
@@ -3248,25 +4016,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	117
 	dw	0
 	dw	17
-	dw	90
+	dw	99
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch55
+	dw	?patch62
 	dw	529
-	dw	?patch56
-	dd	?live16399@256-@@stk@cpu@cpu_num_cores$qv
-	dd	?live16399@272-?live16399@256
+	dw	?patch63
+	dd	?live16400@224-@@stk@cpu@cpu_num_cores$qv
+	dd	?live16400@240-?live16400@224
 	dw	17
-?patch56	equ	1
-?patch55	equ	14
+?patch63	equ	1
+?patch62	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	91
+	dw	100
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	101
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	102
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	103
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$ekikfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	104
 	dw	0
 	dw	0
 	dw	0
@@ -3274,375 +4082,406 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	92
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	93
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	94
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mobpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	95
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	96
+	dw	105
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$elbpfcia
+	df	$mgikfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	97
+	dw	106
 	dw	0
 	dw	0
 	dw	0
-?patch52	equ	@171-@@stk@cpu@cpu_num_cores$qv+5
-?patch53	equ	0
-?patch54	equ	@171-@@stk@cpu@cpu_num_cores$qv
+?patch59	equ	@201-@@stk@cpu@cpu_num_cores$qv+74
+?patch60	equ	0
+?patch61	equ	@201-@@stk@cpu@cpu_num_cores$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eccpfcia	label	dword
+$mnikfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mfcpfcia	label	qword
+$ebjkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_cache_size$quc	segment virtual
 	align	2
 @@stk@cpu@cpu_cache_size$quc	proc	near
-?live16400@0:
-	?debug L 506
-@172:
+?live16401@0:
+	?debug L 772
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
+	push      5457731
+	add       esp,-48
 	push      ebx
 	push      esi
 	push      edi
-	mov       edi,offset $eccpfcia
+	mov       dword ptr [ebp-8],offset @202
+@203:
 	mov       ebx,dword ptr [ebp+8]
-	mov       esi,offset $mfcpfcia
-	?debug L 509
-?live16400@16: ; EBX = a_level, ESI = &$mfcpfcia, EDI = &$eccpfcia
+	mov       esi,offset $ebjkfcia
+	mov       edi,offset $mnikfcia
+	?debug L 778
+?live16401@16: ; EBX = a_level, ESI = &$ebjkfcia, EDI = &$mnikfcia
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       eax,dword ptr [edi]
 	cmp       eax,-1
-	jne       @174
-	?debug L 510
-?live16400@32: ; EAX = @temp5, EDI = &$eccpfcia
-	jmp       short @176
-	?debug L 512
-?live16400@48: ; EBX = a_level, ESI = &$mfcpfcia, EDI = &$eccpfcia
-@175:
+	jne       @205
+	?debug L 779
+?live16401@32: ; EAX = @temp5, EDI = &$mnikfcia
+	jmp       short @207
+	?debug L 781
+?live16401@48: ; EBX = a_level, ESI = &$ebjkfcia, EDI = &$mnikfcia
+@206:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@176:
+	call      @@stk@time@wait_us$qxuj
+@207:
+	push      8
+	push      esi
+	call      _CG_D_EP
 	cmp       dword ptr [esi+4],0
-	jne       short @175
+	jne       short @206
 	cmp       dword ptr [esi],0
-	jne       short @175
+	jne       short @206
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      esi
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [esi],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [esi+4],edx
-	jmp       short @179
-@178:
+	jmp       short @210
+@209:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@179:
+	call      @@stk@time@wait_us$qxuj
+@210:
+	push      8
+	push      esi
+	call      _CG_D_EP
 	cmp       dword ptr [esi+4],0
-	jne       short @182
+	jne       short @213
 	cmp       dword ptr [esi],0
-@182:
-	je        short @180
+@213:
+	je        short @211
+	push      8
+	push      esi
+	call      _CG_D_EP
 	mov       eax,dword ptr [esi]
 	mov       edx,dword ptr [esi+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @183
-	cmp       eax,dword ptr [ebp-8]
-@183:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @214
+	cmp       eax,dword ptr [ebp-20]
+@214:
 	setne     cl
 	and       ecx,1
-	jmp       short @181
-@180:
+	jmp       short @212
+@211:
 	xor       ecx,ecx
-@181:
+@212:
 	test      cl,cl
-	jne       short @178
-	?debug L 515
+	jne       short @209
+	?debug L 784
 	push      12
 	push      offset s@+13
 	call      @@stk@cpu@cpu_vendor$qv
 	push      eax
-	call      @@stk@mem@cmp$qqspxvt1xui
+	call      @@stk@mem@cmp$qpxvt1xui
 	cmp       edx,0
-	jne       @184
+	jne       @215
 	cmp       eax,0
-	jne       @184
-	?debug L 516
+	jne       @215
+	?debug L 785
 	cmp       bl,2
-	jne       @186
-	?debug L 517
-?live16400@96: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       @217
+	?debug L 786
+?live16401@96: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
 	push      0
 	push      2
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 518
-	mov       eax,dword ptr [ebp-12]
+	?debug L 787
+	mov       eax,dword ptr [ebp-28]
 	and       eax,255
 	cmp       eax,64
-	jne       short @187
-	?debug L 519
+	jne       short @218
+	?debug L 788
+	push      4
+	push      edi
+	call      _CG_D_EP
 	xor       edx,edx
 	mov       dword ptr [edi],edx
-	jmp       @188
-	?debug L 521
-?live16400@144: ; ESI = &$mfcpfcia, EAX = @temp4, EDI = &$eccpfcia
-@187:
+	jmp       @219
+	?debug L 790
+?live16401@144: ; ESI = &$ebjkfcia, EAX = @temp4, EDI = &$mnikfcia
+@218:
 	cmp       eax,65
-	jne       short @189
-	?debug L 522
-?live16400@160: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       short @220
+	?debug L 791
+?live16401@160: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       dword ptr [edi],128
-	jmp       @188
-	?debug L 524
-?live16400@176: ; ESI = &$mfcpfcia, EAX = @temp4, EDI = &$eccpfcia
-@189:
+	jmp       @219
+	?debug L 793
+?live16401@176: ; ESI = &$ebjkfcia, EAX = @temp4, EDI = &$mnikfcia
+@220:
 	cmp       eax,66
-	jne       short @190
-	?debug L 525
-?live16400@192: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       short @221
+	?debug L 794
+?live16401@192: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       dword ptr [edi],256
-	jmp       @188
-	?debug L 527
-?live16400@208: ; ESI = &$mfcpfcia, EAX = @temp4, EDI = &$eccpfcia
-@190:
+	jmp       @219
+	?debug L 796
+?live16401@208: ; ESI = &$ebjkfcia, EAX = @temp4, EDI = &$mnikfcia
+@221:
 	cmp       eax,67
-	jne       short @191
-	?debug L 528
-?live16400@224: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       short @222
+	?debug L 797
+?live16401@224: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       dword ptr [edi],512
-	jmp       @188
-	?debug L 530
-?live16400@240: ; ESI = &$mfcpfcia, EAX = @temp4, EDI = &$eccpfcia
-@191:
+	jmp       @219
+	?debug L 799
+?live16401@240: ; ESI = &$ebjkfcia, EAX = @temp4, EDI = &$mnikfcia
+@222:
 	cmp       eax,68
-	jne       short @192
-	?debug L 531
-?live16400@256: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       short @223
+	?debug L 800
+?live16401@256: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       dword ptr [edi],1024
-	jmp       @188
-	?debug L 533
-?live16400@272: ; ESI = &$mfcpfcia, EAX = @temp4, EDI = &$eccpfcia
-@192:
+	jmp       @219
+	?debug L 802
+?live16401@272: ; ESI = &$ebjkfcia, EAX = @temp4, EDI = &$mnikfcia
+@223:
 	cmp       eax,69
-	jne       short @193
-	?debug L 534
-?live16400@288: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       short @224
+	?debug L 803
+?live16401@288: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       dword ptr [edi],2048
-	jmp       @188
-	?debug L 538
-@193:
+	jmp       @219
+	?debug L 807
+@224:
+	push      4
+	push      edi
+	call      _CG_D_EP
 	xor       ecx,ecx
 	mov       dword ptr [edi],ecx
-	?debug L 540
-	jmp       @188
-	?debug L 541
-@186:
+	?debug L 809
+	jmp       @219
+	?debug L 810
+@217:
+	push      4
+	push      edi
+	call      _CG_D_EP
 	xor       eax,eax
 	mov       dword ptr [edi],eax
-	?debug L 542
-	jmp       @188
-	?debug L 544
-?live16400@368: ; EBX = a_level, ESI = &$mfcpfcia, EDI = &$eccpfcia
-@184:
+	?debug L 811
+	jmp       @219
+	?debug L 813
+?live16401@368: ; EBX = a_level, ESI = &$ebjkfcia, EDI = &$mnikfcia
+@215:
 	push      12
 	push      offset s@+26
 	call      @@stk@cpu@cpu_vendor$qv
 	push      eax
-	call      @@stk@mem@cmp$qqspxvt1xui
+	call      @@stk@mem@cmp$qpxvt1xui
 	cmp       edx,0
-	jne       short @195
+	jne       short @226
 	cmp       eax,0
-@195:
-	jne       @196
-	?debug L 545
+@226:
+	jne       @227
+	?debug L 814
 	test      bl,bl
-	jne       short @197
-	?debug L 546
-?live16400@400: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       short @228
+	?debug L 815
+?live16401@400: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
 	push      0
 	push      -2147483643
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 547
-	mov       ecx,dword ptr [ebp-12]
+	?debug L 816
+	mov       ecx,dword ptr [ebp-28]
 	shr       ecx,24
 	and       ecx,255
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       dword ptr [edi],ecx
-	?debug L 548
-	jmp       @198
-	?debug L 550
-?live16400@448: ; EBX = a_level, ESI = &$mfcpfcia, EDI = &$eccpfcia
-@197:
+	?debug L 817
+	jmp       @229
+	?debug L 819
+?live16401@448: ; EBX = a_level, ESI = &$ebjkfcia, EDI = &$mnikfcia
+@228:
 	cmp       bl,1
-	jne       short @199
-	?debug L 551
-?live16400@464: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       short @230
+	?debug L 820
+?live16401@464: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
 	push      0
 	push      -2147483643
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       ecx,dword ptr [ebp-20]
+	lea       ecx,dword ptr [ebp-44]
 	push      ecx
-	lea       eax,dword ptr [ebp-24]
+	lea       eax,dword ptr [ebp-52]
 	push      eax
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 552
-	mov       edx,dword ptr [ebp-16]
+	?debug L 821
+	mov       edx,dword ptr [ebp-36]
 	shr       edx,24
 	and       edx,255
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       dword ptr [edi],edx
-	?debug L 553
-	jmp       short @198
-	?debug L 555
-?live16400@512: ; EBX = a_level, ESI = &$mfcpfcia, EDI = &$eccpfcia
-@199:
+	?debug L 822
+	jmp       short @229
+	?debug L 824
+?live16401@512: ; EBX = a_level, ESI = &$ebjkfcia, EDI = &$mnikfcia
+@230:
 	cmp       bl,2
-	jne       short @200
-	?debug L 556
-?live16400@528: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       short @231
+	?debug L 825
+?live16401@528: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
 	push      0
 	push      -2147483642
-	lea       ecx,dword ptr [ebp-12]
+	lea       ecx,dword ptr [ebp-28]
 	push      ecx
-	lea       eax,dword ptr [ebp-16]
+	lea       eax,dword ptr [ebp-36]
 	push      eax
-	lea       edx,dword ptr [ebp-20]
+	lea       edx,dword ptr [ebp-44]
 	push      edx
-	lea       ecx,dword ptr [ebp-24]
+	lea       ecx,dword ptr [ebp-52]
 	push      ecx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 557
-	mov       eax,dword ptr [ebp-16]
+	?debug L 826
+	mov       eax,dword ptr [ebp-36]
 	shr       eax,16
 	and       eax,65535
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       dword ptr [edi],eax
-	?debug L 558
-	jmp       short @198
-	?debug L 560
-?live16400@576: ; EBX = a_level, ESI = &$mfcpfcia, EDI = &$eccpfcia
-@200:
+	?debug L 827
+	jmp       short @229
+	?debug L 829
+?live16401@576: ; EBX = a_level, ESI = &$ebjkfcia, EDI = &$mnikfcia
+@231:
 	cmp       bl,3
-	jne       short @201
-	?debug L 561
-?live16400@592: ; ESI = &$mfcpfcia, EDI = &$eccpfcia
+	jne       short @232
+	?debug L 830
+?live16401@592: ; ESI = &$ebjkfcia, EDI = &$mnikfcia
 	push      0
 	push      -2147483642
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 562
-	mov       ecx,dword ptr [ebp-12]
+	?debug L 831
+	mov       ecx,dword ptr [ebp-28]
 	shr       ecx,18
 	and       ecx,16383
 	shl       ecx,9
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       dword ptr [edi],ecx
-	?debug L 565
-@201:
-@198:
-@196:
-@188:
+	?debug L 834
+@232:
+@229:
+@227:
+@219:
+	push      4
+	push      edi
+	call      _CG_D_EP
 	mov       eax,dword ptr [edi]
-	?debug L 566
-?live16400@640: ; ESI = &$mfcpfcia, EAX = r
+	?debug L 835
+?live16401@640: ; ESI = &$ebjkfcia, EAX = ret
+	push      8
+	push      esi
+	call      _CG_D_EP
 	mov       dword ptr [esi],0
 	mov       dword ptr [esi+4],0
-	?debug L 568
-?live16400@656: ; 
-@202:
-@174:
+	?debug L 837
+?live16401@656: ; 
+@233:
+@205:
+	mov       dword ptr [ebp-4],ebp
 	pop       edi
 	pop       esi
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@202:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_cache_size$quc+0
+	dd        @202+0
+	db        204,255,255,255,12,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_cache_size$quc	endp
 @stk@cpu@cpu_cache_size$quc	ends
@@ -3656,14 +4495,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch57
-	dd	?patch58
-	dd	?patch59
+	dd	?patch64
+	dd	?patch65
+	dd	?patch66
 	df	@@stk@cpu@cpu_cache_size$quc
 	dw	0
-	dw	4129
+	dw	4131
 	dw	0
-	dw	98
+	dw	107
 	dw	0
 	dw	0
 	dw	0
@@ -3701,57 +4540,97 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	32
 	dw	0
-	dw	99
+	dw	108
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch60
+	dw	?patch67
 	dw	529
-	dw	?patch61
-	dd	?live16400@16-@@stk@cpu@cpu_cache_size$quc
-	dd	?live16400@32-?live16400@16
+	dw	?patch68
+	dd	?live16401@16-@@stk@cpu@cpu_cache_size$quc
+	dd	?live16401@32-?live16401@16
 	dw	4
-	dd	?live16400@48-@@stk@cpu@cpu_cache_size$quc
-	dd	?live16400@96-?live16400@48
+	dd	?live16401@48-@@stk@cpu@cpu_cache_size$quc
+	dd	?live16401@96-?live16401@48
 	dw	4
-	dd	?live16400@368-@@stk@cpu@cpu_cache_size$quc
-	dd	?live16400@400-?live16400@368
+	dd	?live16401@368-@@stk@cpu@cpu_cache_size$quc
+	dd	?live16401@400-?live16401@368
 	dw	4
-	dd	?live16400@448-@@stk@cpu@cpu_cache_size$quc
-	dd	?live16400@464-?live16400@448
+	dd	?live16401@448-@@stk@cpu@cpu_cache_size$quc
+	dd	?live16401@464-?live16401@448
 	dw	4
-	dd	?live16400@512-@@stk@cpu@cpu_cache_size$quc
-	dd	?live16400@528-?live16400@512
+	dd	?live16401@512-@@stk@cpu@cpu_cache_size$quc
+	dd	?live16401@528-?live16401@512
 	dw	4
-	dd	?live16400@576-@@stk@cpu@cpu_cache_size$quc
-	dd	?live16400@592-?live16400@576
+	dd	?live16401@576-@@stk@cpu@cpu_cache_size$quc
+	dd	?live16401@592-?live16401@576
 	dw	4
-?patch61	equ	6
-?patch60	equ	64
+?patch68	equ	6
+?patch67	equ	64
 	dw	16
 	dw	2
 	dw	117
 	dw	0
 	dw	17
-	dw	100
+	dw	109
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch62
+	dw	?patch69
 	dw	529
-	dw	?patch63
-	dd	?live16400@640-@@stk@cpu@cpu_cache_size$quc
-	dd	?live16400@656-?live16400@640
+	dw	?patch70
+	dd	?live16401@640-@@stk@cpu@cpu_cache_size$quc
+	dd	?live16401@656-?live16401@640
 	dw	17
-?patch63	equ	1
-?patch62	equ	14
+?patch70	equ	1
+?patch69	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	101
+	dw	110
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	111
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	112
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	113
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$ebjkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	114
 	dw	0
 	dw	0
 	dw	0
@@ -3759,295 +4638,280 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	102
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	103
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	104
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mfcpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	105
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	106
+	dw	115
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eccpfcia
+	df	$mnikfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	107
+	dw	116
 	dw	0
 	dw	0
 	dw	0
-?patch57	equ	@202-@@stk@cpu@cpu_cache_size$quc+7
-?patch58	equ	0
-?patch59	equ	@202-@@stk@cpu@cpu_cache_size$quc
+?patch64	equ	@233-@@stk@cpu@cpu_cache_size$quc+76
+?patch65	equ	0
+?patch66	equ	@233-@@stk@cpu@cpu_cache_size$quc
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	7
-	dw	65500
+	dw	65472
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ejcpfcia	label	dword
+$mejkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mmcpfcia	label	qword
+$eijkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_cache_line_size$quc	segment virtual
 	align	2
 @@stk@cpu@cpu_cache_line_size$quc	proc	near
-?live16401@0:
-	?debug L 571
-@203:
+?live16402@0:
+	?debug L 840
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 574
-?live16401@16: ; ESI = &$mmcpfcia, EBX = a_level
-	mov       eax,dword ptr [$ejcpfcia]
-	cmp       eax,-1
-	?debug L 571
-?live16401@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
 	push      esi
-	mov       esi,offset $mmcpfcia
+	mov       dword ptr [ebp-8],offset @234
+@235:
 	mov       ebx,dword ptr [ebp+8]
-	?debug L 574
-?live16401@48: ; ESI = &$mmcpfcia, EBX = a_level
-	jne       @205
-	?debug L 575
-?live16401@64: ; EAX = @temp4
-	jmp       short @207
-	?debug L 577
-?live16401@80: ; ESI = &$mmcpfcia, EBX = a_level
-@206:
+	mov       esi,offset $eijkfcia
+	?debug L 846
+?live16402@16: ; ESI = &$eijkfcia, EBX = a_level
+	mov       eax,dword ptr [$mejkfcia]
+	cmp       eax,-1
+	jne       @237
+	?debug L 847
+?live16402@32: ; EAX = @temp4
+	jmp       short @239
+	?debug L 849
+?live16402@48: ; ESI = &$eijkfcia, EBX = a_level
+@238:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@207:
+	call      @@stk@time@wait_us$qxuj
+@239:
+	push      8
+	push      esi
+	call      _CG_D_EP
 	cmp       dword ptr [esi+4],0
-	jne       short @206
+	jne       short @238
 	cmp       dword ptr [esi],0
-	jne       short @206
+	jne       short @238
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      esi
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [esi],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [esi+4],edx
-	jmp       short @210
-@209:
+	jmp       short @242
+@241:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@210:
+	call      @@stk@time@wait_us$qxuj
+@242:
+	push      8
+	push      esi
+	call      _CG_D_EP
 	cmp       dword ptr [esi+4],0
-	jne       short @213
+	jne       short @245
 	cmp       dword ptr [esi],0
-@213:
-	je        short @211
+@245:
+	je        short @243
+	push      8
+	push      esi
+	call      _CG_D_EP
 	mov       eax,dword ptr [esi]
 	mov       edx,dword ptr [esi+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @214
-	cmp       eax,dword ptr [ebp-8]
-@214:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @246
+	cmp       eax,dword ptr [ebp-20]
+@246:
 	setne     cl
 	and       ecx,1
-	jmp       short @212
-@211:
+	jmp       short @244
+@243:
 	xor       ecx,ecx
-@212:
+@244:
 	test      cl,cl
-	jne       short @209
-	?debug L 580
+	jne       short @241
+	?debug L 852
 	push      12
 	push      offset s@+13
 	call      @@stk@cpu@cpu_vendor$qv
 	push      eax
-	call      @@stk@mem@cmp$qqspxvt1xui
+	call      @@stk@mem@cmp$qpxvt1xui
 	cmp       edx,0
-	jne       short @215
+	jne       short @247
 	cmp       eax,0
-	jne       short @215
-	?debug L 581
-?live16401@112: ; ESI = &$mmcpfcia
+	jne       short @247
+	?debug L 853
+?live16402@80: ; ESI = &$eijkfcia
 	push      0
 	push      4
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 582
-	mov       ecx,dword ptr [ebp-20]
+	?debug L 854
+	mov       ecx,dword ptr [ebp-44]
 	and       ecx,4095
 	inc       ecx
-	mov       dword ptr [$ejcpfcia],ecx
-	?debug L 583
-	jmp       @217
-	?debug L 585
-?live16401@160: ; ESI = &$mmcpfcia, EBX = a_level
-@215:
+	mov       dword ptr [$mejkfcia],ecx
+	?debug L 855
+	jmp       @249
+	?debug L 857
+?live16402@128: ; ESI = &$eijkfcia, EBX = a_level
+@247:
 	push      12
 	push      offset s@+26
 	call      @@stk@cpu@cpu_vendor$qv
 	push      eax
-	call      @@stk@mem@cmp$qqspxvt1xui
+	call      @@stk@mem@cmp$qpxvt1xui
 	cmp       edx,0
-	jne       @218
+	jne       @250
 	cmp       eax,0
-	jne       @218
-	?debug L 586
+	jne       @250
+	?debug L 858
 	test      bl,bl
-	jne       short @220
-	?debug L 587
+	jne       short @252
+	?debug L 859
 	push      0
 	push      -2147483643
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       ecx,dword ptr [ebp-20]
+	lea       ecx,dword ptr [ebp-44]
 	push      ecx
-	lea       eax,dword ptr [ebp-24]
+	lea       eax,dword ptr [ebp-52]
 	push      eax
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 588
-	mov       edx,dword ptr [ebp-12]
+	?debug L 860
+	mov       edx,dword ptr [ebp-28]
 	and       edx,255
-	mov       dword ptr [$ejcpfcia],edx
-	?debug L 590
-@220:
+	mov       dword ptr [$mejkfcia],edx
+	?debug L 862
+@252:
 	cmp       bl,1
-	jne       short @221
-	?debug L 591
+	jne       short @253
+	?debug L 863
 	push      0
 	push      -2147483643
-	lea       ecx,dword ptr [ebp-12]
+	lea       ecx,dword ptr [ebp-28]
 	push      ecx
-	lea       eax,dword ptr [ebp-16]
+	lea       eax,dword ptr [ebp-36]
 	push      eax
-	lea       edx,dword ptr [ebp-20]
+	lea       edx,dword ptr [ebp-44]
 	push      edx
-	lea       ecx,dword ptr [ebp-24]
+	lea       ecx,dword ptr [ebp-52]
 	push      ecx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 592
-	mov       eax,dword ptr [ebp-16]
+	?debug L 864
+	mov       eax,dword ptr [ebp-36]
 	and       eax,255
-	mov       dword ptr [$ejcpfcia],eax
-	?debug L 594
-@221:
+	mov       dword ptr [$mejkfcia],eax
+	?debug L 866
+@253:
 	cmp       bl,2
-	jne       short @222
-	?debug L 595
+	jne       short @254
+	?debug L 867
 	push      0
 	push      -2147483642
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 596
-	mov       ecx,dword ptr [ebp-16]
+	?debug L 868
+	mov       ecx,dword ptr [ebp-36]
 	and       ecx,255
-	mov       dword ptr [$ejcpfcia],ecx
-	?debug L 598
-@222:
+	mov       dword ptr [$mejkfcia],ecx
+	?debug L 870
+@254:
 	cmp       bl,3
-	jne       short @223
-	?debug L 599
-?live16401@336: ; ESI = &$mmcpfcia
+	jne       short @255
+	?debug L 871
+?live16402@304: ; ESI = &$eijkfcia
 	push      0
 	push      -2147483642
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       ecx,dword ptr [ebp-20]
+	lea       ecx,dword ptr [ebp-44]
 	push      ecx
-	lea       eax,dword ptr [ebp-24]
+	lea       eax,dword ptr [ebp-52]
 	push      eax
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 600
-	mov       edx,dword ptr [ebp-12]
+	?debug L 872
+	mov       edx,dword ptr [ebp-28]
 	and       edx,255
-	mov       dword ptr [$ejcpfcia],edx
-	?debug L 603
-@223:
-@218:
-@217:
-	mov       eax,dword ptr [$ejcpfcia]
-	?debug L 604
-?live16401@384: ; ESI = &$mmcpfcia, EAX = r
+	mov       dword ptr [$mejkfcia],edx
+	?debug L 875
+@255:
+@250:
+@249:
+	mov       eax,dword ptr [$mejkfcia]
+	?debug L 876
+?live16402@352: ; ESI = &$eijkfcia, EAX = ret
+	push      8
+	push      esi
+	call      _CG_D_EP
 	mov       dword ptr [esi],0
 	mov       dword ptr [esi+4],0
-	?debug L 607
-?live16401@400: ; 
-@224:
-@205:
+	?debug L 879
+?live16402@368: ; 
+@256:
+@237:
+	mov       dword ptr [ebp-4],ebp
 	pop       esi
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@234:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_cache_line_size$quc+0
+	dd        @234+0
+	db        204,255,255,255,12,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_cache_line_size$quc	endp
 @stk@cpu@cpu_cache_line_size$quc	ends
@@ -4061,14 +4925,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch64
-	dd	?patch65
-	dd	?patch66
+	dd	?patch71
+	dd	?patch72
+	dd	?patch73
 	df	@@stk@cpu@cpu_cache_line_size$quc
 	dw	0
-	dw	4131
+	dw	4133
 	dw	0
-	dw	108
+	dw	117
 	dw	0
 	dw	0
 	dw	0
@@ -4111,51 +4975,88 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	32
 	dw	0
-	dw	109
+	dw	118
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch67
+	dw	?patch74
 	dw	529
-	dw	?patch68
-	dd	?live16401@16-@@stk@cpu@cpu_cache_line_size$quc
-	dd	?live16401@32-?live16401@16
+	dw	?patch75
+	dd	?live16402@16-@@stk@cpu@cpu_cache_line_size$quc
+	dd	?live16402@32-?live16402@16
 	dw	4
-	dd	?live16401@48-@@stk@cpu@cpu_cache_line_size$quc
-	dd	?live16401@64-?live16401@48
+	dd	?live16402@48-@@stk@cpu@cpu_cache_line_size$quc
+	dd	?live16402@80-?live16402@48
 	dw	4
-	dd	?live16401@80-@@stk@cpu@cpu_cache_line_size$quc
-	dd	?live16401@112-?live16401@80
+	dd	?live16402@128-@@stk@cpu@cpu_cache_line_size$quc
+	dd	?live16402@304-?live16402@128
 	dw	4
-	dd	?live16401@160-@@stk@cpu@cpu_cache_line_size$quc
-	dd	?live16401@336-?live16401@160
-	dw	4
-?patch68	equ	4
-?patch67	equ	44
+?patch75	equ	3
+?patch74	equ	34
 	dw	16
 	dw	2
 	dw	117
 	dw	0
 	dw	17
-	dw	110
+	dw	119
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch69
+	dw	?patch76
 	dw	529
-	dw	?patch70
-	dd	?live16401@384-@@stk@cpu@cpu_cache_line_size$quc
-	dd	?live16401@400-?live16401@384
+	dw	?patch77
+	dd	?live16402@352-@@stk@cpu@cpu_cache_line_size$quc
+	dd	?live16402@368-?live16402@352
 	dw	17
-?patch70	equ	1
-?patch69	equ	14
+?patch77	equ	1
+?patch76	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	111
+	dw	120
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	121
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	122
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	123
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$eijkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	124
 	dw	0
 	dw	0
 	dw	0
@@ -4163,370 +5064,375 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	112
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	113
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	114
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mmcpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	115
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	116
+	dw	125
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ejcpfcia
+	df	$mejkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	117
+	dw	126
 	dw	0
 	dw	0
 	dw	0
-?patch64	equ	@224-@@stk@cpu@cpu_cache_line_size$quc+6
-?patch65	equ	0
-?patch66	equ	@224-@@stk@cpu@cpu_cache_line_size$quc
+?patch71	equ	@256-@@stk@cpu@cpu_cache_line_size$quc+73
+?patch72	equ	0
+?patch73	equ	@256-@@stk@cpu@cpu_cache_line_size$quc
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	5
-	dw	65504
+	dw	65476
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eadpfcia	label	dword
+$mljkfcia	label	dword
 	dd	0
+	db	1	dup(?)
 	align	4
-$mddpfcia	label	qword
+$epjkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_num_mhz$qo	segment virtual
 	align	2
 @@stk@cpu@cpu_num_mhz$qo	proc	near
-?live16402@0:
-	?debug L 610
-@225:
+?live16403@0:
+	?debug L 882
 	push      ebp
 	mov       ebp,esp
-	add       esp,-120
+	push      5457731
+	add       esp,-168
 	push      ebx
 	push      esi
-	push      edi
-	?debug L 613
-	mov       eax,dword ptr [$eadpfcia]
+	mov       dword ptr [ebp-8],offset @257
+	?debug L 888
+@258:
+	mov       eax,dword ptr [$mljkfcia]
 	test      eax,eax
-	je        short @229
+	je        short @262
 	cmp       byte ptr [ebp+8],0
-	je        @227
-	?debug L 614
-?live16402@32: ; EAX = @temp20
-	jmp       short @229
-	?debug L 616
-?live16402@48: ; 
-@228:
+	je        @260
+	?debug L 889
+?live16403@32: ; EAX = @temp18
+	jmp       short @262
+	?debug L 891
+?live16403@48: ; 
+@261:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@229:
-	cmp       dword ptr [$mddpfcia+4],0
-	jne       short @228
-	cmp       dword ptr [$mddpfcia],0
-	jne       short @228
+	call      @@stk@time@wait_us$qxuj
+@262:
+	cmp       dword ptr [$epjkfcia+4],0
+	jne       short @261
+	cmp       dword ptr [$epjkfcia],0
+	jne       short @261
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
-	mov       dword ptr [$mddpfcia],edx
-	mov       edx,dword ptr [ebp-4]
-	mov       dword ptr [$mddpfcia+4],edx
-	jmp       short @232
-@231:
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	mov       edx,dword ptr [ebp-20]
+	mov       dword ptr [$epjkfcia],edx
+	mov       edx,dword ptr [ebp-16]
+	mov       dword ptr [$epjkfcia+4],edx
+	jmp       short @265
+@264:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@232:
-	cmp       dword ptr [$mddpfcia+4],0
-	jne       short @235
-	cmp       dword ptr [$mddpfcia],0
-@235:
-	je        short @233
-	mov       eax,dword ptr [$mddpfcia]
-	mov       edx,dword ptr [$mddpfcia+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @236
-	cmp       eax,dword ptr [ebp-8]
-@236:
+	call      @@stk@time@wait_us$qxuj
+@265:
+	cmp       dword ptr [$epjkfcia+4],0
+	jne       short @268
+	cmp       dword ptr [$epjkfcia],0
+@268:
+	je        short @266
+	mov       eax,dword ptr [$epjkfcia]
+	mov       edx,dword ptr [$epjkfcia+4]
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @269
+	cmp       eax,dword ptr [ebp-20]
+@269:
 	setne     cl
 	and       ecx,1
-	jmp       short @234
-@233:
+	jmp       short @267
+@266:
 	xor       ecx,ecx
-@234:
+@267:
 	test      cl,cl
-	jne       short @231
-	?debug L 629
+	jne       short @264
+	?debug L 904
 	xor       ebx,ebx
-	lea       esi,dword ptr [ebp-120]
-	?debug L 630
-?live16402@80: ; EBX = i, ESI = @temp8
-@237:
+	?debug L 905
+?live16403@80: ; EBX = i
+@270:
 	call      @@stk@cpu@tsc_init$qv
-	?debug L 631
+	?debug L 906
 	call      @@stk@cpu@tsc_start$qv
-	call      @@stk@time@time_ms$qqsv
-	mov       dword ptr [ebp-40],eax
-	mov       dword ptr [ebp-36],edx
+	call      @@stk@time@time_ms$qv
+	mov       dword ptr [ebp-68],eax
+	mov       dword ptr [ebp-64],edx
 	call      @@stk@cpu@tsc_checkpoint$qv
-	?debug L 632
+	?debug L 907
 	call      @@stk@cpu@tsc_elapsed$qv
+	mov       dword ptr [ebp-128],eax
+	mov       dword ptr [ebp-124],edx
+	?debug L 908
+@272:
+	call      @@stk@time@time_ms$qv
 	mov       dword ptr [ebp-80],eax
 	mov       dword ptr [ebp-76],edx
-	?debug L 633
-@239:
-	call      @@stk@time@time_ms$qqsv
-	mov       dword ptr [ebp-48],eax
-	mov       dword ptr [ebp-44],edx
-	?debug L 634
-	mov       eax,dword ptr [ebp-48]
-	mov       edx,dword ptr [ebp-44]
-	cmp       edx,dword ptr [ebp-36]
-	jne       short @241
-	cmp       eax,dword ptr [ebp-40]
-@241:
-	jbe       short @239
-	?debug L 635
+	?debug L 909
+	mov       eax,dword ptr [ebp-80]
+	mov       edx,dword ptr [ebp-76]
+	cmp       edx,dword ptr [ebp-64]
+	jne       short @274
+	cmp       eax,dword ptr [ebp-68]
+@274:
+	jbe       short @272
+	?debug L 910
 	call      @@stk@cpu@tsc_start$qv
-	?debug L 636
-@242:
+	?debug L 911
+@275:
 	mov       edx,21
-	?debug L 637
-?live16402@192: ; EBX = i, EDX = trash1, ESI = @temp8
-@243:
+	?debug L 912
+?live16403@192: ; EBX = i, EDX = trash1
+@276:
 	xor       eax,eax
-@245:
+@278:
 	inc       eax
 	cmp       eax,1000000
-	jb        short @245
-	?debug L 636
+	jb        short @278
+	?debug L 911
 	dec       edx
 	test      edx,edx
-	ja        short @243
-	?debug L 640
-?live16402@224: ; EBX = i, ESI = @temp8
-	call      @@stk@time@time_ms$qqsv
-	mov       dword ptr [ebp-56],eax
-	mov       dword ptr [ebp-52],edx
-	?debug L 641
-@249:
-	call      @@stk@time@time_ms$qqsv
-	mov       dword ptr [ebp-64],eax
-	mov       dword ptr [ebp-60],edx
-	?debug L 642
-	mov       eax,dword ptr [ebp-64]
-	mov       edx,dword ptr [ebp-60]
-	cmp       edx,dword ptr [ebp-52]
-	jne       short @251
-	cmp       eax,dword ptr [ebp-56]
-@251:
-	jbe       short @249
-	?debug L 643
+	ja        short @276
+	?debug L 915
+?live16403@224: ; EBX = i
+	call      @@stk@time@time_ms$qv
+	mov       dword ptr [ebp-92],eax
+	mov       dword ptr [ebp-88],edx
+	?debug L 916
+@282:
+	call      @@stk@time@time_ms$qv
+	mov       dword ptr [ebp-104],eax
+	mov       dword ptr [ebp-100],edx
+	?debug L 917
+	mov       eax,dword ptr [ebp-104]
+	mov       edx,dword ptr [ebp-100]
+	cmp       edx,dword ptr [ebp-88]
+	jne       short @284
+	cmp       eax,dword ptr [ebp-92]
+@284:
+	jbe       short @282
+	?debug L 918
 	call      @@stk@cpu@tsc_checkpoint$qv
-	?debug L 644
+	?debug L 919
 	call      @@stk@cpu@tsc_elapsed$qv
-	mov       dword ptr [ebp-72],eax
-	mov       dword ptr [ebp-68],edx
-	?debug L 645
-	mov       eax,dword ptr [ebp-64]
-	mov       edx,dword ptr [ebp-60]
-	sub       eax,dword ptr [ebp-48]
-	sbb       edx,dword ptr [ebp-44]
-	mov       dword ptr [ebp-32],eax
-	mov       dword ptr [ebp-28],edx
-	?debug L 646
-	mov       eax,dword ptr [ebp-72]
-	mov       edx,dword ptr [ebp-68]
+	mov       dword ptr [ebp-116],eax
+	mov       dword ptr [ebp-112],edx
+	?debug L 920
+	mov       eax,dword ptr [ebp-104]
+	mov       edx,dword ptr [ebp-100]
 	sub       eax,dword ptr [ebp-80]
 	sbb       edx,dword ptr [ebp-76]
-	mov       dword ptr [ebp-72],eax
-	mov       dword ptr [ebp-68],edx
-	?debug L 647
+	mov       dword ptr [ebp-56],eax
+	mov       dword ptr [ebp-52],edx
+	?debug L 921
+	mov       eax,dword ptr [ebp-116]
+	mov       edx,dword ptr [ebp-112]
+	sub       eax,dword ptr [ebp-128]
+	sbb       edx,dword ptr [ebp-124]
+	mov       dword ptr [ebp-116],eax
+	mov       dword ptr [ebp-112],edx
+	?debug L 922
 	push      0
 	push      1000
-	mov       eax,dword ptr [ebp-72]
-	mov       edx,dword ptr [ebp-68]
+	mov       eax,dword ptr [ebp-116]
+	mov       edx,dword ptr [ebp-112]
 	call      __llmul
-	mov       dword ptr [ebp-72],eax
-	mov       dword ptr [ebp-68],edx
-	?debug L 648
-	cmp       dword ptr [ebp-28],0
-	jne       short @253
-	cmp       dword ptr [ebp-32],0
-@253:
-	je        short @252
-	push      dword ptr [ebp-28]
-	push      dword ptr [ebp-32]
-	mov       eax,dword ptr [ebp-72]
-	mov       edx,dword ptr [ebp-68]
+	mov       dword ptr [ebp-116],eax
+	mov       dword ptr [ebp-112],edx
+	?debug L 923
+	cmp       dword ptr [ebp-52],0
+	jne       short @286
+	cmp       dword ptr [ebp-56],0
+@286:
+	je        short @285
+	push      dword ptr [ebp-52]
+	push      dword ptr [ebp-56]
+	mov       eax,dword ptr [ebp-116]
+	mov       edx,dword ptr [ebp-112]
 	call      __lludiv
-	mov       dword ptr [ebp-72],eax
-	mov       dword ptr [ebp-68],edx
-	jmp       short @254
-	?debug L 649
-@252:
-	mov       dword ptr [ebp-72],0
-	mov       dword ptr [ebp-68],0
-	?debug L 650
-@254:
-	mov       eax,dword ptr [ebp-72]
-	mov       dword ptr [esi],eax
-	mov       eax,dword ptr [ebp-68]
-	mov       dword ptr [esi+4],eax
-@255:
+	mov       dword ptr [ebp-116],eax
+	mov       dword ptr [ebp-112],edx
+	jmp       short @287
+	?debug L 924
+@285:
+	mov       dword ptr [ebp-116],0
+	mov       dword ptr [ebp-112],0
+	?debug L 925
+@287:
+	push      8
+	push      -172
+	push      ebx
+	push      3
+	push      0
+	call      _CG_LDA_EOXSY
+	mov       eax,dword ptr [ebp-116]
+	mov       dword ptr [ebp+8*ebx-172],eax
+	mov       eax,dword ptr [ebp-112]
+	mov       dword ptr [ebp+8*ebx-168],eax
+@288:
 	inc       ebx
-	add       esi,8
 	cmp       ebx,5
-	jb        @237
-	?debug L 652
-?live16402@400: ; 
-	mov       edx,dword ptr [ebp-120]
-	xor       edi,edi
-	mov       dword ptr [ebp-16],edx
+	jb        @270
+	?debug L 927
+?live16403@400: ; 
+	mov       edx,dword ptr [ebp-172]
 	xor       esi,esi
-	mov       edx,dword ptr [ebp-116]
+	mov       dword ptr [ebp-32],edx
+	mov       edx,dword ptr [ebp-168]
+	mov       dword ptr [ebp-28],edx
+	mov       ecx,dword ptr [ebp-172]
+	mov       dword ptr [ebp-44],ecx
+	mov       ecx,dword ptr [ebp-168]
+	mov       dword ptr [ebp-40],ecx
+	xor       ecx,ecx
 	xor       ebx,ebx
-	mov       dword ptr [ebp-12],edx
-	mov       ecx,dword ptr [ebp-120]
-	mov       dword ptr [ebp-24],ecx
-	mov       ecx,dword ptr [ebp-116]
-	mov       dword ptr [ebp-20],ecx
-	lea       ecx,dword ptr [ebp-120]
-	?debug L 653
-?live16402@416: ; EBX = i, ECX = @temp4, ESI = imax, EDI = imin
-@257:
-	mov       eax,dword ptr [ecx]
-	mov       edx,dword ptr [ecx+4]
-	cmp       edx,dword ptr [ebp-12]
-	jne       short @260
-	cmp       eax,dword ptr [ebp-16]
-@260:
-	jbe       short @259
-	mov       eax,dword ptr [ecx]
+	?debug L 928
+?live16403@416: ; EBX = i, ECX = imax, ESI = imin
+@290:
+	push      8
+	push      -172
+	push      ebx
+	push      3
+	push      0
+	call      _CG_LDA_EOXSY
+	mov       eax,dword ptr [ebp+8*ebx-172]
+	mov       edx,dword ptr [ebp+8*ebx-168]
+	cmp       edx,dword ptr [ebp-28]
+	jne       short @293
+	cmp       eax,dword ptr [ebp-32]
+@293:
+	jbe       short @292
+	push      8
+	push      -172
+	push      ebx
+	push      3
+	push      0
+	call      _CG_LDA_EOXSY
+	mov       ecx,dword ptr [ebp+8*ebx-172]
+	mov       dword ptr [ebp-32],ecx
+	mov       ecx,dword ptr [ebp+8*ebx-168]
+	mov       dword ptr [ebp-28],ecx
+	mov       ecx,ebx
+	?debug L 929
+@292:
+	push      8
+	push      -172
+	push      ebx
+	push      3
+	push      0
+	call      _CG_LDA_EOXSY
+	mov       eax,dword ptr [ebp+8*ebx-172]
+	mov       edx,dword ptr [ebp+8*ebx-168]
+	cmp       edx,dword ptr [ebp-40]
+	jne       short @295
+	cmp       eax,dword ptr [ebp-44]
+@295:
+	jae       short @294
+	push      8
+	push      -172
+	push      ebx
+	push      3
+	push      0
+	call      _CG_LDA_EOXSY
+	mov       eax,dword ptr [ebp+8*ebx-172]
 	mov       esi,ebx
-	mov       dword ptr [ebp-16],eax
-	mov       eax,dword ptr [ecx+4]
-	mov       dword ptr [ebp-12],eax
-	?debug L 654
-@259:
-	mov       eax,dword ptr [ecx]
-	mov       edx,dword ptr [ecx+4]
-	cmp       edx,dword ptr [ebp-20]
-	jne       short @262
-	cmp       eax,dword ptr [ebp-24]
-@262:
-	jae       short @261
-	mov       eax,dword ptr [ecx]
-	mov       edi,ebx
-	mov       dword ptr [ebp-24],eax
-	mov       eax,dword ptr [ecx+4]
-	mov       dword ptr [ebp-20],eax
-@261:
+	mov       dword ptr [ebp-44],eax
+	mov       eax,dword ptr [ebp+8*ebx-168]
+	mov       dword ptr [ebp-40],eax
+@294:
 	inc       ebx
-	add       ecx,8
 	cmp       ebx,5
-	jb        short @257
-	?debug L 656
-?live16402@448: ; ESI = imax, EDI = imin
-	mov       dword ptr [ebp-72],0
-	mov       dword ptr [ebp-68],0
+	jb        @290
+	?debug L 931
+?live16403@448: ; ECX = imax, ESI = imin
+	mov       dword ptr [ebp-116],0
+	mov       dword ptr [ebp-112],0
 	xor       ebx,ebx
-	lea       ecx,dword ptr [ebp-120]
-@264:
-	cmp       edi,ebx
-	je        short @266
+@297:
 	cmp       esi,ebx
-	je        short @266
-	mov       eax,dword ptr [ecx]
-	mov       edx,dword ptr [ecx+4]
-	add       eax,dword ptr [ebp-72]
-	adc       edx,dword ptr [ebp-68]
-	mov       dword ptr [ebp-72],eax
-	mov       dword ptr [ebp-68],edx
-@266:
+	je        short @299
+	cmp       ecx,ebx
+	je        short @299
+	push      8
+	push      -172
+	push      ebx
+	push      3
+	push      0
+	call      _CG_LDA_EOXSY
+	mov       eax,dword ptr [ebp+8*ebx-172]
+	mov       edx,dword ptr [ebp+8*ebx-168]
+	add       eax,dword ptr [ebp-116]
+	adc       edx,dword ptr [ebp-112]
+	mov       dword ptr [ebp-116],eax
+	mov       dword ptr [ebp-112],edx
+@299:
 	inc       ebx
-	add       ecx,8
 	cmp       ebx,5
-	jb        short @264
-	?debug L 658
-?live16402@464: ; 
+	jb        short @297
+	?debug L 933
+?live16403@464: ; 
 	push      0
 	push      1000000
 	push      0
 	push      3
-	mov       eax,dword ptr [ebp-72]
-	mov       edx,dword ptr [ebp-68]
+	mov       eax,dword ptr [ebp-116]
+	mov       edx,dword ptr [ebp-112]
 	call      __lludiv
 	call      __lludiv
-	mov       dword ptr [ebp-72],eax
-	mov       dword ptr [ebp-68],edx
-	?debug L 659
-	mov       eax,dword ptr [ebp-72]
+	mov       dword ptr [ebp-116],eax
+	mov       dword ptr [ebp-112],edx
+	?debug L 934
+	mov       eax,dword ptr [ebp-116]
 	mov       ecx,eax
-	mov       dword ptr [$eadpfcia],ecx
-	?debug L 661
-?live16402@496: ; ECX = @temp19
-	mov       dword ptr [$mddpfcia],0
-	mov       dword ptr [$mddpfcia+4],0
-	?debug L 662
+	mov       dword ptr [$mljkfcia],ecx
+	?debug L 936
+?live16403@496: ; ECX = @temp17
+	mov       dword ptr [$epjkfcia],0
+	mov       dword ptr [$epjkfcia+4],0
+	?debug L 937
 	mov       eax,ecx
-	?debug L 663
-?live16402@528: ; 
-@268:
-@227:
-	pop       edi
+	?debug L 938
+?live16403@528: ; 
+@301:
+@260:
+	mov       dword ptr [ebp-4],ebp
 	pop       esi
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@257:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_num_mhz$qo+0
+	dd        @257+0
+	db        84,255,255,255,12,0,0,0,12,0,0,0,8,0,0,0
+	db        1,0,0,0,236,255,255,255,8,0,0,0,224,255,255,255
+	db        8,0,0,0,212,255,255,255,8,0,0,0,200,255,255,255
+	db        8,0,0,0,188,255,255,255,8,0,0,0,176,255,255,255
+	db        8,0,0,0,164,255,255,255,8,0,0,0,152,255,255,255
+	db        8,0,0,0,140,255,255,255,8,0,0,0,128,255,255,255
+	db        8,0,0,0,84,255,255,255,40,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_num_mhz$qo	endp
 @stk@cpu@cpu_num_mhz$qo	ends
@@ -4540,14 +5446,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch71
-	dd	?patch72
-	dd	?patch73
+	dd	?patch78
+	dd	?patch79
+	dd	?patch80
 	df	@@stk@cpu@cpu_num_mhz$qo
 	dw	0
-	dw	4133
+	dw	4135
 	dw	0
-	dw	118
+	dw	127
 	dw	0
 	dw	0
 	dw	0
@@ -4581,139 +5487,25 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	48
 	dw	0
-	dw	119
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65456
-	dw	65535
-	dw	119
-	dw	0
-	dw	120
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65464
-	dw	65535
-	dw	119
-	dw	0
-	dw	121
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65472
-	dw	65535
-	dw	119
-	dw	0
-	dw	122
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65480
-	dw	65535
-	dw	119
-	dw	0
-	dw	123
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65488
-	dw	65535
-	dw	119
-	dw	0
-	dw	124
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65496
-	dw	65535
-	dw	119
-	dw	0
-	dw	125
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65504
-	dw	65535
-	dw	119
-	dw	0
-	dw	126
-	dw	0
-	dw	0
-	dw	0
-	dw	16
-	dw	2
-	dw	117
-	dw	0
-	dw	20
-	dw	127
-	dw	0
-	dw	0
-	dw	0
-	dw	?patch74
-	dw	529
-	dw	?patch75
-	dd	?live16402@80-@@stk@cpu@cpu_num_mhz$qo
-	dd	?live16402@400-?live16402@80
-	dw	20
-	dd	?live16402@416-@@stk@cpu@cpu_num_mhz$qo
-	dd	?live16402@448-?live16402@416
-	dw	20
-?patch75	equ	2
-?patch74	equ	24
-	dw	16
-	dw	2
-	dw	117
-	dw	0
-	dw	24
 	dw	128
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch76
-	dw	529
-	dw	?patch77
-	dd	?live16402@416-@@stk@cpu@cpu_num_mhz$qo
-	dd	?live16402@464-?live16402@416
-	dw	24
-?patch77	equ	1
-?patch76	equ	14
-	dw	16
-	dw	2
-	dw	117
+	dw	18
+	dw	512
+	dw	65408
+	dw	65535
+	dw	119
 	dw	0
-	dw	23
 	dw	129
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch78
-	dw	529
-	dw	?patch79
-	dd	?live16402@416-@@stk@cpu@cpu_num_mhz$qo
-	dd	?live16402@464-?live16402@416
-	dw	23
-?patch79	equ	1
-?patch78	equ	14
 	dw	18
 	dw	512
-	dw	65416
+	dw	65420
 	dw	65535
-	dw	4135
+	dw	119
 	dw	0
 	dw	130
 	dw	0
@@ -4721,7 +5513,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	18
 	dw	512
-	dw	65512
+	dw	65432
 	dw	65535
 	dw	119
 	dw	0
@@ -4731,7 +5523,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	18
 	dw	512
-	dw	65520
+	dw	65444
 	dw	65535
 	dw	119
 	dw	0
@@ -4739,11 +5531,11 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dw	22
-	dw	513
-	df	$mddpfcia
-	dw	0
-	dw	4102
+	dw	18
+	dw	512
+	dw	65456
+	dw	65535
+	dw	119
 	dw	0
 	dw	133
 	dw	0
@@ -4751,21 +5543,135 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	18
 	dw	512
-	dw	65528
+	dw	65468
 	dw	65535
-	dw	118
+	dw	119
 	dw	0
 	dw	134
 	dw	0
 	dw	0
 	dw	0
+	dw	18
+	dw	512
+	dw	65480
+	dw	65535
+	dw	119
+	dw	0
+	dw	135
+	dw	0
+	dw	0
+	dw	0
+	dw	16
+	dw	2
+	dw	117
+	dw	0
+	dw	20
+	dw	136
+	dw	0
+	dw	0
+	dw	0
+	dw	?patch81
+	dw	529
+	dw	?patch82
+	dd	?live16403@80-@@stk@cpu@cpu_num_mhz$qo
+	dd	?live16403@400-?live16403@80
+	dw	20
+	dd	?live16403@416-@@stk@cpu@cpu_num_mhz$qo
+	dd	?live16403@448-?live16403@416
+	dw	20
+?patch82	equ	2
+?patch81	equ	24
+	dw	16
+	dw	2
+	dw	117
+	dw	0
+	dw	23
+	dw	137
+	dw	0
+	dw	0
+	dw	0
+	dw	?patch83
+	dw	529
+	dw	?patch84
+	dd	?live16403@416-@@stk@cpu@cpu_num_mhz$qo
+	dd	?live16403@464-?live16403@416
+	dw	23
+?patch84	equ	1
+?patch83	equ	14
+	dw	16
+	dw	2
+	dw	117
+	dw	0
+	dw	18
+	dw	138
+	dw	0
+	dw	0
+	dw	0
+	dw	?patch85
+	dw	529
+	dw	?patch86
+	dd	?live16403@416-@@stk@cpu@cpu_num_mhz$qo
+	dd	?live16403@464-?live16403@416
+	dw	18
+?patch86	equ	1
+?patch85	equ	14
+	dw	18
+	dw	512
+	dw	65364
+	dw	65535
+	dw	4137
+	dw	0
+	dw	139
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	119
+	dw	0
+	dw	140
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65504
+	dw	65535
+	dw	119
+	dw	0
+	dw	141
+	dw	0
+	dw	0
+	dw	0
 	dw	22
 	dw	513
-	df	$eadpfcia
+	df	$epjkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	142
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65516
+	dw	65535
+	dw	118
+	dw	0
+	dw	143
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mljkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	135
+	dw	144
 	dw	0
 	dw	0
 	dw	0
@@ -4775,8 +5681,8 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch80
-	df	@242
+	dd	?patch87
+	df	@275
 	dw	0
 	dw	0
 	dw	16
@@ -4784,7 +5690,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	117
 	dw	0
 	dw	17
-	dw	136
+	dw	145
 	dw	0
 	dw	0
 	dw	0
@@ -4793,184 +5699,215 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	117
 	dw	0
 	dw	19
-	dw	137
+	dw	146
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch81
+	dw	?patch88
 	dw	529
-	dw	?patch82
-	dd	?live16402@192-@@stk@cpu@cpu_num_mhz$qo
-	dd	?live16402@224-?live16402@192
+	dw	?patch89
+	dd	?live16403@192-@@stk@cpu@cpu_num_mhz$qo
+	dd	?live16403@224-?live16403@192
 	dw	19
-?patch82	equ	1
-?patch81	equ	14
-?patch80	equ	@255-@242
+?patch89	equ	1
+?patch88	equ	14
+?patch87	equ	@288-@275
 	dw	2
 	dw	6
-?patch71	equ	@268-@@stk@cpu@cpu_num_mhz$qo+7
-?patch72	equ	0
-?patch73	equ	@268-@@stk@cpu@cpu_num_mhz$qo
+?patch78	equ	@301-@@stk@cpu@cpu_num_mhz$qo+131
+?patch79	equ	0
+?patch80	equ	@301-@@stk@cpu@cpu_num_mhz$qo
 	dw	2
 	dw	6
 	dw	8
 	dw	531
-	dw	7
-	dw	65404
+	dw	5
+	dw	65356
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ehdpfcia	label	dword
+$ejkkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mkdpfcia	label	qword
+$mmkkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_x87$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_x87$qv	proc	near
-?live16403@0:
-	?debug L 668
-@269:
+?live16404@0:
+	?debug L 943
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 671
-?live16403@16: ; EBX = &$mkdpfcia
-	mov       eax,dword ptr [$ehdpfcia]
-	cmp       eax,-1
-	?debug L 668
-?live16403@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mkdpfcia
-	?debug L 671
-?live16403@48: ; EBX = &$mkdpfcia
-	je        short @273
-	?debug L 672
-?live16403@64: ; EAX = @temp2
+	mov       dword ptr [ebp-8],offset @302
+@303:
+	mov       ebx,offset $mmkkfcia
+	?debug L 949
+?live16404@16: ; EBX = &$mmkkfcia
+	mov       eax,dword ptr [$ejkkfcia]
+	cmp       eax,-1
+	je        short @307
+	?debug L 950
+?live16404@32: ; EAX = @temp2
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @271
-	?debug L 674
-?live16403@80: ; EBX = &$mkdpfcia
-@272:
+	jmp       @305
+	?debug L 952
+?live16404@48: ; EBX = &$mmkkfcia
+@306:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@273:
+	call      @@stk@time@wait_us$qxuj
+@307:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @272
+	jne       short @306
 	cmp       dword ptr [ebx],0
-	jne       short @272
+	jne       short @306
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @276
-@275:
+	jmp       short @310
+@309:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@276:
+	call      @@stk@time@wait_us$qxuj
+@310:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @279
+	jne       short @313
 	cmp       dword ptr [ebx],0
-@279:
-	je        short @277
+@313:
+	je        short @311
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @280
-	cmp       eax,dword ptr [ebp-8]
-@280:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @314
+	cmp       eax,dword ptr [ebp-20]
+@314:
 	setne     al
 	and       eax,1
-	jmp       short @278
-@277:
+	jmp       short @312
+@311:
 	xor       eax,eax
-@278:
+@312:
 	test      al,al
-	jne       short @275
-	?debug L 677
+	jne       short @309
+	?debug L 955
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 679
-	test      byte ptr [ebp-12],1
-	je        short @281
-	?debug L 680
-	mov       dword ptr [$ehdpfcia],1
-	?debug L 681
+	?debug L 957
+	test      byte ptr [ebp-28],1
+	je        short @315
+	?debug L 958
+	mov       dword ptr [$ejkkfcia],1
+	?debug L 959
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 682
-?live16403@160: ; 
+	?debug L 960
+?live16404@128: ; 
 	mov       al,1
-	jmp       short @271
-	?debug L 686
-?live16403@176: ; EBX = &$mkdpfcia
-@281:
+	jmp       short @305
+	?debug L 964
+?live16404@144: ; EBX = &$mmkkfcia
+@315:
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 688
-	test      byte ptr [ebp-12],1
-	je        short @282
-	?debug L 689
-	mov       dword ptr [$ehdpfcia],1
-	?debug L 690
+	?debug L 966
+	test      byte ptr [ebp-28],1
+	je        short @316
+	?debug L 967
+	mov       dword ptr [$ejkkfcia],1
+	?debug L 968
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 691
-?live16403@240: ; 
+	?debug L 969
+?live16404@208: ; 
 	mov       al,1
-	jmp       short @271
-	?debug L 693
-?live16403@256: ; EBX = &$mkdpfcia
-@282:
+	jmp       short @305
+	?debug L 971
+?live16404@224: ; EBX = &$mmkkfcia
+@316:
 	xor       edx,edx
-	?debug L 695
-?live16403@272: ; 
-	xor       eax,eax
-	?debug L 693
-?live16403@288: ; EBX = &$mkdpfcia
-	mov       dword ptr [$ehdpfcia],edx
-	?debug L 694
+	mov       dword ptr [$ejkkfcia],edx
+	?debug L 972
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
+	?debug L 973
+?live16404@256: ; 
+	xor       eax,eax
+	?debug L 972
+?live16404@272: ; EBX = &$mmkkfcia
 	mov       dword ptr [ebx+4],0
-	?debug L 696
-?live16403@320: ; 
-@283:
-@271:
+	?debug L 974
+?live16404@288: ; 
+@317:
+@305:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@302:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_x87$qv+0
+	dd        @302+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_x87$qv	endp
 @stk@cpu@cpu_has_x87$qv	ends
@@ -4984,14 +5921,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch83
-	dd	?patch84
-	dd	?patch85
+	dd	?patch90
+	dd	?patch91
+	dd	?patch92
 	df	@@stk@cpu@cpu_has_x87$qv
 	dw	0
-	dw	4136
+	dw	4138
 	dw	0
-	dw	138
+	dw	147
 	dw	0
 	dw	0
 	dw	0
@@ -5021,11 +5958,51 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	139
+	dw	148
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	149
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	150
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	151
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mmkkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	152
 	dw	0
 	dw	0
 	dw	0
@@ -5033,199 +6010,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	140
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	141
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	142
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mkdpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	143
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	144
+	dw	153
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ehdpfcia
+	df	$ejkkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	145
+	dw	154
 	dw	0
 	dw	0
 	dw	0
-?patch83	equ	@283-@@stk@cpu@cpu_has_x87$qv+5
-?patch84	equ	0
-?patch85	equ	@283-@@stk@cpu@cpu_has_x87$qv
+?patch90	equ	@317-@@stk@cpu@cpu_has_x87$qv+72
+?patch91	equ	0
+?patch92	equ	@317-@@stk@cpu@cpu_has_x87$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eodpfcia	label	dword
+$ealkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mbepfcia	label	qword
+$mdlkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_mmx$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_mmx$qv	proc	near
-?live16404@0:
-	?debug L 699
-@284:
+?live16405@0:
+	?debug L 977
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 702
-?live16404@16: ; EBX = &$mbepfcia
-	mov       eax,dword ptr [$eodpfcia]
-	cmp       eax,-1
-	?debug L 699
-?live16404@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mbepfcia
-	?debug L 702
-?live16404@48: ; EBX = &$mbepfcia
-	je        short @288
-	?debug L 703
-?live16404@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @318
+@319:
+	mov       ebx,offset $mdlkfcia
+	?debug L 983
+?live16405@16: ; EBX = &$mdlkfcia
+	mov       eax,dword ptr [$ealkfcia]
+	cmp       eax,-1
+	je        short @323
+	?debug L 984
+?live16405@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @286
-	?debug L 705
-?live16404@80: ; EBX = &$mbepfcia
-@287:
+	jmp       @321
+	?debug L 986
+?live16405@48: ; EBX = &$mdlkfcia
+@322:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@288:
+	call      @@stk@time@wait_us$qxuj
+@323:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @287
+	jne       short @322
 	cmp       dword ptr [ebx],0
-	jne       short @287
+	jne       short @322
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @291
-@290:
+	jmp       short @326
+@325:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@291:
+	call      @@stk@time@wait_us$qxuj
+@326:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @294
+	jne       short @329
 	cmp       dword ptr [ebx],0
-@294:
-	je        short @292
+@329:
+	je        short @327
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @295
-	cmp       eax,dword ptr [ebp-8]
-@295:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @330
+	cmp       eax,dword ptr [ebp-20]
+@330:
 	setne     al
 	and       eax,1
-	jmp       short @293
-@292:
+	jmp       short @328
+@327:
 	xor       eax,eax
-@293:
+@328:
 	test      al,al
-	jne       short @290
-	?debug L 708
+	jne       short @325
+	?debug L 989
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 710
-	mov       eax,dword ptr [ebp-12]
-	?debug L 708
 	add       esp,24
-	?debug L 710
+	?debug L 991
+	mov       eax,dword ptr [ebp-28]
 	and       eax,8388608
-	?debug L 711
-?live16404@160: ; EBX = &$mbepfcia, EAX = @temp3
+	mov       dword ptr [$ealkfcia],eax
+	?debug L 992
+?live16405@96: ; EBX = &$mdlkfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 710
-?live16404@176: ; EBX = &$mbepfcia
-	mov       dword ptr [$eodpfcia],eax
-	?debug L 711
-?live16404@192: ; EBX = &$mbepfcia, EAX = @temp3
 	setne     dl
-	?debug L 712
-?live16404@208: ; EBX = &$mbepfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 711
-?live16404@224: ; EBX = &$mbepfcia, EAX = @temp3
 	and       edx,1
-	?debug L 712
-?live16404@240: ; EBX = &$mbepfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 711
-?live16404@256: ; EBX = &$mbepfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 714
-?live16404@272: ; 
-@296:
-@286:
+	?debug L 993
+?live16405@112: ; EBX = &$mdlkfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 995
+?live16405@128: ; 
+@331:
+@321:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@318:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_mmx$qv+0
+	dd        @318+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_mmx$qv	endp
 @stk@cpu@cpu_has_mmx$qv	ends
@@ -5239,14 +6189,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch86
-	dd	?patch87
-	dd	?patch88
+	dd	?patch93
+	dd	?patch94
+	dd	?patch95
 	df	@@stk@cpu@cpu_has_mmx$qv
 	dw	0
-	dw	4138
+	dw	4140
 	dw	0
-	dw	146
+	dw	155
 	dw	0
 	dw	0
 	dw	0
@@ -5279,28 +6229,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	147
+	dw	156
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch89
+	dw	?patch96
 	dw	529
-	dw	?patch90
-	dd	?live16404@208-@@stk@cpu@cpu_has_mmx$qv
-	dd	?live16404@224-?live16404@208
+	dw	?patch97
+	dd	?live16405@112-@@stk@cpu@cpu_has_mmx$qv
+	dd	?live16405@128-?live16405@112
 	dw	1
-	dd	?live16404@240-@@stk@cpu@cpu_has_mmx$qv
-	dd	?live16404@256-?live16404@240
-	dw	1
-?patch90	equ	2
-?patch89	equ	24
+?patch97	equ	1
+?patch96	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	148
+	dw	157
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	158
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	159
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	160
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mdlkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	161
 	dw	0
 	dw	0
 	dw	0
@@ -5308,226 +6295,199 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	149
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	150
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	151
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mbepfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	152
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	153
+	dw	162
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eodpfcia
+	df	$ealkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	154
+	dw	163
 	dw	0
 	dw	0
 	dw	0
-?patch86	equ	@296-@@stk@cpu@cpu_has_mmx$qv+5
-?patch87	equ	0
-?patch88	equ	@296-@@stk@cpu@cpu_has_mmx$qv
+?patch93	equ	@331-@@stk@cpu@cpu_has_mmx$qv+72
+?patch94	equ	0
+?patch95	equ	@331-@@stk@cpu@cpu_has_mmx$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$efepfcia	label	dword
+$ehlkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$miepfcia	label	qword
+$mklkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_mmxext$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_mmxext$qv	proc	near
-?live16405@0:
-	?debug L 717
-@297:
+?live16406@0:
+	?debug L 998
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 720
-?live16405@16: ; EBX = &$miepfcia
-	mov       eax,dword ptr [$efepfcia]
-	cmp       eax,-1
-	?debug L 717
-?live16405@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $miepfcia
-	?debug L 720
-?live16405@48: ; EBX = &$miepfcia
-	je        short @301
-	?debug L 721
-?live16405@64: ; EAX = @temp5
+	mov       dword ptr [ebp-8],offset @332
+@333:
+	mov       ebx,offset $mklkfcia
+	?debug L 1004
+?live16406@16: ; EBX = &$mklkfcia
+	mov       eax,dword ptr [$ehlkfcia]
+	cmp       eax,-1
+	je        short @337
+	?debug L 1005
+?live16406@32: ; EAX = @temp5
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @299
-	?debug L 723
-?live16405@80: ; EBX = &$miepfcia
-@300:
+	jmp       @335
+	?debug L 1007
+?live16406@48: ; EBX = &$mklkfcia
+@336:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@301:
+	call      @@stk@time@wait_us$qxuj
+@337:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @300
+	jne       short @336
 	cmp       dword ptr [ebx],0
-	jne       short @300
+	jne       short @336
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @304
-@303:
+	jmp       short @340
+@339:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@304:
+	call      @@stk@time@wait_us$qxuj
+@340:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @307
+	jne       short @343
 	cmp       dword ptr [ebx],0
-@307:
-	je        short @305
+@343:
+	je        short @341
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @308
-	cmp       eax,dword ptr [ebp-8]
-@308:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @344
+	cmp       eax,dword ptr [ebp-20]
+@344:
 	setne     al
 	and       eax,1
-	jmp       short @306
-@305:
+	jmp       short @342
+@341:
 	xor       eax,eax
-@306:
+@342:
 	test      al,al
-	jne       short @303
-	?debug L 726
+	jne       short @339
+	?debug L 1010
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 728
-	mov       eax,dword ptr [ebp-12]
+	?debug L 1012
+	mov       eax,dword ptr [ebp-28]
 	and       eax,4194304
-	mov       dword ptr [$efepfcia],eax
-	?debug L 729
-?live16405@128: ; EBX = &$miepfcia, EAX = @temp3
+	mov       dword ptr [$ehlkfcia],eax
+	?debug L 1013
+?live16406@96: ; EBX = &$mklkfcia, EAX = @temp3
 	test      eax,eax
-	je        short @309
-	?debug L 730
-?live16405@144: ; 
+	je        short @345
+	?debug L 1014
+?live16406@112: ; 
 	mov       al,1
-	jmp       short @299
-	?debug L 732
-?live16405@160: ; EBX = &$miepfcia
-@309:
+	jmp       short @335
+	?debug L 1016
+?live16406@128: ; EBX = &$mklkfcia
+@345:
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 734
-	mov       eax,dword ptr [ebp-12]
-	?debug L 732
 	add       esp,24
-	?debug L 734
+	?debug L 1018
+	mov       eax,dword ptr [ebp-28]
 	and       eax,33554432
-	?debug L 735
-?live16405@224: ; EBX = &$miepfcia, EAX = @temp4
+	mov       dword ptr [$ehlkfcia],eax
+	?debug L 1019
+?live16406@160: ; EBX = &$mklkfcia, EAX = @temp4
 	test      eax,eax
-	?debug L 734
-?live16405@240: ; EBX = &$miepfcia
-	mov       dword ptr [$efepfcia],eax
-	?debug L 735
-?live16405@256: ; EBX = &$miepfcia, EAX = @temp4
 	setne     dl
-	?debug L 736
-?live16405@272: ; EBX = &$miepfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 735
-?live16405@288: ; EBX = &$miepfcia, EAX = @temp4
 	and       edx,1
-	?debug L 736
-?live16405@304: ; EBX = &$miepfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 735
-?live16405@320: ; EBX = &$miepfcia, EAX = @temp4
 	mov       eax,edx
-	?debug L 738
-?live16405@336: ; 
-@310:
-@299:
+	?debug L 1020
+?live16406@176: ; EBX = &$mklkfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1022
+?live16406@192: ; 
+@346:
+@335:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@332:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_mmxext$qv+0
+	dd        @332+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_mmxext$qv	endp
 @stk@cpu@cpu_has_mmxext$qv	ends
@@ -5541,14 +6501,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch91
-	dd	?patch92
-	dd	?patch93
+	dd	?patch98
+	dd	?patch99
+	dd	?patch100
 	df	@@stk@cpu@cpu_has_mmxext$qv
 	dw	0
-	dw	4140
+	dw	4142
 	dw	0
-	dw	155
+	dw	164
 	dw	0
 	dw	0
 	dw	0
@@ -5584,28 +6544,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	156
+	dw	165
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch94
+	dw	?patch101
 	dw	529
-	dw	?patch95
-	dd	?live16405@272-@@stk@cpu@cpu_has_mmxext$qv
-	dd	?live16405@288-?live16405@272
+	dw	?patch102
+	dd	?live16406@176-@@stk@cpu@cpu_has_mmxext$qv
+	dd	?live16406@192-?live16406@176
 	dw	1
-	dd	?live16405@304-@@stk@cpu@cpu_has_mmxext$qv
-	dd	?live16405@320-?live16405@304
-	dw	1
-?patch95	equ	2
-?patch94	equ	24
+?patch102	equ	1
+?patch101	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	157
+	dw	166
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	167
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	168
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	169
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mklkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	170
 	dw	0
 	dw	0
 	dw	0
@@ -5613,199 +6610,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	158
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	159
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	160
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$miepfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	161
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	162
+	dw	171
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$efepfcia
+	df	$ehlkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	163
+	dw	172
 	dw	0
 	dw	0
 	dw	0
-?patch91	equ	@310-@@stk@cpu@cpu_has_mmxext$qv+5
-?patch92	equ	0
-?patch93	equ	@310-@@stk@cpu@cpu_has_mmxext$qv
+?patch98	equ	@346-@@stk@cpu@cpu_has_mmxext$qv+72
+?patch99	equ	0
+?patch100	equ	@346-@@stk@cpu@cpu_has_mmxext$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$emepfcia	label	dword
+$eolkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mpepfcia	label	qword
+$mbmkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_amd64$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_amd64$qv	proc	near
-?live16406@0:
-	?debug L 741
-@311:
+?live16407@0:
+	?debug L 1025
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 744
-?live16406@16: ; EBX = &$mpepfcia
-	mov       eax,dword ptr [$emepfcia]
-	cmp       eax,-1
-	?debug L 741
-?live16406@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mpepfcia
-	?debug L 744
-?live16406@48: ; EBX = &$mpepfcia
-	je        short @315
-	?debug L 745
-?live16406@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @347
+@348:
+	mov       ebx,offset $mbmkfcia
+	?debug L 1031
+?live16407@16: ; EBX = &$mbmkfcia
+	mov       eax,dword ptr [$eolkfcia]
+	cmp       eax,-1
+	je        short @352
+	?debug L 1032
+?live16407@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @313
-	?debug L 747
-?live16406@80: ; EBX = &$mpepfcia
-@314:
+	jmp       @350
+	?debug L 1034
+?live16407@48: ; EBX = &$mbmkfcia
+@351:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@315:
+	call      @@stk@time@wait_us$qxuj
+@352:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @314
+	jne       short @351
 	cmp       dword ptr [ebx],0
-	jne       short @314
+	jne       short @351
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @318
-@317:
+	jmp       short @355
+@354:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@318:
+	call      @@stk@time@wait_us$qxuj
+@355:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @321
+	jne       short @358
 	cmp       dword ptr [ebx],0
-@321:
-	je        short @319
+@358:
+	je        short @356
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @322
-	cmp       eax,dword ptr [ebp-8]
-@322:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @359
+	cmp       eax,dword ptr [ebp-20]
+@359:
 	setne     al
 	and       eax,1
-	jmp       short @320
-@319:
+	jmp       short @357
+@356:
 	xor       eax,eax
-@320:
+@357:
 	test      al,al
-	jne       short @317
-	?debug L 750
+	jne       short @354
+	?debug L 1037
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 752
-	mov       eax,dword ptr [ebp-12]
-	?debug L 750
 	add       esp,24
-	?debug L 752
+	?debug L 1039
+	mov       eax,dword ptr [ebp-28]
 	and       eax,536870912
-	?debug L 753
-?live16406@160: ; EBX = &$mpepfcia, EAX = @temp3
+	mov       dword ptr [$eolkfcia],eax
+	?debug L 1040
+?live16407@96: ; EBX = &$mbmkfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 752
-?live16406@176: ; EBX = &$mpepfcia
-	mov       dword ptr [$emepfcia],eax
-	?debug L 753
-?live16406@192: ; EBX = &$mpepfcia, EAX = @temp3
 	setne     dl
-	?debug L 754
-?live16406@208: ; EBX = &$mpepfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 753
-?live16406@224: ; EBX = &$mpepfcia, EAX = @temp3
 	and       edx,1
-	?debug L 754
-?live16406@240: ; EBX = &$mpepfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 753
-?live16406@256: ; EBX = &$mpepfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 756
-?live16406@272: ; 
-@323:
-@313:
+	?debug L 1041
+?live16407@112: ; EBX = &$mbmkfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1043
+?live16407@128: ; 
+@360:
+@350:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@347:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_amd64$qv+0
+	dd        @347+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_amd64$qv	endp
 @stk@cpu@cpu_has_amd64$qv	ends
@@ -5819,14 +6789,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch96
-	dd	?patch97
-	dd	?patch98
+	dd	?patch103
+	dd	?patch104
+	dd	?patch105
 	df	@@stk@cpu@cpu_has_amd64$qv
 	dw	0
-	dw	4142
+	dw	4144
 	dw	0
-	dw	164
+	dw	173
 	dw	0
 	dw	0
 	dw	0
@@ -5861,28 +6831,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	165
+	dw	174
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch99
+	dw	?patch106
 	dw	529
-	dw	?patch100
-	dd	?live16406@208-@@stk@cpu@cpu_has_amd64$qv
-	dd	?live16406@224-?live16406@208
+	dw	?patch107
+	dd	?live16407@112-@@stk@cpu@cpu_has_amd64$qv
+	dd	?live16407@128-?live16407@112
 	dw	1
-	dd	?live16406@240-@@stk@cpu@cpu_has_amd64$qv
-	dd	?live16406@256-?live16406@240
-	dw	1
-?patch100	equ	2
-?patch99	equ	24
+?patch107	equ	1
+?patch106	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	166
+	dw	175
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	176
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	177
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	178
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mbmkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	179
 	dw	0
 	dw	0
 	dw	0
@@ -5890,199 +6897,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	167
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	168
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	169
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mpepfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	170
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	171
+	dw	180
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$emepfcia
+	df	$eolkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	172
+	dw	181
 	dw	0
 	dw	0
 	dw	0
-?patch96	equ	@323-@@stk@cpu@cpu_has_amd64$qv+5
-?patch97	equ	0
-?patch98	equ	@323-@@stk@cpu@cpu_has_amd64$qv
+?patch103	equ	@360-@@stk@cpu@cpu_has_amd64$qv+73
+?patch104	equ	0
+?patch105	equ	@360-@@stk@cpu@cpu_has_amd64$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$edfpfcia	label	dword
+$efmkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mgfpfcia	label	qword
+$mimkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_ht$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_ht$qv	proc	near
-?live16407@0:
-	?debug L 759
-@324:
+?live16408@0:
+	?debug L 1046
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 762
-?live16407@16: ; EBX = &$mgfpfcia
-	mov       eax,dword ptr [$edfpfcia]
-	cmp       eax,-1
-	?debug L 759
-?live16407@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mgfpfcia
-	?debug L 762
-?live16407@48: ; EBX = &$mgfpfcia
-	je        short @328
-	?debug L 763
-?live16407@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @361
+@362:
+	mov       ebx,offset $mimkfcia
+	?debug L 1052
+?live16408@16: ; EBX = &$mimkfcia
+	mov       eax,dword ptr [$efmkfcia]
+	cmp       eax,-1
+	je        short @366
+	?debug L 1053
+?live16408@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @326
-	?debug L 765
-?live16407@80: ; EBX = &$mgfpfcia
-@327:
+	jmp       @364
+	?debug L 1055
+?live16408@48: ; EBX = &$mimkfcia
+@365:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@328:
+	call      @@stk@time@wait_us$qxuj
+@366:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @327
+	jne       short @365
 	cmp       dword ptr [ebx],0
-	jne       short @327
+	jne       short @365
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @331
-@330:
+	jmp       short @369
+@368:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@331:
+	call      @@stk@time@wait_us$qxuj
+@369:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @334
+	jne       short @372
 	cmp       dword ptr [ebx],0
-@334:
-	je        short @332
+@372:
+	je        short @370
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @335
-	cmp       eax,dword ptr [ebp-8]
-@335:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @373
+	cmp       eax,dword ptr [ebp-20]
+@373:
 	setne     al
 	and       eax,1
-	jmp       short @333
-@332:
+	jmp       short @371
+@370:
 	xor       eax,eax
-@333:
+@371:
 	test      al,al
-	jne       short @330
-	?debug L 768
+	jne       short @368
+	?debug L 1058
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 770
-	mov       eax,dword ptr [ebp-12]
-	?debug L 768
 	add       esp,24
-	?debug L 770
+	?debug L 1060
+	mov       eax,dword ptr [ebp-28]
 	and       eax,268435456
-	?debug L 771
-?live16407@160: ; EBX = &$mgfpfcia, EAX = @temp3
+	mov       dword ptr [$efmkfcia],eax
+	?debug L 1061
+?live16408@96: ; EBX = &$mimkfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 770
-?live16407@176: ; EBX = &$mgfpfcia
-	mov       dword ptr [$edfpfcia],eax
-	?debug L 771
-?live16407@192: ; EBX = &$mgfpfcia, EAX = @temp3
 	setne     dl
-	?debug L 772
-?live16407@208: ; EBX = &$mgfpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 771
-?live16407@224: ; EBX = &$mgfpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 772
-?live16407@240: ; EBX = &$mgfpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 771
-?live16407@256: ; EBX = &$mgfpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 774
-?live16407@272: ; 
-@336:
-@326:
+	?debug L 1062
+?live16408@112: ; EBX = &$mimkfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1064
+?live16408@128: ; 
+@374:
+@364:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@361:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_ht$qv+0
+	dd        @361+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_ht$qv	endp
 @stk@cpu@cpu_has_ht$qv	ends
@@ -6096,14 +7076,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch101
-	dd	?patch102
-	dd	?patch103
+	dd	?patch108
+	dd	?patch109
+	dd	?patch110
 	df	@@stk@cpu@cpu_has_ht$qv
 	dw	0
-	dw	4144
+	dw	4146
 	dw	0
-	dw	173
+	dw	182
 	dw	0
 	dw	0
 	dw	0
@@ -6135,28 +7115,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	174
+	dw	183
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch104
+	dw	?patch111
 	dw	529
-	dw	?patch105
-	dd	?live16407@208-@@stk@cpu@cpu_has_ht$qv
-	dd	?live16407@224-?live16407@208
+	dw	?patch112
+	dd	?live16408@112-@@stk@cpu@cpu_has_ht$qv
+	dd	?live16408@128-?live16408@112
 	dw	1
-	dd	?live16407@240-@@stk@cpu@cpu_has_ht$qv
-	dd	?live16407@256-?live16407@240
-	dw	1
-?patch105	equ	2
-?patch104	equ	24
+?patch112	equ	1
+?patch111	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	175
+	dw	184
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	185
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	186
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	187
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mimkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	188
 	dw	0
 	dw	0
 	dw	0
@@ -6164,233 +7181,247 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	176
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	177
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	178
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mgfpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	179
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	180
+	dw	189
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$edfpfcia
+	df	$efmkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	181
+	dw	190
 	dw	0
 	dw	0
 	dw	0
-?patch101	equ	@336-@@stk@cpu@cpu_has_ht$qv+5
-?patch102	equ	0
-?patch103	equ	@336-@@stk@cpu@cpu_has_ht$qv
+?patch108	equ	@374-@@stk@cpu@cpu_has_ht$qv+72
+?patch109	equ	0
+?patch110	equ	@374-@@stk@cpu@cpu_has_ht$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ekfpfcia	label	dword
+$emmkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mnfpfcia	label	qword
+$mpmkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_sse$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_sse$qv	proc	near
-?live16408@0:
-	?debug L 777
-@337:
+?live16409@0:
+	?debug L 1067
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
+	push      5457731
+	add       esp,-48
 	push      ebx
 	push      esi
-	mov       ebx,offset $mnfpfcia
-	mov       esi,offset $ekfpfcia
-	?debug L 780
-?live16408@16: ; EBX = &$mnfpfcia, ESI = &$ekfpfcia
+	mov       dword ptr [ebp-8],offset @375
+@376:
+	mov       ebx,offset $mpmkfcia
+	mov       esi,offset $emmkfcia
+	?debug L 1073
+?live16409@16: ; EBX = &$mpmkfcia, ESI = &$emmkfcia
+	push      4
+	push      esi
+	call      _CG_D_EP
 	mov       eax,dword ptr [esi]
 	cmp       eax,-1
-	jne       @339
-	?debug L 781
-?live16408@32: ; EAX = @temp3, ESI = &$ekfpfcia
-	jmp       short @341
-	?debug L 783
-?live16408@48: ; EBX = &$mnfpfcia, ESI = &$ekfpfcia
-@340:
+	jne       @378
+	?debug L 1074
+?live16409@32: ; EAX = @temp3, ESI = &$emmkfcia
+	jmp       short @380
+	?debug L 1076
+?live16409@48: ; EBX = &$mpmkfcia, ESI = &$emmkfcia
+@379:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@341:
+	call      @@stk@time@wait_us$qxuj
+@380:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @340
+	jne       short @379
 	cmp       dword ptr [ebx],0
-	jne       short @340
+	jne       short @379
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],edx
-	jmp       short @344
-@343:
+	jmp       short @383
+@382:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@344:
+	call      @@stk@time@wait_us$qxuj
+@383:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @347
+	jne       short @386
 	cmp       dword ptr [ebx],0
-@347:
-	je        short @345
+@386:
+	je        short @384
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @348
-	cmp       eax,dword ptr [ebp-8]
-@348:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @387
+	cmp       eax,dword ptr [ebp-20]
+@387:
 	setne     cl
 	and       ecx,1
-	jmp       short @346
-@345:
+	jmp       short @385
+@384:
 	xor       ecx,ecx
-@346:
+@385:
 	test      cl,cl
-	jne       short @343
-	?debug L 786
+	jne       short @382
+	?debug L 1079
 	push      0
 	push      1
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 788
-	test      byte ptr [ebp-14],16
-	je        short @349
-	?debug L 789
+	?debug L 1081
+	test      byte ptr [ebp-34],16
+	je        short @388
+	?debug L 1082
+	push      4
+	push      esi
+	call      _CG_D_EP
 	mov       dword ptr [esi],42
-	jmp       short @350
-	?debug L 791
-@349:
-	test      byte ptr [ebp-14],8
-	je        short @351
-	?debug L 792
+	jmp       short @389
+	?debug L 1084
+@388:
+	test      byte ptr [ebp-34],8
+	je        short @390
+	?debug L 1085
+	push      4
+	push      esi
+	call      _CG_D_EP
 	mov       dword ptr [esi],41
-	jmp       short @350
-	?debug L 794
-@351:
-	test      byte ptr [ebp-15],2
-	je        short @352
-	?debug L 795
+	jmp       short @389
+	?debug L 1087
+@390:
+	test      byte ptr [ebp-35],2
+	je        short @391
+	?debug L 1088
+	push      4
+	push      esi
+	call      _CG_D_EP
 	mov       dword ptr [esi],31
-	jmp       short @350
-	?debug L 797
-@352:
-	test      byte ptr [ebp-16],1
-	je        short @353
-	?debug L 798
+	jmp       short @389
+	?debug L 1090
+@391:
+	test      byte ptr [ebp-36],1
+	je        short @392
+	?debug L 1091
+	push      4
+	push      esi
+	call      _CG_D_EP
 	mov       dword ptr [esi],30
-	jmp       short @350
-	?debug L 800
-@353:
-	test      byte ptr [ebp-9],4
-	je        short @354
-	?debug L 801
+	jmp       short @389
+	?debug L 1093
+@392:
+	test      byte ptr [ebp-25],4
+	je        short @393
+	?debug L 1094
+	push      4
+	push      esi
+	call      _CG_D_EP
 	mov       dword ptr [esi],20
-	jmp       short @350
-	?debug L 803
-@354:
-	test      byte ptr [ebp-9],2
-	je        short @355
-	?debug L 804
+	jmp       short @389
+	?debug L 1096
+@393:
+	test      byte ptr [ebp-25],2
+	je        short @394
+	?debug L 1097
+	push      4
+	push      esi
+	call      _CG_D_EP
 	mov       dword ptr [esi],10
-	jmp       short @350
-	?debug L 806
-@355:
+	jmp       short @389
+	?debug L 1099
+@394:
+	push      4
+	push      esi
+	call      _CG_D_EP
 	xor       ecx,ecx
 	mov       dword ptr [esi],ecx
-	?debug L 807
-@350:
+	?debug L 1100
+@389:
+	push      4
+	push      esi
+	call      _CG_D_EP
 	cmp       dword ptr [esi],0
-	?debug L 808
-?live16408@304: ; EBX = &$mnfpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 807
-?live16408@320: ; EBX = &$mnfpfcia, ESI = &$ekfpfcia
 	setne     al
 	and       eax,1
-	?debug L 809
-?live16408@336: ; EAX = r
+	?debug L 1101
+?live16409@304: ; EBX = &$mpmkfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	?debug L 1102
+?live16409@320: ; EAX = ret
 	xor       edx,edx
 	mov       dl,al
-	?debug L 808
-?live16408@352: ; EBX = &$mnfpfcia, EAX = r
+	?debug L 1101
+?live16409@336: ; EBX = &$mpmkfcia, EAX = ret
 	mov       dword ptr [ebx+4],0
-	?debug L 809
-?live16408@368: ; EAX = r
+	?debug L 1102
+?live16409@352: ; EAX = ret
 	mov       eax,edx
-	?debug L 810
-?live16408@384: ; 
-@356:
-@339:
+	?debug L 1103
+?live16409@368: ; 
+@395:
+@378:
+	mov       dword ptr [ebp-4],ebp
 	pop       esi
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@375:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_sse$qv+0
+	dd        @375+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_sse$qv	endp
 @stk@cpu@cpu_has_sse$qv	ends
@@ -6404,14 +7435,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch106
-	dd	?patch107
-	dd	?patch108
+	dd	?patch113
+	dd	?patch114
+	dd	?patch115
 	df	@@stk@cpu@cpu_has_sse$qv
 	dw	0
-	dw	4146
+	dw	4148
 	dw	0
-	dw	182
+	dw	191
 	dw	0
 	dw	0
 	dw	0
@@ -6444,28 +7475,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	183
+	dw	192
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch109
+	dw	?patch116
 	dw	529
-	dw	?patch110
-	dd	?live16408@304-@@stk@cpu@cpu_has_sse$qv
-	dd	?live16408@320-?live16408@304
+	dw	?patch117
+	dd	?live16409@304-@@stk@cpu@cpu_has_sse$qv
+	dd	?live16409@368-?live16409@304
 	dw	1
-	dd	?live16408@336-@@stk@cpu@cpu_has_sse$qv
-	dd	?live16408@384-?live16408@336
-	dw	1
-?patch110	equ	2
-?patch109	equ	24
+?patch117	equ	1
+?patch116	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	184
+	dw	193
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	194
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	195
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	196
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mpmkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	197
 	dw	0
 	dw	0
 	dw	0
@@ -6473,199 +7541,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	185
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	186
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	187
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mnfpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	188
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	189
+	dw	198
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ekfpfcia
+	df	$emmkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	190
+	dw	199
 	dw	0
 	dw	0
 	dw	0
-?patch106	equ	@356-@@stk@cpu@cpu_has_sse$qv+6
-?patch107	equ	0
-?patch108	equ	@356-@@stk@cpu@cpu_has_sse$qv
+?patch113	equ	@395-@@stk@cpu@cpu_has_sse$qv+74
+?patch114	equ	0
+?patch115	equ	@395-@@stk@cpu@cpu_has_sse$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	5
-	dw	65504
+	dw	65476
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ebgpfcia	label	dword
+$ednkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$megpfcia	label	qword
+$mgnkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_sse4a$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_sse4a$qv	proc	near
-?live16409@0:
-	?debug L 813
-@357:
+?live16410@0:
+	?debug L 1106
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 816
-?live16409@16: ; EBX = &$megpfcia
-	mov       eax,dword ptr [$ebgpfcia]
-	cmp       eax,-1
-	?debug L 813
-?live16409@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $megpfcia
-	?debug L 816
-?live16409@48: ; EBX = &$megpfcia
-	je        short @361
-	?debug L 817
-?live16409@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @396
+@397:
+	mov       ebx,offset $mgnkfcia
+	?debug L 1112
+?live16410@16: ; EBX = &$mgnkfcia
+	mov       eax,dword ptr [$ednkfcia]
+	cmp       eax,-1
+	je        short @401
+	?debug L 1113
+?live16410@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @359
-	?debug L 819
-?live16409@80: ; EBX = &$megpfcia
-@360:
+	jmp       @399
+	?debug L 1115
+?live16410@48: ; EBX = &$mgnkfcia
+@400:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@361:
+	call      @@stk@time@wait_us$qxuj
+@401:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @360
+	jne       short @400
 	cmp       dword ptr [ebx],0
-	jne       short @360
+	jne       short @400
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @364
-@363:
+	jmp       short @404
+@403:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@364:
+	call      @@stk@time@wait_us$qxuj
+@404:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @367
+	jne       short @407
 	cmp       dword ptr [ebx],0
-@367:
-	je        short @365
+@407:
+	je        short @405
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @368
-	cmp       eax,dword ptr [ebp-8]
-@368:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @408
+	cmp       eax,dword ptr [ebp-20]
+@408:
 	setne     al
 	and       eax,1
-	jmp       short @366
-@365:
+	jmp       short @406
+@405:
 	xor       eax,eax
-@366:
+@406:
 	test      al,al
-	jne       short @363
-	?debug L 822
+	jne       short @403
+	?debug L 1118
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 824
-	mov       eax,dword ptr [ebp-16]
-	?debug L 822
 	add       esp,24
-	?debug L 824
+	?debug L 1120
+	mov       eax,dword ptr [ebp-36]
 	and       eax,64
-	?debug L 825
-?live16409@160: ; EBX = &$megpfcia, EAX = @temp3
+	mov       dword ptr [$ednkfcia],eax
+	?debug L 1121
+?live16410@96: ; EBX = &$mgnkfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 824
-?live16409@176: ; EBX = &$megpfcia
-	mov       dword ptr [$ebgpfcia],eax
-	?debug L 825
-?live16409@192: ; EBX = &$megpfcia, EAX = @temp3
 	setne     dl
-	?debug L 826
-?live16409@208: ; EBX = &$megpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 825
-?live16409@224: ; EBX = &$megpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 826
-?live16409@240: ; EBX = &$megpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 825
-?live16409@256: ; EBX = &$megpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 828
-?live16409@272: ; 
-@369:
-@359:
+	?debug L 1122
+?live16410@112: ; EBX = &$mgnkfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1124
+?live16410@128: ; 
+@409:
+@399:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@396:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_sse4a$qv+0
+	dd        @396+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_sse4a$qv	endp
 @stk@cpu@cpu_has_sse4a$qv	ends
@@ -6679,14 +7720,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch111
-	dd	?patch112
-	dd	?patch113
+	dd	?patch118
+	dd	?patch119
+	dd	?patch120
 	df	@@stk@cpu@cpu_has_sse4a$qv
 	dw	0
-	dw	4148
+	dw	4150
 	dw	0
-	dw	191
+	dw	200
 	dw	0
 	dw	0
 	dw	0
@@ -6721,28 +7762,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	192
+	dw	201
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch114
+	dw	?patch121
 	dw	529
-	dw	?patch115
-	dd	?live16409@208-@@stk@cpu@cpu_has_sse4a$qv
-	dd	?live16409@224-?live16409@208
+	dw	?patch122
+	dd	?live16410@112-@@stk@cpu@cpu_has_sse4a$qv
+	dd	?live16410@128-?live16410@112
 	dw	1
-	dd	?live16409@240-@@stk@cpu@cpu_has_sse4a$qv
-	dd	?live16409@256-?live16409@240
-	dw	1
-?patch115	equ	2
-?patch114	equ	24
+?patch122	equ	1
+?patch121	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	193
+	dw	202
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	203
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	204
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	205
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mgnkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	206
 	dw	0
 	dw	0
 	dw	0
@@ -6750,220 +7828,203 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	194
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	195
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	196
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$megpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	197
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	198
+	dw	207
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ebgpfcia
+	df	$ednkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	199
+	dw	208
 	dw	0
 	dw	0
 	dw	0
-?patch111	equ	@369-@@stk@cpu@cpu_has_sse4a$qv+5
-?patch112	equ	0
-?patch113	equ	@369-@@stk@cpu@cpu_has_sse4a$qv
+?patch118	equ	@409-@@stk@cpu@cpu_has_sse4a$qv+75
+?patch119	equ	0
+?patch120	equ	@409-@@stk@cpu@cpu_has_sse4a$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eigpfcia	label	dword
+$eknkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mlgpfcia	label	qword
+$mnnkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx$qv	proc	near
-?live16410@0:
-	?debug L 831
-@370:
+?live16411@0:
+	?debug L 1127
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 834
-?live16410@16: ; EBX = &$mlgpfcia
-	mov       eax,dword ptr [$eigpfcia]
-	cmp       eax,-1
-	?debug L 831
-?live16410@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mlgpfcia
-	?debug L 834
-?live16410@48: ; EBX = &$mlgpfcia
-	jne       @372
-	?debug L 835
-?live16410@64: ; EAX = @temp3
-	jmp       short @374
-	?debug L 837
-?live16410@80: ; EBX = &$mlgpfcia
-@373:
+	mov       dword ptr [ebp-8],offset @410
+@411:
+	mov       ebx,offset $mnnkfcia
+	?debug L 1133
+?live16411@16: ; EBX = &$mnnkfcia
+	mov       eax,dword ptr [$eknkfcia]
+	cmp       eax,-1
+	jne       @413
+	?debug L 1134
+?live16411@32: ; EAX = @temp3
+	jmp       short @415
+	?debug L 1136
+?live16411@48: ; EBX = &$mnnkfcia
+@414:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@374:
+	call      @@stk@time@wait_us$qxuj
+@415:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @373
+	jne       short @414
 	cmp       dword ptr [ebx],0
-	jne       short @373
+	jne       short @414
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],edx
-	jmp       short @377
-@376:
+	jmp       short @418
+@417:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@377:
+	call      @@stk@time@wait_us$qxuj
+@418:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @380
+	jne       short @421
 	cmp       dword ptr [ebx],0
-@380:
-	je        short @378
+@421:
+	je        short @419
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @381
-	cmp       eax,dword ptr [ebp-8]
-@381:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @422
+	cmp       eax,dword ptr [ebp-20]
+@422:
 	setne     cl
 	and       ecx,1
-	jmp       short @379
-@378:
+	jmp       short @420
+@419:
 	xor       ecx,ecx
-@379:
+@420:
 	test      cl,cl
-	jne       short @376
-	?debug L 840
+	jne       short @417
+	?debug L 1139
 	push      0
 	push      1
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 842
-	test      byte ptr [ebp-13],16
-	je        short @382
-	?debug L 843
+	?debug L 1141
+	test      byte ptr [ebp-33],16
+	je        short @423
+	?debug L 1142
 	push      0
 	push      7
-	lea       ecx,dword ptr [ebp-12]
+	lea       ecx,dword ptr [ebp-28]
 	push      ecx
-	lea       eax,dword ptr [ebp-16]
+	lea       eax,dword ptr [ebp-36]
 	push      eax
-	lea       edx,dword ptr [ebp-20]
+	lea       edx,dword ptr [ebp-44]
 	push      edx
-	lea       ecx,dword ptr [ebp-24]
+	lea       ecx,dword ptr [ebp-52]
 	push      ecx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 844
-	test      byte ptr [ebp-20],32
-	je        short @383
-	?debug L 845
-	mov       dword ptr [$eigpfcia],2
-	jmp       short @384
-	?debug L 847
-@383:
-	mov       dword ptr [$eigpfcia],1
-	?debug L 848
-	jmp       short @384
-	?debug L 850
-@382:
+	?debug L 1143
+	test      byte ptr [ebp-44],32
+	je        short @424
+	?debug L 1144
+	mov       dword ptr [$eknkfcia],2
+	jmp       short @425
+	?debug L 1146
+@424:
+	mov       dword ptr [$eknkfcia],1
+	?debug L 1147
+	jmp       short @425
+	?debug L 1149
+@423:
 	xor       eax,eax
-	mov       dword ptr [$eigpfcia],eax
-	?debug L 852
-@384:
-	cmp       dword ptr [$eigpfcia],0
-	?debug L 853
-?live16410@240: ; EBX = &$mlgpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 852
-?live16410@256: ; EBX = &$mlgpfcia
+	mov       dword ptr [$eknkfcia],eax
+	?debug L 1151
+@425:
+	cmp       dword ptr [$eknkfcia],0
 	setne     al
 	and       eax,1
-	?debug L 854
-?live16410@272: ; EAX = r
+	?debug L 1152
+?live16411@208: ; EBX = &$mnnkfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	?debug L 1153
+?live16411@224: ; EAX = ret
 	xor       edx,edx
 	mov       dl,al
-	?debug L 853
-?live16410@288: ; EBX = &$mlgpfcia, EAX = r
+	?debug L 1152
+?live16411@240: ; EBX = &$mnnkfcia, EAX = ret
 	mov       dword ptr [ebx+4],0
-	?debug L 854
-?live16410@304: ; EAX = r
+	?debug L 1153
+?live16411@256: ; EAX = ret
 	mov       eax,edx
-	?debug L 855
-?live16410@320: ; 
-@385:
-@372:
+	?debug L 1154
+?live16411@272: ; 
+@426:
+@413:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@410:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx$qv+0
+	dd        @410+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx$qv	endp
 @stk@cpu@cpu_has_avx$qv	ends
@@ -6977,14 +8038,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch116
-	dd	?patch117
-	dd	?patch118
+	dd	?patch123
+	dd	?patch124
+	dd	?patch125
 	df	@@stk@cpu@cpu_has_avx$qv
 	dw	0
-	dw	4150
+	dw	4152
 	dw	0
-	dw	200
+	dw	209
 	dw	0
 	dw	0
 	dw	0
@@ -7017,28 +8078,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	201
+	dw	210
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch119
+	dw	?patch126
 	dw	529
-	dw	?patch120
-	dd	?live16410@240-@@stk@cpu@cpu_has_avx$qv
-	dd	?live16410@256-?live16410@240
+	dw	?patch127
+	dd	?live16411@208-@@stk@cpu@cpu_has_avx$qv
+	dd	?live16411@272-?live16411@208
 	dw	1
-	dd	?live16410@272-@@stk@cpu@cpu_has_avx$qv
-	dd	?live16410@320-?live16410@272
-	dw	1
-?patch120	equ	2
-?patch119	equ	24
+?patch127	equ	1
+?patch126	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	202
+	dw	211
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	212
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	213
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	214
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mnnkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	215
 	dw	0
 	dw	0
 	dw	0
@@ -7046,199 +8144,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	203
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	204
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	205
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mlgpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	206
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	207
+	dw	216
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eigpfcia
+	df	$eknkfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	208
+	dw	217
 	dw	0
 	dw	0
 	dw	0
-?patch116	equ	@385-@@stk@cpu@cpu_has_avx$qv+5
-?patch117	equ	0
-?patch118	equ	@385-@@stk@cpu@cpu_has_avx$qv
+?patch123	equ	@426-@@stk@cpu@cpu_has_avx$qv+74
+?patch124	equ	0
+?patch125	equ	@426-@@stk@cpu@cpu_has_avx$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$epgpfcia	label	dword
+$ebokfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mchpfcia	label	qword
+$meokfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_popcnt$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_popcnt$qv	proc	near
-?live16411@0:
-	?debug L 858
-@386:
+?live16412@0:
+	?debug L 1157
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 861
-?live16411@16: ; EBX = &$mchpfcia
-	mov       eax,dword ptr [$epgpfcia]
-	cmp       eax,-1
-	?debug L 858
-?live16411@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mchpfcia
-	?debug L 861
-?live16411@48: ; EBX = &$mchpfcia
-	je        short @390
-	?debug L 862
-?live16411@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @427
+@428:
+	mov       ebx,offset $meokfcia
+	?debug L 1163
+?live16412@16: ; EBX = &$meokfcia
+	mov       eax,dword ptr [$ebokfcia]
+	cmp       eax,-1
+	je        short @432
+	?debug L 1164
+?live16412@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @388
-	?debug L 864
-?live16411@80: ; EBX = &$mchpfcia
-@389:
+	jmp       @430
+	?debug L 1166
+?live16412@48: ; EBX = &$meokfcia
+@431:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@390:
+	call      @@stk@time@wait_us$qxuj
+@432:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @389
+	jne       short @431
 	cmp       dword ptr [ebx],0
-	jne       short @389
+	jne       short @431
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @393
-@392:
+	jmp       short @435
+@434:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@393:
+	call      @@stk@time@wait_us$qxuj
+@435:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @396
+	jne       short @438
 	cmp       dword ptr [ebx],0
-@396:
-	je        short @394
+@438:
+	je        short @436
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @397
-	cmp       eax,dword ptr [ebp-8]
-@397:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @439
+	cmp       eax,dword ptr [ebp-20]
+@439:
 	setne     al
 	and       eax,1
-	jmp       short @395
-@394:
+	jmp       short @437
+@436:
 	xor       eax,eax
-@395:
+@437:
 	test      al,al
-	jne       short @392
-	?debug L 867
+	jne       short @434
+	?debug L 1169
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 869
-	mov       eax,dword ptr [ebp-16]
-	?debug L 867
 	add       esp,24
-	?debug L 869
+	?debug L 1171
+	mov       eax,dword ptr [ebp-36]
 	and       eax,8388608
-	?debug L 870
-?live16411@160: ; EBX = &$mchpfcia, EAX = @temp3
+	mov       dword ptr [$ebokfcia],eax
+	?debug L 1172
+?live16412@96: ; EBX = &$meokfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 869
-?live16411@176: ; EBX = &$mchpfcia
-	mov       dword ptr [$epgpfcia],eax
-	?debug L 870
-?live16411@192: ; EBX = &$mchpfcia, EAX = @temp3
 	setne     dl
-	?debug L 871
-?live16411@208: ; EBX = &$mchpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 870
-?live16411@224: ; EBX = &$mchpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 871
-?live16411@240: ; EBX = &$mchpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 870
-?live16411@256: ; EBX = &$mchpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 873
-?live16411@272: ; 
-@398:
-@388:
+	?debug L 1173
+?live16412@112: ; EBX = &$meokfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1175
+?live16412@128: ; 
+@440:
+@430:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@427:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_popcnt$qv+0
+	dd        @427+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_popcnt$qv	endp
 @stk@cpu@cpu_has_popcnt$qv	ends
@@ -7252,14 +8323,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch121
-	dd	?patch122
-	dd	?patch123
+	dd	?patch128
+	dd	?patch129
+	dd	?patch130
 	df	@@stk@cpu@cpu_has_popcnt$qv
 	dw	0
-	dw	4152
+	dw	4154
 	dw	0
-	dw	209
+	dw	218
 	dw	0
 	dw	0
 	dw	0
@@ -7295,28 +8366,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	210
+	dw	219
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch124
+	dw	?patch131
 	dw	529
-	dw	?patch125
-	dd	?live16411@208-@@stk@cpu@cpu_has_popcnt$qv
-	dd	?live16411@224-?live16411@208
+	dw	?patch132
+	dd	?live16412@112-@@stk@cpu@cpu_has_popcnt$qv
+	dd	?live16412@128-?live16412@112
 	dw	1
-	dd	?live16411@240-@@stk@cpu@cpu_has_popcnt$qv
-	dd	?live16411@256-?live16411@240
-	dw	1
-?patch125	equ	2
-?patch124	equ	24
+?patch132	equ	1
+?patch131	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	211
+	dw	220
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	221
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	222
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	223
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$meokfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	224
 	dw	0
 	dw	0
 	dw	0
@@ -7324,199 +8432,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	212
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	213
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	214
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mchpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	215
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	216
+	dw	225
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$epgpfcia
+	df	$ebokfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	217
+	dw	226
 	dw	0
 	dw	0
 	dw	0
-?patch121	equ	@398-@@stk@cpu@cpu_has_popcnt$qv+5
-?patch122	equ	0
-?patch123	equ	@398-@@stk@cpu@cpu_has_popcnt$qv
+?patch128	equ	@440-@@stk@cpu@cpu_has_popcnt$qv+72
+?patch129	equ	0
+?patch130	equ	@440-@@stk@cpu@cpu_has_popcnt$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eghpfcia	label	dword
+$eiokfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mjhpfcia	label	qword
+$mlokfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_f16c$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_f16c$qv	proc	near
-?live16412@0:
-	?debug L 876
-@399:
+?live16413@0:
+	?debug L 1178
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 879
-?live16412@16: ; EBX = &$mjhpfcia
-	mov       eax,dword ptr [$eghpfcia]
-	cmp       eax,-1
-	?debug L 876
-?live16412@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mjhpfcia
-	?debug L 879
-?live16412@48: ; EBX = &$mjhpfcia
-	je        short @403
-	?debug L 880
-?live16412@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @441
+@442:
+	mov       ebx,offset $mlokfcia
+	?debug L 1184
+?live16413@16: ; EBX = &$mlokfcia
+	mov       eax,dword ptr [$eiokfcia]
+	cmp       eax,-1
+	je        short @446
+	?debug L 1185
+?live16413@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @401
-	?debug L 882
-?live16412@80: ; EBX = &$mjhpfcia
-@402:
+	jmp       @444
+	?debug L 1187
+?live16413@48: ; EBX = &$mlokfcia
+@445:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@403:
+	call      @@stk@time@wait_us$qxuj
+@446:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @402
+	jne       short @445
 	cmp       dword ptr [ebx],0
-	jne       short @402
+	jne       short @445
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @406
-@405:
+	jmp       short @449
+@448:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@406:
+	call      @@stk@time@wait_us$qxuj
+@449:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @409
+	jne       short @452
 	cmp       dword ptr [ebx],0
-@409:
-	je        short @407
+@452:
+	je        short @450
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @410
-	cmp       eax,dword ptr [ebp-8]
-@410:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @453
+	cmp       eax,dword ptr [ebp-20]
+@453:
 	setne     al
 	and       eax,1
-	jmp       short @408
-@407:
+	jmp       short @451
+@450:
 	xor       eax,eax
-@408:
+@451:
 	test      al,al
-	jne       short @405
-	?debug L 885
+	jne       short @448
+	?debug L 1190
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 887
-	mov       eax,dword ptr [ebp-16]
-	?debug L 885
 	add       esp,24
-	?debug L 887
+	?debug L 1192
+	mov       eax,dword ptr [ebp-36]
 	and       eax,536870912
-	?debug L 888
-?live16412@160: ; EBX = &$mjhpfcia, EAX = @temp3
+	mov       dword ptr [$eiokfcia],eax
+	?debug L 1193
+?live16413@96: ; EBX = &$mlokfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 887
-?live16412@176: ; EBX = &$mjhpfcia
-	mov       dword ptr [$eghpfcia],eax
-	?debug L 888
-?live16412@192: ; EBX = &$mjhpfcia, EAX = @temp3
 	setne     dl
-	?debug L 889
-?live16412@208: ; EBX = &$mjhpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 888
-?live16412@224: ; EBX = &$mjhpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 889
-?live16412@240: ; EBX = &$mjhpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 888
-?live16412@256: ; EBX = &$mjhpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 891
-?live16412@272: ; 
-@411:
-@401:
+	?debug L 1194
+?live16413@112: ; EBX = &$mlokfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1196
+?live16413@128: ; 
+@454:
+@444:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@441:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_f16c$qv+0
+	dd        @441+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_f16c$qv	endp
 @stk@cpu@cpu_has_f16c$qv	ends
@@ -7530,14 +8611,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch126
-	dd	?patch127
-	dd	?patch128
+	dd	?patch133
+	dd	?patch134
+	dd	?patch135
 	df	@@stk@cpu@cpu_has_f16c$qv
 	dw	0
-	dw	4154
+	dw	4156
 	dw	0
-	dw	218
+	dw	227
 	dw	0
 	dw	0
 	dw	0
@@ -7571,28 +8652,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	219
+	dw	228
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch129
+	dw	?patch136
 	dw	529
-	dw	?patch130
-	dd	?live16412@208-@@stk@cpu@cpu_has_f16c$qv
-	dd	?live16412@224-?live16412@208
+	dw	?patch137
+	dd	?live16413@112-@@stk@cpu@cpu_has_f16c$qv
+	dd	?live16413@128-?live16413@112
 	dw	1
-	dd	?live16412@240-@@stk@cpu@cpu_has_f16c$qv
-	dd	?live16412@256-?live16412@240
-	dw	1
-?patch130	equ	2
-?patch129	equ	24
+?patch137	equ	1
+?patch136	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	220
+	dw	229
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	230
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	231
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	232
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mlokfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	233
 	dw	0
 	dw	0
 	dw	0
@@ -7600,231 +8718,228 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	221
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	222
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	223
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mjhpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	224
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	225
+	dw	234
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eghpfcia
+	df	$eiokfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	226
+	dw	235
 	dw	0
 	dw	0
 	dw	0
-?patch126	equ	@411-@@stk@cpu@cpu_has_f16c$qv+5
-?patch127	equ	0
-?patch128	equ	@411-@@stk@cpu@cpu_has_f16c$qv
+?patch133	equ	@454-@@stk@cpu@cpu_has_f16c$qv+72
+?patch134	equ	0
+?patch135	equ	@454-@@stk@cpu@cpu_has_f16c$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$enhpfcia	label	dword
+$epokfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$maipfcia	label	qword
+$mcpkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_cmpxchg$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_cmpxchg$qv	proc	near
-?live16413@0:
-	?debug L 894
-@412:
+?live16414@0:
+	?debug L 1199
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 897
-?live16413@16: ; EBX = &$maipfcia
-	mov       eax,dword ptr [$enhpfcia]
-	cmp       eax,-1
-	?debug L 894
-?live16413@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $maipfcia
-	?debug L 897
-?live16413@48: ; EBX = &$maipfcia
-	jne       @414
-	?debug L 898
-?live16413@64: ; EAX = @temp2
-	jmp       short @416
-	?debug L 900
-?live16413@80: ; EBX = &$maipfcia
-@415:
+	mov       dword ptr [ebp-8],offset @455
+@456:
+	mov       ebx,offset $mcpkfcia
+	?debug L 1205
+?live16414@16: ; EBX = &$mcpkfcia
+	mov       eax,dword ptr [$epokfcia]
+	cmp       eax,-1
+	jne       @458
+	?debug L 1206
+?live16414@32: ; EAX = @temp2
+	jmp       short @460
+	?debug L 1208
+?live16414@48: ; EBX = &$mcpkfcia
+@459:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@416:
+	call      @@stk@time@wait_us$qxuj
+@460:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @415
+	jne       short @459
 	cmp       dword ptr [ebx],0
-	jne       short @415
+	jne       short @459
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],edx
-	jmp       short @419
-@418:
+	jmp       short @463
+@462:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@419:
+	call      @@stk@time@wait_us$qxuj
+@463:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @422
+	jne       short @466
 	cmp       dword ptr [ebx],0
-@422:
-	je        short @420
+@466:
+	je        short @464
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @423
-	cmp       eax,dword ptr [ebp-8]
-@423:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @467
+	cmp       eax,dword ptr [ebp-20]
+@467:
 	setne     cl
 	and       ecx,1
-	jmp       short @421
-@420:
+	jmp       short @465
+@464:
 	xor       ecx,ecx
-@421:
+@465:
 	test      cl,cl
-	jne       short @418
-	?debug L 903
+	jne       short @462
+	?debug L 1211
 	push      0
 	push      1
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 905
-	test      byte ptr [ebp-15],32
-	je        short @424
-	?debug L 906
-	mov       dword ptr [$enhpfcia],16
-	?debug L 907
+	?debug L 1213
+	test      byte ptr [ebp-35],32
+	je        short @468
+	?debug L 1214
+	mov       dword ptr [$epokfcia],16
+	?debug L 1215
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 908
-?live16413@160: ; 
+	?debug L 1216
+?live16414@128: ; 
 	mov       eax,16
-	jmp       @414
-	?debug L 910
-?live16413@176: ; EBX = &$maipfcia
-@424:
-	test      byte ptr [ebp-11],1
-	je        short @425
-	?debug L 911
-	mov       dword ptr [$enhpfcia],8
-	?debug L 912
+	jmp       @458
+	?debug L 1218
+?live16414@144: ; EBX = &$mcpkfcia
+@468:
+	test      byte ptr [ebp-27],1
+	je        short @469
+	?debug L 1219
+	mov       dword ptr [$epokfcia],8
+	?debug L 1220
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 913
-?live16413@224: ; 
+	?debug L 1221
+?live16414@192: ; 
 	mov       eax,8
-	jmp       short @414
-	?debug L 917
-?live16413@240: ; EBX = &$maipfcia
-@425:
+	jmp       short @458
+	?debug L 1225
+?live16414@208: ; EBX = &$mcpkfcia
+@469:
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 919
-	test      byte ptr [ebp-11],1
-	je        short @426
-	?debug L 920
-	mov       dword ptr [$enhpfcia],8
-	?debug L 921
+	?debug L 1227
+	test      byte ptr [ebp-27],1
+	je        short @470
+	?debug L 1228
+	mov       dword ptr [$epokfcia],8
+	?debug L 1229
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 922
-?live16413@304: ; 
+	?debug L 1230
+?live16414@272: ; 
 	mov       eax,8
-	jmp       short @414
-	?debug L 924
-?live16413@320: ; EBX = &$maipfcia
-@426:
-	mov       dword ptr [$enhpfcia],1
-	?debug L 925
+	jmp       short @458
+	?debug L 1232
+?live16414@288: ; EBX = &$mcpkfcia
+@470:
+	mov       dword ptr [$epokfcia],1
+	?debug L 1233
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
-	mov       dword ptr [ebx+4],0
-	?debug L 926
-?live16413@352: ; 
+	?debug L 1234
+?live16414@320: ; 
 	mov       eax,1
-	?debug L 927
-@427:
-@414:
+	?debug L 1233
+?live16414@336: ; EBX = &$mcpkfcia
+	mov       dword ptr [ebx+4],0
+	?debug L 1235
+?live16414@352: ; 
+@471:
+@458:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@455:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_cmpxchg$qv+0
+	dd        @455+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_cmpxchg$qv	endp
 @stk@cpu@cpu_has_cmpxchg$qv	ends
@@ -7838,14 +8953,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch131
-	dd	?patch132
-	dd	?patch133
+	dd	?patch138
+	dd	?patch139
+	dd	?patch140
 	df	@@stk@cpu@cpu_has_cmpxchg$qv
 	dw	0
-	dw	4156
+	dw	4158
 	dw	0
-	dw	227
+	dw	236
 	dw	0
 	dw	0
 	dw	0
@@ -7879,11 +8994,51 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	228
+	dw	237
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	238
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	239
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	240
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mcpkfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	241
 	dw	0
 	dw	0
 	dw	0
@@ -7891,199 +9046,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	229
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	230
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	231
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$maipfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	232
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	233
+	dw	242
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$enhpfcia
+	df	$epokfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	234
+	dw	243
 	dw	0
 	dw	0
 	dw	0
-?patch131	equ	@427-@@stk@cpu@cpu_has_cmpxchg$qv+5
-?patch132	equ	0
-?patch133	equ	@427-@@stk@cpu@cpu_has_cmpxchg$qv
+?patch138	equ	@471-@@stk@cpu@cpu_has_cmpxchg$qv+75
+?patch139	equ	0
+?patch140	equ	@471-@@stk@cpu@cpu_has_cmpxchg$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eeipfcia	label	dword
+$egpkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mhipfcia	label	qword
+$mjpkfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_vmx$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_vmx$qv	proc	near
-?live16414@0:
-	?debug L 930
-@428:
+?live16415@0:
+	?debug L 1238
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 933
-?live16414@16: ; EBX = &$mhipfcia
-	mov       eax,dword ptr [$eeipfcia]
-	cmp       eax,-1
-	?debug L 930
-?live16414@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mhipfcia
-	?debug L 933
-?live16414@48: ; EBX = &$mhipfcia
-	je        short @432
-	?debug L 934
-?live16414@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @472
+@473:
+	mov       ebx,offset $mjpkfcia
+	?debug L 1244
+?live16415@16: ; EBX = &$mjpkfcia
+	mov       eax,dword ptr [$egpkfcia]
+	cmp       eax,-1
+	je        short @477
+	?debug L 1245
+?live16415@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @430
-	?debug L 936
-?live16414@80: ; EBX = &$mhipfcia
-@431:
+	jmp       @475
+	?debug L 1247
+?live16415@48: ; EBX = &$mjpkfcia
+@476:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@432:
+	call      @@stk@time@wait_us$qxuj
+@477:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @431
+	jne       short @476
 	cmp       dword ptr [ebx],0
-	jne       short @431
+	jne       short @476
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @435
-@434:
+	jmp       short @480
+@479:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@435:
+	call      @@stk@time@wait_us$qxuj
+@480:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @438
+	jne       short @483
 	cmp       dword ptr [ebx],0
-@438:
-	je        short @436
+@483:
+	je        short @481
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @439
-	cmp       eax,dword ptr [ebp-8]
-@439:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @484
+	cmp       eax,dword ptr [ebp-20]
+@484:
 	setne     al
 	and       eax,1
-	jmp       short @437
-@436:
+	jmp       short @482
+@481:
 	xor       eax,eax
-@437:
+@482:
 	test      al,al
-	jne       short @434
-	?debug L 939
+	jne       short @479
+	?debug L 1250
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 941
-	mov       eax,dword ptr [ebp-16]
-	?debug L 939
 	add       esp,24
-	?debug L 941
+	?debug L 1252
+	mov       eax,dword ptr [ebp-36]
 	and       eax,32
-	?debug L 942
-?live16414@160: ; EBX = &$mhipfcia, EAX = @temp3
+	mov       dword ptr [$egpkfcia],eax
+	?debug L 1253
+?live16415@96: ; EBX = &$mjpkfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 941
-?live16414@176: ; EBX = &$mhipfcia
-	mov       dword ptr [$eeipfcia],eax
-	?debug L 942
-?live16414@192: ; EBX = &$mhipfcia, EAX = @temp3
 	setne     dl
-	?debug L 943
-?live16414@208: ; EBX = &$mhipfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 942
-?live16414@224: ; EBX = &$mhipfcia, EAX = @temp3
 	and       edx,1
-	?debug L 943
-?live16414@240: ; EBX = &$mhipfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 942
-?live16414@256: ; EBX = &$mhipfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 945
-?live16414@272: ; 
-@440:
-@430:
+	?debug L 1254
+?live16415@112: ; EBX = &$mjpkfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1256
+?live16415@128: ; 
+@485:
+@475:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@472:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_vmx$qv+0
+	dd        @472+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_vmx$qv	endp
 @stk@cpu@cpu_has_vmx$qv	ends
@@ -8097,285 +9225,10 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch134
-	dd	?patch135
-	dd	?patch136
-	df	@@stk@cpu@cpu_has_vmx$qv
-	dw	0
-	dw	4158
-	dw	0
-	dw	235
-	dw	0
-	dw	0
-	dw	0
-	db	23
-	db	64
-	db	115
-	db	116
-	db	107
-	db	64
-	db	99
-	db	112
-	db	117
-	db	64
-	db	99
-	db	112
-	db	117
-	db	95
-	db	104
-	db	97
-	db	115
-	db	95
-	db	118
-	db	109
-	db	120
-	db	36
-	db	113
-	db	118
-	dw	16
-	dw	2
-	dw	48
-	dw	0
-	dw	1
-	dw	236
-	dw	0
-	dw	0
-	dw	0
-	dw	?patch137
-	dw	529
-	dw	?patch138
-	dd	?live16414@208-@@stk@cpu@cpu_has_vmx$qv
-	dd	?live16414@224-?live16414@208
-	dw	1
-	dd	?live16414@240-@@stk@cpu@cpu_has_vmx$qv
-	dd	?live16414@256-?live16414@240
-	dw	1
-?patch138	equ	2
-?patch137	equ	24
-	dw	18
-	dw	512
-	dw	65512
-	dw	65535
-	dw	117
-	dw	0
-	dw	237
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65516
-	dw	65535
-	dw	117
-	dw	0
-	dw	238
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	239
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	240
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mhipfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	241
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
-	dw	118
-	dw	0
-	dw	242
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$eeipfcia
-	dw	0
-	dw	117
-	dw	0
-	dw	243
-	dw	0
-	dw	0
-	dw	0
-?patch134	equ	@440-@@stk@cpu@cpu_has_vmx$qv+5
-?patch135	equ	0
-?patch136	equ	@440-@@stk@cpu@cpu_has_vmx$qv
-	dw	2
-	dw	6
-	dw	8
-	dw	531
-	dw	1
-	dw	65508
-	dw	65535
-$$BSYMS	ends
-_DATA	segment dword public use32 'DATA'
-	align	4
-$elipfcia	label	dword
-	dd	-1
-	align	4
-$moipfcia	label	qword
-	db        0,0,0,0,0,0,0,0
-_DATA	ends
-_TEXT	segment dword public use32 'CODE'
-@stk@cpu@cpu_has_smx$qv	segment virtual
-	align	2
-@@stk@cpu@cpu_has_smx$qv	proc	near
-?live16415@0:
-	?debug L 948
-@441:
-	push      ebp
-	mov       ebp,esp
-	add       esp,-24
-	?debug L 951
-?live16415@16: ; EBX = &$moipfcia
-	mov       eax,dword ptr [$elipfcia]
-	cmp       eax,-1
-	?debug L 948
-?live16415@32: ; 
-	push      ebx
-	mov       ebx,offset $moipfcia
-	?debug L 951
-?live16415@48: ; EBX = &$moipfcia
-	je        short @445
-	?debug L 952
-?live16415@64: ; EAX = @temp4
-	test      eax,eax
-	setne     dl
-	and       edx,1
-	mov       eax,edx
-	jmp       @443
-	?debug L 954
-?live16415@80: ; EBX = &$moipfcia
-@444:
-	push      0
-	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@445:
-	cmp       dword ptr [ebx+4],0
-	jne       short @444
-	cmp       dword ptr [ebx],0
-	jne       short @444
-	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
-	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
-	mov       dword ptr [ebx+4],ecx
-	jmp       short @448
-@447:
-	push      0
-	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@448:
-	cmp       dword ptr [ebx+4],0
-	jne       short @451
-	cmp       dword ptr [ebx],0
-@451:
-	je        short @449
-	mov       eax,dword ptr [ebx]
-	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @452
-	cmp       eax,dword ptr [ebp-8]
-@452:
-	setne     al
-	and       eax,1
-	jmp       short @450
-@449:
-	xor       eax,eax
-@450:
-	test      al,al
-	jne       short @447
-	?debug L 957
-	push      0
-	push      1
-	lea       edx,dword ptr [ebp-12]
-	push      edx
-	lea       ecx,dword ptr [ebp-16]
-	push      ecx
-	lea       eax,dword ptr [ebp-20]
-	push      eax
-	lea       edx,dword ptr [ebp-24]
-	push      edx
-	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 959
-	mov       eax,dword ptr [ebp-16]
-	?debug L 957
-	add       esp,24
-	?debug L 959
-	and       eax,64
-	?debug L 960
-?live16415@160: ; EBX = &$moipfcia, EAX = @temp3
-	test      eax,eax
-	?debug L 959
-?live16415@176: ; EBX = &$moipfcia
-	mov       dword ptr [$elipfcia],eax
-	?debug L 960
-?live16415@192: ; EBX = &$moipfcia, EAX = @temp3
-	setne     dl
-	?debug L 961
-?live16415@208: ; EBX = &$moipfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 960
-?live16415@224: ; EBX = &$moipfcia, EAX = @temp3
-	and       edx,1
-	?debug L 961
-?live16415@240: ; EBX = &$moipfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 960
-?live16415@256: ; EBX = &$moipfcia, EAX = @temp3
-	mov       eax,edx
-	?debug L 963
-?live16415@272: ; 
-@453:
-@443:
-	pop       ebx
-	mov       esp,ebp
-	pop       ebp
-	ret 
-	?debug L 0
-@@stk@cpu@cpu_has_smx$qv	endp
-@stk@cpu@cpu_has_smx$qv	ends
-_TEXT	ends
-$$BSYMS	segment byte public use32 'DEBSYM'
-	dw	70
-	dw	517
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-	dd	?patch139
-	dd	?patch140
 	dd	?patch141
-	df	@@stk@cpu@cpu_has_smx$qv
+	dd	?patch142
+	dd	?patch143
+	df	@@stk@cpu@cpu_has_vmx$qv
 	dw	0
 	dw	4160
 	dw	0
@@ -8401,7 +9254,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	97
 	db	115
 	db	95
-	db	115
+	db	118
 	db	109
 	db	120
 	db	36
@@ -8416,20 +9269,17 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch142
+	dw	?patch144
 	dw	529
-	dw	?patch143
-	dd	?live16415@208-@@stk@cpu@cpu_has_smx$qv
-	dd	?live16415@224-?live16415@208
+	dw	?patch145
+	dd	?live16415@112-@@stk@cpu@cpu_has_vmx$qv
+	dd	?live16415@128-?live16415@112
 	dw	1
-	dd	?live16415@240-@@stk@cpu@cpu_has_smx$qv
-	dd	?live16415@256-?live16415@240
-	dw	1
-?patch143	equ	2
-?patch142	equ	24
+?patch145	equ	1
+?patch144	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
@@ -8439,7 +9289,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	18
 	dw	512
-	dw	65516
+	dw	65492
 	dw	65535
 	dw	117
 	dw	0
@@ -8449,7 +9299,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	18
 	dw	512
-	dw	65520
+	dw	65500
 	dw	65535
 	dw	117
 	dw	0
@@ -8459,7 +9309,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	18
 	dw	512
-	dw	65524
+	dw	65508
 	dw	65535
 	dw	117
 	dw	0
@@ -8469,7 +9319,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	22
 	dw	513
-	df	$moipfcia
+	df	$mjpkfcia
 	dw	0
 	dw	4102
 	dw	0
@@ -8479,7 +9329,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	18
 	dw	512
-	dw	65528
+	dw	65516
 	dw	65535
 	dw	118
 	dw	0
@@ -8489,7 +9339,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	22
 	dw	513
-	df	$elipfcia
+	df	$egpkfcia
 	dw	0
 	dw	117
 	dw	0
@@ -8497,143 +9347,441 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-?patch139	equ	@453-@@stk@cpu@cpu_has_smx$qv+5
-?patch140	equ	0
-?patch141	equ	@453-@@stk@cpu@cpu_has_smx$qv
+?patch141	equ	@485-@@stk@cpu@cpu_has_vmx$qv+74
+?patch142	equ	0
+?patch143	equ	@485-@@stk@cpu@cpu_has_vmx$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ecjpfcia	label	dword
+$enpkfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mfjpfcia	label	qword
+$maalfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
+_DATA	ends
+_TEXT	segment dword public use32 'CODE'
+@stk@cpu@cpu_has_smx$qv	segment virtual
+	align	2
+@@stk@cpu@cpu_has_smx$qv	proc	near
+?live16416@0:
+	?debug L 1259
+	push      ebp
+	mov       ebp,esp
+	push      5457731
+	add       esp,-48
+	push      ebx
+	mov       dword ptr [ebp-8],offset @486
+@487:
+	mov       ebx,offset $maalfcia
+	?debug L 1265
+?live16416@16: ; EBX = &$maalfcia
+	mov       eax,dword ptr [$enpkfcia]
+	cmp       eax,-1
+	je        short @491
+	?debug L 1266
+?live16416@32: ; EAX = @temp4
+	test      eax,eax
+	setne     dl
+	and       edx,1
+	mov       eax,edx
+	jmp       @489
+	?debug L 1268
+?live16416@48: ; EBX = &$maalfcia
+@490:
+	push      0
+	push      0
+	call      @@stk@time@wait_us$qxuj
+@491:
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	cmp       dword ptr [ebx+4],0
+	jne       short @490
+	cmp       dword ptr [ebx],0
+	jne       short @490
+	call      @@stk@cpu@rdtsc$qv
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
+	mov       dword ptr [ebx],ecx
+	mov       ecx,dword ptr [ebp-16]
+	mov       dword ptr [ebx+4],ecx
+	jmp       short @494
+@493:
+	push      0
+	push      0
+	call      @@stk@time@wait_us$qxuj
+@494:
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	cmp       dword ptr [ebx+4],0
+	jne       short @497
+	cmp       dword ptr [ebx],0
+@497:
+	je        short @495
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       eax,dword ptr [ebx]
+	mov       edx,dword ptr [ebx+4]
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @498
+	cmp       eax,dword ptr [ebp-20]
+@498:
+	setne     al
+	and       eax,1
+	jmp       short @496
+@495:
+	xor       eax,eax
+@496:
+	test      al,al
+	jne       short @493
+	?debug L 1271
+	push      0
+	push      1
+	lea       edx,dword ptr [ebp-28]
+	push      edx
+	lea       ecx,dword ptr [ebp-36]
+	push      ecx
+	lea       eax,dword ptr [ebp-44]
+	push      eax
+	lea       edx,dword ptr [ebp-52]
+	push      edx
+	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
+	add       esp,24
+	?debug L 1273
+	mov       eax,dword ptr [ebp-36]
+	and       eax,64
+	mov       dword ptr [$enpkfcia],eax
+	?debug L 1274
+?live16416@96: ; EBX = &$maalfcia, EAX = @temp3
+	test      eax,eax
+	setne     dl
+	and       edx,1
+	mov       eax,edx
+	?debug L 1275
+?live16416@112: ; EBX = &$maalfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1277
+?live16416@128: ; 
+@499:
+@489:
+	mov       dword ptr [ebp-4],ebp
+	pop       ebx
+	mov       esp,ebp
+	pop       ebp
+	ret 
+	align 4        
+@486:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_smx$qv+0
+	dd        @486+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
+	?debug L 0
+@@stk@cpu@cpu_has_smx$qv	endp
+@stk@cpu@cpu_has_smx$qv	ends
+_TEXT	ends
+$$BSYMS	segment byte public use32 'DEBSYM'
+	dw	70
+	dw	517
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+	dd	?patch146
+	dd	?patch147
+	dd	?patch148
+	df	@@stk@cpu@cpu_has_smx$qv
+	dw	0
+	dw	4162
+	dw	0
+	dw	253
+	dw	0
+	dw	0
+	dw	0
+	db	23
+	db	64
+	db	115
+	db	116
+	db	107
+	db	64
+	db	99
+	db	112
+	db	117
+	db	64
+	db	99
+	db	112
+	db	117
+	db	95
+	db	104
+	db	97
+	db	115
+	db	95
+	db	115
+	db	109
+	db	120
+	db	36
+	db	113
+	db	118
+	dw	16
+	dw	2
+	dw	48
+	dw	0
+	dw	1
+	dw	254
+	dw	0
+	dw	0
+	dw	0
+	dw	?patch149
+	dw	529
+	dw	?patch150
+	dd	?live16416@112-@@stk@cpu@cpu_has_smx$qv
+	dd	?live16416@128-?live16416@112
+	dw	1
+?patch150	equ	1
+?patch149	equ	14
+	dw	18
+	dw	512
+	dw	65484
+	dw	65535
+	dw	117
+	dw	0
+	dw	255
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	256
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	257
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	258
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$maalfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	259
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65516
+	dw	65535
+	dw	118
+	dw	0
+	dw	260
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$enpkfcia
+	dw	0
+	dw	117
+	dw	0
+	dw	261
+	dw	0
+	dw	0
+	dw	0
+?patch146	equ	@499-@@stk@cpu@cpu_has_smx$qv+74
+?patch147	equ	0
+?patch148	equ	@499-@@stk@cpu@cpu_has_smx$qv
+	dw	2
+	dw	6
+	dw	8
+	dw	531
+	dw	1
+	dw	65480
+	dw	65535
+$$BSYMS	ends
+_DATA	segment dword public use32 'DATA'
+	align	4
+$eealfcia	label	dword
+	dd	-1
+	db	1	dup(?)
+	align	4
+$mhalfcia	label	qword
+	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_cmov$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_cmov$qv	proc	near
-?live16416@0:
-	?debug L 966
-@454:
+?live16417@0:
+	?debug L 1280
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 969
-?live16416@16: ; EBX = &$mfjpfcia
-	mov       eax,dword ptr [$ecjpfcia]
-	cmp       eax,-1
-	?debug L 966
-?live16416@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mfjpfcia
-	?debug L 969
-?live16416@48: ; EBX = &$mfjpfcia
-	je        short @458
-	?debug L 970
-?live16416@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @500
+@501:
+	mov       ebx,offset $mhalfcia
+	?debug L 1286
+?live16417@16: ; EBX = &$mhalfcia
+	mov       eax,dword ptr [$eealfcia]
+	cmp       eax,-1
+	je        short @505
+	?debug L 1287
+?live16417@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @456
-	?debug L 972
-?live16416@80: ; EBX = &$mfjpfcia
-@457:
+	jmp       @503
+	?debug L 1289
+?live16417@48: ; EBX = &$mhalfcia
+@504:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@458:
+	call      @@stk@time@wait_us$qxuj
+@505:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @457
+	jne       short @504
 	cmp       dword ptr [ebx],0
-	jne       short @457
+	jne       short @504
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @461
-@460:
+	jmp       short @508
+@507:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@461:
+	call      @@stk@time@wait_us$qxuj
+@508:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @464
+	jne       short @511
 	cmp       dword ptr [ebx],0
-@464:
-	je        short @462
+@511:
+	je        short @509
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @465
-	cmp       eax,dword ptr [ebp-8]
-@465:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @512
+	cmp       eax,dword ptr [ebp-20]
+@512:
 	setne     al
 	and       eax,1
-	jmp       short @463
-@462:
+	jmp       short @510
+@509:
 	xor       eax,eax
-@463:
+@510:
 	test      al,al
-	jne       short @460
-	?debug L 975
+	jne       short @507
+	?debug L 1292
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 977
-	mov       eax,dword ptr [ebp-12]
-	?debug L 975
 	add       esp,24
-	?debug L 977
+	?debug L 1294
+	mov       eax,dword ptr [ebp-28]
 	and       eax,32768
-	?debug L 978
-?live16416@160: ; EBX = &$mfjpfcia, EAX = @temp3
+	mov       dword ptr [$eealfcia],eax
+	?debug L 1295
+?live16417@96: ; EBX = &$mhalfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 977
-?live16416@176: ; EBX = &$mfjpfcia
-	mov       dword ptr [$ecjpfcia],eax
-	?debug L 978
-?live16416@192: ; EBX = &$mfjpfcia, EAX = @temp3
 	setne     dl
-	?debug L 979
-?live16416@208: ; EBX = &$mfjpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 978
-?live16416@224: ; EBX = &$mfjpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 979
-?live16416@240: ; EBX = &$mfjpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 978
-?live16416@256: ; EBX = &$mfjpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 981
-?live16416@272: ; 
-@466:
-@456:
+	?debug L 1296
+?live16417@112: ; EBX = &$mhalfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1298
+?live16417@128: ; 
+@513:
+@503:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@500:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_cmov$qv+0
+	dd        @500+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_cmov$qv	endp
 @stk@cpu@cpu_has_cmov$qv	ends
@@ -8647,14 +9795,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch144
-	dd	?patch145
-	dd	?patch146
+	dd	?patch151
+	dd	?patch152
+	dd	?patch153
 	df	@@stk@cpu@cpu_has_cmov$qv
 	dw	0
-	dw	4162
+	dw	4164
 	dw	0
-	dw	253
+	dw	262
 	dw	0
 	dw	0
 	dw	0
@@ -8688,28 +9836,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	254
+	dw	263
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch147
+	dw	?patch154
 	dw	529
-	dw	?patch148
-	dd	?live16416@208-@@stk@cpu@cpu_has_cmov$qv
-	dd	?live16416@224-?live16416@208
+	dw	?patch155
+	dd	?live16417@112-@@stk@cpu@cpu_has_cmov$qv
+	dd	?live16417@128-?live16417@112
 	dw	1
-	dd	?live16416@240-@@stk@cpu@cpu_has_cmov$qv
-	dd	?live16416@256-?live16416@240
-	dw	1
-?patch148	equ	2
-?patch147	equ	24
+?patch155	equ	1
+?patch154	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	255
+	dw	264
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	265
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	266
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	267
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mhalfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	268
 	dw	0
 	dw	0
 	dw	0
@@ -8717,199 +9902,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	256
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	257
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	258
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mfjpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	259
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	260
+	dw	269
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ecjpfcia
+	df	$eealfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	261
+	dw	270
 	dw	0
 	dw	0
 	dw	0
-?patch144	equ	@466-@@stk@cpu@cpu_has_cmov$qv+5
-?patch145	equ	0
-?patch146	equ	@466-@@stk@cpu@cpu_has_cmov$qv
+?patch151	equ	@513-@@stk@cpu@cpu_has_cmov$qv+72
+?patch152	equ	0
+?patch153	equ	@513-@@stk@cpu@cpu_has_cmov$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ejjpfcia	label	dword
+$elalfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mmjpfcia	label	qword
+$moalfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_movbe$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_movbe$qv	proc	near
-?live16417@0:
-	?debug L 984
-@467:
+?live16418@0:
+	?debug L 1301
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 987
-?live16417@16: ; EBX = &$mmjpfcia
-	mov       eax,dword ptr [$ejjpfcia]
-	cmp       eax,-1
-	?debug L 984
-?live16417@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mmjpfcia
-	?debug L 987
-?live16417@48: ; EBX = &$mmjpfcia
-	je        short @471
-	?debug L 988
-?live16417@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @514
+@515:
+	mov       ebx,offset $moalfcia
+	?debug L 1307
+?live16418@16: ; EBX = &$moalfcia
+	mov       eax,dword ptr [$elalfcia]
+	cmp       eax,-1
+	je        short @519
+	?debug L 1308
+?live16418@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @469
-	?debug L 990
-?live16417@80: ; EBX = &$mmjpfcia
-@470:
+	jmp       @517
+	?debug L 1310
+?live16418@48: ; EBX = &$moalfcia
+@518:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@471:
+	call      @@stk@time@wait_us$qxuj
+@519:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @470
+	jne       short @518
 	cmp       dword ptr [ebx],0
-	jne       short @470
+	jne       short @518
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @474
-@473:
+	jmp       short @522
+@521:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@474:
+	call      @@stk@time@wait_us$qxuj
+@522:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @477
+	jne       short @525
 	cmp       dword ptr [ebx],0
-@477:
-	je        short @475
+@525:
+	je        short @523
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @478
-	cmp       eax,dword ptr [ebp-8]
-@478:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @526
+	cmp       eax,dword ptr [ebp-20]
+@526:
 	setne     al
 	and       eax,1
-	jmp       short @476
-@475:
+	jmp       short @524
+@523:
 	xor       eax,eax
-@476:
+@524:
 	test      al,al
-	jne       short @473
-	?debug L 993
+	jne       short @521
+	?debug L 1313
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 995
-	mov       eax,dword ptr [ebp-16]
-	?debug L 993
 	add       esp,24
-	?debug L 995
+	?debug L 1315
+	mov       eax,dword ptr [ebp-36]
 	and       eax,4194304
-	?debug L 996
-?live16417@160: ; EBX = &$mmjpfcia, EAX = @temp3
+	mov       dword ptr [$elalfcia],eax
+	?debug L 1316
+?live16418@96: ; EBX = &$moalfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 995
-?live16417@176: ; EBX = &$mmjpfcia
-	mov       dword ptr [$ejjpfcia],eax
-	?debug L 996
-?live16417@192: ; EBX = &$mmjpfcia, EAX = @temp3
 	setne     dl
-	?debug L 997
-?live16417@208: ; EBX = &$mmjpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 996
-?live16417@224: ; EBX = &$mmjpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 997
-?live16417@240: ; EBX = &$mmjpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 996
-?live16417@256: ; EBX = &$mmjpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 999
-?live16417@272: ; 
-@479:
-@469:
+	?debug L 1317
+?live16418@112: ; EBX = &$moalfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1319
+?live16418@128: ; 
+@527:
+@517:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@514:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_movbe$qv+0
+	dd        @514+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_movbe$qv	endp
 @stk@cpu@cpu_has_movbe$qv	ends
@@ -8923,14 +10081,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch149
-	dd	?patch150
-	dd	?patch151
+	dd	?patch156
+	dd	?patch157
+	dd	?patch158
 	df	@@stk@cpu@cpu_has_movbe$qv
 	dw	0
-	dw	4164
+	dw	4166
 	dw	0
-	dw	262
+	dw	271
 	dw	0
 	dw	0
 	dw	0
@@ -8965,28 +10123,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	263
+	dw	272
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch152
+	dw	?patch159
 	dw	529
-	dw	?patch153
-	dd	?live16417@208-@@stk@cpu@cpu_has_movbe$qv
-	dd	?live16417@224-?live16417@208
+	dw	?patch160
+	dd	?live16418@112-@@stk@cpu@cpu_has_movbe$qv
+	dd	?live16418@128-?live16418@112
 	dw	1
-	dd	?live16417@240-@@stk@cpu@cpu_has_movbe$qv
-	dd	?live16417@256-?live16417@240
-	dw	1
-?patch153	equ	2
-?patch152	equ	24
+?patch160	equ	1
+?patch159	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	264
+	dw	273
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	274
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	275
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	276
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$moalfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	277
 	dw	0
 	dw	0
 	dw	0
@@ -8994,206 +10189,189 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	265
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	266
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	267
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mmjpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	268
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	269
+	dw	278
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ejjpfcia
+	df	$elalfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	270
+	dw	279
 	dw	0
 	dw	0
 	dw	0
-?patch149	equ	@479-@@stk@cpu@cpu_has_movbe$qv+5
-?patch150	equ	0
-?patch151	equ	@479-@@stk@cpu@cpu_has_movbe$qv
+?patch156	equ	@527-@@stk@cpu@cpu_has_movbe$qv+72
+?patch157	equ	0
+?patch158	equ	@527-@@stk@cpu@cpu_has_movbe$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eakpfcia	label	dword
+$ecblfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mdkpfcia	label	qword
+$mfblfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_bmi$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_bmi$qv	proc	near
-?live16418@0:
-	?debug L 1002
-@480:
+?live16419@0:
+	?debug L 1322
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1005
-?live16418@16: ; EBX = &$mdkpfcia
-	mov       eax,dword ptr [$eakpfcia]
-	cmp       eax,-1
-	?debug L 1002
-?live16418@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mdkpfcia
-	?debug L 1005
-?live16418@48: ; EBX = &$mdkpfcia
-	jne       @482
-	?debug L 1006
-?live16418@64: ; EAX = @temp3
-	jmp       short @484
-	?debug L 1008
-?live16418@80: ; EBX = &$mdkpfcia
-@483:
+	mov       dword ptr [ebp-8],offset @528
+@529:
+	mov       ebx,offset $mfblfcia
+	?debug L 1328
+?live16419@16: ; EBX = &$mfblfcia
+	mov       eax,dword ptr [$ecblfcia]
+	cmp       eax,-1
+	jne       @531
+	?debug L 1329
+?live16419@32: ; EAX = @temp3
+	jmp       short @533
+	?debug L 1331
+?live16419@48: ; EBX = &$mfblfcia
+@532:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@484:
+	call      @@stk@time@wait_us$qxuj
+@533:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @483
+	jne       short @532
 	cmp       dword ptr [ebx],0
-	jne       short @483
+	jne       short @532
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],edx
-	jmp       short @487
-@486:
+	jmp       short @536
+@535:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@487:
+	call      @@stk@time@wait_us$qxuj
+@536:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @490
+	jne       short @539
 	cmp       dword ptr [ebx],0
-@490:
-	je        short @488
+@539:
+	je        short @537
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @491
-	cmp       eax,dword ptr [ebp-8]
-@491:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @540
+	cmp       eax,dword ptr [ebp-20]
+@540:
 	setne     cl
 	and       ecx,1
-	jmp       short @489
-@488:
+	jmp       short @538
+@537:
 	xor       ecx,ecx
-@489:
+@538:
 	test      cl,cl
-	jne       short @486
-	?debug L 1011
+	jne       short @535
+	?debug L 1334
 	push      0
 	push      7
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 1013
-	test      byte ptr [ebp-19],1
-	je        short @492
-	?debug L 1014
-	mov       dword ptr [$eakpfcia],2
-	jmp       short @493
-	?debug L 1016
-@492:
-	test      byte ptr [ebp-20],8
-	je        short @494
-	?debug L 1017
-	mov       dword ptr [$eakpfcia],1
-	jmp       short @493
-	?debug L 1019
-@494:
+	?debug L 1336
+	test      byte ptr [ebp-43],1
+	je        short @541
+	?debug L 1337
+	mov       dword ptr [$ecblfcia],2
+	jmp       short @542
+	?debug L 1339
+@541:
+	test      byte ptr [ebp-44],8
+	je        short @543
+	?debug L 1340
+	mov       dword ptr [$ecblfcia],1
+	jmp       short @542
+	?debug L 1342
+@543:
 	xor       ecx,ecx
-	mov       dword ptr [$eakpfcia],ecx
-	?debug L 1020
-@493:
-	cmp       dword ptr [$eakpfcia],0
-	?debug L 1021
-?live16418@208: ; EBX = &$mdkpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1020
-?live16418@224: ; EBX = &$mdkpfcia
+	mov       dword ptr [$ecblfcia],ecx
+	?debug L 1343
+@542:
+	cmp       dword ptr [$ecblfcia],0
 	setne     al
 	and       eax,1
-	?debug L 1022
-?live16418@240: ; EAX = r
+	?debug L 1344
+?live16419@176: ; EBX = &$mfblfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	?debug L 1345
+?live16419@192: ; EAX = ret
 	xor       edx,edx
 	mov       dl,al
-	?debug L 1021
-?live16418@256: ; EBX = &$mdkpfcia, EAX = r
+	?debug L 1344
+?live16419@208: ; EBX = &$mfblfcia, EAX = ret
 	mov       dword ptr [ebx+4],0
-	?debug L 1022
-?live16418@272: ; EAX = r
+	?debug L 1345
+?live16419@224: ; EAX = ret
 	mov       eax,edx
-	?debug L 1023
-?live16418@288: ; 
-@495:
-@482:
+	?debug L 1346
+?live16419@240: ; 
+@544:
+@531:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@528:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_bmi$qv+0
+	dd        @528+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_bmi$qv	endp
 @stk@cpu@cpu_has_bmi$qv	ends
@@ -9207,14 +10385,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch154
-	dd	?patch155
-	dd	?patch156
+	dd	?patch161
+	dd	?patch162
+	dd	?patch163
 	df	@@stk@cpu@cpu_has_bmi$qv
 	dw	0
-	dw	4166
+	dw	4168
 	dw	0
-	dw	271
+	dw	280
 	dw	0
 	dw	0
 	dw	0
@@ -9247,28 +10425,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	272
+	dw	281
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch157
+	dw	?patch164
 	dw	529
-	dw	?patch158
-	dd	?live16418@208-@@stk@cpu@cpu_has_bmi$qv
-	dd	?live16418@224-?live16418@208
+	dw	?patch165
+	dd	?live16419@176-@@stk@cpu@cpu_has_bmi$qv
+	dd	?live16419@240-?live16419@176
 	dw	1
-	dd	?live16418@240-@@stk@cpu@cpu_has_bmi$qv
-	dd	?live16418@288-?live16418@240
-	dw	1
-?patch158	equ	2
-?patch157	equ	24
+?patch165	equ	1
+?patch164	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	273
+	dw	282
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	283
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	284
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	285
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mfblfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	286
 	dw	0
 	dw	0
 	dw	0
@@ -9276,199 +10491,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	274
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	275
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	276
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mdkpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	277
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	278
+	dw	287
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eakpfcia
+	df	$ecblfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	279
+	dw	288
 	dw	0
 	dw	0
 	dw	0
-?patch154	equ	@495-@@stk@cpu@cpu_has_bmi$qv+5
-?patch155	equ	0
-?patch156	equ	@495-@@stk@cpu@cpu_has_bmi$qv
+?patch161	equ	@544-@@stk@cpu@cpu_has_bmi$qv+73
+?patch162	equ	0
+?patch163	equ	@544-@@stk@cpu@cpu_has_bmi$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ehkpfcia	label	dword
+$ejblfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mkkpfcia	label	qword
+$mmblfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_erms$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_erms$qv	proc	near
-?live16419@0:
-	?debug L 1026
-@496:
+?live16420@0:
+	?debug L 1349
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1029
-?live16419@16: ; EBX = &$mkkpfcia
-	mov       eax,dword ptr [$ehkpfcia]
-	cmp       eax,-1
-	?debug L 1026
-?live16419@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mkkpfcia
-	?debug L 1029
-?live16419@48: ; EBX = &$mkkpfcia
-	je        short @500
-	?debug L 1030
-?live16419@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @545
+@546:
+	mov       ebx,offset $mmblfcia
+	?debug L 1355
+?live16420@16: ; EBX = &$mmblfcia
+	mov       eax,dword ptr [$ejblfcia]
+	cmp       eax,-1
+	je        short @550
+	?debug L 1356
+?live16420@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @498
-	?debug L 1032
-?live16419@80: ; EBX = &$mkkpfcia
-@499:
+	jmp       @548
+	?debug L 1358
+?live16420@48: ; EBX = &$mmblfcia
+@549:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@500:
+	call      @@stk@time@wait_us$qxuj
+@550:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @499
+	jne       short @549
 	cmp       dword ptr [ebx],0
-	jne       short @499
+	jne       short @549
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @503
-@502:
+	jmp       short @553
+@552:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@503:
+	call      @@stk@time@wait_us$qxuj
+@553:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @506
+	jne       short @556
 	cmp       dword ptr [ebx],0
-@506:
-	je        short @504
+@556:
+	je        short @554
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @507
-	cmp       eax,dword ptr [ebp-8]
-@507:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @557
+	cmp       eax,dword ptr [ebp-20]
+@557:
 	setne     al
 	and       eax,1
-	jmp       short @505
-@504:
+	jmp       short @555
+@554:
 	xor       eax,eax
-@505:
+@555:
 	test      al,al
-	jne       short @502
-	?debug L 1035
+	jne       short @552
+	?debug L 1361
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1037
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1035
 	add       esp,24
-	?debug L 1037
+	?debug L 1363
+	mov       eax,dword ptr [ebp-44]
 	and       eax,512
-	?debug L 1038
-?live16419@160: ; EBX = &$mkkpfcia, EAX = @temp3
+	mov       dword ptr [$ejblfcia],eax
+	?debug L 1364
+?live16420@96: ; EBX = &$mmblfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1037
-?live16419@176: ; EBX = &$mkkpfcia
-	mov       dword ptr [$ehkpfcia],eax
-	?debug L 1038
-?live16419@192: ; EBX = &$mkkpfcia, EAX = @temp3
 	setne     dl
-	?debug L 1039
-?live16419@208: ; EBX = &$mkkpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1038
-?live16419@224: ; EBX = &$mkkpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1039
-?live16419@240: ; EBX = &$mkkpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1038
-?live16419@256: ; EBX = &$mkkpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1041
-?live16419@272: ; 
-@508:
-@498:
+	?debug L 1365
+?live16420@112: ; EBX = &$mmblfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1367
+?live16420@128: ; 
+@558:
+@548:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@545:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_erms$qv+0
+	dd        @545+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_erms$qv	endp
 @stk@cpu@cpu_has_erms$qv	ends
@@ -9482,14 +10670,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch159
-	dd	?patch160
-	dd	?patch161
+	dd	?patch166
+	dd	?patch167
+	dd	?patch168
 	df	@@stk@cpu@cpu_has_erms$qv
 	dw	0
-	dw	4168
+	dw	4170
 	dw	0
-	dw	280
+	dw	289
 	dw	0
 	dw	0
 	dw	0
@@ -9523,28 +10711,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	281
+	dw	290
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch162
+	dw	?patch169
 	dw	529
-	dw	?patch163
-	dd	?live16419@208-@@stk@cpu@cpu_has_erms$qv
-	dd	?live16419@224-?live16419@208
+	dw	?patch170
+	dd	?live16420@112-@@stk@cpu@cpu_has_erms$qv
+	dd	?live16420@128-?live16420@112
 	dw	1
-	dd	?live16419@240-@@stk@cpu@cpu_has_erms$qv
-	dd	?live16419@256-?live16419@240
-	dw	1
-?patch163	equ	2
-?patch162	equ	24
+?patch170	equ	1
+?patch169	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	282
+	dw	291
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	292
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	293
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	294
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mmblfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	295
 	dw	0
 	dw	0
 	dw	0
@@ -9552,206 +10777,189 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	283
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	284
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	285
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mkkpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	286
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	287
+	dw	296
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ehkpfcia
+	df	$ejblfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	288
+	dw	297
 	dw	0
 	dw	0
 	dw	0
-?patch159	equ	@508-@@stk@cpu@cpu_has_erms$qv+5
-?patch160	equ	0
-?patch161	equ	@508-@@stk@cpu@cpu_has_erms$qv
+?patch166	equ	@558-@@stk@cpu@cpu_has_erms$qv+72
+?patch167	equ	0
+?patch168	equ	@558-@@stk@cpu@cpu_has_erms$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eokpfcia	label	dword
+$eaclfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mblpfcia	label	qword
+$mdclfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_3dnow$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_3dnow$qv	proc	near
-?live16420@0:
-	?debug L 1044
-@509:
+?live16421@0:
+	?debug L 1370
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1047
-?live16420@16: ; EBX = &$mblpfcia
-	mov       eax,dword ptr [$eokpfcia]
-	cmp       eax,-1
-	?debug L 1044
-?live16420@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mblpfcia
-	?debug L 1047
-?live16420@48: ; EBX = &$mblpfcia
-	jne       @511
-	?debug L 1048
-?live16420@64: ; EAX = @temp3
-	jmp       short @513
-	?debug L 1050
-?live16420@80: ; EBX = &$mblpfcia
-@512:
+	mov       dword ptr [ebp-8],offset @559
+@560:
+	mov       ebx,offset $mdclfcia
+	?debug L 1376
+?live16421@16: ; EBX = &$mdclfcia
+	mov       eax,dword ptr [$eaclfcia]
+	cmp       eax,-1
+	jne       @562
+	?debug L 1377
+?live16421@32: ; EAX = @temp3
+	jmp       short @564
+	?debug L 1379
+?live16421@48: ; EBX = &$mdclfcia
+@563:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@513:
+	call      @@stk@time@wait_us$qxuj
+@564:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @512
+	jne       short @563
 	cmp       dword ptr [ebx],0
-	jne       short @512
+	jne       short @563
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],edx
-	jmp       short @516
-@515:
+	jmp       short @567
+@566:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@516:
+	call      @@stk@time@wait_us$qxuj
+@567:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @519
+	jne       short @570
 	cmp       dword ptr [ebx],0
-@519:
-	je        short @517
+@570:
+	je        short @568
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @520
-	cmp       eax,dword ptr [ebp-8]
-@520:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @571
+	cmp       eax,dword ptr [ebp-20]
+@571:
 	setne     cl
 	and       ecx,1
-	jmp       short @518
-@517:
+	jmp       short @569
+@568:
 	xor       ecx,ecx
-@518:
+@569:
 	test      cl,cl
-	jne       short @515
-	?debug L 1053
+	jne       short @566
+	?debug L 1382
 	push      0
 	push      -2147483647
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 1055
-	test      byte ptr [ebp-9],64
-	je        short @521
-	?debug L 1056
-	mov       dword ptr [$eokpfcia],2
-	jmp       short @522
-	?debug L 1058
-@521:
-	test      byte ptr [ebp-9],-128
-	je        short @523
-	?debug L 1059
-	mov       dword ptr [$eokpfcia],1
-	jmp       short @522
-	?debug L 1061
-@523:
+	?debug L 1384
+	test      byte ptr [ebp-25],64
+	je        short @572
+	?debug L 1385
+	mov       dword ptr [$eaclfcia],2
+	jmp       short @573
+	?debug L 1387
+@572:
+	test      byte ptr [ebp-25],-128
+	je        short @574
+	?debug L 1388
+	mov       dword ptr [$eaclfcia],1
+	jmp       short @573
+	?debug L 1390
+@574:
 	xor       ecx,ecx
-	mov       dword ptr [$eokpfcia],ecx
-	?debug L 1062
-@522:
-	cmp       dword ptr [$eokpfcia],0
-	?debug L 1063
-?live16420@208: ; EBX = &$mblpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1062
-?live16420@224: ; EBX = &$mblpfcia
+	mov       dword ptr [$eaclfcia],ecx
+	?debug L 1391
+@573:
+	cmp       dword ptr [$eaclfcia],0
 	setne     al
 	and       eax,1
-	?debug L 1064
-?live16420@240: ; EAX = r
+	?debug L 1392
+?live16421@176: ; EBX = &$mdclfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	?debug L 1393
+?live16421@192: ; EAX = ret
 	xor       edx,edx
 	mov       dl,al
-	?debug L 1063
-?live16420@256: ; EBX = &$mblpfcia, EAX = r
+	?debug L 1392
+?live16421@208: ; EBX = &$mdclfcia, EAX = ret
 	mov       dword ptr [ebx+4],0
-	?debug L 1064
-?live16420@272: ; EAX = r
+	?debug L 1393
+?live16421@224: ; EAX = ret
 	mov       eax,edx
-	?debug L 1065
-?live16420@288: ; 
-@524:
-@511:
+	?debug L 1394
+?live16421@240: ; 
+@575:
+@562:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@559:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_3dnow$qv+0
+	dd        @559+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_3dnow$qv	endp
 @stk@cpu@cpu_has_3dnow$qv	ends
@@ -9765,14 +10973,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch164
-	dd	?patch165
-	dd	?patch166
+	dd	?patch171
+	dd	?patch172
+	dd	?patch173
 	df	@@stk@cpu@cpu_has_3dnow$qv
 	dw	0
-	dw	4170
+	dw	4172
 	dw	0
-	dw	289
+	dw	298
 	dw	0
 	dw	0
 	dw	0
@@ -9807,28 +11015,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	290
+	dw	299
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch167
+	dw	?patch174
 	dw	529
-	dw	?patch168
-	dd	?live16420@208-@@stk@cpu@cpu_has_3dnow$qv
-	dd	?live16420@224-?live16420@208
+	dw	?patch175
+	dd	?live16421@176-@@stk@cpu@cpu_has_3dnow$qv
+	dd	?live16421@240-?live16421@176
 	dw	1
-	dd	?live16420@240-@@stk@cpu@cpu_has_3dnow$qv
-	dd	?live16420@288-?live16420@240
-	dw	1
-?patch168	equ	2
-?patch167	equ	24
+?patch175	equ	1
+?patch174	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	291
+	dw	300
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	301
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	302
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	303
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mdclfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	304
 	dw	0
 	dw	0
 	dw	0
@@ -9836,199 +11081,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	292
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	293
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	294
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mblpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	295
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	296
+	dw	305
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eokpfcia
+	df	$eaclfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	297
+	dw	306
 	dw	0
 	dw	0
 	dw	0
-?patch164	equ	@524-@@stk@cpu@cpu_has_3dnow$qv+5
-?patch165	equ	0
-?patch166	equ	@524-@@stk@cpu@cpu_has_3dnow$qv
+?patch171	equ	@575-@@stk@cpu@cpu_has_3dnow$qv+74
+?patch172	equ	0
+?patch173	equ	@575-@@stk@cpu@cpu_has_3dnow$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eflpfcia	label	dword
+$ehclfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$milpfcia	label	qword
+$mkclfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_3dnowprefetch$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_3dnowprefetch$qv	proc	near
-?live16421@0:
-	?debug L 1068
-@525:
+?live16422@0:
+	?debug L 1397
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1071
-?live16421@16: ; EBX = &$milpfcia
-	mov       eax,dword ptr [$eflpfcia]
-	cmp       eax,-1
-	?debug L 1068
-?live16421@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $milpfcia
-	?debug L 1071
-?live16421@48: ; EBX = &$milpfcia
-	je        short @529
-	?debug L 1072
-?live16421@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @576
+@577:
+	mov       ebx,offset $mkclfcia
+	?debug L 1403
+?live16422@16: ; EBX = &$mkclfcia
+	mov       eax,dword ptr [$ehclfcia]
+	cmp       eax,-1
+	je        short @581
+	?debug L 1404
+?live16422@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @527
-	?debug L 1074
-?live16421@80: ; EBX = &$milpfcia
-@528:
+	jmp       @579
+	?debug L 1406
+?live16422@48: ; EBX = &$mkclfcia
+@580:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@529:
+	call      @@stk@time@wait_us$qxuj
+@581:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @528
+	jne       short @580
 	cmp       dword ptr [ebx],0
-	jne       short @528
+	jne       short @580
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @532
-@531:
+	jmp       short @584
+@583:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@532:
+	call      @@stk@time@wait_us$qxuj
+@584:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @535
+	jne       short @587
 	cmp       dword ptr [ebx],0
-@535:
-	je        short @533
+@587:
+	je        short @585
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @536
-	cmp       eax,dword ptr [ebp-8]
-@536:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @588
+	cmp       eax,dword ptr [ebp-20]
+@588:
 	setne     al
 	and       eax,1
-	jmp       short @534
-@533:
+	jmp       short @586
+@585:
 	xor       eax,eax
-@534:
+@586:
 	test      al,al
-	jne       short @531
-	?debug L 1077
+	jne       short @583
+	?debug L 1409
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1079
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1077
 	add       esp,24
-	?debug L 1079
+	?debug L 1411
+	mov       eax,dword ptr [ebp-36]
 	and       eax,256
-	?debug L 1080
-?live16421@160: ; EBX = &$milpfcia, EAX = @temp3
+	mov       dword ptr [$ehclfcia],eax
+	?debug L 1412
+?live16422@96: ; EBX = &$mkclfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1079
-?live16421@176: ; EBX = &$milpfcia
-	mov       dword ptr [$eflpfcia],eax
-	?debug L 1080
-?live16421@192: ; EBX = &$milpfcia, EAX = @temp3
 	setne     dl
-	?debug L 1081
-?live16421@208: ; EBX = &$milpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1080
-?live16421@224: ; EBX = &$milpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1081
-?live16421@240: ; EBX = &$milpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1080
-?live16421@256: ; EBX = &$milpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1083
-?live16421@272: ; 
-@537:
-@527:
+	?debug L 1413
+?live16422@112: ; EBX = &$mkclfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1415
+?live16422@128: ; 
+@589:
+@579:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@576:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_3dnowprefetch$qv+0
+	dd        @576+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_3dnowprefetch$qv	endp
 @stk@cpu@cpu_has_3dnowprefetch$qv	ends
@@ -10042,14 +11260,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch169
-	dd	?patch170
-	dd	?patch171
+	dd	?patch176
+	dd	?patch177
+	dd	?patch178
 	df	@@stk@cpu@cpu_has_3dnowprefetch$qv
 	dw	0
-	dw	4172
+	dw	4174
 	dw	0
-	dw	298
+	dw	307
 	dw	0
 	dw	0
 	dw	0
@@ -10092,28 +11310,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	299
+	dw	308
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch172
+	dw	?patch179
 	dw	529
-	dw	?patch173
-	dd	?live16421@208-@@stk@cpu@cpu_has_3dnowprefetch$qv
-	dd	?live16421@224-?live16421@208
+	dw	?patch180
+	dd	?live16422@112-@@stk@cpu@cpu_has_3dnowprefetch$qv
+	dd	?live16422@128-?live16422@112
 	dw	1
-	dd	?live16421@240-@@stk@cpu@cpu_has_3dnowprefetch$qv
-	dd	?live16421@256-?live16421@240
-	dw	1
-?patch173	equ	2
-?patch172	equ	24
+?patch180	equ	1
+?patch179	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	300
+	dw	309
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	310
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	311
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	312
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mkclfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	313
 	dw	0
 	dw	0
 	dw	0
@@ -10121,199 +11376,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	301
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	302
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	303
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$milpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	304
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	305
+	dw	314
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eflpfcia
+	df	$ehclfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	306
+	dw	315
 	dw	0
 	dw	0
 	dw	0
-?patch169	equ	@537-@@stk@cpu@cpu_has_3dnowprefetch$qv+5
-?patch170	equ	0
-?patch171	equ	@537-@@stk@cpu@cpu_has_3dnowprefetch$qv
+?patch176	equ	@589-@@stk@cpu@cpu_has_3dnowprefetch$qv+73
+?patch177	equ	0
+?patch178	equ	@589-@@stk@cpu@cpu_has_3dnowprefetch$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$emlpfcia	label	dword
+$eoclfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mplpfcia	label	qword
+$mbdlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_perftsc$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_perftsc$qv	proc	near
-?live16422@0:
-	?debug L 1086
-@538:
+?live16423@0:
+	?debug L 1418
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1089
-?live16422@16: ; EBX = &$mplpfcia
-	mov       eax,dword ptr [$emlpfcia]
-	cmp       eax,-1
-	?debug L 1086
-?live16422@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mplpfcia
-	?debug L 1089
-?live16422@48: ; EBX = &$mplpfcia
-	je        short @542
-	?debug L 1090
-?live16422@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @590
+@591:
+	mov       ebx,offset $mbdlfcia
+	?debug L 1424
+?live16423@16: ; EBX = &$mbdlfcia
+	mov       eax,dword ptr [$eoclfcia]
+	cmp       eax,-1
+	je        short @595
+	?debug L 1425
+?live16423@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @540
-	?debug L 1092
-?live16422@80: ; EBX = &$mplpfcia
-@541:
+	jmp       @593
+	?debug L 1427
+?live16423@48: ; EBX = &$mbdlfcia
+@594:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@542:
+	call      @@stk@time@wait_us$qxuj
+@595:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @541
+	jne       short @594
 	cmp       dword ptr [ebx],0
-	jne       short @541
+	jne       short @594
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @545
-@544:
+	jmp       short @598
+@597:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@545:
+	call      @@stk@time@wait_us$qxuj
+@598:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @548
+	jne       short @601
 	cmp       dword ptr [ebx],0
-@548:
-	je        short @546
+@601:
+	je        short @599
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @549
-	cmp       eax,dword ptr [ebp-8]
-@549:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @602
+	cmp       eax,dword ptr [ebp-20]
+@602:
 	setne     al
 	and       eax,1
-	jmp       short @547
-@546:
+	jmp       short @600
+@599:
 	xor       eax,eax
-@547:
+@600:
 	test      al,al
-	jne       short @544
-	?debug L 1095
+	jne       short @597
+	?debug L 1430
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1097
-	mov       eax,dword ptr [ebp-12]
-	?debug L 1095
 	add       esp,24
-	?debug L 1097
+	?debug L 1432
+	mov       eax,dword ptr [ebp-28]
 	and       eax,134217728
-	?debug L 1098
-?live16422@160: ; EBX = &$mplpfcia, EAX = @temp3
+	mov       dword ptr [$eoclfcia],eax
+	?debug L 1433
+?live16423@96: ; EBX = &$mbdlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1097
-?live16422@176: ; EBX = &$mplpfcia
-	mov       dword ptr [$emlpfcia],eax
-	?debug L 1098
-?live16422@192: ; EBX = &$mplpfcia, EAX = @temp3
 	setne     dl
-	?debug L 1099
-?live16422@208: ; EBX = &$mplpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1098
-?live16422@224: ; EBX = &$mplpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1099
-?live16422@240: ; EBX = &$mplpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1098
-?live16422@256: ; EBX = &$mplpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1101
-?live16422@272: ; 
-@550:
-@540:
+	?debug L 1434
+?live16423@112: ; EBX = &$mbdlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1436
+?live16423@128: ; 
+@603:
+@593:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@590:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_perftsc$qv+0
+	dd        @590+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_perftsc$qv	endp
 @stk@cpu@cpu_has_perftsc$qv	ends
@@ -10327,14 +11555,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch174
-	dd	?patch175
-	dd	?patch176
+	dd	?patch181
+	dd	?patch182
+	dd	?patch183
 	df	@@stk@cpu@cpu_has_perftsc$qv
 	dw	0
-	dw	4174
+	dw	4176
 	dw	0
-	dw	307
+	dw	316
 	dw	0
 	dw	0
 	dw	0
@@ -10371,28 +11599,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	308
+	dw	317
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch177
+	dw	?patch184
 	dw	529
-	dw	?patch178
-	dd	?live16422@208-@@stk@cpu@cpu_has_perftsc$qv
-	dd	?live16422@224-?live16422@208
+	dw	?patch185
+	dd	?live16423@112-@@stk@cpu@cpu_has_perftsc$qv
+	dd	?live16423@128-?live16423@112
 	dw	1
-	dd	?live16422@240-@@stk@cpu@cpu_has_perftsc$qv
-	dd	?live16422@256-?live16422@240
-	dw	1
-?patch178	equ	2
-?patch177	equ	24
+?patch185	equ	1
+?patch184	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	309
+	dw	318
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	319
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	320
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	321
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mbdlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	322
 	dw	0
 	dw	0
 	dw	0
@@ -10400,199 +11665,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	310
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	311
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	312
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mplpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	313
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	314
+	dw	323
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$emlpfcia
+	df	$eoclfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	315
+	dw	324
 	dw	0
 	dw	0
 	dw	0
-?patch174	equ	@550-@@stk@cpu@cpu_has_perftsc$qv+5
-?patch175	equ	0
-?patch176	equ	@550-@@stk@cpu@cpu_has_perftsc$qv
+?patch181	equ	@603-@@stk@cpu@cpu_has_perftsc$qv+73
+?patch182	equ	0
+?patch183	equ	@603-@@stk@cpu@cpu_has_perftsc$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$edmpfcia	label	dword
+$efdlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mgmpfcia	label	qword
+$midlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_sha$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_sha$qv	proc	near
-?live16423@0:
-	?debug L 1104
-@551:
+?live16424@0:
+	?debug L 1439
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1107
-?live16423@16: ; EBX = &$mgmpfcia
-	mov       eax,dword ptr [$edmpfcia]
-	cmp       eax,-1
-	?debug L 1104
-?live16423@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mgmpfcia
-	?debug L 1107
-?live16423@48: ; EBX = &$mgmpfcia
-	je        short @555
-	?debug L 1108
-?live16423@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @604
+@605:
+	mov       ebx,offset $midlfcia
+	?debug L 1445
+?live16424@16: ; EBX = &$midlfcia
+	mov       eax,dword ptr [$efdlfcia]
+	cmp       eax,-1
+	je        short @609
+	?debug L 1446
+?live16424@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @553
-	?debug L 1110
-?live16423@80: ; EBX = &$mgmpfcia
-@554:
+	jmp       @607
+	?debug L 1448
+?live16424@48: ; EBX = &$midlfcia
+@608:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@555:
+	call      @@stk@time@wait_us$qxuj
+@609:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @554
+	jne       short @608
 	cmp       dword ptr [ebx],0
-	jne       short @554
+	jne       short @608
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @558
-@557:
+	jmp       short @612
+@611:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@558:
+	call      @@stk@time@wait_us$qxuj
+@612:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @561
+	jne       short @615
 	cmp       dword ptr [ebx],0
-@561:
-	je        short @559
+@615:
+	je        short @613
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @562
-	cmp       eax,dword ptr [ebp-8]
-@562:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @616
+	cmp       eax,dword ptr [ebp-20]
+@616:
 	setne     al
 	and       eax,1
-	jmp       short @560
-@559:
+	jmp       short @614
+@613:
 	xor       eax,eax
-@560:
+@614:
 	test      al,al
-	jne       short @557
-	?debug L 1113
+	jne       short @611
+	?debug L 1451
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1115
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1113
 	add       esp,24
-	?debug L 1115
+	?debug L 1453
+	mov       eax,dword ptr [ebp-44]
 	and       eax,536870912
-	?debug L 1116
-?live16423@160: ; EBX = &$mgmpfcia, EAX = @temp3
+	mov       dword ptr [$efdlfcia],eax
+	?debug L 1454
+?live16424@96: ; EBX = &$midlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1115
-?live16423@176: ; EBX = &$mgmpfcia
-	mov       dword ptr [$edmpfcia],eax
-	?debug L 1116
-?live16423@192: ; EBX = &$mgmpfcia, EAX = @temp3
 	setne     dl
-	?debug L 1117
-?live16423@208: ; EBX = &$mgmpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1116
-?live16423@224: ; EBX = &$mgmpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1117
-?live16423@240: ; EBX = &$mgmpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1116
-?live16423@256: ; EBX = &$mgmpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1119
-?live16423@272: ; 
-@563:
-@553:
+	?debug L 1455
+?live16424@112: ; EBX = &$midlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1457
+?live16424@128: ; 
+@617:
+@607:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@604:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_sha$qv+0
+	dd        @604+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_sha$qv	endp
 @stk@cpu@cpu_has_sha$qv	ends
@@ -10606,14 +11844,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch179
-	dd	?patch180
-	dd	?patch181
+	dd	?patch186
+	dd	?patch187
+	dd	?patch188
 	df	@@stk@cpu@cpu_has_sha$qv
 	dw	0
-	dw	4176
+	dw	4178
 	dw	0
-	dw	316
+	dw	325
 	dw	0
 	dw	0
 	dw	0
@@ -10646,28 +11884,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	317
+	dw	326
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch182
+	dw	?patch189
 	dw	529
-	dw	?patch183
-	dd	?live16423@208-@@stk@cpu@cpu_has_sha$qv
-	dd	?live16423@224-?live16423@208
+	dw	?patch190
+	dd	?live16424@112-@@stk@cpu@cpu_has_sha$qv
+	dd	?live16424@128-?live16424@112
 	dw	1
-	dd	?live16423@240-@@stk@cpu@cpu_has_sha$qv
-	dd	?live16423@256-?live16423@240
-	dw	1
-?patch183	equ	2
-?patch182	equ	24
+?patch190	equ	1
+?patch189	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	318
+	dw	327
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	328
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	329
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	330
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$midlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	331
 	dw	0
 	dw	0
 	dw	0
@@ -10675,199 +11950,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	319
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	320
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	321
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mgmpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	322
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	323
+	dw	332
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$edmpfcia
+	df	$efdlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	324
+	dw	333
 	dw	0
 	dw	0
 	dw	0
-?patch179	equ	@563-@@stk@cpu@cpu_has_sha$qv+5
-?patch180	equ	0
-?patch181	equ	@563-@@stk@cpu@cpu_has_sha$qv
+?patch186	equ	@617-@@stk@cpu@cpu_has_sha$qv+72
+?patch187	equ	0
+?patch188	equ	@617-@@stk@cpu@cpu_has_sha$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ekmpfcia	label	dword
+$emdlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mnmpfcia	label	qword
+$mpdlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_xop$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_xop$qv	proc	near
-?live16424@0:
-	?debug L 1122
-@564:
+?live16425@0:
+	?debug L 1460
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1125
-?live16424@16: ; EBX = &$mnmpfcia
-	mov       eax,dword ptr [$ekmpfcia]
-	cmp       eax,-1
-	?debug L 1122
-?live16424@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mnmpfcia
-	?debug L 1125
-?live16424@48: ; EBX = &$mnmpfcia
-	je        short @568
-	?debug L 1126
-?live16424@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @618
+@619:
+	mov       ebx,offset $mpdlfcia
+	?debug L 1466
+?live16425@16: ; EBX = &$mpdlfcia
+	mov       eax,dword ptr [$emdlfcia]
+	cmp       eax,-1
+	je        short @623
+	?debug L 1467
+?live16425@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @566
-	?debug L 1128
-?live16424@80: ; EBX = &$mnmpfcia
-@567:
+	jmp       @621
+	?debug L 1469
+?live16425@48: ; EBX = &$mpdlfcia
+@622:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@568:
+	call      @@stk@time@wait_us$qxuj
+@623:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @567
+	jne       short @622
 	cmp       dword ptr [ebx],0
-	jne       short @567
+	jne       short @622
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @571
-@570:
+	jmp       short @626
+@625:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@571:
+	call      @@stk@time@wait_us$qxuj
+@626:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @574
+	jne       short @629
 	cmp       dword ptr [ebx],0
-@574:
-	je        short @572
+@629:
+	je        short @627
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @575
-	cmp       eax,dword ptr [ebp-8]
-@575:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @630
+	cmp       eax,dword ptr [ebp-20]
+@630:
 	setne     al
 	and       eax,1
-	jmp       short @573
-@572:
+	jmp       short @628
+@627:
 	xor       eax,eax
-@573:
+@628:
 	test      al,al
-	jne       short @570
-	?debug L 1131
+	jne       short @625
+	?debug L 1472
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1133
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1131
 	add       esp,24
-	?debug L 1133
+	?debug L 1474
+	mov       eax,dword ptr [ebp-36]
 	and       eax,2048
-	?debug L 1134
-?live16424@160: ; EBX = &$mnmpfcia, EAX = @temp3
+	mov       dword ptr [$emdlfcia],eax
+	?debug L 1475
+?live16425@96: ; EBX = &$mpdlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1133
-?live16424@176: ; EBX = &$mnmpfcia
-	mov       dword ptr [$ekmpfcia],eax
-	?debug L 1134
-?live16424@192: ; EBX = &$mnmpfcia, EAX = @temp3
 	setne     dl
-	?debug L 1135
-?live16424@208: ; EBX = &$mnmpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1134
-?live16424@224: ; EBX = &$mnmpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1135
-?live16424@240: ; EBX = &$mnmpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1134
-?live16424@256: ; EBX = &$mnmpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1137
-?live16424@272: ; 
-@576:
-@566:
+	?debug L 1476
+?live16425@112: ; EBX = &$mpdlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1478
+?live16425@128: ; 
+@631:
+@621:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@618:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_xop$qv+0
+	dd        @618+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_xop$qv	endp
 @stk@cpu@cpu_has_xop$qv	ends
@@ -10881,14 +12129,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch184
-	dd	?patch185
-	dd	?patch186
+	dd	?patch191
+	dd	?patch192
+	dd	?patch193
 	df	@@stk@cpu@cpu_has_xop$qv
 	dw	0
-	dw	4178
+	dw	4180
 	dw	0
-	dw	325
+	dw	334
 	dw	0
 	dw	0
 	dw	0
@@ -10921,28 +12169,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	326
+	dw	335
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch187
+	dw	?patch194
 	dw	529
-	dw	?patch188
-	dd	?live16424@208-@@stk@cpu@cpu_has_xop$qv
-	dd	?live16424@224-?live16424@208
+	dw	?patch195
+	dd	?live16425@112-@@stk@cpu@cpu_has_xop$qv
+	dd	?live16425@128-?live16425@112
 	dw	1
-	dd	?live16424@240-@@stk@cpu@cpu_has_xop$qv
-	dd	?live16424@256-?live16424@240
-	dw	1
-?patch188	equ	2
-?patch187	equ	24
+?patch195	equ	1
+?patch194	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	327
+	dw	336
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	337
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	338
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	339
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mpdlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	340
 	dw	0
 	dw	0
 	dw	0
@@ -10950,199 +12235,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	328
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	329
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	330
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mnmpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	331
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	332
+	dw	341
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ekmpfcia
+	df	$emdlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	333
+	dw	342
 	dw	0
 	dw	0
 	dw	0
-?patch184	equ	@576-@@stk@cpu@cpu_has_xop$qv+5
-?patch185	equ	0
-?patch186	equ	@576-@@stk@cpu@cpu_has_xop$qv
+?patch191	equ	@631-@@stk@cpu@cpu_has_xop$qv+73
+?patch192	equ	0
+?patch193	equ	@631-@@stk@cpu@cpu_has_xop$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ebnpfcia	label	dword
+$edelfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$menpfcia	label	qword
+$mgelfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx512f$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx512f$qv	proc	near
-?live16425@0:
-	?debug L 1140
-@577:
+?live16426@0:
+	?debug L 1481
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1143
-?live16425@16: ; EBX = &$menpfcia
-	mov       eax,dword ptr [$ebnpfcia]
-	cmp       eax,-1
-	?debug L 1140
-?live16425@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $menpfcia
-	?debug L 1143
-?live16425@48: ; EBX = &$menpfcia
-	je        short @581
-	?debug L 1144
-?live16425@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @632
+@633:
+	mov       ebx,offset $mgelfcia
+	?debug L 1487
+?live16426@16: ; EBX = &$mgelfcia
+	mov       eax,dword ptr [$edelfcia]
+	cmp       eax,-1
+	je        short @637
+	?debug L 1488
+?live16426@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @579
-	?debug L 1146
-?live16425@80: ; EBX = &$menpfcia
-@580:
+	jmp       @635
+	?debug L 1490
+?live16426@48: ; EBX = &$mgelfcia
+@636:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@581:
+	call      @@stk@time@wait_us$qxuj
+@637:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @580
+	jne       short @636
 	cmp       dword ptr [ebx],0
-	jne       short @580
+	jne       short @636
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @584
-@583:
+	jmp       short @640
+@639:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@584:
+	call      @@stk@time@wait_us$qxuj
+@640:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @587
+	jne       short @643
 	cmp       dword ptr [ebx],0
-@587:
-	je        short @585
+@643:
+	je        short @641
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @588
-	cmp       eax,dword ptr [ebp-8]
-@588:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @644
+	cmp       eax,dword ptr [ebp-20]
+@644:
 	setne     al
 	and       eax,1
-	jmp       short @586
-@585:
+	jmp       short @642
+@641:
 	xor       eax,eax
-@586:
+@642:
 	test      al,al
-	jne       short @583
-	?debug L 1149
+	jne       short @639
+	?debug L 1493
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1151
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1149
 	add       esp,24
-	?debug L 1151
+	?debug L 1495
+	mov       eax,dword ptr [ebp-44]
 	and       eax,65536
-	?debug L 1152
-?live16425@160: ; EBX = &$menpfcia, EAX = @temp3
+	mov       dword ptr [$edelfcia],eax
+	?debug L 1496
+?live16426@96: ; EBX = &$mgelfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1151
-?live16425@176: ; EBX = &$menpfcia
-	mov       dword ptr [$ebnpfcia],eax
-	?debug L 1152
-?live16425@192: ; EBX = &$menpfcia, EAX = @temp3
 	setne     dl
-	?debug L 1153
-?live16425@208: ; EBX = &$menpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1152
-?live16425@224: ; EBX = &$menpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1153
-?live16425@240: ; EBX = &$menpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1152
-?live16425@256: ; EBX = &$menpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1155
-?live16425@272: ; 
-@589:
-@579:
+	?debug L 1497
+?live16426@112: ; EBX = &$mgelfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1499
+?live16426@128: ; 
+@645:
+@635:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@632:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx512f$qv+0
+	dd        @632+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx512f$qv	endp
 @stk@cpu@cpu_has_avx512f$qv	ends
@@ -11156,14 +12414,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch189
-	dd	?patch190
-	dd	?patch191
+	dd	?patch196
+	dd	?patch197
+	dd	?patch198
 	df	@@stk@cpu@cpu_has_avx512f$qv
 	dw	0
-	dw	4180
+	dw	4182
 	dw	0
-	dw	334
+	dw	343
 	dw	0
 	dw	0
 	dw	0
@@ -11200,28 +12458,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	335
+	dw	344
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch192
+	dw	?patch199
 	dw	529
-	dw	?patch193
-	dd	?live16425@208-@@stk@cpu@cpu_has_avx512f$qv
-	dd	?live16425@224-?live16425@208
+	dw	?patch200
+	dd	?live16426@112-@@stk@cpu@cpu_has_avx512f$qv
+	dd	?live16426@128-?live16426@112
 	dw	1
-	dd	?live16425@240-@@stk@cpu@cpu_has_avx512f$qv
-	dd	?live16425@256-?live16425@240
-	dw	1
-?patch193	equ	2
-?patch192	equ	24
+?patch200	equ	1
+?patch199	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	336
+	dw	345
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	346
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	347
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	348
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mgelfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	349
 	dw	0
 	dw	0
 	dw	0
@@ -11229,199 +12524,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	337
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	338
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	339
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$menpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	340
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	341
+	dw	350
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ebnpfcia
+	df	$edelfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	342
+	dw	351
 	dw	0
 	dw	0
 	dw	0
-?patch189	equ	@589-@@stk@cpu@cpu_has_avx512f$qv+5
-?patch190	equ	0
-?patch191	equ	@589-@@stk@cpu@cpu_has_avx512f$qv
+?patch196	equ	@645-@@stk@cpu@cpu_has_avx512f$qv+72
+?patch197	equ	0
+?patch198	equ	@645-@@stk@cpu@cpu_has_avx512f$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$einpfcia	label	dword
+$ekelfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mlnpfcia	label	qword
+$mnelfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx512bw$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx512bw$qv	proc	near
-?live16426@0:
-	?debug L 1158
-@590:
+?live16427@0:
+	?debug L 1502
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1161
-?live16426@16: ; EBX = &$mlnpfcia
-	mov       eax,dword ptr [$einpfcia]
-	cmp       eax,-1
-	?debug L 1158
-?live16426@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mlnpfcia
-	?debug L 1161
-?live16426@48: ; EBX = &$mlnpfcia
-	je        short @594
-	?debug L 1162
-?live16426@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @646
+@647:
+	mov       ebx,offset $mnelfcia
+	?debug L 1508
+?live16427@16: ; EBX = &$mnelfcia
+	mov       eax,dword ptr [$ekelfcia]
+	cmp       eax,-1
+	je        short @651
+	?debug L 1509
+?live16427@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @592
-	?debug L 1164
-?live16426@80: ; EBX = &$mlnpfcia
-@593:
+	jmp       @649
+	?debug L 1511
+?live16427@48: ; EBX = &$mnelfcia
+@650:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@594:
+	call      @@stk@time@wait_us$qxuj
+@651:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @593
+	jne       short @650
 	cmp       dword ptr [ebx],0
-	jne       short @593
+	jne       short @650
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @597
-@596:
+	jmp       short @654
+@653:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@597:
+	call      @@stk@time@wait_us$qxuj
+@654:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @600
+	jne       short @657
 	cmp       dword ptr [ebx],0
-@600:
-	je        short @598
+@657:
+	je        short @655
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @601
-	cmp       eax,dword ptr [ebp-8]
-@601:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @658
+	cmp       eax,dword ptr [ebp-20]
+@658:
 	setne     al
 	and       eax,1
-	jmp       short @599
-@598:
+	jmp       short @656
+@655:
 	xor       eax,eax
-@599:
+@656:
 	test      al,al
-	jne       short @596
-	?debug L 1167
+	jne       short @653
+	?debug L 1514
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1169
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1167
 	add       esp,24
-	?debug L 1169
+	?debug L 1516
+	mov       eax,dword ptr [ebp-44]
 	and       eax,1073741824
-	?debug L 1170
-?live16426@160: ; EBX = &$mlnpfcia, EAX = @temp3
+	mov       dword ptr [$ekelfcia],eax
+	?debug L 1517
+?live16427@96: ; EBX = &$mnelfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1169
-?live16426@176: ; EBX = &$mlnpfcia
-	mov       dword ptr [$einpfcia],eax
-	?debug L 1170
-?live16426@192: ; EBX = &$mlnpfcia, EAX = @temp3
 	setne     dl
-	?debug L 1171
-?live16426@208: ; EBX = &$mlnpfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1170
-?live16426@224: ; EBX = &$mlnpfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1171
-?live16426@240: ; EBX = &$mlnpfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1170
-?live16426@256: ; EBX = &$mlnpfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1173
-?live16426@272: ; 
-@602:
-@592:
+	?debug L 1518
+?live16427@112: ; EBX = &$mnelfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1520
+?live16427@128: ; 
+@659:
+@649:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@646:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx512bw$qv+0
+	dd        @646+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx512bw$qv	endp
 @stk@cpu@cpu_has_avx512bw$qv	ends
@@ -11435,14 +12703,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch194
-	dd	?patch195
-	dd	?patch196
+	dd	?patch201
+	dd	?patch202
+	dd	?patch203
 	df	@@stk@cpu@cpu_has_avx512bw$qv
 	dw	0
-	dw	4182
+	dw	4184
 	dw	0
-	dw	343
+	dw	352
 	dw	0
 	dw	0
 	dw	0
@@ -11480,28 +12748,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	344
+	dw	353
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch197
+	dw	?patch204
 	dw	529
-	dw	?patch198
-	dd	?live16426@208-@@stk@cpu@cpu_has_avx512bw$qv
-	dd	?live16426@224-?live16426@208
+	dw	?patch205
+	dd	?live16427@112-@@stk@cpu@cpu_has_avx512bw$qv
+	dd	?live16427@128-?live16427@112
 	dw	1
-	dd	?live16426@240-@@stk@cpu@cpu_has_avx512bw$qv
-	dd	?live16426@256-?live16426@240
-	dw	1
-?patch198	equ	2
-?patch197	equ	24
+?patch205	equ	1
+?patch204	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	345
+	dw	354
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	355
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	356
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	357
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mnelfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	358
 	dw	0
 	dw	0
 	dw	0
@@ -11509,199 +12814,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	346
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	347
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	348
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mlnpfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	349
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	350
+	dw	359
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$einpfcia
+	df	$ekelfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	351
+	dw	360
 	dw	0
 	dw	0
 	dw	0
-?patch194	equ	@602-@@stk@cpu@cpu_has_avx512bw$qv+5
-?patch195	equ	0
-?patch196	equ	@602-@@stk@cpu@cpu_has_avx512bw$qv
+?patch201	equ	@659-@@stk@cpu@cpu_has_avx512bw$qv+72
+?patch202	equ	0
+?patch203	equ	@659-@@stk@cpu@cpu_has_avx512bw$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$epnpfcia	label	dword
+$ebflfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mcopfcia	label	qword
+$meflfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx512er$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx512er$qv	proc	near
-?live16427@0:
-	?debug L 1176
-@603:
+?live16428@0:
+	?debug L 1523
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1179
-?live16427@16: ; EBX = &$mcopfcia
-	mov       eax,dword ptr [$epnpfcia]
-	cmp       eax,-1
-	?debug L 1176
-?live16427@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mcopfcia
-	?debug L 1179
-?live16427@48: ; EBX = &$mcopfcia
-	je        short @607
-	?debug L 1180
-?live16427@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @660
+@661:
+	mov       ebx,offset $meflfcia
+	?debug L 1529
+?live16428@16: ; EBX = &$meflfcia
+	mov       eax,dword ptr [$ebflfcia]
+	cmp       eax,-1
+	je        short @665
+	?debug L 1530
+?live16428@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @605
-	?debug L 1182
-?live16427@80: ; EBX = &$mcopfcia
-@606:
+	jmp       @663
+	?debug L 1532
+?live16428@48: ; EBX = &$meflfcia
+@664:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@607:
+	call      @@stk@time@wait_us$qxuj
+@665:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @606
+	jne       short @664
 	cmp       dword ptr [ebx],0
-	jne       short @606
+	jne       short @664
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @610
-@609:
+	jmp       short @668
+@667:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@610:
+	call      @@stk@time@wait_us$qxuj
+@668:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @613
+	jne       short @671
 	cmp       dword ptr [ebx],0
-@613:
-	je        short @611
+@671:
+	je        short @669
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @614
-	cmp       eax,dword ptr [ebp-8]
-@614:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @672
+	cmp       eax,dword ptr [ebp-20]
+@672:
 	setne     al
 	and       eax,1
-	jmp       short @612
-@611:
+	jmp       short @670
+@669:
 	xor       eax,eax
-@612:
+@670:
 	test      al,al
-	jne       short @609
-	?debug L 1185
+	jne       short @667
+	?debug L 1535
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1187
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1185
 	add       esp,24
-	?debug L 1187
+	?debug L 1537
+	mov       eax,dword ptr [ebp-44]
 	and       eax,134217728
-	?debug L 1188
-?live16427@160: ; EBX = &$mcopfcia, EAX = @temp3
+	mov       dword ptr [$ebflfcia],eax
+	?debug L 1538
+?live16428@96: ; EBX = &$meflfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1187
-?live16427@176: ; EBX = &$mcopfcia
-	mov       dword ptr [$epnpfcia],eax
-	?debug L 1188
-?live16427@192: ; EBX = &$mcopfcia, EAX = @temp3
 	setne     dl
-	?debug L 1189
-?live16427@208: ; EBX = &$mcopfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1188
-?live16427@224: ; EBX = &$mcopfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1189
-?live16427@240: ; EBX = &$mcopfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1188
-?live16427@256: ; EBX = &$mcopfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1191
-?live16427@272: ; 
-@615:
-@605:
+	?debug L 1539
+?live16428@112: ; EBX = &$meflfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1541
+?live16428@128: ; 
+@673:
+@663:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@660:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx512er$qv+0
+	dd        @660+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx512er$qv	endp
 @stk@cpu@cpu_has_avx512er$qv	ends
@@ -11715,14 +12993,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch199
-	dd	?patch200
-	dd	?patch201
+	dd	?patch206
+	dd	?patch207
+	dd	?patch208
 	df	@@stk@cpu@cpu_has_avx512er$qv
 	dw	0
-	dw	4184
+	dw	4186
 	dw	0
-	dw	352
+	dw	361
 	dw	0
 	dw	0
 	dw	0
@@ -11760,28 +13038,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	353
+	dw	362
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch202
+	dw	?patch209
 	dw	529
-	dw	?patch203
-	dd	?live16427@208-@@stk@cpu@cpu_has_avx512er$qv
-	dd	?live16427@224-?live16427@208
+	dw	?patch210
+	dd	?live16428@112-@@stk@cpu@cpu_has_avx512er$qv
+	dd	?live16428@128-?live16428@112
 	dw	1
-	dd	?live16427@240-@@stk@cpu@cpu_has_avx512er$qv
-	dd	?live16427@256-?live16427@240
-	dw	1
-?patch203	equ	2
-?patch202	equ	24
+?patch210	equ	1
+?patch209	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	354
+	dw	363
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	364
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	365
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	366
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$meflfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	367
 	dw	0
 	dw	0
 	dw	0
@@ -11789,199 +13104,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	355
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	356
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	357
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mcopfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	358
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	359
+	dw	368
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$epnpfcia
+	df	$ebflfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	360
+	dw	369
 	dw	0
 	dw	0
 	dw	0
-?patch199	equ	@615-@@stk@cpu@cpu_has_avx512er$qv+5
-?patch200	equ	0
-?patch201	equ	@615-@@stk@cpu@cpu_has_avx512er$qv
+?patch206	equ	@673-@@stk@cpu@cpu_has_avx512er$qv+72
+?patch207	equ	0
+?patch208	equ	@673-@@stk@cpu@cpu_has_avx512er$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$egopfcia	label	dword
+$eiflfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mjopfcia	label	qword
+$mlflfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx512cd$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx512cd$qv	proc	near
-?live16428@0:
-	?debug L 1194
-@616:
+?live16429@0:
+	?debug L 1544
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1197
-?live16428@16: ; EBX = &$mjopfcia
-	mov       eax,dword ptr [$egopfcia]
-	cmp       eax,-1
-	?debug L 1194
-?live16428@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mjopfcia
-	?debug L 1197
-?live16428@48: ; EBX = &$mjopfcia
-	je        short @620
-	?debug L 1198
-?live16428@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @674
+@675:
+	mov       ebx,offset $mlflfcia
+	?debug L 1550
+?live16429@16: ; EBX = &$mlflfcia
+	mov       eax,dword ptr [$eiflfcia]
+	cmp       eax,-1
+	je        short @679
+	?debug L 1551
+?live16429@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @618
-	?debug L 1200
-?live16428@80: ; EBX = &$mjopfcia
-@619:
+	jmp       @677
+	?debug L 1553
+?live16429@48: ; EBX = &$mlflfcia
+@678:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@620:
+	call      @@stk@time@wait_us$qxuj
+@679:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @619
+	jne       short @678
 	cmp       dword ptr [ebx],0
-	jne       short @619
+	jne       short @678
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @623
-@622:
+	jmp       short @682
+@681:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@623:
+	call      @@stk@time@wait_us$qxuj
+@682:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @626
+	jne       short @685
 	cmp       dword ptr [ebx],0
-@626:
-	je        short @624
+@685:
+	je        short @683
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @627
-	cmp       eax,dword ptr [ebp-8]
-@627:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @686
+	cmp       eax,dword ptr [ebp-20]
+@686:
 	setne     al
 	and       eax,1
-	jmp       short @625
-@624:
+	jmp       short @684
+@683:
 	xor       eax,eax
-@625:
+@684:
 	test      al,al
-	jne       short @622
-	?debug L 1203
+	jne       short @681
+	?debug L 1556
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1205
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1203
 	add       esp,24
-	?debug L 1205
+	?debug L 1558
+	mov       eax,dword ptr [ebp-44]
 	and       eax,268435456
-	?debug L 1206
-?live16428@160: ; EBX = &$mjopfcia, EAX = @temp3
+	mov       dword ptr [$eiflfcia],eax
+	?debug L 1559
+?live16429@96: ; EBX = &$mlflfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1205
-?live16428@176: ; EBX = &$mjopfcia
-	mov       dword ptr [$egopfcia],eax
-	?debug L 1206
-?live16428@192: ; EBX = &$mjopfcia, EAX = @temp3
 	setne     dl
-	?debug L 1207
-?live16428@208: ; EBX = &$mjopfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1206
-?live16428@224: ; EBX = &$mjopfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1207
-?live16428@240: ; EBX = &$mjopfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1206
-?live16428@256: ; EBX = &$mjopfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1209
-?live16428@272: ; 
-@628:
-@618:
+	?debug L 1560
+?live16429@112: ; EBX = &$mlflfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1562
+?live16429@128: ; 
+@687:
+@677:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@674:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx512cd$qv+0
+	dd        @674+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx512cd$qv	endp
 @stk@cpu@cpu_has_avx512cd$qv	ends
@@ -11995,14 +13283,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch204
-	dd	?patch205
-	dd	?patch206
+	dd	?patch211
+	dd	?patch212
+	dd	?patch213
 	df	@@stk@cpu@cpu_has_avx512cd$qv
 	dw	0
-	dw	4186
+	dw	4188
 	dw	0
-	dw	361
+	dw	370
 	dw	0
 	dw	0
 	dw	0
@@ -12040,28 +13328,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	362
+	dw	371
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch207
+	dw	?patch214
 	dw	529
-	dw	?patch208
-	dd	?live16428@208-@@stk@cpu@cpu_has_avx512cd$qv
-	dd	?live16428@224-?live16428@208
+	dw	?patch215
+	dd	?live16429@112-@@stk@cpu@cpu_has_avx512cd$qv
+	dd	?live16429@128-?live16429@112
 	dw	1
-	dd	?live16428@240-@@stk@cpu@cpu_has_avx512cd$qv
-	dd	?live16428@256-?live16428@240
-	dw	1
-?patch208	equ	2
-?patch207	equ	24
+?patch215	equ	1
+?patch214	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	363
+	dw	372
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	373
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	374
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	375
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mlflfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	376
 	dw	0
 	dw	0
 	dw	0
@@ -12069,199 +13394,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	364
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	365
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	366
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mjopfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	367
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	368
+	dw	377
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$egopfcia
+	df	$eiflfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	369
+	dw	378
 	dw	0
 	dw	0
 	dw	0
-?patch204	equ	@628-@@stk@cpu@cpu_has_avx512cd$qv+5
-?patch205	equ	0
-?patch206	equ	@628-@@stk@cpu@cpu_has_avx512cd$qv
+?patch211	equ	@687-@@stk@cpu@cpu_has_avx512cd$qv+72
+?patch212	equ	0
+?patch213	equ	@687-@@stk@cpu@cpu_has_avx512cd$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$enopfcia	label	dword
+$epflfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mappfcia	label	qword
+$mcglfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx512pf$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx512pf$qv	proc	near
-?live16429@0:
-	?debug L 1212
-@629:
+?live16430@0:
+	?debug L 1565
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1215
-?live16429@16: ; EBX = &$mappfcia
-	mov       eax,dword ptr [$enopfcia]
-	cmp       eax,-1
-	?debug L 1212
-?live16429@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mappfcia
-	?debug L 1215
-?live16429@48: ; EBX = &$mappfcia
-	je        short @633
-	?debug L 1216
-?live16429@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @688
+@689:
+	mov       ebx,offset $mcglfcia
+	?debug L 1571
+?live16430@16: ; EBX = &$mcglfcia
+	mov       eax,dword ptr [$epflfcia]
+	cmp       eax,-1
+	je        short @693
+	?debug L 1572
+?live16430@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @631
-	?debug L 1218
-?live16429@80: ; EBX = &$mappfcia
-@632:
+	jmp       @691
+	?debug L 1574
+?live16430@48: ; EBX = &$mcglfcia
+@692:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@633:
+	call      @@stk@time@wait_us$qxuj
+@693:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @632
+	jne       short @692
 	cmp       dword ptr [ebx],0
-	jne       short @632
+	jne       short @692
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @636
-@635:
+	jmp       short @696
+@695:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@636:
+	call      @@stk@time@wait_us$qxuj
+@696:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @639
+	jne       short @699
 	cmp       dword ptr [ebx],0
-@639:
-	je        short @637
+@699:
+	je        short @697
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @640
-	cmp       eax,dword ptr [ebp-8]
-@640:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @700
+	cmp       eax,dword ptr [ebp-20]
+@700:
 	setne     al
 	and       eax,1
-	jmp       short @638
-@637:
+	jmp       short @698
+@697:
 	xor       eax,eax
-@638:
+@698:
 	test      al,al
-	jne       short @635
-	?debug L 1221
+	jne       short @695
+	?debug L 1577
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1223
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1221
 	add       esp,24
-	?debug L 1223
+	?debug L 1579
+	mov       eax,dword ptr [ebp-44]
 	and       eax,67108864
-	?debug L 1224
-?live16429@160: ; EBX = &$mappfcia, EAX = @temp3
+	mov       dword ptr [$epflfcia],eax
+	?debug L 1580
+?live16430@96: ; EBX = &$mcglfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1223
-?live16429@176: ; EBX = &$mappfcia
-	mov       dword ptr [$enopfcia],eax
-	?debug L 1224
-?live16429@192: ; EBX = &$mappfcia, EAX = @temp3
 	setne     dl
-	?debug L 1225
-?live16429@208: ; EBX = &$mappfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1224
-?live16429@224: ; EBX = &$mappfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1225
-?live16429@240: ; EBX = &$mappfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1224
-?live16429@256: ; EBX = &$mappfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1227
-?live16429@272: ; 
-@641:
-@631:
+	?debug L 1581
+?live16430@112: ; EBX = &$mcglfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1583
+?live16430@128: ; 
+@701:
+@691:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@688:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx512pf$qv+0
+	dd        @688+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx512pf$qv	endp
 @stk@cpu@cpu_has_avx512pf$qv	ends
@@ -12275,14 +13573,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch209
-	dd	?patch210
-	dd	?patch211
+	dd	?patch216
+	dd	?patch217
+	dd	?patch218
 	df	@@stk@cpu@cpu_has_avx512pf$qv
 	dw	0
-	dw	4188
+	dw	4190
 	dw	0
-	dw	370
+	dw	379
 	dw	0
 	dw	0
 	dw	0
@@ -12320,28 +13618,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	371
+	dw	380
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch212
+	dw	?patch219
 	dw	529
-	dw	?patch213
-	dd	?live16429@208-@@stk@cpu@cpu_has_avx512pf$qv
-	dd	?live16429@224-?live16429@208
+	dw	?patch220
+	dd	?live16430@112-@@stk@cpu@cpu_has_avx512pf$qv
+	dd	?live16430@128-?live16430@112
 	dw	1
-	dd	?live16429@240-@@stk@cpu@cpu_has_avx512pf$qv
-	dd	?live16429@256-?live16429@240
-	dw	1
-?patch213	equ	2
-?patch212	equ	24
+?patch220	equ	1
+?patch219	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	372
+	dw	381
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	382
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	383
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	384
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mcglfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	385
 	dw	0
 	dw	0
 	dw	0
@@ -12349,199 +13684,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	373
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	374
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	375
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mappfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	376
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	377
+	dw	386
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$enopfcia
+	df	$epflfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	378
+	dw	387
 	dw	0
 	dw	0
 	dw	0
-?patch209	equ	@641-@@stk@cpu@cpu_has_avx512pf$qv+5
-?patch210	equ	0
-?patch211	equ	@641-@@stk@cpu@cpu_has_avx512pf$qv
+?patch216	equ	@701-@@stk@cpu@cpu_has_avx512pf$qv+72
+?patch217	equ	0
+?patch218	equ	@701-@@stk@cpu@cpu_has_avx512pf$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eeppfcia	label	dword
+$egglfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mhppfcia	label	qword
+$mjglfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx512dq$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx512dq$qv	proc	near
-?live16430@0:
-	?debug L 1230
-@642:
+?live16431@0:
+	?debug L 1586
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1233
-?live16430@16: ; EBX = &$mhppfcia
-	mov       eax,dword ptr [$eeppfcia]
-	cmp       eax,-1
-	?debug L 1230
-?live16430@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mhppfcia
-	?debug L 1233
-?live16430@48: ; EBX = &$mhppfcia
-	je        short @646
-	?debug L 1234
-?live16430@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @702
+@703:
+	mov       ebx,offset $mjglfcia
+	?debug L 1592
+?live16431@16: ; EBX = &$mjglfcia
+	mov       eax,dword ptr [$egglfcia]
+	cmp       eax,-1
+	je        short @707
+	?debug L 1593
+?live16431@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @644
-	?debug L 1236
-?live16430@80: ; EBX = &$mhppfcia
-@645:
+	jmp       @705
+	?debug L 1595
+?live16431@48: ; EBX = &$mjglfcia
+@706:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@646:
+	call      @@stk@time@wait_us$qxuj
+@707:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @645
+	jne       short @706
 	cmp       dword ptr [ebx],0
-	jne       short @645
+	jne       short @706
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @649
-@648:
+	jmp       short @710
+@709:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@649:
+	call      @@stk@time@wait_us$qxuj
+@710:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @652
+	jne       short @713
 	cmp       dword ptr [ebx],0
-@652:
-	je        short @650
+@713:
+	je        short @711
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @653
-	cmp       eax,dword ptr [ebp-8]
-@653:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @714
+	cmp       eax,dword ptr [ebp-20]
+@714:
 	setne     al
 	and       eax,1
-	jmp       short @651
-@650:
+	jmp       short @712
+@711:
 	xor       eax,eax
-@651:
+@712:
 	test      al,al
-	jne       short @648
-	?debug L 1239
+	jne       short @709
+	?debug L 1598
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1241
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1239
 	add       esp,24
-	?debug L 1241
+	?debug L 1600
+	mov       eax,dword ptr [ebp-44]
 	and       eax,131072
-	?debug L 1242
-?live16430@160: ; EBX = &$mhppfcia, EAX = @temp3
+	mov       dword ptr [$egglfcia],eax
+	?debug L 1601
+?live16431@96: ; EBX = &$mjglfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1241
-?live16430@176: ; EBX = &$mhppfcia
-	mov       dword ptr [$eeppfcia],eax
-	?debug L 1242
-?live16430@192: ; EBX = &$mhppfcia, EAX = @temp3
 	setne     dl
-	?debug L 1243
-?live16430@208: ; EBX = &$mhppfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1242
-?live16430@224: ; EBX = &$mhppfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1243
-?live16430@240: ; EBX = &$mhppfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1242
-?live16430@256: ; EBX = &$mhppfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1245
-?live16430@272: ; 
-@654:
-@644:
+	?debug L 1602
+?live16431@112: ; EBX = &$mjglfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1604
+?live16431@128: ; 
+@715:
+@705:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@702:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx512dq$qv+0
+	dd        @702+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx512dq$qv	endp
 @stk@cpu@cpu_has_avx512dq$qv	ends
@@ -12555,14 +13863,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch214
-	dd	?patch215
-	dd	?patch216
+	dd	?patch221
+	dd	?patch222
+	dd	?patch223
 	df	@@stk@cpu@cpu_has_avx512dq$qv
 	dw	0
-	dw	4190
+	dw	4192
 	dw	0
-	dw	379
+	dw	388
 	dw	0
 	dw	0
 	dw	0
@@ -12600,28 +13908,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	380
+	dw	389
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch217
+	dw	?patch224
 	dw	529
-	dw	?patch218
-	dd	?live16430@208-@@stk@cpu@cpu_has_avx512dq$qv
-	dd	?live16430@224-?live16430@208
+	dw	?patch225
+	dd	?live16431@112-@@stk@cpu@cpu_has_avx512dq$qv
+	dd	?live16431@128-?live16431@112
 	dw	1
-	dd	?live16430@240-@@stk@cpu@cpu_has_avx512dq$qv
-	dd	?live16430@256-?live16430@240
-	dw	1
-?patch218	equ	2
-?patch217	equ	24
+?patch225	equ	1
+?patch224	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	381
+	dw	390
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	391
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	392
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	393
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mjglfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	394
 	dw	0
 	dw	0
 	dw	0
@@ -12629,199 +13974,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	382
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	383
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	384
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mhppfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	385
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	386
+	dw	395
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eeppfcia
+	df	$egglfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	387
+	dw	396
 	dw	0
 	dw	0
 	dw	0
-?patch214	equ	@654-@@stk@cpu@cpu_has_avx512dq$qv+5
-?patch215	equ	0
-?patch216	equ	@654-@@stk@cpu@cpu_has_avx512dq$qv
+?patch221	equ	@715-@@stk@cpu@cpu_has_avx512dq$qv+72
+?patch222	equ	0
+?patch223	equ	@715-@@stk@cpu@cpu_has_avx512dq$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$elppfcia	label	dword
+$englfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$moppfcia	label	qword
+$mahlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx512vl$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx512vl$qv	proc	near
-?live16431@0:
-	?debug L 1248
-@655:
+?live16432@0:
+	?debug L 1607
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1251
-?live16431@16: ; EBX = &$moppfcia
-	mov       eax,dword ptr [$elppfcia]
-	cmp       eax,-1
-	?debug L 1248
-?live16431@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $moppfcia
-	?debug L 1251
-?live16431@48: ; EBX = &$moppfcia
-	je        short @659
-	?debug L 1252
-?live16431@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @716
+@717:
+	mov       ebx,offset $mahlfcia
+	?debug L 1613
+?live16432@16: ; EBX = &$mahlfcia
+	mov       eax,dword ptr [$englfcia]
+	cmp       eax,-1
+	je        short @721
+	?debug L 1614
+?live16432@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @657
-	?debug L 1254
-?live16431@80: ; EBX = &$moppfcia
-@658:
+	jmp       @719
+	?debug L 1616
+?live16432@48: ; EBX = &$mahlfcia
+@720:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@659:
+	call      @@stk@time@wait_us$qxuj
+@721:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @658
+	jne       short @720
 	cmp       dword ptr [ebx],0
-	jne       short @658
+	jne       short @720
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @662
-@661:
+	jmp       short @724
+@723:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@662:
+	call      @@stk@time@wait_us$qxuj
+@724:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @665
+	jne       short @727
 	cmp       dword ptr [ebx],0
-@665:
-	je        short @663
+@727:
+	je        short @725
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @666
-	cmp       eax,dword ptr [ebp-8]
-@666:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @728
+	cmp       eax,dword ptr [ebp-20]
+@728:
 	setne     al
 	and       eax,1
-	jmp       short @664
-@663:
+	jmp       short @726
+@725:
 	xor       eax,eax
-@664:
+@726:
 	test      al,al
-	jne       short @661
-	?debug L 1257
+	jne       short @723
+	?debug L 1619
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1259
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1257
 	add       esp,24
-	?debug L 1259
+	?debug L 1621
+	mov       eax,dword ptr [ebp-44]
 	and       eax,-2147483648
-	?debug L 1260
-?live16431@160: ; EBX = &$moppfcia, EAX = @temp3
+	mov       dword ptr [$englfcia],eax
+	?debug L 1622
+?live16432@96: ; EBX = &$mahlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1259
-?live16431@176: ; EBX = &$moppfcia
-	mov       dword ptr [$elppfcia],eax
-	?debug L 1260
-?live16431@192: ; EBX = &$moppfcia, EAX = @temp3
 	setne     dl
-	?debug L 1261
-?live16431@208: ; EBX = &$moppfcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1260
-?live16431@224: ; EBX = &$moppfcia, EAX = @temp3
 	and       edx,1
-	?debug L 1261
-?live16431@240: ; EBX = &$moppfcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1260
-?live16431@256: ; EBX = &$moppfcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1263
-?live16431@272: ; 
-@667:
-@657:
+	?debug L 1623
+?live16432@112: ; EBX = &$mahlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1625
+?live16432@128: ; 
+@729:
+@719:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@716:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx512vl$qv+0
+	dd        @716+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx512vl$qv	endp
 @stk@cpu@cpu_has_avx512vl$qv	ends
@@ -12835,14 +14153,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch219
-	dd	?patch220
-	dd	?patch221
+	dd	?patch226
+	dd	?patch227
+	dd	?patch228
 	df	@@stk@cpu@cpu_has_avx512vl$qv
 	dw	0
-	dw	4192
+	dw	4194
 	dw	0
-	dw	388
+	dw	397
 	dw	0
 	dw	0
 	dw	0
@@ -12880,28 +14198,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	389
+	dw	398
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch222
+	dw	?patch229
 	dw	529
-	dw	?patch223
-	dd	?live16431@208-@@stk@cpu@cpu_has_avx512vl$qv
-	dd	?live16431@224-?live16431@208
+	dw	?patch230
+	dd	?live16432@112-@@stk@cpu@cpu_has_avx512vl$qv
+	dd	?live16432@128-?live16432@112
 	dw	1
-	dd	?live16431@240-@@stk@cpu@cpu_has_avx512vl$qv
-	dd	?live16431@256-?live16431@240
-	dw	1
-?patch223	equ	2
-?patch222	equ	24
+?patch230	equ	1
+?patch229	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	390
+	dw	399
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	400
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	401
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	402
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mahlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	403
 	dw	0
 	dw	0
 	dw	0
@@ -12909,199 +14264,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	391
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	392
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	393
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$moppfcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	394
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	395
+	dw	404
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$elppfcia
+	df	$englfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	396
+	dw	405
 	dw	0
 	dw	0
 	dw	0
-?patch219	equ	@667-@@stk@cpu@cpu_has_avx512vl$qv+5
-?patch220	equ	0
-?patch221	equ	@667-@@stk@cpu@cpu_has_avx512vl$qv
+?patch226	equ	@729-@@stk@cpu@cpu_has_avx512vl$qv+72
+?patch227	equ	0
+?patch228	equ	@729-@@stk@cpu@cpu_has_avx512vl$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ecaagcia	label	dword
+$eehlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mfaagcia	label	qword
+$mhhlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx512ifma$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx512ifma$qv	proc	near
-?live16432@0:
-	?debug L 1266
-@668:
+?live16433@0:
+	?debug L 1628
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1269
-?live16432@16: ; EBX = &$mfaagcia
-	mov       eax,dword ptr [$ecaagcia]
-	cmp       eax,-1
-	?debug L 1266
-?live16432@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mfaagcia
-	?debug L 1269
-?live16432@48: ; EBX = &$mfaagcia
-	je        short @672
-	?debug L 1270
-?live16432@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @730
+@731:
+	mov       ebx,offset $mhhlfcia
+	?debug L 1634
+?live16433@16: ; EBX = &$mhhlfcia
+	mov       eax,dword ptr [$eehlfcia]
+	cmp       eax,-1
+	je        short @735
+	?debug L 1635
+?live16433@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @670
-	?debug L 1272
-?live16432@80: ; EBX = &$mfaagcia
-@671:
+	jmp       @733
+	?debug L 1637
+?live16433@48: ; EBX = &$mhhlfcia
+@734:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@672:
+	call      @@stk@time@wait_us$qxuj
+@735:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @671
+	jne       short @734
 	cmp       dword ptr [ebx],0
-	jne       short @671
+	jne       short @734
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @675
-@674:
+	jmp       short @738
+@737:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@675:
+	call      @@stk@time@wait_us$qxuj
+@738:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @678
+	jne       short @741
 	cmp       dword ptr [ebx],0
-@678:
-	je        short @676
+@741:
+	je        short @739
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @679
-	cmp       eax,dword ptr [ebp-8]
-@679:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @742
+	cmp       eax,dword ptr [ebp-20]
+@742:
 	setne     al
 	and       eax,1
-	jmp       short @677
-@676:
+	jmp       short @740
+@739:
 	xor       eax,eax
-@677:
+@740:
 	test      al,al
-	jne       short @674
-	?debug L 1275
+	jne       short @737
+	?debug L 1640
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1277
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1275
 	add       esp,24
-	?debug L 1277
+	?debug L 1642
+	mov       eax,dword ptr [ebp-44]
 	and       eax,2097152
-	?debug L 1278
-?live16432@160: ; EBX = &$mfaagcia, EAX = @temp3
+	mov       dword ptr [$eehlfcia],eax
+	?debug L 1643
+?live16433@96: ; EBX = &$mhhlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1277
-?live16432@176: ; EBX = &$mfaagcia
-	mov       dword ptr [$ecaagcia],eax
-	?debug L 1278
-?live16432@192: ; EBX = &$mfaagcia, EAX = @temp3
 	setne     dl
-	?debug L 1279
-?live16432@208: ; EBX = &$mfaagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1278
-?live16432@224: ; EBX = &$mfaagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1279
-?live16432@240: ; EBX = &$mfaagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1278
-?live16432@256: ; EBX = &$mfaagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1281
-?live16432@272: ; 
-@680:
-@670:
+	?debug L 1644
+?live16433@112: ; EBX = &$mhhlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1646
+?live16433@128: ; 
+@743:
+@733:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@730:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx512ifma$qv+0
+	dd        @730+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx512ifma$qv	endp
 @stk@cpu@cpu_has_avx512ifma$qv	ends
@@ -13115,14 +14443,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch224
-	dd	?patch225
-	dd	?patch226
+	dd	?patch231
+	dd	?patch232
+	dd	?patch233
 	df	@@stk@cpu@cpu_has_avx512ifma$qv
 	dw	0
-	dw	4194
+	dw	4196
 	dw	0
-	dw	397
+	dw	406
 	dw	0
 	dw	0
 	dw	0
@@ -13162,28 +14490,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	398
+	dw	407
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch227
+	dw	?patch234
 	dw	529
-	dw	?patch228
-	dd	?live16432@208-@@stk@cpu@cpu_has_avx512ifma$qv
-	dd	?live16432@224-?live16432@208
+	dw	?patch235
+	dd	?live16433@112-@@stk@cpu@cpu_has_avx512ifma$qv
+	dd	?live16433@128-?live16433@112
 	dw	1
-	dd	?live16432@240-@@stk@cpu@cpu_has_avx512ifma$qv
-	dd	?live16432@256-?live16432@240
-	dw	1
-?patch228	equ	2
-?patch227	equ	24
+?patch235	equ	1
+?patch234	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	399
+	dw	408
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	409
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	410
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	411
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mhhlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	412
 	dw	0
 	dw	0
 	dw	0
@@ -13191,199 +14556,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	400
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	401
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	402
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mfaagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	403
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	404
+	dw	413
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ecaagcia
+	df	$eehlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	405
+	dw	414
 	dw	0
 	dw	0
 	dw	0
-?patch224	equ	@680-@@stk@cpu@cpu_has_avx512ifma$qv+5
-?patch225	equ	0
-?patch226	equ	@680-@@stk@cpu@cpu_has_avx512ifma$qv
+?patch231	equ	@743-@@stk@cpu@cpu_has_avx512ifma$qv+72
+?patch232	equ	0
+?patch233	equ	@743-@@stk@cpu@cpu_has_avx512ifma$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ejaagcia	label	dword
+$elhlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mmaagcia	label	qword
+$mohlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_avx512vbmi$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_avx512vbmi$qv	proc	near
-?live16433@0:
-	?debug L 1284
-@681:
+?live16434@0:
+	?debug L 1649
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1287
-?live16433@16: ; EBX = &$mmaagcia
-	mov       eax,dword ptr [$ejaagcia]
-	cmp       eax,-1
-	?debug L 1284
-?live16433@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mmaagcia
-	?debug L 1287
-?live16433@48: ; EBX = &$mmaagcia
-	je        short @685
-	?debug L 1288
-?live16433@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @744
+@745:
+	mov       ebx,offset $mohlfcia
+	?debug L 1655
+?live16434@16: ; EBX = &$mohlfcia
+	mov       eax,dword ptr [$elhlfcia]
+	cmp       eax,-1
+	je        short @749
+	?debug L 1656
+?live16434@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @683
-	?debug L 1290
-?live16433@80: ; EBX = &$mmaagcia
-@684:
+	jmp       @747
+	?debug L 1658
+?live16434@48: ; EBX = &$mohlfcia
+@748:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@685:
+	call      @@stk@time@wait_us$qxuj
+@749:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @684
+	jne       short @748
 	cmp       dword ptr [ebx],0
-	jne       short @684
+	jne       short @748
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @688
-@687:
+	jmp       short @752
+@751:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@688:
+	call      @@stk@time@wait_us$qxuj
+@752:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @691
+	jne       short @755
 	cmp       dword ptr [ebx],0
-@691:
-	je        short @689
+@755:
+	je        short @753
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @692
-	cmp       eax,dword ptr [ebp-8]
-@692:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @756
+	cmp       eax,dword ptr [ebp-20]
+@756:
 	setne     al
 	and       eax,1
-	jmp       short @690
-@689:
+	jmp       short @754
+@753:
 	xor       eax,eax
-@690:
+@754:
 	test      al,al
-	jne       short @687
-	?debug L 1293
+	jne       short @751
+	?debug L 1661
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1295
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1293
 	add       esp,24
-	?debug L 1295
+	?debug L 1663
+	mov       eax,dword ptr [ebp-36]
 	and       eax,2
-	?debug L 1296
-?live16433@160: ; EBX = &$mmaagcia, EAX = @temp3
+	mov       dword ptr [$elhlfcia],eax
+	?debug L 1664
+?live16434@96: ; EBX = &$mohlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1295
-?live16433@176: ; EBX = &$mmaagcia
-	mov       dword ptr [$ejaagcia],eax
-	?debug L 1296
-?live16433@192: ; EBX = &$mmaagcia, EAX = @temp3
 	setne     dl
-	?debug L 1297
-?live16433@208: ; EBX = &$mmaagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1296
-?live16433@224: ; EBX = &$mmaagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1297
-?live16433@240: ; EBX = &$mmaagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1296
-?live16433@256: ; EBX = &$mmaagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1299
-?live16433@272: ; 
-@693:
-@683:
+	?debug L 1665
+?live16434@112: ; EBX = &$mohlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1667
+?live16434@128: ; 
+@757:
+@747:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@744:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_avx512vbmi$qv+0
+	dd        @744+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_avx512vbmi$qv	endp
 @stk@cpu@cpu_has_avx512vbmi$qv	ends
@@ -13397,14 +14735,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch229
-	dd	?patch230
-	dd	?patch231
+	dd	?patch236
+	dd	?patch237
+	dd	?patch238
 	df	@@stk@cpu@cpu_has_avx512vbmi$qv
 	dw	0
-	dw	4196
+	dw	4198
 	dw	0
-	dw	406
+	dw	415
 	dw	0
 	dw	0
 	dw	0
@@ -13444,28 +14782,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	407
+	dw	416
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch232
+	dw	?patch239
 	dw	529
-	dw	?patch233
-	dd	?live16433@208-@@stk@cpu@cpu_has_avx512vbmi$qv
-	dd	?live16433@224-?live16433@208
+	dw	?patch240
+	dd	?live16434@112-@@stk@cpu@cpu_has_avx512vbmi$qv
+	dd	?live16434@128-?live16434@112
 	dw	1
-	dd	?live16433@240-@@stk@cpu@cpu_has_avx512vbmi$qv
-	dd	?live16433@256-?live16433@240
-	dw	1
-?patch233	equ	2
-?patch232	equ	24
+?patch240	equ	1
+?patch239	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	408
+	dw	417
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	418
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	419
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	420
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mohlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	421
 	dw	0
 	dw	0
 	dw	0
@@ -13473,199 +14848,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	409
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	410
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	411
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mmaagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	412
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	413
+	dw	422
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ejaagcia
+	df	$elhlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	414
+	dw	423
 	dw	0
 	dw	0
 	dw	0
-?patch229	equ	@693-@@stk@cpu@cpu_has_avx512vbmi$qv+5
-?patch230	equ	0
-?patch231	equ	@693-@@stk@cpu@cpu_has_avx512vbmi$qv
+?patch236	equ	@757-@@stk@cpu@cpu_has_avx512vbmi$qv+74
+?patch237	equ	0
+?patch238	equ	@757-@@stk@cpu@cpu_has_avx512vbmi$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eabagcia	label	dword
+$ecilfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mdbagcia	label	qword
+$mfilfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_adx$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_adx$qv	proc	near
-?live16434@0:
-	?debug L 1302
-@694:
+?live16435@0:
+	?debug L 1670
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1305
-?live16434@16: ; EBX = &$mdbagcia
-	mov       eax,dword ptr [$eabagcia]
-	cmp       eax,-1
-	?debug L 1302
-?live16434@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mdbagcia
-	?debug L 1305
-?live16434@48: ; EBX = &$mdbagcia
-	je        short @698
-	?debug L 1306
-?live16434@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @758
+@759:
+	mov       ebx,offset $mfilfcia
+	?debug L 1676
+?live16435@16: ; EBX = &$mfilfcia
+	mov       eax,dword ptr [$ecilfcia]
+	cmp       eax,-1
+	je        short @763
+	?debug L 1677
+?live16435@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @696
-	?debug L 1308
-?live16434@80: ; EBX = &$mdbagcia
-@697:
+	jmp       @761
+	?debug L 1679
+?live16435@48: ; EBX = &$mfilfcia
+@762:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@698:
+	call      @@stk@time@wait_us$qxuj
+@763:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @697
+	jne       short @762
 	cmp       dword ptr [ebx],0
-	jne       short @697
+	jne       short @762
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @701
-@700:
+	jmp       short @766
+@765:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@701:
+	call      @@stk@time@wait_us$qxuj
+@766:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @704
+	jne       short @769
 	cmp       dword ptr [ebx],0
-@704:
-	je        short @702
+@769:
+	je        short @767
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @705
-	cmp       eax,dword ptr [ebp-8]
-@705:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @770
+	cmp       eax,dword ptr [ebp-20]
+@770:
 	setne     al
 	and       eax,1
-	jmp       short @703
-@702:
+	jmp       short @768
+@767:
 	xor       eax,eax
-@703:
+@768:
 	test      al,al
-	jne       short @700
-	?debug L 1311
+	jne       short @765
+	?debug L 1682
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1313
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1311
 	add       esp,24
-	?debug L 1313
+	?debug L 1684
+	mov       eax,dword ptr [ebp-44]
 	and       eax,524288
-	?debug L 1314
-?live16434@160: ; EBX = &$mdbagcia, EAX = @temp3
+	mov       dword ptr [$ecilfcia],eax
+	?debug L 1685
+?live16435@96: ; EBX = &$mfilfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1313
-?live16434@176: ; EBX = &$mdbagcia
-	mov       dword ptr [$eabagcia],eax
-	?debug L 1314
-?live16434@192: ; EBX = &$mdbagcia, EAX = @temp3
 	setne     dl
-	?debug L 1315
-?live16434@208: ; EBX = &$mdbagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1314
-?live16434@224: ; EBX = &$mdbagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1315
-?live16434@240: ; EBX = &$mdbagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1314
-?live16434@256: ; EBX = &$mdbagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1317
-?live16434@272: ; 
-@706:
-@696:
+	?debug L 1686
+?live16435@112: ; EBX = &$mfilfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1688
+?live16435@128: ; 
+@771:
+@761:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@758:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_adx$qv+0
+	dd        @758+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_adx$qv	endp
 @stk@cpu@cpu_has_adx$qv	ends
@@ -13679,14 +15027,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch234
-	dd	?patch235
-	dd	?patch236
+	dd	?patch241
+	dd	?patch242
+	dd	?patch243
 	df	@@stk@cpu@cpu_has_adx$qv
 	dw	0
-	dw	4198
+	dw	4200
 	dw	0
-	dw	415
+	dw	424
 	dw	0
 	dw	0
 	dw	0
@@ -13719,28 +15067,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	416
+	dw	425
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch237
+	dw	?patch244
 	dw	529
-	dw	?patch238
-	dd	?live16434@208-@@stk@cpu@cpu_has_adx$qv
-	dd	?live16434@224-?live16434@208
+	dw	?patch245
+	dd	?live16435@112-@@stk@cpu@cpu_has_adx$qv
+	dd	?live16435@128-?live16435@112
 	dw	1
-	dd	?live16434@240-@@stk@cpu@cpu_has_adx$qv
-	dd	?live16434@256-?live16434@240
-	dw	1
-?patch238	equ	2
-?patch237	equ	24
+?patch245	equ	1
+?patch244	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	417
+	dw	426
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	427
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	428
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	429
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mfilfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	430
 	dw	0
 	dw	0
 	dw	0
@@ -13748,199 +15133,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	418
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	419
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	420
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mdbagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	421
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	422
+	dw	431
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eabagcia
+	df	$ecilfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	423
+	dw	432
 	dw	0
 	dw	0
 	dw	0
-?patch234	equ	@706-@@stk@cpu@cpu_has_adx$qv+5
-?patch235	equ	0
-?patch236	equ	@706-@@stk@cpu@cpu_has_adx$qv
+?patch241	equ	@771-@@stk@cpu@cpu_has_adx$qv+72
+?patch242	equ	0
+?patch243	equ	@771-@@stk@cpu@cpu_has_adx$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ehbagcia	label	dword
+$ejilfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mkbagcia	label	qword
+$mmilfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_lzcnt$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_lzcnt$qv	proc	near
-?live16435@0:
-	?debug L 1320
-@707:
+?live16436@0:
+	?debug L 1691
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1323
-?live16435@16: ; EBX = &$mkbagcia
-	mov       eax,dword ptr [$ehbagcia]
-	cmp       eax,-1
-	?debug L 1320
-?live16435@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mkbagcia
-	?debug L 1323
-?live16435@48: ; EBX = &$mkbagcia
-	je        short @711
-	?debug L 1324
-?live16435@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @772
+@773:
+	mov       ebx,offset $mmilfcia
+	?debug L 1697
+?live16436@16: ; EBX = &$mmilfcia
+	mov       eax,dword ptr [$ejilfcia]
+	cmp       eax,-1
+	je        short @777
+	?debug L 1698
+?live16436@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @709
-	?debug L 1326
-?live16435@80: ; EBX = &$mkbagcia
-@710:
+	jmp       @775
+	?debug L 1700
+?live16436@48: ; EBX = &$mmilfcia
+@776:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@711:
+	call      @@stk@time@wait_us$qxuj
+@777:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @710
+	jne       short @776
 	cmp       dword ptr [ebx],0
-	jne       short @710
+	jne       short @776
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @714
-@713:
+	jmp       short @780
+@779:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@714:
+	call      @@stk@time@wait_us$qxuj
+@780:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @717
+	jne       short @783
 	cmp       dword ptr [ebx],0
-@717:
-	je        short @715
+@783:
+	je        short @781
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @718
-	cmp       eax,dword ptr [ebp-8]
-@718:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @784
+	cmp       eax,dword ptr [ebp-20]
+@784:
 	setne     al
 	and       eax,1
-	jmp       short @716
-@715:
+	jmp       short @782
+@781:
 	xor       eax,eax
-@716:
+@782:
 	test      al,al
-	jne       short @713
-	?debug L 1329
+	jne       short @779
+	?debug L 1703
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1331
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1329
 	add       esp,24
-	?debug L 1331
+	?debug L 1705
+	mov       eax,dword ptr [ebp-36]
 	and       eax,32
-	?debug L 1332
-?live16435@160: ; EBX = &$mkbagcia, EAX = @temp3
+	mov       dword ptr [$ejilfcia],eax
+	?debug L 1706
+?live16436@96: ; EBX = &$mmilfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1331
-?live16435@176: ; EBX = &$mkbagcia
-	mov       dword ptr [$ehbagcia],eax
-	?debug L 1332
-?live16435@192: ; EBX = &$mkbagcia, EAX = @temp3
 	setne     dl
-	?debug L 1333
-?live16435@208: ; EBX = &$mkbagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1332
-?live16435@224: ; EBX = &$mkbagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1333
-?live16435@240: ; EBX = &$mkbagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1332
-?live16435@256: ; EBX = &$mkbagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1335
-?live16435@272: ; 
-@719:
-@709:
+	?debug L 1707
+?live16436@112: ; EBX = &$mmilfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1709
+?live16436@128: ; 
+@785:
+@775:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@772:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_lzcnt$qv+0
+	dd        @772+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_lzcnt$qv	endp
 @stk@cpu@cpu_has_lzcnt$qv	ends
@@ -13954,14 +15312,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch239
-	dd	?patch240
-	dd	?patch241
+	dd	?patch246
+	dd	?patch247
+	dd	?patch248
 	df	@@stk@cpu@cpu_has_lzcnt$qv
 	dw	0
-	dw	4200
+	dw	4202
 	dw	0
-	dw	424
+	dw	433
 	dw	0
 	dw	0
 	dw	0
@@ -13996,28 +15354,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	425
+	dw	434
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch242
+	dw	?patch249
 	dw	529
-	dw	?patch243
-	dd	?live16435@208-@@stk@cpu@cpu_has_lzcnt$qv
-	dd	?live16435@224-?live16435@208
+	dw	?patch250
+	dd	?live16436@112-@@stk@cpu@cpu_has_lzcnt$qv
+	dd	?live16436@128-?live16436@112
 	dw	1
-	dd	?live16435@240-@@stk@cpu@cpu_has_lzcnt$qv
-	dd	?live16435@256-?live16435@240
-	dw	1
-?patch243	equ	2
-?patch242	equ	24
+?patch250	equ	1
+?patch249	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	426
+	dw	435
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	436
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	437
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	438
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mmilfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	439
 	dw	0
 	dw	0
 	dw	0
@@ -14025,199 +15420,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	427
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	428
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	429
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mkbagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	430
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	431
+	dw	440
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ehbagcia
+	df	$ejilfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	432
+	dw	441
 	dw	0
 	dw	0
 	dw	0
-?patch239	equ	@719-@@stk@cpu@cpu_has_lzcnt$qv+5
-?patch240	equ	0
-?patch241	equ	@719-@@stk@cpu@cpu_has_lzcnt$qv
+?patch246	equ	@785-@@stk@cpu@cpu_has_lzcnt$qv+75
+?patch247	equ	0
+?patch248	equ	@785-@@stk@cpu@cpu_has_lzcnt$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eobagcia	label	dword
+$eajlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mbcagcia	label	qword
+$mdjlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_tbm$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_tbm$qv	proc	near
-?live16436@0:
-	?debug L 1338
-@720:
+?live16437@0:
+	?debug L 1712
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1341
-?live16436@16: ; EBX = &$mbcagcia
-	mov       eax,dword ptr [$eobagcia]
-	cmp       eax,-1
-	?debug L 1338
-?live16436@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mbcagcia
-	?debug L 1341
-?live16436@48: ; EBX = &$mbcagcia
-	je        short @724
-	?debug L 1342
-?live16436@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @786
+@787:
+	mov       ebx,offset $mdjlfcia
+	?debug L 1718
+?live16437@16: ; EBX = &$mdjlfcia
+	mov       eax,dword ptr [$eajlfcia]
+	cmp       eax,-1
+	je        short @791
+	?debug L 1719
+?live16437@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @722
-	?debug L 1344
-?live16436@80: ; EBX = &$mbcagcia
-@723:
+	jmp       @789
+	?debug L 1721
+?live16437@48: ; EBX = &$mdjlfcia
+@790:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@724:
+	call      @@stk@time@wait_us$qxuj
+@791:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @723
+	jne       short @790
 	cmp       dword ptr [ebx],0
-	jne       short @723
+	jne       short @790
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @727
-@726:
+	jmp       short @794
+@793:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@727:
+	call      @@stk@time@wait_us$qxuj
+@794:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @730
+	jne       short @797
 	cmp       dword ptr [ebx],0
-@730:
-	je        short @728
+@797:
+	je        short @795
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @731
-	cmp       eax,dword ptr [ebp-8]
-@731:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @798
+	cmp       eax,dword ptr [ebp-20]
+@798:
 	setne     al
 	and       eax,1
-	jmp       short @729
-@728:
+	jmp       short @796
+@795:
 	xor       eax,eax
-@729:
+@796:
 	test      al,al
-	jne       short @726
-	?debug L 1347
+	jne       short @793
+	?debug L 1724
 	push      0
 	push      -2147483647
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1349
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1347
 	add       esp,24
-	?debug L 1349
+	?debug L 1726
+	mov       eax,dword ptr [ebp-36]
 	and       eax,2097152
-	?debug L 1350
-?live16436@160: ; EBX = &$mbcagcia, EAX = @temp3
+	mov       dword ptr [$eajlfcia],eax
+	?debug L 1727
+?live16437@96: ; EBX = &$mdjlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1349
-?live16436@176: ; EBX = &$mbcagcia
-	mov       dword ptr [$eobagcia],eax
-	?debug L 1350
-?live16436@192: ; EBX = &$mbcagcia, EAX = @temp3
 	setne     dl
-	?debug L 1351
-?live16436@208: ; EBX = &$mbcagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1350
-?live16436@224: ; EBX = &$mbcagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1351
-?live16436@240: ; EBX = &$mbcagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1350
-?live16436@256: ; EBX = &$mbcagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1353
-?live16436@272: ; 
-@732:
-@722:
+	?debug L 1728
+?live16437@112: ; EBX = &$mdjlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1730
+?live16437@128: ; 
+@799:
+@789:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@786:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_tbm$qv+0
+	dd        @786+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_tbm$qv	endp
 @stk@cpu@cpu_has_tbm$qv	ends
@@ -14231,14 +15599,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch244
-	dd	?patch245
-	dd	?patch246
+	dd	?patch251
+	dd	?patch252
+	dd	?patch253
 	df	@@stk@cpu@cpu_has_tbm$qv
 	dw	0
-	dw	4202
+	dw	4204
 	dw	0
-	dw	433
+	dw	442
 	dw	0
 	dw	0
 	dw	0
@@ -14271,28 +15639,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	434
+	dw	443
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch247
+	dw	?patch254
 	dw	529
-	dw	?patch248
-	dd	?live16436@208-@@stk@cpu@cpu_has_tbm$qv
-	dd	?live16436@224-?live16436@208
+	dw	?patch255
+	dd	?live16437@112-@@stk@cpu@cpu_has_tbm$qv
+	dd	?live16437@128-?live16437@112
 	dw	1
-	dd	?live16436@240-@@stk@cpu@cpu_has_tbm$qv
-	dd	?live16436@256-?live16436@240
-	dw	1
-?patch248	equ	2
-?patch247	equ	24
+?patch255	equ	1
+?patch254	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	435
+	dw	444
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	445
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	446
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	447
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mdjlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	448
 	dw	0
 	dw	0
 	dw	0
@@ -14300,199 +15705,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	436
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	437
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	438
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mbcagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	439
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	440
+	dw	449
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eobagcia
+	df	$eajlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	441
+	dw	450
 	dw	0
 	dw	0
 	dw	0
-?patch244	equ	@732-@@stk@cpu@cpu_has_tbm$qv+5
-?patch245	equ	0
-?patch246	equ	@732-@@stk@cpu@cpu_has_tbm$qv
+?patch251	equ	@799-@@stk@cpu@cpu_has_tbm$qv+73
+?patch252	equ	0
+?patch253	equ	@799-@@stk@cpu@cpu_has_tbm$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$efcagcia	label	dword
+$ehjlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$micagcia	label	qword
+$mkjlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_clfsh$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_clfsh$qv	proc	near
-?live16437@0:
-	?debug L 1356
-@733:
+?live16438@0:
+	?debug L 1733
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1359
-?live16437@16: ; EBX = &$micagcia
-	mov       eax,dword ptr [$efcagcia]
-	cmp       eax,-1
-	?debug L 1356
-?live16437@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $micagcia
-	?debug L 1359
-?live16437@48: ; EBX = &$micagcia
-	je        short @737
-	?debug L 1360
-?live16437@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @800
+@801:
+	mov       ebx,offset $mkjlfcia
+	?debug L 1739
+?live16438@16: ; EBX = &$mkjlfcia
+	mov       eax,dword ptr [$ehjlfcia]
+	cmp       eax,-1
+	je        short @805
+	?debug L 1740
+?live16438@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @735
-	?debug L 1362
-?live16437@80: ; EBX = &$micagcia
-@736:
+	jmp       @803
+	?debug L 1742
+?live16438@48: ; EBX = &$mkjlfcia
+@804:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@737:
+	call      @@stk@time@wait_us$qxuj
+@805:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @736
+	jne       short @804
 	cmp       dword ptr [ebx],0
-	jne       short @736
+	jne       short @804
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @740
-@739:
+	jmp       short @808
+@807:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@740:
+	call      @@stk@time@wait_us$qxuj
+@808:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @743
+	jne       short @811
 	cmp       dword ptr [ebx],0
-@743:
-	je        short @741
+@811:
+	je        short @809
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @744
-	cmp       eax,dword ptr [ebp-8]
-@744:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @812
+	cmp       eax,dword ptr [ebp-20]
+@812:
 	setne     al
 	and       eax,1
-	jmp       short @742
-@741:
+	jmp       short @810
+@809:
 	xor       eax,eax
-@742:
+@810:
 	test      al,al
-	jne       short @739
-	?debug L 1365
+	jne       short @807
+	?debug L 1745
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1367
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1365
 	add       esp,24
-	?debug L 1367
+	?debug L 1747
+	mov       eax,dword ptr [ebp-36]
 	and       eax,524288
-	?debug L 1368
-?live16437@160: ; EBX = &$micagcia, EAX = @temp3
+	mov       dword ptr [$ehjlfcia],eax
+	?debug L 1748
+?live16438@96: ; EBX = &$mkjlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1367
-?live16437@176: ; EBX = &$micagcia
-	mov       dword ptr [$efcagcia],eax
-	?debug L 1368
-?live16437@192: ; EBX = &$micagcia, EAX = @temp3
 	setne     dl
-	?debug L 1369
-?live16437@208: ; EBX = &$micagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1368
-?live16437@224: ; EBX = &$micagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1369
-?live16437@240: ; EBX = &$micagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1368
-?live16437@256: ; EBX = &$micagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1371
-?live16437@272: ; 
-@745:
-@735:
+	?debug L 1749
+?live16438@112: ; EBX = &$mkjlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1751
+?live16438@128: ; 
+@813:
+@803:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@800:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_clfsh$qv+0
+	dd        @800+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_clfsh$qv	endp
 @stk@cpu@cpu_has_clfsh$qv	ends
@@ -14506,14 +15884,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch249
-	dd	?patch250
-	dd	?patch251
+	dd	?patch256
+	dd	?patch257
+	dd	?patch258
 	df	@@stk@cpu@cpu_has_clfsh$qv
 	dw	0
-	dw	4204
+	dw	4206
 	dw	0
-	dw	442
+	dw	451
 	dw	0
 	dw	0
 	dw	0
@@ -14548,28 +15926,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	443
+	dw	452
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch252
+	dw	?patch259
 	dw	529
-	dw	?patch253
-	dd	?live16437@208-@@stk@cpu@cpu_has_clfsh$qv
-	dd	?live16437@224-?live16437@208
+	dw	?patch260
+	dd	?live16438@112-@@stk@cpu@cpu_has_clfsh$qv
+	dd	?live16438@128-?live16438@112
 	dw	1
-	dd	?live16437@240-@@stk@cpu@cpu_has_clfsh$qv
-	dd	?live16437@256-?live16437@240
-	dw	1
-?patch253	equ	2
-?patch252	equ	24
+?patch260	equ	1
+?patch259	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	444
+	dw	453
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	454
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	455
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	456
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mkjlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	457
 	dw	0
 	dw	0
 	dw	0
@@ -14577,199 +15992,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	445
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	446
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	447
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$micagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	448
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	449
+	dw	458
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$efcagcia
+	df	$ehjlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	450
+	dw	459
 	dw	0
 	dw	0
 	dw	0
-?patch249	equ	@745-@@stk@cpu@cpu_has_clfsh$qv+5
-?patch250	equ	0
-?patch251	equ	@745-@@stk@cpu@cpu_has_clfsh$qv
+?patch256	equ	@813-@@stk@cpu@cpu_has_clfsh$qv+72
+?patch257	equ	0
+?patch258	equ	@813-@@stk@cpu@cpu_has_clfsh$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$emcagcia	label	dword
+$eojlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mpcagcia	label	qword
+$mbklfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_pclmulqdq$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_pclmulqdq$qv	proc	near
-?live16438@0:
-	?debug L 1374
-@746:
+?live16439@0:
+	?debug L 1754
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1377
-?live16438@16: ; EBX = &$mpcagcia
-	mov       eax,dword ptr [$emcagcia]
-	cmp       eax,-1
-	?debug L 1374
-?live16438@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mpcagcia
-	?debug L 1377
-?live16438@48: ; EBX = &$mpcagcia
-	je        short @750
-	?debug L 1378
-?live16438@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @814
+@815:
+	mov       ebx,offset $mbklfcia
+	?debug L 1760
+?live16439@16: ; EBX = &$mbklfcia
+	mov       eax,dword ptr [$eojlfcia]
+	cmp       eax,-1
+	je        short @819
+	?debug L 1761
+?live16439@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @748
-	?debug L 1380
-?live16438@80: ; EBX = &$mpcagcia
-@749:
+	jmp       @817
+	?debug L 1763
+?live16439@48: ; EBX = &$mbklfcia
+@818:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@750:
+	call      @@stk@time@wait_us$qxuj
+@819:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @749
+	jne       short @818
 	cmp       dword ptr [ebx],0
-	jne       short @749
+	jne       short @818
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @753
-@752:
+	jmp       short @822
+@821:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@753:
+	call      @@stk@time@wait_us$qxuj
+@822:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @756
+	jne       short @825
 	cmp       dword ptr [ebx],0
-@756:
-	je        short @754
+@825:
+	je        short @823
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @757
-	cmp       eax,dword ptr [ebp-8]
-@757:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @826
+	cmp       eax,dword ptr [ebp-20]
+@826:
 	setne     al
 	and       eax,1
-	jmp       short @755
-@754:
+	jmp       short @824
+@823:
 	xor       eax,eax
-@755:
+@824:
 	test      al,al
-	jne       short @752
-	?debug L 1383
+	jne       short @821
+	?debug L 1766
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1385
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1383
 	add       esp,24
-	?debug L 1385
+	?debug L 1768
+	mov       eax,dword ptr [ebp-36]
 	and       eax,32
-	?debug L 1386
-?live16438@160: ; EBX = &$mpcagcia, EAX = @temp3
+	mov       dword ptr [$eojlfcia],eax
+	?debug L 1769
+?live16439@96: ; EBX = &$mbklfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1385
-?live16438@176: ; EBX = &$mpcagcia
-	mov       dword ptr [$emcagcia],eax
-	?debug L 1386
-?live16438@192: ; EBX = &$mpcagcia, EAX = @temp3
 	setne     dl
-	?debug L 1387
-?live16438@208: ; EBX = &$mpcagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1386
-?live16438@224: ; EBX = &$mpcagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1387
-?live16438@240: ; EBX = &$mpcagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1386
-?live16438@256: ; EBX = &$mpcagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1389
-?live16438@272: ; 
-@758:
-@748:
+	?debug L 1770
+?live16439@112: ; EBX = &$mbklfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1772
+?live16439@128: ; 
+@827:
+@817:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@814:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_pclmulqdq$qv+0
+	dd        @814+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_pclmulqdq$qv	endp
 @stk@cpu@cpu_has_pclmulqdq$qv	ends
@@ -14783,14 +16171,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch254
-	dd	?patch255
-	dd	?patch256
+	dd	?patch261
+	dd	?patch262
+	dd	?patch263
 	df	@@stk@cpu@cpu_has_pclmulqdq$qv
 	dw	0
-	dw	4206
+	dw	4208
 	dw	0
-	dw	451
+	dw	460
 	dw	0
 	dw	0
 	dw	0
@@ -14829,28 +16217,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	452
+	dw	461
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch257
+	dw	?patch264
 	dw	529
-	dw	?patch258
-	dd	?live16438@208-@@stk@cpu@cpu_has_pclmulqdq$qv
-	dd	?live16438@224-?live16438@208
+	dw	?patch265
+	dd	?live16439@112-@@stk@cpu@cpu_has_pclmulqdq$qv
+	dd	?live16439@128-?live16439@112
 	dw	1
-	dd	?live16438@240-@@stk@cpu@cpu_has_pclmulqdq$qv
-	dd	?live16438@256-?live16438@240
-	dw	1
-?patch258	equ	2
-?patch257	equ	24
+?patch265	equ	1
+?patch264	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	453
+	dw	462
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	463
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	464
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	465
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mbklfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	466
 	dw	0
 	dw	0
 	dw	0
@@ -14858,199 +16283,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	454
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	455
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	456
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mpcagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	457
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	458
+	dw	467
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$emcagcia
+	df	$eojlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	459
+	dw	468
 	dw	0
 	dw	0
 	dw	0
-?patch254	equ	@758-@@stk@cpu@cpu_has_pclmulqdq$qv+5
-?patch255	equ	0
-?patch256	equ	@758-@@stk@cpu@cpu_has_pclmulqdq$qv
+?patch261	equ	@827-@@stk@cpu@cpu_has_pclmulqdq$qv+74
+?patch262	equ	0
+?patch263	equ	@827-@@stk@cpu@cpu_has_pclmulqdq$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eddagcia	label	dword
+$efklfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mgdagcia	label	qword
+$miklfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_fxsr$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_fxsr$qv	proc	near
-?live16439@0:
-	?debug L 1392
-@759:
+?live16440@0:
+	?debug L 1775
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1395
-?live16439@16: ; EBX = &$mgdagcia
-	mov       eax,dword ptr [$eddagcia]
-	cmp       eax,-1
-	?debug L 1392
-?live16439@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mgdagcia
-	?debug L 1395
-?live16439@48: ; EBX = &$mgdagcia
-	je        short @763
-	?debug L 1396
-?live16439@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @828
+@829:
+	mov       ebx,offset $miklfcia
+	?debug L 1781
+?live16440@16: ; EBX = &$miklfcia
+	mov       eax,dword ptr [$efklfcia]
+	cmp       eax,-1
+	je        short @833
+	?debug L 1782
+?live16440@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @761
-	?debug L 1398
-?live16439@80: ; EBX = &$mgdagcia
-@762:
+	jmp       @831
+	?debug L 1784
+?live16440@48: ; EBX = &$miklfcia
+@832:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@763:
+	call      @@stk@time@wait_us$qxuj
+@833:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @762
+	jne       short @832
 	cmp       dword ptr [ebx],0
-	jne       short @762
+	jne       short @832
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @766
-@765:
+	jmp       short @836
+@835:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@766:
+	call      @@stk@time@wait_us$qxuj
+@836:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @769
+	jne       short @839
 	cmp       dword ptr [ebx],0
-@769:
-	je        short @767
+@839:
+	je        short @837
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @770
-	cmp       eax,dword ptr [ebp-8]
-@770:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @840
+	cmp       eax,dword ptr [ebp-20]
+@840:
 	setne     al
 	and       eax,1
-	jmp       short @768
-@767:
+	jmp       short @838
+@837:
 	xor       eax,eax
-@768:
+@838:
 	test      al,al
-	jne       short @765
-	?debug L 1401
+	jne       short @835
+	?debug L 1787
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1403
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1401
 	add       esp,24
-	?debug L 1403
+	?debug L 1789
+	mov       eax,dword ptr [ebp-36]
 	and       eax,16777216
-	?debug L 1404
-?live16439@160: ; EBX = &$mgdagcia, EAX = @temp3
+	mov       dword ptr [$efklfcia],eax
+	?debug L 1790
+?live16440@96: ; EBX = &$miklfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1403
-?live16439@176: ; EBX = &$mgdagcia
-	mov       dword ptr [$eddagcia],eax
-	?debug L 1404
-?live16439@192: ; EBX = &$mgdagcia, EAX = @temp3
 	setne     dl
-	?debug L 1405
-?live16439@208: ; EBX = &$mgdagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1404
-?live16439@224: ; EBX = &$mgdagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1405
-?live16439@240: ; EBX = &$mgdagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1404
-?live16439@256: ; EBX = &$mgdagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1407
-?live16439@272: ; 
-@771:
-@761:
+	?debug L 1791
+?live16440@112: ; EBX = &$miklfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1793
+?live16440@128: ; 
+@841:
+@831:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@828:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_fxsr$qv+0
+	dd        @828+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_fxsr$qv	endp
 @stk@cpu@cpu_has_fxsr$qv	ends
@@ -15064,14 +16462,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch259
-	dd	?patch260
-	dd	?patch261
+	dd	?patch266
+	dd	?patch267
+	dd	?patch268
 	df	@@stk@cpu@cpu_has_fxsr$qv
 	dw	0
-	dw	4208
+	dw	4210
 	dw	0
-	dw	460
+	dw	469
 	dw	0
 	dw	0
 	dw	0
@@ -15105,28 +16503,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	461
+	dw	470
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch262
+	dw	?patch269
 	dw	529
-	dw	?patch263
-	dd	?live16439@208-@@stk@cpu@cpu_has_fxsr$qv
-	dd	?live16439@224-?live16439@208
+	dw	?patch270
+	dd	?live16440@112-@@stk@cpu@cpu_has_fxsr$qv
+	dd	?live16440@128-?live16440@112
 	dw	1
-	dd	?live16439@240-@@stk@cpu@cpu_has_fxsr$qv
-	dd	?live16439@256-?live16439@240
-	dw	1
-?patch263	equ	2
-?patch262	equ	24
+?patch270	equ	1
+?patch269	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	462
+	dw	471
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	472
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	473
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	474
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$miklfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	475
 	dw	0
 	dw	0
 	dw	0
@@ -15134,199 +16569,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	463
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	464
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	465
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mgdagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	466
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	467
+	dw	476
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eddagcia
+	df	$efklfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	468
+	dw	477
 	dw	0
 	dw	0
 	dw	0
-?patch259	equ	@771-@@stk@cpu@cpu_has_fxsr$qv+5
-?patch260	equ	0
-?patch261	equ	@771-@@stk@cpu@cpu_has_fxsr$qv
+?patch266	equ	@841-@@stk@cpu@cpu_has_fxsr$qv+72
+?patch267	equ	0
+?patch268	equ	@841-@@stk@cpu@cpu_has_fxsr$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ekdagcia	label	dword
+$emklfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mndagcia	label	qword
+$mpklfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_ss$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_ss$qv	proc	near
-?live16440@0:
-	?debug L 1410
-@772:
+?live16441@0:
+	?debug L 1796
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1413
-?live16440@16: ; EBX = &$mndagcia
-	mov       eax,dword ptr [$ekdagcia]
-	cmp       eax,-1
-	?debug L 1410
-?live16440@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mndagcia
-	?debug L 1413
-?live16440@48: ; EBX = &$mndagcia
-	je        short @776
-	?debug L 1414
-?live16440@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @842
+@843:
+	mov       ebx,offset $mpklfcia
+	?debug L 1802
+?live16441@16: ; EBX = &$mpklfcia
+	mov       eax,dword ptr [$emklfcia]
+	cmp       eax,-1
+	je        short @847
+	?debug L 1803
+?live16441@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @774
-	?debug L 1416
-?live16440@80: ; EBX = &$mndagcia
-@775:
+	jmp       @845
+	?debug L 1805
+?live16441@48: ; EBX = &$mpklfcia
+@846:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@776:
+	call      @@stk@time@wait_us$qxuj
+@847:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @775
+	jne       short @846
 	cmp       dword ptr [ebx],0
-	jne       short @775
+	jne       short @846
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @779
-@778:
+	jmp       short @850
+@849:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@779:
+	call      @@stk@time@wait_us$qxuj
+@850:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @782
+	jne       short @853
 	cmp       dword ptr [ebx],0
-@782:
-	je        short @780
+@853:
+	je        short @851
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @783
-	cmp       eax,dword ptr [ebp-8]
-@783:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @854
+	cmp       eax,dword ptr [ebp-20]
+@854:
 	setne     al
 	and       eax,1
-	jmp       short @781
-@780:
+	jmp       short @852
+@851:
 	xor       eax,eax
-@781:
+@852:
 	test      al,al
-	jne       short @778
-	?debug L 1419
+	jne       short @849
+	?debug L 1808
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1421
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1419
 	add       esp,24
-	?debug L 1421
+	?debug L 1810
+	mov       eax,dword ptr [ebp-36]
 	and       eax,134217728
-	?debug L 1422
-?live16440@160: ; EBX = &$mndagcia, EAX = @temp3
+	mov       dword ptr [$emklfcia],eax
+	?debug L 1811
+?live16441@96: ; EBX = &$mpklfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1421
-?live16440@176: ; EBX = &$mndagcia
-	mov       dword ptr [$ekdagcia],eax
-	?debug L 1422
-?live16440@192: ; EBX = &$mndagcia, EAX = @temp3
 	setne     dl
-	?debug L 1423
-?live16440@208: ; EBX = &$mndagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1422
-?live16440@224: ; EBX = &$mndagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1423
-?live16440@240: ; EBX = &$mndagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1422
-?live16440@256: ; EBX = &$mndagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1425
-?live16440@272: ; 
-@784:
-@774:
+	?debug L 1812
+?live16441@112: ; EBX = &$mpklfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1814
+?live16441@128: ; 
+@855:
+@845:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@842:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_ss$qv+0
+	dd        @842+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_ss$qv	endp
 @stk@cpu@cpu_has_ss$qv	ends
@@ -15340,14 +16748,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch264
-	dd	?patch265
-	dd	?patch266
+	dd	?patch271
+	dd	?patch272
+	dd	?patch273
 	df	@@stk@cpu@cpu_has_ss$qv
 	dw	0
-	dw	4210
+	dw	4212
 	dw	0
-	dw	469
+	dw	478
 	dw	0
 	dw	0
 	dw	0
@@ -15379,28 +16787,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	470
+	dw	479
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch267
+	dw	?patch274
 	dw	529
-	dw	?patch268
-	dd	?live16440@208-@@stk@cpu@cpu_has_ss$qv
-	dd	?live16440@224-?live16440@208
+	dw	?patch275
+	dd	?live16441@112-@@stk@cpu@cpu_has_ss$qv
+	dd	?live16441@128-?live16441@112
 	dw	1
-	dd	?live16440@240-@@stk@cpu@cpu_has_ss$qv
-	dd	?live16440@256-?live16440@240
-	dw	1
-?patch268	equ	2
-?patch267	equ	24
+?patch275	equ	1
+?patch274	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	471
+	dw	480
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	481
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	482
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	483
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mpklfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	484
 	dw	0
 	dw	0
 	dw	0
@@ -15408,199 +16853,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	472
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	473
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	474
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mndagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	475
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	476
+	dw	485
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ekdagcia
+	df	$emklfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	477
+	dw	486
 	dw	0
 	dw	0
 	dw	0
-?patch264	equ	@784-@@stk@cpu@cpu_has_ss$qv+5
-?patch265	equ	0
-?patch266	equ	@784-@@stk@cpu@cpu_has_ss$qv
+?patch271	equ	@855-@@stk@cpu@cpu_has_ss$qv+72
+?patch272	equ	0
+?patch273	equ	@855-@@stk@cpu@cpu_has_ss$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$ebeagcia	label	dword
+$edllfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$meeagcia	label	qword
+$mgllfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_mtrr$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_mtrr$qv	proc	near
-?live16441@0:
-	?debug L 1428
-@785:
+?live16442@0:
+	?debug L 1817
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1431
-?live16441@16: ; EBX = &$meeagcia
-	mov       eax,dword ptr [$ebeagcia]
-	cmp       eax,-1
-	?debug L 1428
-?live16441@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $meeagcia
-	?debug L 1431
-?live16441@48: ; EBX = &$meeagcia
-	je        short @789
-	?debug L 1432
-?live16441@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @856
+@857:
+	mov       ebx,offset $mgllfcia
+	?debug L 1823
+?live16442@16: ; EBX = &$mgllfcia
+	mov       eax,dword ptr [$edllfcia]
+	cmp       eax,-1
+	je        short @861
+	?debug L 1824
+?live16442@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @787
-	?debug L 1434
-?live16441@80: ; EBX = &$meeagcia
-@788:
+	jmp       @859
+	?debug L 1826
+?live16442@48: ; EBX = &$mgllfcia
+@860:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@789:
+	call      @@stk@time@wait_us$qxuj
+@861:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @788
+	jne       short @860
 	cmp       dword ptr [ebx],0
-	jne       short @788
+	jne       short @860
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @792
-@791:
+	jmp       short @864
+@863:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@792:
+	call      @@stk@time@wait_us$qxuj
+@864:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @795
+	jne       short @867
 	cmp       dword ptr [ebx],0
-@795:
-	je        short @793
+@867:
+	je        short @865
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @796
-	cmp       eax,dword ptr [ebp-8]
-@796:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @868
+	cmp       eax,dword ptr [ebp-20]
+@868:
 	setne     al
 	and       eax,1
-	jmp       short @794
-@793:
+	jmp       short @866
+@865:
 	xor       eax,eax
-@794:
+@866:
 	test      al,al
-	jne       short @791
-	?debug L 1437
+	jne       short @863
+	?debug L 1829
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1439
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1437
 	add       esp,24
-	?debug L 1439
+	?debug L 1831
+	mov       eax,dword ptr [ebp-36]
 	and       eax,4096
-	?debug L 1440
-?live16441@160: ; EBX = &$meeagcia, EAX = @temp3
+	mov       dword ptr [$edllfcia],eax
+	?debug L 1832
+?live16442@96: ; EBX = &$mgllfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1439
-?live16441@176: ; EBX = &$meeagcia
-	mov       dword ptr [$ebeagcia],eax
-	?debug L 1440
-?live16441@192: ; EBX = &$meeagcia, EAX = @temp3
 	setne     dl
-	?debug L 1441
-?live16441@208: ; EBX = &$meeagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1440
-?live16441@224: ; EBX = &$meeagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1441
-?live16441@240: ; EBX = &$meeagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1440
-?live16441@256: ; EBX = &$meeagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1443
-?live16441@272: ; 
-@797:
-@787:
+	?debug L 1833
+?live16442@112: ; EBX = &$mgllfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1835
+?live16442@128: ; 
+@869:
+@859:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@856:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_mtrr$qv+0
+	dd        @856+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_mtrr$qv	endp
 @stk@cpu@cpu_has_mtrr$qv	ends
@@ -15614,14 +17032,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch269
-	dd	?patch270
-	dd	?patch271
+	dd	?patch276
+	dd	?patch277
+	dd	?patch278
 	df	@@stk@cpu@cpu_has_mtrr$qv
 	dw	0
-	dw	4212
+	dw	4214
 	dw	0
-	dw	478
+	dw	487
 	dw	0
 	dw	0
 	dw	0
@@ -15655,28 +17073,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	479
+	dw	488
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch272
+	dw	?patch279
 	dw	529
-	dw	?patch273
-	dd	?live16441@208-@@stk@cpu@cpu_has_mtrr$qv
-	dd	?live16441@224-?live16441@208
+	dw	?patch280
+	dd	?live16442@112-@@stk@cpu@cpu_has_mtrr$qv
+	dd	?live16442@128-?live16442@112
 	dw	1
-	dd	?live16441@240-@@stk@cpu@cpu_has_mtrr$qv
-	dd	?live16441@256-?live16441@240
-	dw	1
-?patch273	equ	2
-?patch272	equ	24
+?patch280	equ	1
+?patch279	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	480
+	dw	489
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	490
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	491
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	492
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mgllfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	493
 	dw	0
 	dw	0
 	dw	0
@@ -15684,199 +17139,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	481
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	482
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	483
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$meeagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	484
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	485
+	dw	494
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$ebeagcia
+	df	$edllfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	486
+	dw	495
 	dw	0
 	dw	0
 	dw	0
-?patch269	equ	@797-@@stk@cpu@cpu_has_mtrr$qv+5
-?patch270	equ	0
-?patch271	equ	@797-@@stk@cpu@cpu_has_mtrr$qv
+?patch276	equ	@869-@@stk@cpu@cpu_has_mtrr$qv+72
+?patch277	equ	0
+?patch278	equ	@869-@@stk@cpu@cpu_has_mtrr$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eieagcia	label	dword
+$ekllfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mleagcia	label	qword
+$mnllfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_msr$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_msr$qv	proc	near
-?live16442@0:
-	?debug L 1446
-@798:
+?live16443@0:
+	?debug L 1838
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1449
-?live16442@16: ; EBX = &$mleagcia
-	mov       eax,dword ptr [$eieagcia]
-	cmp       eax,-1
-	?debug L 1446
-?live16442@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mleagcia
-	?debug L 1449
-?live16442@48: ; EBX = &$mleagcia
-	je        short @802
-	?debug L 1450
-?live16442@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @870
+@871:
+	mov       ebx,offset $mnllfcia
+	?debug L 1844
+?live16443@16: ; EBX = &$mnllfcia
+	mov       eax,dword ptr [$ekllfcia]
+	cmp       eax,-1
+	je        short @875
+	?debug L 1845
+?live16443@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @800
-	?debug L 1452
-?live16442@80: ; EBX = &$mleagcia
-@801:
+	jmp       @873
+	?debug L 1847
+?live16443@48: ; EBX = &$mnllfcia
+@874:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@802:
+	call      @@stk@time@wait_us$qxuj
+@875:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @801
+	jne       short @874
 	cmp       dword ptr [ebx],0
-	jne       short @801
+	jne       short @874
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @805
-@804:
+	jmp       short @878
+@877:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@805:
+	call      @@stk@time@wait_us$qxuj
+@878:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @808
+	jne       short @881
 	cmp       dword ptr [ebx],0
-@808:
-	je        short @806
+@881:
+	je        short @879
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @809
-	cmp       eax,dword ptr [ebp-8]
-@809:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @882
+	cmp       eax,dword ptr [ebp-20]
+@882:
 	setne     al
 	and       eax,1
-	jmp       short @807
-@806:
+	jmp       short @880
+@879:
 	xor       eax,eax
-@807:
+@880:
 	test      al,al
-	jne       short @804
-	?debug L 1455
+	jne       short @877
+	?debug L 1850
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1457
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1455
 	add       esp,24
-	?debug L 1457
+	?debug L 1852
+	mov       eax,dword ptr [ebp-36]
 	and       eax,4096
-	?debug L 1458
-?live16442@160: ; EBX = &$mleagcia, EAX = @temp3
+	mov       dword ptr [$ekllfcia],eax
+	?debug L 1853
+?live16443@96: ; EBX = &$mnllfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1457
-?live16442@176: ; EBX = &$mleagcia
-	mov       dword ptr [$eieagcia],eax
-	?debug L 1458
-?live16442@192: ; EBX = &$mleagcia, EAX = @temp3
 	setne     dl
-	?debug L 1459
-?live16442@208: ; EBX = &$mleagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1458
-?live16442@224: ; EBX = &$mleagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1459
-?live16442@240: ; EBX = &$mleagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1458
-?live16442@256: ; EBX = &$mleagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1461
-?live16442@272: ; 
-@810:
-@800:
+	?debug L 1854
+?live16443@112: ; EBX = &$mnllfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1856
+?live16443@128: ; 
+@883:
+@873:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@870:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_msr$qv+0
+	dd        @870+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_msr$qv	endp
 @stk@cpu@cpu_has_msr$qv	ends
@@ -15890,14 +17318,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch274
-	dd	?patch275
-	dd	?patch276
+	dd	?patch281
+	dd	?patch282
+	dd	?patch283
 	df	@@stk@cpu@cpu_has_msr$qv
 	dw	0
-	dw	4214
+	dw	4216
 	dw	0
-	dw	487
+	dw	496
 	dw	0
 	dw	0
 	dw	0
@@ -15930,28 +17358,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	488
+	dw	497
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch277
+	dw	?patch284
 	dw	529
-	dw	?patch278
-	dd	?live16442@208-@@stk@cpu@cpu_has_msr$qv
-	dd	?live16442@224-?live16442@208
+	dw	?patch285
+	dd	?live16443@112-@@stk@cpu@cpu_has_msr$qv
+	dd	?live16443@128-?live16443@112
 	dw	1
-	dd	?live16442@240-@@stk@cpu@cpu_has_msr$qv
-	dd	?live16442@256-?live16442@240
-	dw	1
-?patch278	equ	2
-?patch277	equ	24
+?patch285	equ	1
+?patch284	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	489
+	dw	498
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	499
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	500
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	501
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mnllfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	502
 	dw	0
 	dw	0
 	dw	0
@@ -15959,199 +17424,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	490
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	491
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	492
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mleagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	493
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	494
+	dw	503
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eieagcia
+	df	$ekllfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	495
+	dw	504
 	dw	0
 	dw	0
 	dw	0
-?patch274	equ	@810-@@stk@cpu@cpu_has_msr$qv+5
-?patch275	equ	0
-?patch276	equ	@810-@@stk@cpu@cpu_has_msr$qv
+?patch281	equ	@883-@@stk@cpu@cpu_has_msr$qv+72
+?patch282	equ	0
+?patch283	equ	@883-@@stk@cpu@cpu_has_msr$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$epeagcia	label	dword
+$ebmlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mcfagcia	label	qword
+$memlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_tsc$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_tsc$qv	proc	near
-?live16443@0:
-	?debug L 1464
-@811:
+?live16444@0:
+	?debug L 1859
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1467
-?live16443@16: ; EBX = &$mcfagcia
-	mov       eax,dword ptr [$epeagcia]
-	cmp       eax,-1
-	?debug L 1464
-?live16443@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mcfagcia
-	?debug L 1467
-?live16443@48: ; EBX = &$mcfagcia
-	je        short @815
-	?debug L 1468
-?live16443@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @884
+@885:
+	mov       ebx,offset $memlfcia
+	?debug L 1865
+?live16444@16: ; EBX = &$memlfcia
+	mov       eax,dword ptr [$ebmlfcia]
+	cmp       eax,-1
+	je        short @889
+	?debug L 1866
+?live16444@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @813
-	?debug L 1470
-?live16443@80: ; EBX = &$mcfagcia
-@814:
+	jmp       @887
+	?debug L 1868
+?live16444@48: ; EBX = &$memlfcia
+@888:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@815:
+	call      @@stk@time@wait_us$qxuj
+@889:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @814
+	jne       short @888
 	cmp       dword ptr [ebx],0
-	jne       short @814
+	jne       short @888
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @818
-@817:
+	jmp       short @892
+@891:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@818:
+	call      @@stk@time@wait_us$qxuj
+@892:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @821
+	jne       short @895
 	cmp       dword ptr [ebx],0
-@821:
-	je        short @819
+@895:
+	je        short @893
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @822
-	cmp       eax,dword ptr [ebp-8]
-@822:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @896
+	cmp       eax,dword ptr [ebp-20]
+@896:
 	setne     al
 	and       eax,1
-	jmp       short @820
-@819:
+	jmp       short @894
+@893:
 	xor       eax,eax
-@820:
+@894:
 	test      al,al
-	jne       short @817
-	?debug L 1473
+	jne       short @891
+	?debug L 1871
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1475
-	mov       eax,dword ptr [ebp-12]
-	?debug L 1473
 	add       esp,24
-	?debug L 1475
+	?debug L 1873
+	mov       eax,dword ptr [ebp-28]
 	and       eax,16
-	?debug L 1476
-?live16443@160: ; EBX = &$mcfagcia, EAX = @temp3
+	mov       dword ptr [$ebmlfcia],eax
+	?debug L 1874
+?live16444@96: ; EBX = &$memlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1475
-?live16443@176: ; EBX = &$mcfagcia
-	mov       dword ptr [$epeagcia],eax
-	?debug L 1476
-?live16443@192: ; EBX = &$mcfagcia, EAX = @temp3
 	setne     dl
-	?debug L 1477
-?live16443@208: ; EBX = &$mcfagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1476
-?live16443@224: ; EBX = &$mcfagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1477
-?live16443@240: ; EBX = &$mcfagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1476
-?live16443@256: ; EBX = &$mcfagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1479
-?live16443@272: ; 
-@823:
-@813:
+	?debug L 1875
+?live16444@112: ; EBX = &$memlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1877
+?live16444@128: ; 
+@897:
+@887:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@884:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_tsc$qv+0
+	dd        @884+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_tsc$qv	endp
 @stk@cpu@cpu_has_tsc$qv	ends
@@ -16165,14 +17603,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch279
-	dd	?patch280
-	dd	?patch281
+	dd	?patch286
+	dd	?patch287
+	dd	?patch288
 	df	@@stk@cpu@cpu_has_tsc$qv
 	dw	0
-	dw	4216
+	dw	4218
 	dw	0
-	dw	496
+	dw	505
 	dw	0
 	dw	0
 	dw	0
@@ -16205,28 +17643,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	497
+	dw	506
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch282
+	dw	?patch289
 	dw	529
-	dw	?patch283
-	dd	?live16443@208-@@stk@cpu@cpu_has_tsc$qv
-	dd	?live16443@224-?live16443@208
+	dw	?patch290
+	dd	?live16444@112-@@stk@cpu@cpu_has_tsc$qv
+	dd	?live16444@128-?live16444@112
 	dw	1
-	dd	?live16443@240-@@stk@cpu@cpu_has_tsc$qv
-	dd	?live16443@256-?live16443@240
-	dw	1
-?patch283	equ	2
-?patch282	equ	24
+?patch290	equ	1
+?patch289	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	498
+	dw	507
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	508
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	509
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	510
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$memlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	511
 	dw	0
 	dw	0
 	dw	0
@@ -16234,199 +17709,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	499
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	500
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	501
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mcfagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	502
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	503
+	dw	512
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$epeagcia
+	df	$ebmlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	504
+	dw	513
 	dw	0
 	dw	0
 	dw	0
-?patch279	equ	@823-@@stk@cpu@cpu_has_tsc$qv+5
-?patch280	equ	0
-?patch281	equ	@823-@@stk@cpu@cpu_has_tsc$qv
+?patch286	equ	@897-@@stk@cpu@cpu_has_tsc$qv+74
+?patch287	equ	0
+?patch288	equ	@897-@@stk@cpu@cpu_has_tsc$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$egfagcia	label	dword
+$eimlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mjfagcia	label	qword
+$mlmlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_psn$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_psn$qv	proc	near
-?live16444@0:
-	?debug L 1482
-@824:
+?live16445@0:
+	?debug L 1880
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1485
-?live16444@16: ; EBX = &$mjfagcia
-	mov       eax,dword ptr [$egfagcia]
-	cmp       eax,-1
-	?debug L 1482
-?live16444@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mjfagcia
-	?debug L 1485
-?live16444@48: ; EBX = &$mjfagcia
-	je        short @828
-	?debug L 1486
-?live16444@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @898
+@899:
+	mov       ebx,offset $mlmlfcia
+	?debug L 1886
+?live16445@16: ; EBX = &$mlmlfcia
+	mov       eax,dword ptr [$eimlfcia]
+	cmp       eax,-1
+	je        short @903
+	?debug L 1887
+?live16445@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @826
-	?debug L 1488
-?live16444@80: ; EBX = &$mjfagcia
-@827:
+	jmp       @901
+	?debug L 1889
+?live16445@48: ; EBX = &$mlmlfcia
+@902:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@828:
+	call      @@stk@time@wait_us$qxuj
+@903:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @827
+	jne       short @902
 	cmp       dword ptr [ebx],0
-	jne       short @827
+	jne       short @902
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @831
-@830:
+	jmp       short @906
+@905:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@831:
+	call      @@stk@time@wait_us$qxuj
+@906:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @834
+	jne       short @909
 	cmp       dword ptr [ebx],0
-@834:
-	je        short @832
+@909:
+	je        short @907
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @835
-	cmp       eax,dword ptr [ebp-8]
-@835:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @910
+	cmp       eax,dword ptr [ebp-20]
+@910:
 	setne     al
 	and       eax,1
-	jmp       short @833
-@832:
+	jmp       short @908
+@907:
 	xor       eax,eax
-@833:
+@908:
 	test      al,al
-	jne       short @830
-	?debug L 1491
+	jne       short @905
+	?debug L 1892
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1493
-	mov       eax,dword ptr [ebp-12]
-	?debug L 1491
 	add       esp,24
-	?debug L 1493
+	?debug L 1894
+	mov       eax,dword ptr [ebp-28]
 	and       eax,262144
-	?debug L 1494
-?live16444@160: ; EBX = &$mjfagcia, EAX = @temp3
+	mov       dword ptr [$eimlfcia],eax
+	?debug L 1895
+?live16445@96: ; EBX = &$mlmlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1493
-?live16444@176: ; EBX = &$mjfagcia
-	mov       dword ptr [$egfagcia],eax
-	?debug L 1494
-?live16444@192: ; EBX = &$mjfagcia, EAX = @temp3
 	setne     dl
-	?debug L 1495
-?live16444@208: ; EBX = &$mjfagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1494
-?live16444@224: ; EBX = &$mjfagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1495
-?live16444@240: ; EBX = &$mjfagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1494
-?live16444@256: ; EBX = &$mjfagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1497
-?live16444@272: ; 
-@836:
-@826:
+	?debug L 1896
+?live16445@112: ; EBX = &$mlmlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1898
+?live16445@128: ; 
+@911:
+@901:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@898:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_psn$qv+0
+	dd        @898+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_psn$qv	endp
 @stk@cpu@cpu_has_psn$qv	ends
@@ -16440,14 +17888,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch284
-	dd	?patch285
-	dd	?patch286
+	dd	?patch291
+	dd	?patch292
+	dd	?patch293
 	df	@@stk@cpu@cpu_has_psn$qv
 	dw	0
-	dw	4218
+	dw	4220
 	dw	0
-	dw	505
+	dw	514
 	dw	0
 	dw	0
 	dw	0
@@ -16480,28 +17928,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	506
+	dw	515
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch287
+	dw	?patch294
 	dw	529
-	dw	?patch288
-	dd	?live16444@208-@@stk@cpu@cpu_has_psn$qv
-	dd	?live16444@224-?live16444@208
+	dw	?patch295
+	dd	?live16445@112-@@stk@cpu@cpu_has_psn$qv
+	dd	?live16445@128-?live16445@112
 	dw	1
-	dd	?live16444@240-@@stk@cpu@cpu_has_psn$qv
-	dd	?live16444@256-?live16444@240
-	dw	1
-?patch288	equ	2
-?patch287	equ	24
+?patch295	equ	1
+?patch294	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	507
+	dw	516
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	517
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	518
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	519
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mlmlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	520
 	dw	0
 	dw	0
 	dw	0
@@ -16509,204 +17994,189 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	508
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	509
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	510
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mjfagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	511
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	512
+	dw	521
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$egfagcia
+	df	$eimlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	513
+	dw	522
 	dw	0
 	dw	0
 	dw	0
-?patch284	equ	@836-@@stk@cpu@cpu_has_psn$qv+5
-?patch285	equ	0
-?patch286	equ	@836-@@stk@cpu@cpu_has_psn$qv
+?patch291	equ	@911-@@stk@cpu@cpu_has_psn$qv+72
+?patch292	equ	0
+?patch293	equ	@911-@@stk@cpu@cpu_has_psn$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$enfagcia	label	dword
+$epmlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$magagcia	label	qword
+$mcnlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_xsave$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_xsave$qv	proc	near
-?live16445@0:
-	?debug L 1500
-@837:
+?live16446@0:
+	?debug L 1901
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1503
-?live16445@16: ; EBX = &$magagcia
-	mov       eax,dword ptr [$enfagcia]
-	cmp       eax,-1
-	?debug L 1500
-?live16445@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $magagcia
-	?debug L 1503
-?live16445@48: ; EBX = &$magagcia
-	je        short @841
-	?debug L 1504
-?live16445@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @912
+@913:
+	mov       ebx,offset $mcnlfcia
+	?debug L 1907
+?live16446@16: ; EBX = &$mcnlfcia
+	mov       eax,dword ptr [$epmlfcia]
+	cmp       eax,-1
+	je        short @917
+	?debug L 1908
+?live16446@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @839
-	?debug L 1506
-?live16445@80: ; EBX = &$magagcia
-@840:
+	jmp       @915
+	?debug L 1910
+?live16446@48: ; EBX = &$mcnlfcia
+@916:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@841:
+	call      @@stk@time@wait_us$qxuj
+@917:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @840
+	jne       short @916
 	cmp       dword ptr [ebx],0
-	jne       short @840
+	jne       short @916
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @844
-@843:
+	jmp       short @920
+@919:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@844:
+	call      @@stk@time@wait_us$qxuj
+@920:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @847
+	jne       short @923
 	cmp       dword ptr [ebx],0
-@847:
-	je        short @845
+@923:
+	je        short @921
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @848
-	cmp       eax,dword ptr [ebp-8]
-@848:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @924
+	cmp       eax,dword ptr [ebp-20]
+@924:
 	setne     al
 	and       eax,1
-	jmp       short @846
-@845:
+	jmp       short @922
+@921:
 	xor       eax,eax
-@846:
+@922:
 	test      al,al
-	jne       short @843
-	?debug L 1509
+	jne       short @919
+	?debug L 1913
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1511
-	mov       eax,dword ptr [ebp-16]
-	mov       edx,dword ptr [ebp-16]
+	?debug L 1915
+	mov       eax,dword ptr [ebp-36]
+	mov       edx,dword ptr [ebp-36]
 	and       edx,134217728
 	and       eax,67108864
 	shr       edx,27
-	?debug L 1509
+	?debug L 1913
 	add       esp,24
-	?debug L 1511
+	?debug L 1915
 	shr       eax,26
 	and       eax,edx
-	?debug L 1512
-?live16445@160: ; EBX = &$magagcia, EAX = @temp3
+	?debug L 1917
+?live16446@128: ; EBX = &$mcnlfcia, EAX = ret
+	push      8
+	?debug L 1916
+?live16446@144: ; EBX = &$mcnlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1511
-?live16445@176: ; EBX = &$magagcia
-	mov       dword ptr [$enfagcia],eax
-	?debug L 1512
-?live16445@192: ; EBX = &$magagcia, EAX = @temp3
+	?debug L 1915
+?live16446@160: ; EBX = &$mcnlfcia
+	mov       dword ptr [$epmlfcia],eax
+	?debug L 1916
+?live16446@176: ; EBX = &$mcnlfcia, EAX = @temp3
 	setne     cl
-	?debug L 1513
-?live16445@208: ; EBX = &$magagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1512
-?live16445@224: ; EBX = &$magagcia, EAX = @temp3
 	and       ecx,1
-	?debug L 1513
-?live16445@240: ; EBX = &$magagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1512
-?live16445@256: ; EBX = &$magagcia, EAX = @temp3
+	?debug L 1917
+?live16446@192: ; EBX = &$mcnlfcia, EAX = ret
+	push      ebx
+	?debug L 1916
+?live16446@208: ; EBX = &$mcnlfcia, EAX = @temp3
 	mov       eax,ecx
-	?debug L 1515
-?live16445@272: ; 
-@849:
-@839:
+	?debug L 1917
+?live16446@224: ; EBX = &$mcnlfcia, EAX = ret
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1919
+?live16446@240: ; 
+@925:
+@915:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@912:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_xsave$qv+0
+	dd        @912+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_xsave$qv	endp
 @stk@cpu@cpu_has_xsave$qv	ends
@@ -16720,14 +18190,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch289
-	dd	?patch290
-	dd	?patch291
+	dd	?patch296
+	dd	?patch297
+	dd	?patch298
 	df	@@stk@cpu@cpu_has_xsave$qv
 	dw	0
-	dw	4220
+	dw	4222
 	dw	0
-	dw	514
+	dw	523
 	dw	0
 	dw	0
 	dw	0
@@ -16762,28 +18232,71 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	515
+	dw	524
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch292
+	dw	?patch299
 	dw	529
-	dw	?patch293
-	dd	?live16445@208-@@stk@cpu@cpu_has_xsave$qv
-	dd	?live16445@224-?live16445@208
+	dw	?patch300
+	dd	?live16446@128-@@stk@cpu@cpu_has_xsave$qv
+	dd	?live16446@144-?live16446@128
 	dw	1
-	dd	?live16445@240-@@stk@cpu@cpu_has_xsave$qv
-	dd	?live16445@256-?live16445@240
+	dd	?live16446@192-@@stk@cpu@cpu_has_xsave$qv
+	dd	?live16446@208-?live16446@192
 	dw	1
-?patch293	equ	2
-?patch292	equ	24
+	dd	?live16446@224-@@stk@cpu@cpu_has_xsave$qv
+	dd	?live16446@240-?live16446@224
+	dw	1
+?patch300	equ	3
+?patch299	equ	34
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	516
+	dw	525
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	526
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	527
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	528
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mcnlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	529
 	dw	0
 	dw	0
 	dw	0
@@ -16791,199 +18304,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	517
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	518
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	519
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$magagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	520
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	521
+	dw	530
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$enfagcia
+	df	$epmlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	522
+	dw	531
 	dw	0
 	dw	0
 	dw	0
-?patch289	equ	@849-@@stk@cpu@cpu_has_xsave$qv+5
-?patch290	equ	0
-?patch291	equ	@849-@@stk@cpu@cpu_has_xsave$qv
+?patch296	equ	@925-@@stk@cpu@cpu_has_xsave$qv+75
+?patch297	equ	0
+?patch298	equ	@925-@@stk@cpu@cpu_has_xsave$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$eegagcia	label	dword
+$egnlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mhgagcia	label	qword
+$mjnlfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_clmul$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_clmul$qv	proc	near
-?live16446@0:
-	?debug L 1518
-@850:
+?live16447@0:
+	?debug L 1922
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1521
-?live16446@16: ; EBX = &$mhgagcia
-	mov       eax,dword ptr [$eegagcia]
-	cmp       eax,-1
-	?debug L 1518
-?live16446@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $mhgagcia
-	?debug L 1521
-?live16446@48: ; EBX = &$mhgagcia
-	je        short @854
-	?debug L 1522
-?live16446@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @926
+@927:
+	mov       ebx,offset $mjnlfcia
+	?debug L 1928
+?live16447@16: ; EBX = &$mjnlfcia
+	mov       eax,dword ptr [$egnlfcia]
+	cmp       eax,-1
+	je        short @931
+	?debug L 1929
+?live16447@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @852
-	?debug L 1524
-?live16446@80: ; EBX = &$mhgagcia
-@853:
+	jmp       @929
+	?debug L 1931
+?live16447@48: ; EBX = &$mjnlfcia
+@930:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@854:
+	call      @@stk@time@wait_us$qxuj
+@931:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @853
+	jne       short @930
 	cmp       dword ptr [ebx],0
-	jne       short @853
+	jne       short @930
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @857
-@856:
+	jmp       short @934
+@933:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@857:
+	call      @@stk@time@wait_us$qxuj
+@934:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @860
+	jne       short @937
 	cmp       dword ptr [ebx],0
-@860:
-	je        short @858
+@937:
+	je        short @935
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @861
-	cmp       eax,dword ptr [ebp-8]
-@861:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @938
+	cmp       eax,dword ptr [ebp-20]
+@938:
 	setne     al
 	and       eax,1
-	jmp       short @859
-@858:
+	jmp       short @936
+@935:
 	xor       eax,eax
-@859:
+@936:
 	test      al,al
-	jne       short @856
-	?debug L 1527
+	jne       short @933
+	?debug L 1934
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1529
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1527
 	add       esp,24
-	?debug L 1529
+	?debug L 1936
+	mov       eax,dword ptr [ebp-36]
 	and       eax,4
-	?debug L 1530
-?live16446@160: ; EBX = &$mhgagcia, EAX = @temp3
+	mov       dword ptr [$egnlfcia],eax
+	?debug L 1937
+?live16447@96: ; EBX = &$mjnlfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1529
-?live16446@176: ; EBX = &$mhgagcia
-	mov       dword ptr [$eegagcia],eax
-	?debug L 1530
-?live16446@192: ; EBX = &$mhgagcia, EAX = @temp3
 	setne     dl
-	?debug L 1531
-?live16446@208: ; EBX = &$mhgagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1530
-?live16446@224: ; EBX = &$mhgagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1531
-?live16446@240: ; EBX = &$mhgagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1530
-?live16446@256: ; EBX = &$mhgagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1533
-?live16446@272: ; 
-@862:
-@852:
+	?debug L 1938
+?live16447@112: ; EBX = &$mjnlfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 1940
+?live16447@128: ; 
+@939:
+@929:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@926:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_clmul$qv+0
+	dd        @926+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_clmul$qv	endp
 @stk@cpu@cpu_has_clmul$qv	ends
@@ -16997,14 +18483,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch294
-	dd	?patch295
-	dd	?patch296
+	dd	?patch301
+	dd	?patch302
+	dd	?patch303
 	df	@@stk@cpu@cpu_has_clmul$qv
 	dw	0
-	dw	4222
+	dw	4224
 	dw	0
-	dw	523
+	dw	532
 	dw	0
 	dw	0
 	dw	0
@@ -17039,28 +18525,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	524
+	dw	533
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch297
+	dw	?patch304
 	dw	529
-	dw	?patch298
-	dd	?live16446@208-@@stk@cpu@cpu_has_clmul$qv
-	dd	?live16446@224-?live16446@208
+	dw	?patch305
+	dd	?live16447@112-@@stk@cpu@cpu_has_clmul$qv
+	dd	?live16447@128-?live16447@112
 	dw	1
-	dd	?live16446@240-@@stk@cpu@cpu_has_clmul$qv
-	dd	?live16446@256-?live16446@240
-	dw	1
-?patch298	equ	2
-?patch297	equ	24
+?patch305	equ	1
+?patch304	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	525
+	dw	534
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	535
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	536
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	537
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$mjnlfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	538
 	dw	0
 	dw	0
 	dw	0
@@ -17068,213 +18591,227 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	526
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	527
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	528
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$mhgagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	529
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	530
+	dw	539
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$eegagcia
+	df	$egnlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	531
+	dw	540
 	dw	0
 	dw	0
 	dw	0
-?patch294	equ	@862-@@stk@cpu@cpu_has_clmul$qv+5
-?patch295	equ	0
-?patch296	equ	@862-@@stk@cpu@cpu_has_clmul$qv
+?patch301	equ	@939-@@stk@cpu@cpu_has_clmul$qv+74
+?patch302	equ	0
+?patch303	equ	@939-@@stk@cpu@cpu_has_clmul$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$elgagcia	label	dword
+$ennlfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$mogagcia	label	dword
+$maolfcia	label	dword
 	dd	0
 	dd	0
 	dd	0
+	db	1	dup(?)
 	align	4
-$echagcia	label	qword
+$eeolfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_psn$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_psn$qv	proc	near
-?live16447@0:
-	?debug L 1536
-@863:
+?live16448@0:
+	?debug L 1943
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
+	push      5457731
+	add       esp,-48
 	push      ebx
 	push      esi
-	mov       ebx,offset $echagcia
-	mov       esi,offset $mogagcia
-	?debug L 1540
-?live16447@16: ; EBX = &$echagcia, ESI = &$mogagcia
-	cmp       dword ptr [$elgagcia],-1
-	je        short @867
-	?debug L 1541
-?live16447@32: ; ESI = &$mogagcia
+	mov       dword ptr [ebp-8],offset @940
+@941:
+	mov       ebx,offset $eeolfcia
+	mov       esi,offset $maolfcia
+	?debug L 1950
+?live16448@16: ; EBX = &$eeolfcia, ESI = &$maolfcia
+	cmp       dword ptr [$ennlfcia],-1
+	je        short @945
+	?debug L 1951
+?live16448@32: ; ESI = &$maolfcia
 	mov       eax,esi
-	jmp       @865
-	?debug L 1543
-?live16447@48: ; EBX = &$echagcia, ESI = &$mogagcia
-@866:
+	jmp       @943
+	?debug L 1953
+?live16448@48: ; EBX = &$eeolfcia, ESI = &$maolfcia
+@944:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@867:
+	call      @@stk@time@wait_us$qxuj
+@945:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @866
+	jne       short @944
 	cmp       dword ptr [ebx],0
-	jne       short @866
+	jne       short @944
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],edx
-	jmp       short @870
-@869:
+	jmp       short @948
+@947:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@870:
+	call      @@stk@time@wait_us$qxuj
+@948:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @873
+	jne       short @951
 	cmp       dword ptr [ebx],0
-@873:
-	je        short @871
+@951:
+	je        short @949
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @874
-	cmp       eax,dword ptr [ebp-8]
-@874:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @952
+	cmp       eax,dword ptr [ebp-20]
+@952:
 	setne     cl
 	and       ecx,1
-	jmp       short @872
-@871:
+	jmp       short @950
+@949:
 	xor       ecx,ecx
-@872:
+@950:
 	test      cl,cl
-	jne       short @869
-	?debug L 1545
+	jne       short @947
+	?debug L 1955
+	push      4
+	push      esi
+	call      _CG_D_EP
 	xor       eax,eax
 	mov       dword ptr [esi],eax
-	?debug L 1546
+	?debug L 1956
+	push      4
+	push      esi
+	push      4
+	call      _CG_DA_EPY
 	xor       edx,edx
 	mov       dword ptr [esi+4],edx
-	?debug L 1547
+	?debug L 1957
+	push      4
+	push      esi
+	push      8
+	call      _CG_DA_EPY
 	xor       eax,eax
 	mov       dword ptr [esi+8],eax
-	?debug L 1548
+	?debug L 1958
 	call      @@stk@cpu@cpu_has_psn$qv
 	test      al,al
-	jne       short @875
-	?debug L 1549
+	jne       short @953
+	?debug L 1959
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
 	mov       dword ptr [ebx+4],0
-	?debug L 1550
-?live16447@144: ; ESI = &$mogagcia
+	?debug L 1960
+?live16448@144: ; ESI = &$maolfcia
 	mov       eax,esi
-	jmp       short @865
-	?debug L 1554
-?live16447@160: ; EBX = &$echagcia, ESI = &$mogagcia
-@875:
+	jmp       short @943
+	?debug L 1964
+?live16448@160: ; EBX = &$eeolfcia, ESI = &$maolfcia
+@953:
 	push      0
 	push      3
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1556
-	mov       ecx,dword ptr [ebp-24]
-	?debug L 1554
 	add       esp,24
-	?debug L 1556
+	?debug L 1966
+	mov       ecx,dword ptr [ebp-52]
+	push      4
+	push      esi
+	push      8
+	call      _CG_DA_EPY
 	mov       dword ptr [esi+8],ecx
-	?debug L 1557
-	mov       eax,dword ptr [ebp-12]
+	?debug L 1967
+	mov       eax,dword ptr [ebp-28]
+	push      4
+	push      esi
+	push      4
+	call      _CG_DA_EPY
 	mov       dword ptr [esi+4],eax
-	?debug L 1560
-?live16447@240: ; ESI = &$mogagcia
-	mov       eax,esi
-	?debug L 1558
-?live16447@256: ; EBX = &$echagcia, ESI = &$mogagcia
-	mov       edx,dword ptr [ebp-16]
+	?debug L 1968
+	mov       edx,dword ptr [ebp-36]
+	push      4
+	push      esi
+	call      _CG_D_EP
 	mov       dword ptr [esi],edx
-	?debug L 1559
+	?debug L 1969
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       dword ptr [ebx],0
+	?debug L 1970
+?live16448@240: ; ESI = &$maolfcia
+	mov       eax,esi
+	?debug L 1969
+?live16448@256: ; EBX = &$eeolfcia, ESI = &$maolfcia
 	mov       dword ptr [ebx+4],0
-	?debug L 1561
-?live16447@288: ; 
-@876:
-@865:
+	?debug L 1971
+?live16448@272: ; 
+@954:
+@943:
+	mov       dword ptr [ebp-4],ebp
 	pop       esi
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@940:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_psn$qv+0
+	dd        @940+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_psn$qv	endp
 @stk@cpu@cpu_psn$qv	ends
@@ -17288,14 +18825,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch299
-	dd	?patch300
-	dd	?patch301
+	dd	?patch306
+	dd	?patch307
+	dd	?patch308
 	df	@@stk@cpu@cpu_psn$qv
 	dw	0
-	dw	4224
+	dw	4226
 	dw	0
-	dw	532
+	dw	541
 	dw	0
 	dw	0
 	dw	0
@@ -17321,11 +18858,51 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	533
+	dw	542
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	543
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	544
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	545
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$eeolfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	546
 	dw	0
 	dw	0
 	dw	0
@@ -17333,230 +18910,213 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	534
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	535
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	536
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$echagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	537
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	538
+	dw	547
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mogagcia
+	df	$maolfcia
 	dw	0
-	dw	4226
+	dw	4228
 	dw	0
-	dw	539
+	dw	548
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$elgagcia
+	df	$ennlfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	540
+	dw	549
 	dw	0
 	dw	0
 	dw	0
-?patch299	equ	@876-@@stk@cpu@cpu_psn$qv+6
-?patch300	equ	0
-?patch301	equ	@876-@@stk@cpu@cpu_psn$qv
+?patch306	equ	@954-@@stk@cpu@cpu_psn$qv+75
+?patch307	equ	0
+?patch308	equ	@954-@@stk@cpu@cpu_psn$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	5
-	dw	65504
+	dw	65476
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mfhagcia	label	dword
+$mholfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$ejhagcia	label	qword
+$elolfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_fma$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_fma$qv	proc	near
-?live16448@0:
-	?debug L 1564
-@877:
+?live16449@0:
+	?debug L 1974
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1567
-?live16448@16: ; EBX = &$ejhagcia
-	mov       eax,dword ptr [$mfhagcia]
-	cmp       eax,-1
-	?debug L 1564
-?live16448@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $ejhagcia
-	?debug L 1567
-?live16448@48: ; EBX = &$ejhagcia
-	jne       @879
-	?debug L 1568
-?live16448@64: ; EAX = @temp3
-	jmp       short @881
-	?debug L 1570
-?live16448@80: ; EBX = &$ejhagcia
-@880:
+	mov       dword ptr [ebp-8],offset @955
+@956:
+	mov       ebx,offset $elolfcia
+	?debug L 1980
+?live16449@16: ; EBX = &$elolfcia
+	mov       eax,dword ptr [$mholfcia]
+	cmp       eax,-1
+	jne       @958
+	?debug L 1981
+?live16449@32: ; EAX = @temp3
+	jmp       short @960
+	?debug L 1983
+?live16449@48: ; EBX = &$elolfcia
+@959:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@881:
+	call      @@stk@time@wait_us$qxuj
+@960:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @880
+	jne       short @959
 	cmp       dword ptr [ebx],0
-	jne       short @880
+	jne       short @959
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       edx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       edx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],edx
-	mov       edx,dword ptr [ebp-4]
+	mov       edx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],edx
-	jmp       short @884
-@883:
+	jmp       short @963
+@962:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@884:
+	call      @@stk@time@wait_us$qxuj
+@963:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @887
+	jne       short @966
 	cmp       dword ptr [ebx],0
-@887:
-	je        short @885
+@966:
+	je        short @964
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @888
-	cmp       eax,dword ptr [ebp-8]
-@888:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @967
+	cmp       eax,dword ptr [ebp-20]
+@967:
 	setne     cl
 	and       ecx,1
-	jmp       short @886
-@885:
+	jmp       short @965
+@964:
 	xor       ecx,ecx
-@886:
+@965:
 	test      cl,cl
-	jne       short @883
-	?debug L 1573
+	jne       short @962
+	?debug L 1986
 	push      0
 	push      1
-	lea       eax,dword ptr [ebp-12]
+	lea       eax,dword ptr [ebp-28]
 	push      eax
-	lea       edx,dword ptr [ebp-16]
+	lea       edx,dword ptr [ebp-36]
 	push      edx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 1575
-	test      byte ptr [ebp-15],16
-	je        short @889
-	?debug L 1576
+	?debug L 1988
+	test      byte ptr [ebp-35],16
+	je        short @968
+	?debug L 1989
 	push      0
 	push      -2147483647
-	lea       ecx,dword ptr [ebp-12]
+	lea       ecx,dword ptr [ebp-28]
 	push      ecx
-	lea       eax,dword ptr [ebp-16]
+	lea       eax,dword ptr [ebp-36]
 	push      eax
-	lea       edx,dword ptr [ebp-20]
+	lea       edx,dword ptr [ebp-44]
 	push      edx
-	lea       ecx,dword ptr [ebp-24]
+	lea       ecx,dword ptr [ebp-52]
 	push      ecx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
 	add       esp,24
-	?debug L 1577
-	test      byte ptr [ebp-14],1
-	je        short @890
-	?debug L 1578
-	mov       dword ptr [$mfhagcia],4
-	jmp       short @891
-	?debug L 1580
-@890:
-	mov       dword ptr [$mfhagcia],3
-	?debug L 1581
-	jmp       short @891
-	?debug L 1583
-@889:
+	?debug L 1990
+	test      byte ptr [ebp-34],1
+	je        short @969
+	?debug L 1991
+	mov       dword ptr [$mholfcia],4
+	jmp       short @970
+	?debug L 1993
+@969:
+	mov       dword ptr [$mholfcia],3
+	?debug L 1994
+	jmp       short @970
+	?debug L 1996
+@968:
 	xor       eax,eax
-	mov       dword ptr [$mfhagcia],eax
-	?debug L 1585
-@891:
-	cmp       dword ptr [$mfhagcia],0
-	?debug L 1586
-?live16448@240: ; EBX = &$ejhagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1585
-?live16448@256: ; EBX = &$ejhagcia
+	mov       dword ptr [$mholfcia],eax
+	?debug L 1998
+@970:
+	cmp       dword ptr [$mholfcia],0
 	setne     al
 	and       eax,1
-	?debug L 1587
-?live16448@272: ; EAX = r
+	?debug L 1999
+?live16449@208: ; EBX = &$elolfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	?debug L 2000
+?live16449@224: ; EAX = ret
 	xor       edx,edx
 	mov       dl,al
-	?debug L 1586
-?live16448@288: ; EBX = &$ejhagcia, EAX = r
+	?debug L 1999
+?live16449@240: ; EBX = &$elolfcia, EAX = ret
 	mov       dword ptr [ebx+4],0
-	?debug L 1587
-?live16448@304: ; EAX = r
+	?debug L 2000
+?live16449@256: ; EAX = ret
 	mov       eax,edx
-	?debug L 1588
-?live16448@320: ; 
-@892:
-@879:
+	?debug L 2001
+?live16449@272: ; 
+@971:
+@958:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@955:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_fma$qv+0
+	dd        @955+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_fma$qv	endp
 @stk@cpu@cpu_has_fma$qv	ends
@@ -17570,14 +19130,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch302
-	dd	?patch303
-	dd	?patch304
+	dd	?patch309
+	dd	?patch310
+	dd	?patch311
 	df	@@stk@cpu@cpu_has_fma$qv
 	dw	0
-	dw	4227
+	dw	4229
 	dw	0
-	dw	541
+	dw	550
 	dw	0
 	dw	0
 	dw	0
@@ -17610,28 +19170,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	542
+	dw	551
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch305
+	dw	?patch312
 	dw	529
-	dw	?patch306
-	dd	?live16448@240-@@stk@cpu@cpu_has_fma$qv
-	dd	?live16448@256-?live16448@240
+	dw	?patch313
+	dd	?live16449@208-@@stk@cpu@cpu_has_fma$qv
+	dd	?live16449@272-?live16449@208
 	dw	1
-	dd	?live16448@272-@@stk@cpu@cpu_has_fma$qv
-	dd	?live16448@320-?live16448@272
-	dw	1
-?patch306	equ	2
-?patch305	equ	24
+?patch313	equ	1
+?patch312	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	543
+	dw	552
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	553
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	554
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	555
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$elolfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	556
 	dw	0
 	dw	0
 	dw	0
@@ -17639,199 +19236,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	544
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	545
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	546
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$ejhagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	547
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	548
+	dw	557
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mfhagcia
+	df	$mholfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	549
+	dw	558
 	dw	0
 	dw	0
 	dw	0
-?patch302	equ	@892-@@stk@cpu@cpu_has_fma$qv+5
-?patch303	equ	0
-?patch304	equ	@892-@@stk@cpu@cpu_has_fma$qv
+?patch309	equ	@971-@@stk@cpu@cpu_has_fma$qv+75
+?patch310	equ	0
+?patch311	equ	@971-@@stk@cpu@cpu_has_fma$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mmhagcia	label	dword
+$moolfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$eaiagcia	label	qword
+$ecplfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_aes$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_aes$qv	proc	near
-?live16449@0:
-	?debug L 1591
-@893:
+?live16450@0:
+	?debug L 2004
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1594
-?live16449@16: ; EBX = &$eaiagcia
-	mov       eax,dword ptr [$mmhagcia]
-	cmp       eax,-1
-	?debug L 1591
-?live16449@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $eaiagcia
-	?debug L 1594
-?live16449@48: ; EBX = &$eaiagcia
-	je        short @897
-	?debug L 1595
-?live16449@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @972
+@973:
+	mov       ebx,offset $ecplfcia
+	?debug L 2010
+?live16450@16: ; EBX = &$ecplfcia
+	mov       eax,dword ptr [$moolfcia]
+	cmp       eax,-1
+	je        short @977
+	?debug L 2011
+?live16450@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @895
-	?debug L 1597
-?live16449@80: ; EBX = &$eaiagcia
-@896:
+	jmp       @975
+	?debug L 2013
+?live16450@48: ; EBX = &$ecplfcia
+@976:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@897:
+	call      @@stk@time@wait_us$qxuj
+@977:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @896
+	jne       short @976
 	cmp       dword ptr [ebx],0
-	jne       short @896
+	jne       short @976
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @900
-@899:
+	jmp       short @980
+@979:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@900:
+	call      @@stk@time@wait_us$qxuj
+@980:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @903
+	jne       short @983
 	cmp       dword ptr [ebx],0
-@903:
-	je        short @901
+@983:
+	je        short @981
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @904
-	cmp       eax,dword ptr [ebp-8]
-@904:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @984
+	cmp       eax,dword ptr [ebp-20]
+@984:
 	setne     al
 	and       eax,1
-	jmp       short @902
-@901:
+	jmp       short @982
+@981:
 	xor       eax,eax
-@902:
+@982:
 	test      al,al
-	jne       short @899
-	?debug L 1600
+	jne       short @979
+	?debug L 2016
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1602
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1600
 	add       esp,24
-	?debug L 1602
+	?debug L 2018
+	mov       eax,dword ptr [ebp-36]
 	and       eax,33554432
-	?debug L 1603
-?live16449@160: ; EBX = &$eaiagcia, EAX = @temp3
+	mov       dword ptr [$moolfcia],eax
+	?debug L 2019
+?live16450@96: ; EBX = &$ecplfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1602
-?live16449@176: ; EBX = &$eaiagcia
-	mov       dword ptr [$mmhagcia],eax
-	?debug L 1603
-?live16449@192: ; EBX = &$eaiagcia, EAX = @temp3
 	setne     dl
-	?debug L 1604
-?live16449@208: ; EBX = &$eaiagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1603
-?live16449@224: ; EBX = &$eaiagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1604
-?live16449@240: ; EBX = &$eaiagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1603
-?live16449@256: ; EBX = &$eaiagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1606
-?live16449@272: ; 
-@905:
-@895:
+	?debug L 2020
+?live16450@112: ; EBX = &$ecplfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 2022
+?live16450@128: ; 
+@985:
+@975:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@972:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_aes$qv+0
+	dd        @972+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_aes$qv	endp
 @stk@cpu@cpu_has_aes$qv	ends
@@ -17845,14 +19415,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch307
-	dd	?patch308
-	dd	?patch309
+	dd	?patch314
+	dd	?patch315
+	dd	?patch316
 	df	@@stk@cpu@cpu_has_aes$qv
 	dw	0
-	dw	4229
+	dw	4231
 	dw	0
-	dw	550
+	dw	559
 	dw	0
 	dw	0
 	dw	0
@@ -17885,28 +19455,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	551
+	dw	560
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch310
+	dw	?patch317
 	dw	529
-	dw	?patch311
-	dd	?live16449@208-@@stk@cpu@cpu_has_aes$qv
-	dd	?live16449@224-?live16449@208
+	dw	?patch318
+	dd	?live16450@112-@@stk@cpu@cpu_has_aes$qv
+	dd	?live16450@128-?live16450@112
 	dw	1
-	dd	?live16449@240-@@stk@cpu@cpu_has_aes$qv
-	dd	?live16449@256-?live16449@240
-	dw	1
-?patch311	equ	2
-?patch310	equ	24
+?patch318	equ	1
+?patch317	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	552
+	dw	561
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	562
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	563
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	564
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$ecplfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	565
 	dw	0
 	dw	0
 	dw	0
@@ -17914,199 +19521,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	553
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	554
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	555
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$eaiagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	556
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	557
+	dw	566
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mmhagcia
+	df	$moolfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	558
+	dw	567
 	dw	0
 	dw	0
 	dw	0
-?patch307	equ	@905-@@stk@cpu@cpu_has_aes$qv+5
-?patch308	equ	0
-?patch309	equ	@905-@@stk@cpu@cpu_has_aes$qv
+?patch314	equ	@985-@@stk@cpu@cpu_has_aes$qv+72
+?patch315	equ	0
+?patch316	equ	@985-@@stk@cpu@cpu_has_aes$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mdiagcia	label	dword
+$mfplfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$ehiagcia	label	qword
+$ejplfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_viaaes$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_viaaes$qv	proc	near
-?live16450@0:
-	?debug L 1609
-@906:
+?live16451@0:
+	?debug L 2025
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1612
-?live16450@16: ; EBX = &$ehiagcia
-	mov       eax,dword ptr [$mdiagcia]
-	cmp       eax,-1
-	?debug L 1609
-?live16450@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $ehiagcia
-	?debug L 1612
-?live16450@48: ; EBX = &$ehiagcia
-	je        short @910
-	?debug L 1613
-?live16450@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @986
+@987:
+	mov       ebx,offset $ejplfcia
+	?debug L 2031
+?live16451@16: ; EBX = &$ejplfcia
+	mov       eax,dword ptr [$mfplfcia]
+	cmp       eax,-1
+	je        short @991
+	?debug L 2032
+?live16451@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @908
-	?debug L 1615
-?live16450@80: ; EBX = &$ehiagcia
-@909:
+	jmp       @989
+	?debug L 2034
+?live16451@48: ; EBX = &$ejplfcia
+@990:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@910:
+	call      @@stk@time@wait_us$qxuj
+@991:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @909
+	jne       short @990
 	cmp       dword ptr [ebx],0
-	jne       short @909
+	jne       short @990
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @913
-@912:
+	jmp       short @994
+@993:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@913:
+	call      @@stk@time@wait_us$qxuj
+@994:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @916
+	jne       short @997
 	cmp       dword ptr [ebx],0
-@916:
-	je        short @914
+@997:
+	je        short @995
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @917
-	cmp       eax,dword ptr [ebp-8]
-@917:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @998
+	cmp       eax,dword ptr [ebp-20]
+@998:
 	setne     al
 	and       eax,1
-	jmp       short @915
-@914:
+	jmp       short @996
+@995:
 	xor       eax,eax
-@915:
+@996:
 	test      al,al
-	jne       short @912
-	?debug L 1618
+	jne       short @993
+	?debug L 2037
 	push      0
 	push      -1073741823
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1620
-	mov       eax,dword ptr [ebp-12]
-	?debug L 1618
 	add       esp,24
-	?debug L 1620
+	?debug L 2039
+	mov       eax,dword ptr [ebp-28]
 	and       eax,128
-	?debug L 1621
-?live16450@160: ; EBX = &$ehiagcia, EAX = @temp3
+	mov       dword ptr [$mfplfcia],eax
+	?debug L 2040
+?live16451@96: ; EBX = &$ejplfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1620
-?live16450@176: ; EBX = &$ehiagcia
-	mov       dword ptr [$mdiagcia],eax
-	?debug L 1621
-?live16450@192: ; EBX = &$ehiagcia, EAX = @temp3
 	setne     dl
-	?debug L 1622
-?live16450@208: ; EBX = &$ehiagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1621
-?live16450@224: ; EBX = &$ehiagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1622
-?live16450@240: ; EBX = &$ehiagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1621
-?live16450@256: ; EBX = &$ehiagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1624
-?live16450@272: ; 
-@918:
-@908:
+	?debug L 2041
+?live16451@112: ; EBX = &$ejplfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 2043
+?live16451@128: ; 
+@999:
+@989:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@986:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_viaaes$qv+0
+	dd        @986+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_viaaes$qv	endp
 @stk@cpu@cpu_has_viaaes$qv	ends
@@ -18120,14 +19700,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch312
-	dd	?patch313
-	dd	?patch314
+	dd	?patch319
+	dd	?patch320
+	dd	?patch321
 	df	@@stk@cpu@cpu_has_viaaes$qv
 	dw	0
-	dw	4231
+	dw	4233
 	dw	0
-	dw	559
+	dw	568
 	dw	0
 	dw	0
 	dw	0
@@ -18163,28 +19743,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	560
+	dw	569
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch315
+	dw	?patch322
 	dw	529
-	dw	?patch316
-	dd	?live16450@208-@@stk@cpu@cpu_has_viaaes$qv
-	dd	?live16450@224-?live16450@208
+	dw	?patch323
+	dd	?live16451@112-@@stk@cpu@cpu_has_viaaes$qv
+	dd	?live16451@128-?live16451@112
 	dw	1
-	dd	?live16450@240-@@stk@cpu@cpu_has_viaaes$qv
-	dd	?live16450@256-?live16450@240
-	dw	1
-?patch316	equ	2
-?patch315	equ	24
+?patch323	equ	1
+?patch322	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	561
+	dw	570
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	571
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	572
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	573
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$ejplfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	574
 	dw	0
 	dw	0
 	dw	0
@@ -18192,199 +19809,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	562
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	563
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	564
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$ehiagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	565
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	566
+	dw	575
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mdiagcia
+	df	$mfplfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	567
+	dw	576
 	dw	0
 	dw	0
 	dw	0
-?patch312	equ	@918-@@stk@cpu@cpu_has_viaaes$qv+5
-?patch313	equ	0
-?patch314	equ	@918-@@stk@cpu@cpu_has_viaaes$qv
+?patch319	equ	@999-@@stk@cpu@cpu_has_viaaes$qv+73
+?patch320	equ	0
+?patch321	equ	@999-@@stk@cpu@cpu_has_viaaes$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mkiagcia	label	dword
+$mmplfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$eoiagcia	label	qword
+$eaamfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_viarng$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_viarng$qv	proc	near
-?live16451@0:
-	?debug L 1627
-@919:
+?live16452@0:
+	?debug L 2046
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1630
-?live16451@16: ; EBX = &$eoiagcia
-	mov       eax,dword ptr [$mkiagcia]
-	cmp       eax,-1
-	?debug L 1627
-?live16451@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $eoiagcia
-	?debug L 1630
-?live16451@48: ; EBX = &$eoiagcia
-	je        short @923
-	?debug L 1631
-?live16451@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @1000
+@1001:
+	mov       ebx,offset $eaamfcia
+	?debug L 2052
+?live16452@16: ; EBX = &$eaamfcia
+	mov       eax,dword ptr [$mmplfcia]
+	cmp       eax,-1
+	je        short @1005
+	?debug L 2053
+?live16452@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @921
-	?debug L 1633
-?live16451@80: ; EBX = &$eoiagcia
-@922:
+	jmp       @1003
+	?debug L 2055
+?live16452@48: ; EBX = &$eaamfcia
+@1004:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@923:
+	call      @@stk@time@wait_us$qxuj
+@1005:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @922
+	jne       short @1004
 	cmp       dword ptr [ebx],0
-	jne       short @922
+	jne       short @1004
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @926
-@925:
+	jmp       short @1008
+@1007:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@926:
+	call      @@stk@time@wait_us$qxuj
+@1008:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @929
+	jne       short @1011
 	cmp       dword ptr [ebx],0
-@929:
-	je        short @927
+@1011:
+	je        short @1009
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @930
-	cmp       eax,dword ptr [ebp-8]
-@930:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @1012
+	cmp       eax,dword ptr [ebp-20]
+@1012:
 	setne     al
 	and       eax,1
-	jmp       short @928
-@927:
+	jmp       short @1010
+@1009:
 	xor       eax,eax
-@928:
+@1010:
 	test      al,al
-	jne       short @925
-	?debug L 1636
+	jne       short @1007
+	?debug L 2058
 	push      0
 	push      -1073741823
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1638
-	mov       eax,dword ptr [ebp-12]
-	?debug L 1636
 	add       esp,24
-	?debug L 1638
+	?debug L 2060
+	mov       eax,dword ptr [ebp-28]
 	and       eax,8
-	?debug L 1639
-?live16451@160: ; EBX = &$eoiagcia, EAX = @temp3
+	mov       dword ptr [$mmplfcia],eax
+	?debug L 2061
+?live16452@96: ; EBX = &$eaamfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1638
-?live16451@176: ; EBX = &$eoiagcia
-	mov       dword ptr [$mkiagcia],eax
-	?debug L 1639
-?live16451@192: ; EBX = &$eoiagcia, EAX = @temp3
 	setne     dl
-	?debug L 1640
-?live16451@208: ; EBX = &$eoiagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1639
-?live16451@224: ; EBX = &$eoiagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1640
-?live16451@240: ; EBX = &$eoiagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1639
-?live16451@256: ; EBX = &$eoiagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1642
-?live16451@272: ; 
-@931:
-@921:
+	?debug L 2062
+?live16452@112: ; EBX = &$eaamfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 2064
+?live16452@128: ; 
+@1013:
+@1003:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@1000:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_viarng$qv+0
+	dd        @1000+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_viarng$qv	endp
 @stk@cpu@cpu_has_viarng$qv	ends
@@ -18398,14 +19988,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch317
-	dd	?patch318
-	dd	?patch319
+	dd	?patch324
+	dd	?patch325
+	dd	?patch326
 	df	@@stk@cpu@cpu_has_viarng$qv
 	dw	0
-	dw	4233
+	dw	4235
 	dw	0
-	dw	568
+	dw	577
 	dw	0
 	dw	0
 	dw	0
@@ -18441,28 +20031,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	569
+	dw	578
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch320
+	dw	?patch327
 	dw	529
-	dw	?patch321
-	dd	?live16451@208-@@stk@cpu@cpu_has_viarng$qv
-	dd	?live16451@224-?live16451@208
+	dw	?patch328
+	dd	?live16452@112-@@stk@cpu@cpu_has_viarng$qv
+	dd	?live16452@128-?live16452@112
 	dw	1
-	dd	?live16451@240-@@stk@cpu@cpu_has_viarng$qv
-	dd	?live16451@256-?live16451@240
-	dw	1
-?patch321	equ	2
-?patch320	equ	24
+?patch328	equ	1
+?patch327	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	570
+	dw	579
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	580
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	581
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	582
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$eaamfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	583
 	dw	0
 	dw	0
 	dw	0
@@ -18470,199 +20097,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	571
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	572
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	573
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$eoiagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	574
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	575
+	dw	584
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mkiagcia
+	df	$mmplfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	576
+	dw	585
 	dw	0
 	dw	0
 	dw	0
-?patch317	equ	@931-@@stk@cpu@cpu_has_viarng$qv+5
-?patch318	equ	0
-?patch319	equ	@931-@@stk@cpu@cpu_has_viarng$qv
+?patch324	equ	@1013-@@stk@cpu@cpu_has_viarng$qv+75
+?patch325	equ	0
+?patch326	equ	@1013-@@stk@cpu@cpu_has_viarng$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mbjagcia	label	dword
+$mdamfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$efjagcia	label	qword
+$ehamfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_viahash$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_viahash$qv	proc	near
-?live16452@0:
-	?debug L 1645
-@932:
+?live16453@0:
+	?debug L 2067
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1648
-?live16452@16: ; EBX = &$efjagcia
-	mov       eax,dword ptr [$mbjagcia]
-	cmp       eax,-1
-	?debug L 1645
-?live16452@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $efjagcia
-	?debug L 1648
-?live16452@48: ; EBX = &$efjagcia
-	je        short @936
-	?debug L 1649
-?live16452@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @1014
+@1015:
+	mov       ebx,offset $ehamfcia
+	?debug L 2073
+?live16453@16: ; EBX = &$ehamfcia
+	mov       eax,dword ptr [$mdamfcia]
+	cmp       eax,-1
+	je        short @1019
+	?debug L 2074
+?live16453@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @934
-	?debug L 1651
-?live16452@80: ; EBX = &$efjagcia
-@935:
+	jmp       @1017
+	?debug L 2076
+?live16453@48: ; EBX = &$ehamfcia
+@1018:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@936:
+	call      @@stk@time@wait_us$qxuj
+@1019:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @935
+	jne       short @1018
 	cmp       dword ptr [ebx],0
-	jne       short @935
+	jne       short @1018
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @939
-@938:
+	jmp       short @1022
+@1021:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@939:
+	call      @@stk@time@wait_us$qxuj
+@1022:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @942
+	jne       short @1025
 	cmp       dword ptr [ebx],0
-@942:
-	je        short @940
+@1025:
+	je        short @1023
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @943
-	cmp       eax,dword ptr [ebp-8]
-@943:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @1026
+	cmp       eax,dword ptr [ebp-20]
+@1026:
 	setne     al
 	and       eax,1
-	jmp       short @941
-@940:
+	jmp       short @1024
+@1023:
 	xor       eax,eax
-@941:
+@1024:
 	test      al,al
-	jne       short @938
-	?debug L 1654
+	jne       short @1021
+	?debug L 2079
 	push      0
 	push      -1073741823
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1656
-	mov       eax,dword ptr [ebp-12]
-	?debug L 1654
 	add       esp,24
-	?debug L 1656
+	?debug L 2081
+	mov       eax,dword ptr [ebp-28]
 	and       eax,2048
-	?debug L 1657
-?live16452@160: ; EBX = &$efjagcia, EAX = @temp3
+	mov       dword ptr [$mdamfcia],eax
+	?debug L 2082
+?live16453@96: ; EBX = &$ehamfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1656
-?live16452@176: ; EBX = &$efjagcia
-	mov       dword ptr [$mbjagcia],eax
-	?debug L 1657
-?live16452@192: ; EBX = &$efjagcia, EAX = @temp3
 	setne     dl
-	?debug L 1658
-?live16452@208: ; EBX = &$efjagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1657
-?live16452@224: ; EBX = &$efjagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1658
-?live16452@240: ; EBX = &$efjagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1657
-?live16452@256: ; EBX = &$efjagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1660
-?live16452@272: ; 
-@944:
-@934:
+	?debug L 2083
+?live16453@112: ; EBX = &$ehamfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 2085
+?live16453@128: ; 
+@1027:
+@1017:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@1014:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_viahash$qv+0
+	dd        @1014+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_viahash$qv	endp
 @stk@cpu@cpu_has_viahash$qv	ends
@@ -18676,14 +20276,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch322
-	dd	?patch323
-	dd	?patch324
+	dd	?patch329
+	dd	?patch330
+	dd	?patch331
 	df	@@stk@cpu@cpu_has_viahash$qv
 	dw	0
-	dw	4235
+	dw	4237
 	dw	0
-	dw	577
+	dw	586
 	dw	0
 	dw	0
 	dw	0
@@ -18720,28 +20320,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	578
+	dw	587
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch325
+	dw	?patch332
 	dw	529
-	dw	?patch326
-	dd	?live16452@208-@@stk@cpu@cpu_has_viahash$qv
-	dd	?live16452@224-?live16452@208
+	dw	?patch333
+	dd	?live16453@112-@@stk@cpu@cpu_has_viahash$qv
+	dd	?live16453@128-?live16453@112
 	dw	1
-	dd	?live16452@240-@@stk@cpu@cpu_has_viahash$qv
-	dd	?live16452@256-?live16452@240
-	dw	1
-?patch326	equ	2
-?patch325	equ	24
+?patch333	equ	1
+?patch332	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	579
+	dw	588
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	589
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	590
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	591
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$ehamfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	592
 	dw	0
 	dw	0
 	dw	0
@@ -18749,199 +20386,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	580
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	581
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	582
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$efjagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	583
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	584
+	dw	593
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mbjagcia
+	df	$mdamfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	585
+	dw	594
 	dw	0
 	dw	0
 	dw	0
-?patch322	equ	@944-@@stk@cpu@cpu_has_viahash$qv+5
-?patch323	equ	0
-?patch324	equ	@944-@@stk@cpu@cpu_has_viahash$qv
+?patch329	equ	@1027-@@stk@cpu@cpu_has_viahash$qv+73
+?patch330	equ	0
+?patch331	equ	@1027-@@stk@cpu@cpu_has_viahash$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mijagcia	label	dword
+$mkamfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$emjagcia	label	qword
+$eoamfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_rdseed$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_rdseed$qv	proc	near
-?live16453@0:
-	?debug L 1663
-@945:
+?live16454@0:
+	?debug L 2088
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1666
-?live16453@16: ; EBX = &$emjagcia
-	mov       eax,dword ptr [$mijagcia]
-	cmp       eax,-1
-	?debug L 1663
-?live16453@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $emjagcia
-	?debug L 1666
-?live16453@48: ; EBX = &$emjagcia
-	je        short @949
-	?debug L 1667
-?live16453@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @1028
+@1029:
+	mov       ebx,offset $eoamfcia
+	?debug L 2094
+?live16454@16: ; EBX = &$eoamfcia
+	mov       eax,dword ptr [$mkamfcia]
+	cmp       eax,-1
+	je        short @1033
+	?debug L 2095
+?live16454@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @947
-	?debug L 1669
-?live16453@80: ; EBX = &$emjagcia
-@948:
+	jmp       @1031
+	?debug L 2097
+?live16454@48: ; EBX = &$eoamfcia
+@1032:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@949:
+	call      @@stk@time@wait_us$qxuj
+@1033:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @948
+	jne       short @1032
 	cmp       dword ptr [ebx],0
-	jne       short @948
+	jne       short @1032
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @952
-@951:
+	jmp       short @1036
+@1035:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@952:
+	call      @@stk@time@wait_us$qxuj
+@1036:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @955
+	jne       short @1039
 	cmp       dword ptr [ebx],0
-@955:
-	je        short @953
+@1039:
+	je        short @1037
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @956
-	cmp       eax,dword ptr [ebp-8]
-@956:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @1040
+	cmp       eax,dword ptr [ebp-20]
+@1040:
 	setne     al
 	and       eax,1
-	jmp       short @954
-@953:
+	jmp       short @1038
+@1037:
 	xor       eax,eax
-@954:
+@1038:
 	test      al,al
-	jne       short @951
-	?debug L 1672
+	jne       short @1035
+	?debug L 2100
 	push      0
 	push      7
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1674
-	mov       eax,dword ptr [ebp-20]
-	?debug L 1672
 	add       esp,24
-	?debug L 1674
+	?debug L 2102
+	mov       eax,dword ptr [ebp-44]
 	and       eax,262144
-	?debug L 1675
-?live16453@160: ; EBX = &$emjagcia, EAX = @temp3
+	mov       dword ptr [$mkamfcia],eax
+	?debug L 2103
+?live16454@96: ; EBX = &$eoamfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1674
-?live16453@176: ; EBX = &$emjagcia
-	mov       dword ptr [$mijagcia],eax
-	?debug L 1675
-?live16453@192: ; EBX = &$emjagcia, EAX = @temp3
 	setne     dl
-	?debug L 1676
-?live16453@208: ; EBX = &$emjagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1675
-?live16453@224: ; EBX = &$emjagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1676
-?live16453@240: ; EBX = &$emjagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1675
-?live16453@256: ; EBX = &$emjagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1678
-?live16453@272: ; 
-@957:
-@947:
+	?debug L 2104
+?live16454@112: ; EBX = &$eoamfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 2106
+?live16454@128: ; 
+@1041:
+@1031:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@1028:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_rdseed$qv+0
+	dd        @1028+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_rdseed$qv	endp
 @stk@cpu@cpu_has_rdseed$qv	ends
@@ -18955,14 +20565,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch327
-	dd	?patch328
-	dd	?patch329
+	dd	?patch334
+	dd	?patch335
+	dd	?patch336
 	df	@@stk@cpu@cpu_has_rdseed$qv
 	dw	0
-	dw	4237
+	dw	4239
 	dw	0
-	dw	586
+	dw	595
 	dw	0
 	dw	0
 	dw	0
@@ -18998,28 +20608,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	587
+	dw	596
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch330
+	dw	?patch337
 	dw	529
-	dw	?patch331
-	dd	?live16453@208-@@stk@cpu@cpu_has_rdseed$qv
-	dd	?live16453@224-?live16453@208
+	dw	?patch338
+	dd	?live16454@112-@@stk@cpu@cpu_has_rdseed$qv
+	dd	?live16454@128-?live16454@112
 	dw	1
-	dd	?live16453@240-@@stk@cpu@cpu_has_rdseed$qv
-	dd	?live16453@256-?live16453@240
-	dw	1
-?patch331	equ	2
-?patch330	equ	24
+?patch338	equ	1
+?patch337	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	588
+	dw	597
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	598
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	599
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	600
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$eoamfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	601
 	dw	0
 	dw	0
 	dw	0
@@ -19027,199 +20674,172 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	589
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	590
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	591
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$emjagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	592
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	593
+	dw	602
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mijagcia
+	df	$mkamfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	594
+	dw	603
 	dw	0
 	dw	0
 	dw	0
-?patch327	equ	@957-@@stk@cpu@cpu_has_rdseed$qv+5
-?patch328	equ	0
-?patch329	equ	@957-@@stk@cpu@cpu_has_rdseed$qv
+?patch334	equ	@1041-@@stk@cpu@cpu_has_rdseed$qv+72
+?patch335	equ	0
+?patch336	equ	@1041-@@stk@cpu@cpu_has_rdseed$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 	align	4
-$mpjagcia	label	dword
+$mbbmfcia	label	dword
 	dd	-1
+	db	1	dup(?)
 	align	4
-$edkagcia	label	qword
+$efbmfcia	label	qword
 	db        0,0,0,0,0,0,0,0
+	db	1	dup(?)
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_has_rdrand$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_has_rdrand$qv	proc	near
-?live16454@0:
-	?debug L 1681
-@958:
+?live16455@0:
+	?debug L 2109
 	push      ebp
 	mov       ebp,esp
-	add       esp,-24
-	?debug L 1684
-?live16454@16: ; EBX = &$edkagcia
-	mov       eax,dword ptr [$mpjagcia]
-	cmp       eax,-1
-	?debug L 1681
-?live16454@32: ; 
+	push      5457731
+	add       esp,-48
 	push      ebx
-	mov       ebx,offset $edkagcia
-	?debug L 1684
-?live16454@48: ; EBX = &$edkagcia
-	je        short @962
-	?debug L 1685
-?live16454@64: ; EAX = @temp4
+	mov       dword ptr [ebp-8],offset @1042
+@1043:
+	mov       ebx,offset $efbmfcia
+	?debug L 2115
+?live16455@16: ; EBX = &$efbmfcia
+	mov       eax,dword ptr [$mbbmfcia]
+	cmp       eax,-1
+	je        short @1047
+	?debug L 2116
+?live16455@32: ; EAX = @temp4
 	test      eax,eax
 	setne     dl
 	and       edx,1
 	mov       eax,edx
-	jmp       @960
-	?debug L 1687
-?live16454@80: ; EBX = &$edkagcia
-@961:
+	jmp       @1045
+	?debug L 2118
+?live16455@48: ; EBX = &$efbmfcia
+@1046:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@962:
+	call      @@stk@time@wait_us$qxuj
+@1047:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @961
+	jne       short @1046
 	cmp       dword ptr [ebx],0
-	jne       short @961
+	jne       short @1046
 	call      @@stk@cpu@rdtsc$qv
-	mov       dword ptr [ebp-8],eax
-	mov       dword ptr [ebp-4],edx
-	mov       ecx,dword ptr [ebp-8]
+	mov       dword ptr [ebp-20],eax
+	mov       dword ptr [ebp-16],edx
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       ecx,dword ptr [ebp-20]
 	mov       dword ptr [ebx],ecx
-	mov       ecx,dword ptr [ebp-4]
+	mov       ecx,dword ptr [ebp-16]
 	mov       dword ptr [ebx+4],ecx
-	jmp       short @965
-@964:
+	jmp       short @1050
+@1049:
 	push      0
 	push      0
-	call      @@stk@time@wait_us$qqsxuj
-@965:
+	call      @@stk@time@wait_us$qxuj
+@1050:
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	cmp       dword ptr [ebx+4],0
-	jne       short @968
+	jne       short @1053
 	cmp       dword ptr [ebx],0
-@968:
-	je        short @966
+@1053:
+	je        short @1051
+	push      8
+	push      ebx
+	call      _CG_D_EP
 	mov       eax,dword ptr [ebx]
 	mov       edx,dword ptr [ebx+4]
-	cmp       edx,dword ptr [ebp-4]
-	jne       short @969
-	cmp       eax,dword ptr [ebp-8]
-@969:
+	cmp       edx,dword ptr [ebp-16]
+	jne       short @1054
+	cmp       eax,dword ptr [ebp-20]
+@1054:
 	setne     al
 	and       eax,1
-	jmp       short @967
-@966:
+	jmp       short @1052
+@1051:
 	xor       eax,eax
-@967:
+@1052:
 	test      al,al
-	jne       short @964
-	?debug L 1690
+	jne       short @1049
+	?debug L 2121
 	push      0
 	push      1
-	lea       edx,dword ptr [ebp-12]
+	lea       edx,dword ptr [ebp-28]
 	push      edx
-	lea       ecx,dword ptr [ebp-16]
+	lea       ecx,dword ptr [ebp-36]
 	push      ecx
-	lea       eax,dword ptr [ebp-20]
+	lea       eax,dword ptr [ebp-44]
 	push      eax
-	lea       edx,dword ptr [ebp-24]
+	lea       edx,dword ptr [ebp-52]
 	push      edx
 	call      @@stk@cpu@cpuidex$qpuit1t1t1uiui
-	?debug L 1692
-	mov       eax,dword ptr [ebp-16]
-	?debug L 1690
 	add       esp,24
-	?debug L 1692
+	?debug L 2123
+	mov       eax,dword ptr [ebp-36]
 	and       eax,1073741824
-	?debug L 1693
-?live16454@160: ; EBX = &$edkagcia, EAX = @temp3
+	mov       dword ptr [$mbbmfcia],eax
+	?debug L 2124
+?live16455@96: ; EBX = &$efbmfcia, EAX = @temp3
 	test      eax,eax
-	?debug L 1692
-?live16454@176: ; EBX = &$edkagcia
-	mov       dword ptr [$mpjagcia],eax
-	?debug L 1693
-?live16454@192: ; EBX = &$edkagcia, EAX = @temp3
 	setne     dl
-	?debug L 1694
-?live16454@208: ; EBX = &$edkagcia, EAX = r
-	mov       dword ptr [ebx],0
-	?debug L 1693
-?live16454@224: ; EBX = &$edkagcia, EAX = @temp3
 	and       edx,1
-	?debug L 1694
-?live16454@240: ; EBX = &$edkagcia, EAX = r
-	mov       dword ptr [ebx+4],0
-	?debug L 1693
-?live16454@256: ; EBX = &$edkagcia, EAX = @temp3
 	mov       eax,edx
-	?debug L 1696
-?live16454@272: ; 
-@970:
-@960:
+	?debug L 2125
+?live16455@112: ; EBX = &$efbmfcia, EAX = ret
+	push      8
+	push      ebx
+	call      _CG_D_EP
+	mov       dword ptr [ebx],0
+	mov       dword ptr [ebx+4],0
+	?debug L 2127
+?live16455@128: ; 
+@1055:
+@1045:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
 	mov       esp,ebp
 	pop       ebp
 	ret 
+	align 4        
+@1042:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_has_rdrand$qv+0
+	dd        @1042+0
+	db        204,255,255,255,8,0,0,0,5,0,0,0,236,255,255,255
+	db        8,0,0,0,228,255,255,255,4,0,0,0,220,255,255,255
+	db        4,0,0,0,212,255,255,255,4,0,0,0,204,255,255,255
+	db        4,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_has_rdrand$qv	endp
 @stk@cpu@cpu_has_rdrand$qv	ends
@@ -19233,14 +20853,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch332
-	dd	?patch333
-	dd	?patch334
+	dd	?patch339
+	dd	?patch340
+	dd	?patch341
 	df	@@stk@cpu@cpu_has_rdrand$qv
 	dw	0
-	dw	4239
+	dw	4241
 	dw	0
-	dw	595
+	dw	604
 	dw	0
 	dw	0
 	dw	0
@@ -19276,28 +20896,65 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	48
 	dw	0
 	dw	1
-	dw	596
+	dw	605
 	dw	0
 	dw	0
 	dw	0
-	dw	?patch335
+	dw	?patch342
 	dw	529
-	dw	?patch336
-	dd	?live16454@208-@@stk@cpu@cpu_has_rdrand$qv
-	dd	?live16454@224-?live16454@208
+	dw	?patch343
+	dd	?live16455@112-@@stk@cpu@cpu_has_rdrand$qv
+	dd	?live16455@128-?live16455@112
 	dw	1
-	dd	?live16454@240-@@stk@cpu@cpu_has_rdrand$qv
-	dd	?live16454@256-?live16454@240
-	dw	1
-?patch336	equ	2
-?patch335	equ	24
+?patch343	equ	1
+?patch342	equ	14
 	dw	18
 	dw	512
-	dw	65512
+	dw	65484
 	dw	65535
 	dw	117
 	dw	0
-	dw	597
+	dw	606
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65492
+	dw	65535
+	dw	117
+	dw	0
+	dw	607
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65500
+	dw	65535
+	dw	117
+	dw	0
+	dw	608
+	dw	0
+	dw	0
+	dw	0
+	dw	18
+	dw	512
+	dw	65508
+	dw	65535
+	dw	117
+	dw	0
+	dw	609
+	dw	0
+	dw	0
+	dw	0
+	dw	22
+	dw	513
+	df	$efbmfcia
+	dw	0
+	dw	4102
+	dw	0
+	dw	610
 	dw	0
 	dw	0
 	dw	0
@@ -19305,1372 +20962,2253 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	512
 	dw	65516
 	dw	65535
-	dw	117
-	dw	0
-	dw	598
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65520
-	dw	65535
-	dw	117
-	dw	0
-	dw	599
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65524
-	dw	65535
-	dw	117
-	dw	0
-	dw	600
-	dw	0
-	dw	0
-	dw	0
-	dw	22
-	dw	513
-	df	$edkagcia
-	dw	0
-	dw	4102
-	dw	0
-	dw	601
-	dw	0
-	dw	0
-	dw	0
-	dw	18
-	dw	512
-	dw	65528
-	dw	65535
 	dw	118
 	dw	0
-	dw	602
+	dw	611
 	dw	0
 	dw	0
 	dw	0
 	dw	22
 	dw	513
-	df	$mpjagcia
+	df	$mbbmfcia
 	dw	0
 	dw	117
 	dw	0
-	dw	603
+	dw	612
 	dw	0
 	dw	0
 	dw	0
-?patch332	equ	@970-@@stk@cpu@cpu_has_rdrand$qv+5
-?patch333	equ	0
-?patch334	equ	@970-@@stk@cpu@cpu_has_rdrand$qv
+?patch339	equ	@1055-@@stk@cpu@cpu_has_rdrand$qv+72
+?patch340	equ	0
+?patch341	equ	@1055-@@stk@cpu@cpu_has_rdrand$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65508
+	dw	65480
 	dw	65535
 $$BSYMS	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_print_info$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_print_info$qv	proc	near
-?live16455@0:
-	?debug L 1705
-@971:
+?live16456@0:
+	?debug L 2136
 	push      ebp
 	mov       ebp,esp
+	push      5457731
+	push      ecx
 	push      ebx
+	mov       dword ptr [ebp-8],offset @1056
+@1057:
 	mov       ebx,offset s@
-	?debug L 1708
-?live16455@16: ; EBX = &s@
+	?debug L 2142
+?live16456@16: ; EBX = &s@
 	call      @@stk@cpu@cpu_vendor$qv
 	push      eax
+	push      ebx
+	push      39
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+39]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,8
-	?debug L 1709
+	?debug L 2143
 	call      @@stk@cpu@cpu_name$qv
 	push      eax
+	push      ebx
+	push      52
+	call      _CG_A_PY
 	lea       edx,dword ptr [ebx+52]
 	push      edx
 	call      @@stk@con@prints$qpxce
 	add       esp,8
-	?debug L 1710
+	?debug L 2144
 	push      1
 	call      @@stk@cpu@cpu_num_mhz$qo
 	pop       ecx
 	push      eax
+	push      ebx
+	push      73
+	call      _CG_A_PY
 	lea       ecx,dword ptr [ebx+73]
 	push      ecx
 	call      @@stk@con@prints$qpxce
 	add       esp,8
-	?debug L 1711
+	?debug L 2145
 	push      0
 	call      @@stk@cpu@cpu_cache_size$quc
 	pop       ecx
-	test      eax,eax
-	je        short @972
-	lea       edx,dword ptr [ebx+125]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @973
-@972:
-	lea       eax,dword ptr [ebx+125]
-	push      eax
-	lea       edx,dword ptr [ebx+123]
-	push      edx
-	lea       ecx,dword ptr [ebx+153]
-	push      ecx
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1712
-@973:
-	push      0
-	call      @@stk@cpu@cpu_cache_line_size$quc
-	pop       ecx
-	test      eax,eax
-	je        short @974
-	lea       edx,dword ptr [ebx+164]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @975
-@974:
-	lea       eax,dword ptr [ebx+164]
-	push      eax
-	lea       edx,dword ptr [ebx+123]
-	push      edx
-	lea       ecx,dword ptr [ebx+153]
-	push      ecx
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1713
-@975:
-	lea       eax,dword ptr [ebx+197]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	pop       ecx
-	?debug L 1714
-	push      1
-	call      @@stk@cpu@cpu_cache_size$quc
-	pop       ecx
-	test      eax,eax
-	je        short @976
-	lea       edx,dword ptr [ebx+239]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @977
-@976:
-	lea       edx,dword ptr [ebx+239]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1715
-@977:
-	push      1
-	call      @@stk@cpu@cpu_cache_line_size$quc
-	pop       ecx
-	test      eax,eax
-	je        short @978
-	lea       edx,dword ptr [ebx+267]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @979
-@978:
-	lea       edx,dword ptr [ebx+267]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1716
-@979:
-	push      2
-	call      @@stk@cpu@cpu_cache_size$quc
-	pop       ecx
-	test      eax,eax
-	je        short @980
-	lea       edx,dword ptr [ebx+300]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @981
-@980:
-	lea       edx,dword ptr [ebx+300]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1717
-@981:
-	push      2
-	call      @@stk@cpu@cpu_cache_line_size$quc
-	pop       ecx
-	test      eax,eax
-	je        short @982
-	lea       edx,dword ptr [ebx+328]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @983
-@982:
-	lea       edx,dword ptr [ebx+328]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1718
-@983:
-	push      3
-	call      @@stk@cpu@cpu_cache_size$quc
-	pop       ecx
-	test      eax,eax
-	je        short @984
-	lea       edx,dword ptr [ebx+361]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @985
-@984:
-	lea       edx,dword ptr [ebx+361]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1719
-@985:
-	push      3
-	call      @@stk@cpu@cpu_cache_line_size$quc
-	pop       ecx
-	test      eax,eax
-	je        short @986
-	lea       edx,dword ptr [ebx+389]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @987
-@986:
-	lea       edx,dword ptr [ebx+389]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1720
-@987:
-	call      @@stk@cpu@cpu_num_cores$qv
-	test      eax,eax
-	je        short @988
-	lea       edx,dword ptr [ebx+422]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @989
-@988:
-	lea       edx,dword ptr [ebx+422]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1721
-@989:
-	call      @@stk@cpu@cpu_num_threads$qv
-	test      eax,eax
-	je        short @990
-	lea       edx,dword ptr [ebx+448]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @991
-@990:
-	lea       edx,dword ptr [ebx+448]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1723
-@991:
-	call      @@stk@cpu@cpu_has_amd64$qv
-	and       eax,255
-	test      eax,eax
-	je        short @992
-	lea       edx,dword ptr [ebx+476]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @993
-@992:
-	lea       edx,dword ptr [ebx+476]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1724
-@993:
-	call      @@stk@cpu@cpu_has_ht$qv
-	and       eax,255
-	test      eax,eax
-	je        short @994
-	lea       edx,dword ptr [ebx+502]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @995
-@994:
-	lea       edx,dword ptr [ebx+502]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1725
-@995:
-	call      @@stk@cpu@cpu_has_mmx$qv
-	and       eax,255
-	test      eax,eax
-	je        short @996
-	lea       edx,dword ptr [ebx+525]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @997
-@996:
-	lea       edx,dword ptr [ebx+525]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1726
-@997:
-	call      @@stk@cpu@cpu_has_mmxext$qv
-	and       eax,255
-	test      eax,eax
-	je        short @998
-	lea       edx,dword ptr [ebx+549]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @999
-@998:
-	lea       edx,dword ptr [ebx+549]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1727
-@999:
-	call      @@stk@cpu@cpu_has_3dnow$qv
-	test      eax,eax
-	je        short @1000
-	lea       edx,dword ptr [ebx+576]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1001
-@1000:
-	lea       edx,dword ptr [ebx+576]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1728
-@1001:
-	call      @@stk@cpu@cpu_has_3dnowprefetch$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1002
-	lea       edx,dword ptr [ebx+602]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1003
-@1002:
-	lea       edx,dword ptr [ebx+602]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1729
-@1003:
-	call      @@stk@cpu@cpu_has_fxsr$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1004
-	lea       edx,dword ptr [ebx+636]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1005
-@1004:
-	lea       edx,dword ptr [ebx+636]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1730
-@1005:
-	call      @@stk@cpu@cpu_has_sse$qv
-	test      eax,eax
-	je        short @1006
-	lea       edx,dword ptr [ebx+661]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1007
-@1006:
-	lea       edx,dword ptr [ebx+661]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1731
-@1007:
-	call      @@stk@cpu@cpu_has_xsave$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1008
-	lea       edx,dword ptr [ebx+685]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1009
-@1008:
-	lea       edx,dword ptr [ebx+685]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1732
-@1009:
-	call      @@stk@cpu@cpu_has_pclmulqdq$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1010
-	lea       edx,dword ptr [ebx+711]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1011
-@1010:
-	lea       edx,dword ptr [ebx+711]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1733
-@1011:
-	call      @@stk@cpu@cpu_has_movbe$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1012
-	lea       edx,dword ptr [ebx+741]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1013
-@1012:
-	lea       edx,dword ptr [ebx+741]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1734
-@1013:
-	call      @@stk@cpu@cpu_has_fma$qv
-	test      eax,eax
-	je        short @1014
-	lea       edx,dword ptr [ebx+767]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1015
-@1014:
-	lea       edx,dword ptr [ebx+767]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1735
-@1015:
-	call      @@stk@cpu@cpu_has_popcnt$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1016
-	lea       edx,dword ptr [ebx+791]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1017
-@1016:
-	lea       edx,dword ptr [ebx+791]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1736
-@1017:
-	call      @@stk@cpu@cpu_has_xop$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1018
-	lea       edx,dword ptr [ebx+818]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1019
-@1018:
-	lea       edx,dword ptr [ebx+818]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1737
-@1019:
-	call      @@stk@cpu@cpu_has_lzcnt$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1020
-	lea       edx,dword ptr [ebx+842]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1021
-@1020:
-	lea       edx,dword ptr [ebx+842]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1738
-@1021:
-	call      @@stk@cpu@cpu_has_f16c$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1022
-	lea       edx,dword ptr [ebx+868]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1023
-@1022:
-	lea       edx,dword ptr [ebx+868]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1739
-@1023:
-	call      @@stk@cpu@cpu_has_avx$qv
-	test      eax,eax
-	je        short @1024
-	lea       edx,dword ptr [ebx+893]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1025
-@1024:
-	lea       edx,dword ptr [ebx+893]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1740
-@1025:
-	call      @@stk@cpu@cpu_has_avx512f$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1026
-	lea       edx,dword ptr [ebx+917]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1027
-@1026:
-	lea       edx,dword ptr [ebx+917]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1741
-@1027:
-	call      @@stk@cpu@cpu_has_avx512bw$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1028
-	lea       edx,dword ptr [ebx+945]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1029
-@1028:
-	lea       edx,dword ptr [ebx+945]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1742
-@1029:
-	call      @@stk@cpu@cpu_has_avx512cd$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1030
-	lea       edx,dword ptr [ebx+974]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1031
-@1030:
-	lea       edx,dword ptr [ebx+974]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1743
-@1031:
-	call      @@stk@cpu@cpu_has_avx512dq$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1032
-	lea       edx,dword ptr [ebx+1003]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1033
-@1032:
-	lea       edx,dword ptr [ebx+1003]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1744
-@1033:
-	call      @@stk@cpu@cpu_has_avx512er$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1034
-	lea       edx,dword ptr [ebx+1032]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1035
-@1034:
-	lea       edx,dword ptr [ebx+1032]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1745
-@1035:
-	call      @@stk@cpu@cpu_has_avx512pf$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1036
-	lea       edx,dword ptr [ebx+1061]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1037
-@1036:
-	lea       edx,dword ptr [ebx+1061]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1746
-@1037:
-	call      @@stk@cpu@cpu_has_avx512vl$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1038
-	lea       edx,dword ptr [ebx+1090]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1039
-@1038:
-	lea       edx,dword ptr [ebx+1090]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1747
-@1039:
-	call      @@stk@cpu@cpu_has_avx512ifma$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1040
-	lea       edx,dword ptr [ebx+1119]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1041
-@1040:
-	lea       edx,dword ptr [ebx+1119]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1748
-@1041:
-	call      @@stk@cpu@cpu_has_bmi$qv
-	test      eax,eax
-	je        short @1042
-	lea       edx,dword ptr [ebx+1150]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1043
-@1042:
-	lea       edx,dword ptr [ebx+1150]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1749
-@1043:
-	call      @@stk@cpu@cpu_has_avx512vbmi$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1044
-	lea       edx,dword ptr [ebx+1174]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1045
-@1044:
-	lea       edx,dword ptr [ebx+1174]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1750
-@1045:
-	call      @@stk@cpu@cpu_has_cmov$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1046
-	lea       edx,dword ptr [ebx+1205]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1047
-@1046:
-	lea       edx,dword ptr [ebx+1205]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1751
-@1047:
-	call      @@stk@cpu@cpu_has_cmpxchg$qv
-	test      eax,eax
-	je        short @1048
-	lea       edx,dword ptr [ebx+1230]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1049
-@1048:
-	lea       edx,dword ptr [ebx+1230]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1752
-@1049:
-	call      @@stk@cpu@cpu_has_clmul$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1050
-	lea       edx,dword ptr [ebx+1258]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1051
-@1050:
-	lea       edx,dword ptr [ebx+1258]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1753
-@1051:
-	call      @@stk@cpu@cpu_has_aes$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1052
-	lea       edx,dword ptr [ebx+1284]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1053
-@1052:
-	lea       edx,dword ptr [ebx+1284]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1754
-@1053:
-	call      @@stk@cpu@cpu_has_sha$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1054
-	lea       edx,dword ptr [ebx+1308]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1055
-@1054:
-	lea       edx,dword ptr [ebx+1308]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1755
-@1055:
-	call      @@stk@cpu@cpu_has_rdrand$qv
-	and       eax,255
-	test      eax,eax
-	je        short @1056
-	lea       edx,dword ptr [ebx+1332]
-	lea       ecx,dword ptr [ebx+123]
-	push      edx
-	push      ecx
-	push      eax
-	lea       eax,dword ptr [ebx+98]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,16
-	jmp       short @1057
-@1056:
-	lea       edx,dword ptr [ebx+1332]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
-	push      eax
-	call      @@stk@con@prints$qpxce
-	add       esp,12
-	?debug L 1756
-@1057:
-	call      @@stk@cpu@cpu_has_rdseed$qv
-	and       eax,255
 	test      eax,eax
 	je        short @1058
-	lea       edx,dword ptr [ebx+1359]
-	lea       ecx,dword ptr [ebx+123]
+	push      ebx
+	push      125
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+125]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
 	push      ecx
 	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+98]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,16
 	jmp       short @1059
 @1058:
-	lea       edx,dword ptr [ebx+1359]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
+	push      ebx
+	push      125
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+125]
 	push      eax
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+123]
+	push      edx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+153]
+	push      ecx
 	call      @@stk@con@prints$qpxce
 	add       esp,12
-	?debug L 1757
+	?debug L 2146
 @1059:
-	call      @@stk@cpu@cpu_has_tsc$qv
-	and       eax,255
+	push      0
+	call      @@stk@cpu@cpu_cache_line_size$quc
+	pop       ecx
 	test      eax,eax
 	je        short @1060
-	lea       edx,dword ptr [ebx+1386]
-	lea       ecx,dword ptr [ebx+123]
+	push      ebx
+	push      164
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+164]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
 	push      ecx
 	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+98]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,16
 	jmp       short @1061
 @1060:
-	lea       edx,dword ptr [ebx+1386]
-	push      edx
-	lea       ecx,dword ptr [ebx+123]
-	push      ecx
-	lea       eax,dword ptr [ebx+153]
+	push      ebx
+	push      164
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+164]
 	push      eax
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+123]
+	push      edx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+153]
+	push      ecx
 	call      @@stk@con@prints$qpxce
 	add       esp,12
-	?debug L 1758
+	?debug L 2147
 @1061:
-	call      @@stk@cpu@cpu_has_perftsc$qv
-	and       eax,255
+	push      ebx
+	push      197
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+197]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	pop       ecx
+	?debug L 2148
+	push      1
+	call      @@stk@cpu@cpu_cache_size$quc
+	pop       ecx
 	test      eax,eax
 	je        short @1062
-	lea       edx,dword ptr [ebx+1410]
-	lea       ecx,dword ptr [ebx+123]
+	push      ebx
+	push      239
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+239]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
 	push      ecx
 	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+98]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,16
 	jmp       short @1063
 @1062:
-	lea       edx,dword ptr [ebx+1410]
+	push      ebx
+	push      239
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+239]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
 	lea       ecx,dword ptr [ebx+123]
 	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+153]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,12
-	?debug L 1759
+	?debug L 2149
 @1063:
-	call      @@stk@cpu@cpu_has_erms$qv
-	and       eax,255
+	push      1
+	call      @@stk@cpu@cpu_cache_line_size$quc
+	pop       ecx
 	test      eax,eax
 	je        short @1064
-	lea       edx,dword ptr [ebx+1438]
-	lea       ecx,dword ptr [ebx+123]
+	push      ebx
+	push      267
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+267]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
 	push      ecx
 	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+98]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,16
 	jmp       short @1065
 @1064:
-	lea       edx,dword ptr [ebx+1438]
+	push      ebx
+	push      267
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+267]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
 	lea       ecx,dword ptr [ebx+123]
 	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+153]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,12
-	?debug L 1760
+	?debug L 2150
 @1065:
-	call      @@stk@cpu@cpu_has_msr$qv
-	and       eax,255
+	push      2
+	call      @@stk@cpu@cpu_cache_size$quc
+	pop       ecx
 	test      eax,eax
 	je        short @1066
-	lea       edx,dword ptr [ebx+1463]
-	lea       ecx,dword ptr [ebx+123]
+	push      ebx
+	push      300
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+300]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
 	push      ecx
 	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+98]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,16
 	jmp       short @1067
 @1066:
-	lea       edx,dword ptr [ebx+1463]
+	push      ebx
+	push      300
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+300]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
 	lea       ecx,dword ptr [ebx+123]
 	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+153]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,12
-	?debug L 1761
+	?debug L 2151
 @1067:
-	call      @@stk@cpu@cpu_has_mtrr$qv
-	and       eax,255
+	push      2
+	call      @@stk@cpu@cpu_cache_line_size$quc
+	pop       ecx
 	test      eax,eax
 	je        short @1068
-	lea       edx,dword ptr [ebx+1487]
-	lea       ecx,dword ptr [ebx+123]
+	push      ebx
+	push      328
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+328]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
 	push      ecx
 	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+98]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,16
 	jmp       short @1069
 @1068:
-	lea       edx,dword ptr [ebx+1487]
+	push      ebx
+	push      328
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+328]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
 	lea       ecx,dword ptr [ebx+123]
 	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+153]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,12
-	?debug L 1762
+	?debug L 2152
 @1069:
-	call      @@stk@cpu@cpu_has_vmx$qv
-	and       eax,255
+	push      3
+	call      @@stk@cpu@cpu_cache_size$quc
+	pop       ecx
 	test      eax,eax
 	je        short @1070
-	lea       edx,dword ptr [ebx+1512]
-	lea       ecx,dword ptr [ebx+123]
+	push      ebx
+	push      361
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+361]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
 	push      ecx
 	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+98]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,16
-@1073:
-	pop       ebx
-	pop       ebp
-	ret 
+	jmp       short @1071
 @1070:
-	lea       edx,dword ptr [ebx+1512]
+	push      ebx
+	push      361
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+361]
 	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
 	lea       ecx,dword ptr [ebx+123]
 	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
 	lea       eax,dword ptr [ebx+153]
 	push      eax
 	call      @@stk@con@prints$qpxce
 	add       esp,12
-	?debug L 1764
-?live16455@880: ; 
+	?debug L 2153
 @1071:
+	push      3
+	call      @@stk@cpu@cpu_cache_line_size$quc
+	pop       ecx
+	test      eax,eax
+	je        short @1072
+	push      ebx
+	push      389
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+389]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1073
 @1072:
+	push      ebx
+	push      389
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+389]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2154
+@1073:
+	call      @@stk@cpu@cpu_num_cores$qv
+	test      eax,eax
+	je        short @1074
+	push      ebx
+	push      422
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+422]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1075
+@1074:
+	push      ebx
+	push      422
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+422]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2155
+@1075:
+	call      @@stk@cpu@cpu_num_threads$qv
+	test      eax,eax
+	je        short @1076
+	push      ebx
+	push      448
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+448]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1077
+@1076:
+	push      ebx
+	push      448
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+448]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2157
+@1077:
+	call      @@stk@cpu@cpu_has_amd64$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1078
+	push      ebx
+	push      476
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+476]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1079
+@1078:
+	push      ebx
+	push      476
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+476]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2158
+@1079:
+	call      @@stk@cpu@cpu_has_ht$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1080
+	push      ebx
+	push      502
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+502]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1081
+@1080:
+	push      ebx
+	push      502
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+502]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2159
+@1081:
+	call      @@stk@cpu@cpu_has_mmx$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1082
+	push      ebx
+	push      525
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+525]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1083
+@1082:
+	push      ebx
+	push      525
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+525]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2160
+@1083:
+	call      @@stk@cpu@cpu_has_mmxext$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1084
+	push      ebx
+	push      549
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+549]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1085
+@1084:
+	push      ebx
+	push      549
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+549]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2161
+@1085:
+	call      @@stk@cpu@cpu_has_3dnow$qv
+	test      eax,eax
+	je        short @1086
+	push      ebx
+	push      576
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+576]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1087
+@1086:
+	push      ebx
+	push      576
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+576]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2162
+@1087:
+	call      @@stk@cpu@cpu_has_3dnowprefetch$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1088
+	push      ebx
+	push      602
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+602]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1089
+@1088:
+	push      ebx
+	push      602
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+602]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2163
+@1089:
+	call      @@stk@cpu@cpu_has_fxsr$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1090
+	push      ebx
+	push      636
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+636]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1091
+@1090:
+	push      ebx
+	push      636
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+636]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2164
+@1091:
+	call      @@stk@cpu@cpu_has_sse$qv
+	test      eax,eax
+	je        short @1092
+	push      ebx
+	push      661
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+661]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1093
+@1092:
+	push      ebx
+	push      661
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+661]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2165
+@1093:
+	call      @@stk@cpu@cpu_has_xsave$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1094
+	push      ebx
+	push      685
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+685]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1095
+@1094:
+	push      ebx
+	push      685
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+685]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2166
+@1095:
+	call      @@stk@cpu@cpu_has_pclmulqdq$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1096
+	push      ebx
+	push      711
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+711]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1097
+@1096:
+	push      ebx
+	push      711
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+711]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2167
+@1097:
+	call      @@stk@cpu@cpu_has_movbe$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1098
+	push      ebx
+	push      741
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+741]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1099
+@1098:
+	push      ebx
+	push      741
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+741]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2168
+@1099:
+	call      @@stk@cpu@cpu_has_fma$qv
+	test      eax,eax
+	je        short @1100
+	push      ebx
+	push      767
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+767]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1101
+@1100:
+	push      ebx
+	push      767
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+767]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2169
+@1101:
+	call      @@stk@cpu@cpu_has_popcnt$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1102
+	push      ebx
+	push      791
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+791]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1103
+@1102:
+	push      ebx
+	push      791
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+791]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2170
+@1103:
+	call      @@stk@cpu@cpu_has_xop$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1104
+	push      ebx
+	push      818
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+818]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1105
+@1104:
+	push      ebx
+	push      818
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+818]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2171
+@1105:
+	call      @@stk@cpu@cpu_has_lzcnt$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1106
+	push      ebx
+	push      842
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+842]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1107
+@1106:
+	push      ebx
+	push      842
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+842]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2172
+@1107:
+	call      @@stk@cpu@cpu_has_f16c$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1108
+	push      ebx
+	push      868
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+868]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1109
+@1108:
+	push      ebx
+	push      868
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+868]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2173
+@1109:
+	call      @@stk@cpu@cpu_has_avx$qv
+	test      eax,eax
+	je        short @1110
+	push      ebx
+	push      893
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+893]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1111
+@1110:
+	push      ebx
+	push      893
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+893]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2174
+@1111:
+	call      @@stk@cpu@cpu_has_avx512f$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1112
+	push      ebx
+	push      917
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+917]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1113
+@1112:
+	push      ebx
+	push      917
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+917]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2175
+@1113:
+	call      @@stk@cpu@cpu_has_avx512bw$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1114
+	push      ebx
+	push      945
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+945]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1115
+@1114:
+	push      ebx
+	push      945
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+945]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2176
+@1115:
+	call      @@stk@cpu@cpu_has_avx512cd$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1116
+	push      ebx
+	push      974
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+974]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1117
+@1116:
+	push      ebx
+	push      974
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+974]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2177
+@1117:
+	call      @@stk@cpu@cpu_has_avx512dq$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1118
+	push      ebx
+	push      1003
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1003]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1119
+@1118:
+	push      ebx
+	push      1003
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1003]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2178
+@1119:
+	call      @@stk@cpu@cpu_has_avx512er$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1120
+	push      ebx
+	push      1032
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1032]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1121
+@1120:
+	push      ebx
+	push      1032
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1032]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2179
+@1121:
+	call      @@stk@cpu@cpu_has_avx512pf$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1122
+	push      ebx
+	push      1061
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1061]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1123
+@1122:
+	push      ebx
+	push      1061
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1061]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2180
+@1123:
+	call      @@stk@cpu@cpu_has_avx512vl$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1124
+	push      ebx
+	push      1090
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1090]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1125
+@1124:
+	push      ebx
+	push      1090
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1090]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2181
+@1125:
+	call      @@stk@cpu@cpu_has_avx512ifma$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1126
+	push      ebx
+	push      1119
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1119]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1127
+@1126:
+	push      ebx
+	push      1119
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1119]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2182
+@1127:
+	call      @@stk@cpu@cpu_has_bmi$qv
+	test      eax,eax
+	je        short @1128
+	push      ebx
+	push      1150
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1150]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1129
+@1128:
+	push      ebx
+	push      1150
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1150]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2183
+@1129:
+	call      @@stk@cpu@cpu_has_avx512vbmi$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1130
+	push      ebx
+	push      1174
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1174]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1131
+@1130:
+	push      ebx
+	push      1174
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1174]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2184
+@1131:
+	call      @@stk@cpu@cpu_has_cmov$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1132
+	push      ebx
+	push      1205
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1205]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1133
+@1132:
+	push      ebx
+	push      1205
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1205]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2185
+@1133:
+	call      @@stk@cpu@cpu_has_cmpxchg$qv
+	test      eax,eax
+	je        short @1134
+	push      ebx
+	push      1230
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1230]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1135
+@1134:
+	push      ebx
+	push      1230
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1230]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2186
+@1135:
+	call      @@stk@cpu@cpu_has_clmul$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1136
+	push      ebx
+	push      1258
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1258]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1137
+@1136:
+	push      ebx
+	push      1258
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1258]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2187
+@1137:
+	call      @@stk@cpu@cpu_has_aes$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1138
+	push      ebx
+	push      1284
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1284]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1139
+@1138:
+	push      ebx
+	push      1284
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1284]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2188
+@1139:
+	call      @@stk@cpu@cpu_has_sha$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1140
+	push      ebx
+	push      1308
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1308]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1141
+@1140:
+	push      ebx
+	push      1308
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1308]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2189
+@1141:
+	call      @@stk@cpu@cpu_has_rdrand$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1142
+	push      ebx
+	push      1332
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1332]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1143
+@1142:
+	push      ebx
+	push      1332
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1332]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2190
+@1143:
+	call      @@stk@cpu@cpu_has_rdseed$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1144
+	push      ebx
+	push      1359
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1359]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1145
+@1144:
+	push      ebx
+	push      1359
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1359]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2191
+@1145:
+	call      @@stk@cpu@cpu_has_tsc$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1146
+	push      ebx
+	push      1386
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1386]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1147
+@1146:
+	push      ebx
+	push      1386
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1386]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2192
+@1147:
+	call      @@stk@cpu@cpu_has_perftsc$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1148
+	push      ebx
+	push      1410
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1410]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1149
+@1148:
+	push      ebx
+	push      1410
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1410]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2193
+@1149:
+	call      @@stk@cpu@cpu_has_erms$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1150
+	push      ebx
+	push      1438
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1438]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1151
+@1150:
+	push      ebx
+	push      1438
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1438]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2194
+@1151:
+	call      @@stk@cpu@cpu_has_msr$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1152
+	push      ebx
+	push      1463
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1463]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1153
+@1152:
+	push      ebx
+	push      1463
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1463]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2195
+@1153:
+	call      @@stk@cpu@cpu_has_mtrr$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1154
+	push      ebx
+	push      1487
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1487]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1155
+@1154:
+	push      ebx
+	push      1487
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1487]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2196
+@1155:
+	call      @@stk@cpu@cpu_has_vmx$qv
+	and       eax,255
+	test      eax,eax
+	je        short @1156
+	push      ebx
+	push      1512
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1512]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      eax
+	push      ebx
+	push      98
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+98]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,16
+	jmp       short @1157
+@1156:
+	push      ebx
+	push      1512
+	call      _CG_A_PY
+	lea       edx,dword ptr [ebx+1512]
+	push      edx
+	push      ebx
+	push      123
+	call      _CG_A_PY
+	lea       ecx,dword ptr [ebx+123]
+	push      ecx
+	push      ebx
+	push      153
+	call      _CG_A_PY
+	lea       eax,dword ptr [ebx+153]
+	push      eax
+	call      @@stk@con@prints$qpxce
+	add       esp,12
+	?debug L 2198
+?live16456@880: ; 
+@1157:
+@1158:
+	mov       dword ptr [ebp-4],ebp
 	pop       ebx
+	pop       ecx
+	pop       ecx
 	pop       ebp
 	ret 
+	align 4        
+@1056:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_print_info$qv+0
+	dd        @1056+0
+	db        248,255,255,255,8,0,0,0,0,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_print_info$qv	endp
 @stk@cpu@cpu_print_info$qv	ends
@@ -20684,14 +23222,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch337
-	dd	?patch338
-	dd	?patch339
+	dd	?patch344
+	dd	?patch345
+	dd	?patch346
 	df	@@stk@cpu@cpu_print_info$qv
 	dw	0
-	dw	4241
+	dw	4243
 	dw	0
-	dw	604
+	dw	613
 	dw	0
 	dw	0
 	dw	0
@@ -20724,43 +23262,51 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	118
 	dw	16
 	dw	2
-	dw	116
+	dw	117
 	dw	0
 	dw	17
-	dw	605
+	dw	614
 	dw	0
 	dw	0
 	dw	0
-	dw	8
-	dw	530
-	dd	@1073-@@stk@cpu@cpu_print_info$qv
-	dw	3
-?patch337	equ	@1072-@@stk@cpu@cpu_print_info$qv+3
-?patch338	equ	0
-?patch339	equ	@1072-@@stk@cpu@cpu_print_info$qv
+?patch344	equ	@1158-@@stk@cpu@cpu_print_info$qv+35
+?patch345	equ	0
+?patch346	equ	@1158-@@stk@cpu@cpu_print_info$qv
 	dw	2
 	dw	6
 	dw	8
 	dw	531
 	dw	1
-	dw	65532
+	dw	65524
 	dw	65535
 $$BSYMS	ends
 _TEXT	segment dword public use32 'CODE'
 @stk@cpu@cpu_test$qv	segment virtual
 	align	2
 @@stk@cpu@cpu_test$qv	proc	near
-?live16456@0:
-	?debug L 1765
-@1074:
+?live16457@0:
+	?debug L 2201
 	push      ebp
 	mov       ebp,esp
-	?debug L 1767
+	push      5457731
+	push      ecx
+	mov       dword ptr [ebp-8],offset @1159
+	?debug L 2206
+@1160:
 	call      @@stk@cpu@cpu_print_info$qv
-	?debug L 1768
-@1075:
+	?debug L 2207
+@1161:
+	mov       dword ptr [ebp-4],ebp
+	pop       ecx
+	pop       ecx
 	pop       ebp
 	ret 
+	align 4        
+@1159:
+	db        67,71,83,0
+	dd        @@stk@cpu@cpu_test$qv+0
+	dd        @1159+0
+	db        248,255,255,255,8,0,0,0,0,0,0,0
 	?debug L 0
 @@stk@cpu@cpu_test$qv	endp
 @stk@cpu@cpu_test$qv	ends
@@ -20774,14 +23320,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch340
-	dd	?patch341
-	dd	?patch342
+	dd	?patch347
+	dd	?patch348
+	dd	?patch349
 	df	@@stk@cpu@cpu_test$qv
 	dw	0
-	dw	4243
+	dw	4245
 	dw	0
-	dw	606
+	dw	615
 	dw	0
 	dw	0
 	dw	0
@@ -20806,11 +23352,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	36
 	db	113
 	db	118
-?patch340	equ	@1075-@@stk@cpu@cpu_test$qv+2
-?patch341	equ	0
-?patch342	equ	@1075-@@stk@cpu@cpu_test$qv
+?patch347	equ	@1161-@@stk@cpu@cpu_test$qv+31
+?patch348	equ	0
+?patch349	equ	@1161-@@stk@cpu@cpu_test$qv
 	dw	2
 	dw	6
+	dw	4
+	dw	531
+	dw	0
 _INIT_	segment word public use32 'INITDATA'
 _INIT_	ends
 $$BSYMS	ends
@@ -20827,16 +23376,28 @@ _TEXT	segment dword public use32 'CODE'
 @@_STCON0_$qv equ @_STCON0_$qv
 ?live1@0:
 	?debug L 0
-@1076:
 	push      ebp
 	mov       ebp,esp
+	push      5457731
+	push      ecx
+	mov       dword ptr [ebp-8],offset @1162
+@1163:
 	call      @@stk@cpu@tsc_init$qv
 	mov       dword ptr [_tsc_ADJ],eax
 	mov       dword ptr [_tsc_ADJ+4],edx
 	?debug L 0
-@1077:
+@1164:
+	mov       dword ptr [ebp-4],ebp
+	pop       ecx
+	pop       ecx
 	pop       ebp
 	ret 
+	align 4        
+@1162:
+	db        67,71,83,0
+	dd        @_STCON0_$qv+0
+	dd        @1162+0
+	db        248,255,255,255,8,0,0,0,0,0,0,0
 	?debug L 0
 @_STCON0_$qv	endp
 _TEXT	ends
@@ -20849,22 +23410,25 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	0
 	dw	0
-	dd	?patch343
-	dd	?patch344
-	dd	?patch345
+	dd	?patch350
+	dd	?patch351
+	dd	?patch352
 	df	@_STCON0_$qv
 	dw	0
-	dw	4245
+	dw	4247
 	dw	0
-	dw	607
+	dw	616
 	dw	0
 	dw	0
 	dw	0
-?patch343	equ	@1077-@_STCON0_$qv+2
-?patch344	equ	0
-?patch345	equ	@1077-@_STCON0_$qv
+?patch350	equ	@1164-@_STCON0_$qv+31
+?patch351	equ	0
+?patch352	equ	@1164-@_STCON0_$qv
 	dw	2
 	dw	6
+	dw	4
+	dw	531
+	dw	0
 $$BSYMS	ends
 _DATA	segment dword public use32 'DATA'
 s@	label	byte
@@ -20992,84 +23556,467 @@ s@	label	byte
 	db	"stk::cpu::cpu_has_mtrr()",0
 	;	s@+1512:
 	db	"stk::cpu::cpu_has_vmx()",0
+	db	1	dup(?)
 	align	4
 _DATA	ends
 _TEXT	segment dword public use32 'CODE'
+	align	4
+_?cg_init	proc	near
+	push      offset _?cg_init+12
+	call      _CG_DESC
+	ret 
+	nop
+	dd	_tsc_STARTED
+	dd	8
+	dd	4
+	dd	_tsc_PAUSED
+	dd	8
+	dd	4
+	dd	_tsc_LAST_MEASURED
+	dd	8
+	dd	4
+	dd	_tsc_ADJ
+	dd	8
+	dd	4
+	dd	_tsc_ELAPSED
+	dd	8
+	dd	4
+	dd	$enckfcia
+	dd	8
+	dd	4
+	dd	$ehdkfcia
+	dd	8
+	dd	4
+	dd	$mkdkfcia
+	dd	8
+	dd	4
+	dd	$eodkfcia
+	dd	8
+	dd	4
+	dd	$mbekfcia
+	dd	8
+	dd	4
+	dd	$efekfcia
+	dd	8
+	dd	4
+	dd	$miekfcia
+	dd	8
+	dd	4
+	dd	$emekfcia
+	dd	4
+	dd	4
+	dd	$mpekfcia
+	dd	4
+	dd	4
+	dd	$edfkfcia
+	dd	4
+	dd	4
+	dd	$mgfkfcia
+	dd	4
+	dd	4
+	dd	$ekfkfcia
+	dd	4
+	dd	4
+	dd	$mnfkfcia
+	dd	4
+	dd	4
+	dd	$ebgkfcia
+	dd	8
+	dd	4
+	dd	$megkfcia
+	dd	16
+	dd	4
+	dd	$eigkfcia
+	dd	8
+	dd	4
+	dd	$echkfcia
+	dd	52
+	dd	4
+	dd	$mfhkfcia
+	dd	8
+	dd	4
+	dd	$mphkfcia
+	dd	4
+	dd	4
+	dd	$edikfcia
+	dd	8
+	dd	4
+	dd	$mgikfcia
+	dd	4
+	dd	4
+	dd	$ekikfcia
+	dd	8
+	dd	4
+	dd	$mnikfcia
+	dd	4
+	dd	4
+	dd	$ebjkfcia
+	dd	8
+	dd	4
+	dd	$mejkfcia
+	dd	4
+	dd	4
+	dd	$eijkfcia
+	dd	8
+	dd	4
+	dd	$mljkfcia
+	dd	4
+	dd	4
+	dd	$epjkfcia
+	dd	8
+	dd	4
+	dd	$ejkkfcia
+	dd	4
+	dd	4
+	dd	$mmkkfcia
+	dd	8
+	dd	4
+	dd	$ealkfcia
+	dd	4
+	dd	4
+	dd	$mdlkfcia
+	dd	8
+	dd	4
+	dd	$ehlkfcia
+	dd	4
+	dd	4
+	dd	$mklkfcia
+	dd	8
+	dd	4
+	dd	$eolkfcia
+	dd	4
+	dd	4
+	dd	$mbmkfcia
+	dd	8
+	dd	4
+	dd	$efmkfcia
+	dd	4
+	dd	4
+	dd	$mimkfcia
+	dd	8
+	dd	4
+	dd	$emmkfcia
+	dd	4
+	dd	4
+	dd	$mpmkfcia
+	dd	8
+	dd	4
+	dd	$ednkfcia
+	dd	4
+	dd	4
+	dd	$mgnkfcia
+	dd	8
+	dd	4
+	dd	$eknkfcia
+	dd	4
+	dd	4
+	dd	$mnnkfcia
+	dd	8
+	dd	4
+	dd	$ebokfcia
+	dd	4
+	dd	4
+	dd	$meokfcia
+	dd	8
+	dd	4
+	dd	$eiokfcia
+	dd	4
+	dd	4
+	dd	$mlokfcia
+	dd	8
+	dd	4
+	dd	$epokfcia
+	dd	4
+	dd	4
+	dd	$mcpkfcia
+	dd	8
+	dd	4
+	dd	$egpkfcia
+	dd	4
+	dd	4
+	dd	$mjpkfcia
+	dd	8
+	dd	4
+	dd	$enpkfcia
+	dd	4
+	dd	4
+	dd	$maalfcia
+	dd	8
+	dd	4
+	dd	$eealfcia
+	dd	4
+	dd	4
+	dd	$mhalfcia
+	dd	8
+	dd	4
+	dd	$elalfcia
+	dd	4
+	dd	4
+	dd	$moalfcia
+	dd	8
+	dd	4
+	dd	$ecblfcia
+	dd	4
+	dd	4
+	dd	$mfblfcia
+	dd	8
+	dd	4
+	dd	$ejblfcia
+	dd	4
+	dd	4
+	dd	$mmblfcia
+	dd	8
+	dd	4
+	dd	$eaclfcia
+	dd	4
+	dd	4
+	dd	$mdclfcia
+	dd	8
+	dd	4
+	dd	$ehclfcia
+	dd	4
+	dd	4
+	dd	$mkclfcia
+	dd	8
+	dd	4
+	dd	$eoclfcia
+	dd	4
+	dd	4
+	dd	$mbdlfcia
+	dd	8
+	dd	4
+	dd	$efdlfcia
+	dd	4
+	dd	4
+	dd	$midlfcia
+	dd	8
+	dd	4
+	dd	$emdlfcia
+	dd	4
+	dd	4
+	dd	$mpdlfcia
+	dd	8
+	dd	4
+	dd	$edelfcia
+	dd	4
+	dd	4
+	dd	$mgelfcia
+	dd	8
+	dd	4
+	dd	$ekelfcia
+	dd	4
+	dd	4
+	dd	$mnelfcia
+	dd	8
+	dd	4
+	dd	$ebflfcia
+	dd	4
+	dd	4
+	dd	$meflfcia
+	dd	8
+	dd	4
+	dd	$eiflfcia
+	dd	4
+	dd	4
+	dd	$mlflfcia
+	dd	8
+	dd	4
+	dd	$epflfcia
+	dd	4
+	dd	4
+	dd	$mcglfcia
+	dd	8
+	dd	4
+	dd	$egglfcia
+	dd	4
+	dd	4
+	dd	$mjglfcia
+	dd	8
+	dd	4
+	dd	$englfcia
+	dd	4
+	dd	4
+	dd	$mahlfcia
+	dd	8
+	dd	4
+	dd	$eehlfcia
+	dd	4
+	dd	4
+	dd	$mhhlfcia
+	dd	8
+	dd	4
+	dd	$elhlfcia
+	dd	4
+	dd	4
+	dd	$mohlfcia
+	dd	8
+	dd	4
+	dd	$ecilfcia
+	dd	4
+	dd	4
+	dd	$mfilfcia
+	dd	8
+	dd	4
+	dd	$ejilfcia
+	dd	4
+	dd	4
+	dd	$mmilfcia
+	dd	8
+	dd	4
+	dd	$eajlfcia
+	dd	4
+	dd	4
+	dd	$mdjlfcia
+	dd	8
+	dd	4
+	dd	$ehjlfcia
+	dd	4
+	dd	4
+	dd	$mkjlfcia
+	dd	8
+	dd	4
+	dd	$eojlfcia
+	dd	4
+	dd	4
+	dd	$mbklfcia
+	dd	8
+	dd	4
+	dd	$efklfcia
+	dd	4
+	dd	4
+	dd	$miklfcia
+	dd	8
+	dd	4
+	dd	$emklfcia
+	dd	4
+	dd	4
+	dd	$mpklfcia
+	dd	8
+	dd	4
+	dd	$edllfcia
+	dd	4
+	dd	4
+	dd	$mgllfcia
+	dd	8
+	dd	4
+	dd	$ekllfcia
+	dd	4
+	dd	4
+	dd	$mnllfcia
+	dd	8
+	dd	4
+	dd	$ebmlfcia
+	dd	4
+	dd	4
+	dd	$memlfcia
+	dd	8
+	dd	4
+	dd	$eimlfcia
+	dd	4
+	dd	4
+	dd	$mlmlfcia
+	dd	8
+	dd	4
+	dd	$epmlfcia
+	dd	4
+	dd	4
+	dd	$mcnlfcia
+	dd	8
+	dd	4
+	dd	$egnlfcia
+	dd	4
+	dd	4
+	dd	$mjnlfcia
+	dd	8
+	dd	4
+	dd	$ennlfcia
+	dd	4
+	dd	4
+	dd	$maolfcia
+	dd	12
+	dd	4
+	dd	$eeolfcia
+	dd	8
+	dd	4
+	dd	$mholfcia
+	dd	4
+	dd	4
+	dd	$elolfcia
+	dd	8
+	dd	4
+	dd	$moolfcia
+	dd	4
+	dd	4
+	dd	$ecplfcia
+	dd	8
+	dd	4
+	dd	$mfplfcia
+	dd	4
+	dd	4
+	dd	$ejplfcia
+	dd	8
+	dd	4
+	dd	$mmplfcia
+	dd	4
+	dd	4
+	dd	$eaamfcia
+	dd	8
+	dd	4
+	dd	$mdamfcia
+	dd	4
+	dd	4
+	dd	$ehamfcia
+	dd	8
+	dd	4
+	dd	$mkamfcia
+	dd	4
+	dd	4
+	dd	$eoamfcia
+	dd	8
+	dd	4
+	dd	$mbbmfcia
+	dd	4
+	dd	4
+	dd	$efbmfcia
+	dd	8
+	dd	1
+	dd	s@
+	dd	1536
+	dd	3
+	dd	0
+_?cg_init	endp
 _TEXT	ends
-@@stk@time@wait_us$qqsxuj equ @stk@time@wait_us$qqsxuj
- extrn   @stk@time@wait_us$qqsxuj:near
-@@stk@cstr@trim$qqspc equ @stk@cstr@trim$qqspc
- extrn   @stk@cstr@trim$qqspc:near
-@@stk@mem@mov$qqspvpxvxui equ @stk@mem@mov$qqspvpxvxui
- extrn   @stk@mem@mov$qqspvpxvxui:near
-@@stk@mem@cmp$qqspxvt1xui equ @stk@mem@cmp$qqspxvt1xui
- extrn   @stk@mem@cmp$qqspxvt1xui:near
-@@stk@time@time_ms$qqsv equ @stk@time@time_ms$qqsv
- extrn   @stk@time@time_ms$qqsv:near
+_INIT_	segment word public use32 'INITDATA'
+	db	0
+	db	0
+	dd	_?cg_init
+_INIT_	ends
+_TEXT	segment dword public use32 'CODE'
+_TEXT	ends
+ extrn   _CG_DA_EPY:near
+@@stk@time@wait_us$qxuj equ @stk@time@wait_us$qxuj
+ extrn   @stk@time@wait_us$qxuj:near
+ extrn   _CG_D_EP:near
+ extrn   _CG_A_PY:near
+@@stk@cstr@trim$qpcc equ @stk@cstr@trim$qpcc
+ extrn   @stk@cstr@trim$qpcc:near
+@@stk@mem@mov$qpvpxvxui equ @stk@mem@mov$qpvpxvxui
+ extrn   @stk@mem@mov$qpvpxvxui:near
+ extrn   _CG_A_BP:near
+@@stk@mem@cmp$qpxvt1xui equ @stk@mem@cmp$qpxvt1xui
+ extrn   @stk@mem@cmp$qpxvt1xui:near
+@@stk@time@time_ms$qv equ @stk@time@time_ms$qv
+ extrn   @stk@time@time_ms$qv:near
  extrn   __llmul:near
  extrn   __lludiv:near
+ extrn   _CG_LDA_EOXSY:near
 @@stk@con@prints$qpxce equ @stk@con@prints$qpxce
  extrn   @stk@con@prints$qpxce:near
+ extrn   _CG_DESC:near
 $$BSYMS	segment byte public use32 'DEBSYM'
-	dw	?patch346
-	dw	37
-	dw	608
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-?patch346	equ	12
-	dw	?patch347
-	dw	37
-	dw	609
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-?patch347	equ	12
-	dw	?patch348
-	dw	37
-	dw	610
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-?patch348	equ	12
-	dw	?patch349
-	dw	37
-	dw	611
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-?patch349	equ	12
-	dw	?patch350
-	dw	37
-	dw	612
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-?patch350	equ	12
-	dw	?patch351
-	dw	37
-	dw	613
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-?patch351	equ	12
-	dw	?patch352
-	dw	37
-	dw	614
-	dw	0
-	dw	0
-	dw	0
-	dw	0
-?patch352	equ	12
 	dw	?patch353
 	dw	37
-	dw	615
+	dw	617
 	dw	0
 	dw	0
 	dw	0
@@ -21077,19 +24024,67 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 ?patch353	equ	12
 	dw	?patch354
 	dw	37
-	dw	616
+	dw	618
 	dw	0
 	dw	0
 	dw	0
 	dw	0
 ?patch354	equ	12
+	dw	?patch355
+	dw	37
+	dw	619
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+?patch355	equ	12
+	dw	?patch356
+	dw	37
+	dw	620
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+?patch356	equ	12
+	dw	?patch357
+	dw	37
+	dw	621
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+?patch357	equ	12
+	dw	?patch358
+	dw	37
+	dw	622
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+?patch358	equ	12
+	dw	?patch359
+	dw	37
+	dw	623
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+?patch359	equ	12
+	dw	?patch360
+	dw	37
+	dw	624
+	dw	0
+	dw	0
+	dw	0
+	dw	0
+?patch360	equ	12
 	dw	22
 	dw	513
 	df	_tsc_STARTED
 	dw	0
 	dw	119
 	dw	0
-	dw	617
+	dw	625
 	dw	0
 	dw	0
 	dw	0
@@ -21099,7 +24094,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	119
 	dw	0
-	dw	618
+	dw	626
 	dw	0
 	dw	0
 	dw	0
@@ -21109,7 +24104,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	119
 	dw	0
-	dw	619
+	dw	627
 	dw	0
 	dw	0
 	dw	0
@@ -21119,7 +24114,7 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	119
 	dw	0
-	dw	620
+	dw	628
 	dw	0
 	dw	0
 	dw	0
@@ -21129,29 +24124,13 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	119
 	dw	0
-	dw	621
-	dw	0
-	dw	0
-	dw	0
-	dw	?patch355
-	dw	38
-	dw	514
-	dw	622
-	dw	0
-	dw	623
-	dw	0
-	dw	624
-	dw	0
-	dw	625
-	dw	0
-	dw	626
-	dw	0
-	dw	627
-	dw	0
-	dw	628
-	dw	0
 	dw	629
 	dw	0
+	dw	0
+	dw	0
+	dw	?patch361
+	dw	38
+	dw	498
 	dw	630
 	dw	0
 	dw	631
@@ -22148,30 +25127,14 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	dw	0
 	dw	1127
 	dw	0
-	dw	1128
-	dw	0
-	dw	1129
-	dw	0
-	dw	1130
-	dw	0
-	dw	1131
-	dw	0
-	dw	1132
-	dw	0
-	dw	1133
-	dw	0
-	dw	1134
-	dw	0
-	dw	1135
-	dw	0
-?patch355	equ	2060
-	dw	?patch356
+?patch361	equ	1996
+	dw	?patch362
 	dw	1
 	db	6
 	db	1
 	db	0
 	db	24
-	db	11
+	db	9
 	db	66
 	db	67
 	db	67
@@ -22181,155 +25144,164 @@ $$BSYMS	segment byte public use32 'DEBSYM'
 	db	53
 	db	46
 	db	53
-	db	46
-	db	49
-?patch356	equ	18
+?patch362	equ	16
 $$BSYMS	ends
 $$BTYPES	segment byte public use32 'DEBTYP'
-	db        2,0,0,0,14,0,8,0,119,0,0,0,0,0,0,0
-	db        1,16,0,0,4,0,1,2,0,0,14,0,8,0,119,0
-	db        0,0,0,0,0,0,3,16,0,0,4,0,1,2,0,0
-	db        14,0,8,0,119,0,0,0,0,0,0,0,5,16,0,0
-	db        4,0,1,2,0,0,8,0,1,0,2,0,118,0,0,0
-	db        14,0,8,0,119,0,0,0,0,0,0,0,8,16,0,0
-	db        4,0,1,2,0,0,14,0,8,0,119,0,0,0,0,0
-	db        0,0,10,16,0,0,4,0,1,2,0,0,14,0,8,0
-	db        119,0,0,0,0,0,0,0,12,16,0,0,4,0,1,2
-	db        0,0,14,0,8,0,119,0,0,0,0,0,0,0,14,16
+	db        2,0,0,0,14,0,8,0,119,0,0,0,0,0,2,0
+	db        1,16,0,0,12,0,1,2,2,0,117,4,0,0,117,4
+	db        0,0,14,0,8,0,119,0,0,0,0,0,0,0,3,16
 	db        0,0,4,0,1,2,0,0,14,0,8,0,119,0,0,0
-	db        0,0,0,0,16,16,0,0,4,0,1,2,0,0,14,0
-	db        8,0,119,0,0,0,0,0,0,0,18,16,0,0,4,0
-	db        1,2,0,0,14,0,8,0,117,0,0,0,0,0,6,0
-	db        20,16,0,0,28,0,1,2,6,0,117,4,0,0,117,4
-	db        0,0,117,4,0,0,117,4,0,0,117,0,0,0,117,0
+	db        0,0,0,0,5,16,0,0,4,0,1,2,0,0,8,0
+	db        1,0,2,0,118,0,0,0,14,0,8,0,119,0,0,0
+	db        0,0,0,0,8,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,119,0,0,0,0,0,0,0,10,16,0,0,4,0
+	db        1,2,0,0,14,0,8,0,119,0,0,0,0,0,0,0
+	db        12,16,0,0,4,0,1,2,0,0,14,0,8,0,119,0
+	db        0,0,0,0,0,0,14,16,0,0,4,0,1,2,0,0
+	db        14,0,8,0,119,0,0,0,0,0,0,0,16,16,0,0
+	db        4,0,1,2,0,0,14,0,8,0,119,0,0,0,0,0
+	db        0,0,18,16,0,0,4,0,1,2,0,0,14,0,8,0
+	db        119,0,0,0,0,0,0,0,20,16,0,0,4,0,1,2
 	db        0,0,14,0,8,0,117,0,0,0,0,0,6,0,22,16
 	db        0,0,28,0,1,2,6,0,117,4,0,0,117,4,0,0
 	db        117,4,0,0,117,4,0,0,117,0,0,0,117,0,0,0
-	db        14,0,8,0,112,4,0,0,0,0,0,0,24,16,0,0
-	db        4,0,1,2,0,0,18,0,3,0,117,0,0,0,17,0
-	db        0,0,0,0,0,0,16,0,4,0,14,0,8,0,112,4
-	db        0,0,0,0,0,0,27,16,0,0,4,0,1,2,0,0
-	db        18,0,3,0,117,0,0,0,17,0,0,0,0,0,0,0
-	db        52,0,13,0,14,0,8,0,117,0,0,0,0,0,0,0
-	db        30,16,0,0,4,0,1,2,0,0,14,0,8,0,117,0
-	db        0,0,0,0,0,0,32,16,0,0,4,0,1,2,0,0
-	db        14,0,8,0,117,0,0,0,0,0,1,0,34,16,0,0
-	db        8,0,1,2,1,0,32,0,0,0,14,0,8,0,117,0
-	db        0,0,0,0,1,0,36,16,0,0,8,0,1,2,1,0
-	db        32,0,0,0,14,0,8,0,117,0,0,0,0,0,1,0
-	db        38,16,0,0,8,0,1,2,1,0,48,0,0,0,18,0
-	db        3,0,119,0,0,0,17,0,0,0,0,0,0,0,40,0
-	db        5,0,14,0,8,0,48,0,0,0,0,0,0,0,41,16
-	db        0,0,4,0,1,2,0,0,14,0,8,0,48,0,0,0
-	db        0,0,0,0,43,16,0,0,4,0,1,2,0,0,14,0
-	db        8,0,48,0,0,0,0,0,0,0,45,16,0,0,4,0
-	db        1,2,0,0,14,0,8,0,48,0,0,0,0,0,0,0
-	db        47,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
-	db        0,0,0,0,0,0,49,16,0,0,4,0,1,2,0,0
-	db        14,0,8,0,117,0,0,0,0,0,0,0,51,16,0,0
-	db        4,0,1,2,0,0,14,0,8,0,48,0,0,0,0,0
-	db        0,0,53,16,0,0,4,0,1,2,0,0,14,0,8,0
-	db        117,0,0,0,0,0,0,0,55,16,0,0,4,0,1,2
-	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,57,16
-	db        0,0,4,0,1,2,0,0,14,0,8,0,48,0,0,0
-	db        0,0,0,0,59,16,0,0,4,0,1,2,0,0,14,0
-	db        8,0,117,0,0,0,0,0,0,0,61,16,0,0,4,0
-	db        1,2,0,0,14,0,8,0,48,0,0,0,0,0,0,0
-	db        63,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
-	db        0,0,0,0,0,0,65,16,0,0,4,0,1,2,0,0
-	db        14,0,8,0,48,0,0,0,0,0,0,0,67,16,0,0
-	db        4,0,1,2,0,0,14,0,8,0,48,0,0,0,0,0
-	db        0,0,69,16,0,0,4,0,1,2,0,0,14,0,8,0
-	db        117,0,0,0,0,0,0,0,71,16,0,0,4,0,1,2
-	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,73,16
+	db        14,0,8,0,117,0,0,0,0,0,6,0,24,16,0,0
+	db        28,0,1,2,6,0,117,4,0,0,117,4,0,0,117,4
+	db        0,0,117,4,0,0,117,0,0,0,117,0,0,0,14,0
+	db        8,0,112,4,0,0,0,0,0,0,26,16,0,0,4,0
+	db        1,2,0,0,18,0,3,0,117,0,0,0,17,0,0,0
+	db        0,0,0,0,16,0,4,0,14,0,8,0,112,4,0,0
+	db        0,0,0,0,29,16,0,0,4,0,1,2,0,0,18,0
+	db        3,0,117,0,0,0,17,0,0,0,0,0,0,0,52,0
+	db        13,0,14,0,8,0,117,0,0,0,0,0,0,0,32,16
 	db        0,0,4,0,1,2,0,0,14,0,8,0,117,0,0,0
-	db        0,0,0,0,75,16,0,0,4,0,1,2,0,0,14,0
-	db        8,0,48,0,0,0,0,0,0,0,77,16,0,0,4,0
-	db        1,2,0,0,14,0,8,0,48,0,0,0,0,0,0,0
-	db        79,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
-	db        0,0,0,0,0,0,81,16,0,0,4,0,1,2,0,0
-	db        14,0,8,0,48,0,0,0,0,0,0,0,83,16,0,0
+	db        0,0,0,0,34,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,117,0,0,0,0,0,1,0,36,16,0,0,8,0
+	db        1,2,1,0,32,0,0,0,14,0,8,0,117,0,0,0
+	db        0,0,1,0,38,16,0,0,8,0,1,2,1,0,32,0
+	db        0,0,14,0,8,0,117,0,0,0,0,0,1,0,40,16
+	db        0,0,8,0,1,2,1,0,48,0,0,0,18,0,3,0
+	db        119,0,0,0,17,0,0,0,0,0,0,0,40,0,5,0
+	db        14,0,8,0,48,0,0,0,0,0,0,0,43,16,0,0
 	db        4,0,1,2,0,0,14,0,8,0,48,0,0,0,0,0
-	db        0,0,85,16,0,0,4,0,1,2,0,0,14,0,8,0
-	db        48,0,0,0,0,0,0,0,87,16,0,0,4,0,1,2
-	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,89,16
+	db        0,0,45,16,0,0,4,0,1,2,0,0,14,0,8,0
+	db        48,0,0,0,0,0,0,0,47,16,0,0,4,0,1,2
+	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,49,16
 	db        0,0,4,0,1,2,0,0,14,0,8,0,48,0,0,0
-	db        0,0,0,0,91,16,0,0,4,0,1,2,0,0,14,0
-	db        8,0,48,0,0,0,0,0,0,0,93,16,0,0,4,0
+	db        0,0,0,0,51,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,117,0,0,0,0,0,0,0,53,16,0,0,4,0
 	db        1,2,0,0,14,0,8,0,48,0,0,0,0,0,0,0
-	db        95,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
-	db        0,0,0,0,0,0,97,16,0,0,4,0,1,2,0,0
-	db        14,0,8,0,48,0,0,0,0,0,0,0,99,16,0,0
+	db        55,16,0,0,4,0,1,2,0,0,14,0,8,0,117,0
+	db        0,0,0,0,0,0,57,16,0,0,4,0,1,2,0,0
+	db        14,0,8,0,48,0,0,0,0,0,0,0,59,16,0,0
 	db        4,0,1,2,0,0,14,0,8,0,48,0,0,0,0,0
-	db        0,0,101,16,0,0,4,0,1,2,0,0,14,0,8,0
-	db        48,0,0,0,0,0,0,0,103,16,0,0,4,0,1,2
-	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,105,16
+	db        0,0,61,16,0,0,4,0,1,2,0,0,14,0,8,0
+	db        117,0,0,0,0,0,0,0,63,16,0,0,4,0,1,2
+	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,65,16
 	db        0,0,4,0,1,2,0,0,14,0,8,0,48,0,0,0
-	db        0,0,0,0,107,16,0,0,4,0,1,2,0,0,14,0
-	db        8,0,48,0,0,0,0,0,0,0,109,16,0,0,4,0
+	db        0,0,0,0,67,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,48,0,0,0,0,0,0,0,69,16,0,0,4,0
 	db        1,2,0,0,14,0,8,0,48,0,0,0,0,0,0,0
-	db        111,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
-	db        0,0,0,0,0,0,113,16,0,0,4,0,1,2,0,0
-	db        14,0,8,0,48,0,0,0,0,0,0,0,115,16,0,0
-	db        4,0,1,2,0,0,14,0,8,0,48,0,0,0,0,0
-	db        0,0,117,16,0,0,4,0,1,2,0,0,14,0,8,0
-	db        48,0,0,0,0,0,0,0,119,16,0,0,4,0,1,2
-	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,121,16
+	db        71,16,0,0,4,0,1,2,0,0,14,0,8,0,117,0
+	db        0,0,0,0,0,0,73,16,0,0,4,0,1,2,0,0
+	db        14,0,8,0,48,0,0,0,0,0,0,0,75,16,0,0
+	db        4,0,1,2,0,0,14,0,8,0,117,0,0,0,0,0
+	db        0,0,77,16,0,0,4,0,1,2,0,0,14,0,8,0
+	db        48,0,0,0,0,0,0,0,79,16,0,0,4,0,1,2
+	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,81,16
 	db        0,0,4,0,1,2,0,0,14,0,8,0,48,0,0,0
-	db        0,0,0,0,123,16,0,0,4,0,1,2,0,0,14,0
-	db        8,0,48,0,0,0,0,0,0,0,125,16,0,0,4,0
+	db        0,0,0,0,83,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,48,0,0,0,0,0,0,0,85,16,0,0,4,0
 	db        1,2,0,0,14,0,8,0,48,0,0,0,0,0,0,0
-	db        127,16,0,0,4,0,1,2,0,0,14,0,8,0,117,4
-	db        0,0,0,0,0,0,129,16,0,0,4,0,1,2,0,0
-	db        18,0,3,0,117,0,0,0,17,0,0,0,0,0,0,0
-	db        12,0,3,0,14,0,8,0,117,0,0,0,0,0,0,0
-	db        132,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
-	db        0,0,0,0,0,0,134,16,0,0,4,0,1,2,0,0
-	db        14,0,8,0,48,0,0,0,0,0,0,0,136,16,0,0
+	db        87,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
+	db        0,0,0,0,0,0,89,16,0,0,4,0,1,2,0,0
+	db        14,0,8,0,48,0,0,0,0,0,0,0,91,16,0,0
 	db        4,0,1,2,0,0,14,0,8,0,48,0,0,0,0,0
-	db        0,0,138,16,0,0,4,0,1,2,0,0,14,0,8,0
-	db        48,0,0,0,0,0,0,0,140,16,0,0,4,0,1,2
-	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,142,16
+	db        0,0,93,16,0,0,4,0,1,2,0,0,14,0,8,0
+	db        48,0,0,0,0,0,0,0,95,16,0,0,4,0,1,2
+	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,97,16
 	db        0,0,4,0,1,2,0,0,14,0,8,0,48,0,0,0
-	db        0,0,0,0,144,16,0,0,4,0,1,2,0,0,14,0
-	db        8,0,3,0,0,0,0,0,0,0,146,16,0,0,4,0
-	db        1,2,0,0,14,0,8,0,3,0,0,0,0,0,0,0
-	db        148,16,0,0,4,0,1,2,0,0,14,0,8,0,3,0
-	db        0,0,0,0,0,0,150,16,0,0,4,0,1,2,0,0
-	db        14,0,8,0,3,0,0,0,7,0,1,0,153,16,0,0
-	db        8,0,1,0,1,0,119,0,0,0,8,0,1,2,1,0
-	db        152,16,0,0,14,0,8,0,112,4,0,0,7,0,1,0
-	db        155,16,0,0,8,0,1,2,1,0,112,4,0,0,14,0
-	db        8,0,3,4,0,0,7,0,3,0,160,16,0,0,8,0
-	db        2,0,10,0,158,16,0,0,8,0,1,0,1,0,3,0
-	db        0,0,8,0,1,0,1,0,117,0,0,0,16,0,1,2
-	db        3,0,3,4,0,0,157,16,0,0,159,16,0,0,14,0
-	db        8,0,119,0,0,0,7,0,3,0,162,16,0,0,16,0
-	db        1,2,3,0,157,16,0,0,157,16,0,0,159,16,0,0
-	db        14,0,8,0,119,0,0,0,7,0,0,0,164,16,0,0
-	db        4,0,1,2,0,0,14,0,8,0,116,0,0,0,2,0
-	db        0,0,166,16,0,0,4,0,1,2,0,0,14,0,8,0
-	db        3,0,0,0,64,0,2,0,170,16,0,0,8,0,2,0
-	db        10,0,169,16,0,0,8,0,1,0,1,0,112,0,0,0
-	db        12,0,1,2,2,0,168,16,0,0,0,0,0,0
+	db        0,0,0,0,99,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,48,0,0,0,0,0,0,0,101,16,0,0,4,0
+	db        1,2,0,0,14,0,8,0,48,0,0,0,0,0,0,0
+	db        103,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
+	db        0,0,0,0,0,0,105,16,0,0,4,0,1,2,0,0
+	db        14,0,8,0,48,0,0,0,0,0,0,0,107,16,0,0
+	db        4,0,1,2,0,0,14,0,8,0,48,0,0,0,0,0
+	db        0,0,109,16,0,0,4,0,1,2,0,0,14,0,8,0
+	db        48,0,0,0,0,0,0,0,111,16,0,0,4,0,1,2
+	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,113,16
+	db        0,0,4,0,1,2,0,0,14,0,8,0,48,0,0,0
+	db        0,0,0,0,115,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,48,0,0,0,0,0,0,0,117,16,0,0,4,0
+	db        1,2,0,0,14,0,8,0,48,0,0,0,0,0,0,0
+	db        119,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
+	db        0,0,0,0,0,0,121,16,0,0,4,0,1,2,0,0
+	db        14,0,8,0,48,0,0,0,0,0,0,0,123,16,0,0
+	db        4,0,1,2,0,0,14,0,8,0,48,0,0,0,0,0
+	db        0,0,125,16,0,0,4,0,1,2,0,0,14,0,8,0
+	db        48,0,0,0,0,0,0,0,127,16,0,0,4,0,1,2
+	db        0,0,14,0,8,0,48,0,0,0,0,0,0,0,129,16
+	db        0,0,4,0,1,2,0,0,14,0,8,0,117,4,0,0
+	db        0,0,0,0,131,16,0,0,4,0,1,2,0,0,18,0
+	db        3,0,117,0,0,0,17,0,0,0,0,0,0,0,12,0
+	db        3,0,14,0,8,0,117,0,0,0,0,0,0,0,134,16
+	db        0,0,4,0,1,2,0,0,14,0,8,0,48,0,0,0
+	db        0,0,0,0,136,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,48,0,0,0,0,0,0,0,138,16,0,0,4,0
+	db        1,2,0,0,14,0,8,0,48,0,0,0,0,0,0,0
+	db        140,16,0,0,4,0,1,2,0,0,14,0,8,0,48,0
+	db        0,0,0,0,0,0,142,16,0,0,4,0,1,2,0,0
+	db        14,0,8,0,48,0,0,0,0,0,0,0,144,16,0,0
+	db        4,0,1,2,0,0,14,0,8,0,48,0,0,0,0,0
+	db        0,0,146,16,0,0,4,0,1,2,0,0,14,0,8,0
+	db        3,0,0,0,0,0,0,0,148,16,0,0,4,0,1,2
+	db        0,0,14,0,8,0,3,0,0,0,0,0,0,0,150,16
+	db        0,0,4,0,1,2,0,0,14,0,8,0,3,0,0,0
+	db        7,0,0,0,152,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,116,0,0,0,2,0,0,0,154,16,0,0,4,0
+	db        1,2,0,0,14,0,8,0,3,0,0,0,7,0,1,0
+	db        157,16,0,0,8,0,1,0,1,0,119,0,0,0,8,0
+	db        1,2,1,0,156,16,0,0,14,0,8,0,112,4,0,0
+	db        7,0,2,0,159,16,0,0,12,0,1,2,2,0,112,4
+	db        0,0,112,0,0,0,14,0,8,0,3,4,0,0,7,0
+	db        3,0,164,16,0,0,8,0,2,0,10,0,162,16,0,0
+	db        8,0,1,0,1,0,3,0,0,0,8,0,1,0,1,0
+	db        117,0,0,0,16,0,1,2,3,0,3,4,0,0,161,16
+	db        0,0,163,16,0,0,14,0,8,0,118,0,0,0,7,0
+	db        3,0,166,16,0,0,16,0,1,2,3,0,161,16,0,0
+	db        161,16,0,0,163,16,0,0,14,0,8,0,119,0,0,0
+	db        7,0,0,0,168,16,0,0,4,0,1,2,0,0,14,0
+	db        8,0,3,0,0,0,64,0,2,0,172,16,0,0,8,0
+	db        2,0,10,0,171,16,0,0,8,0,1,0,1,0,112,0
+	db        0,0,12,0,1,2,2,0,170,16,0,0,0,0,0,0
 $$BTYPES	ends
 $$BNAMES	segment byte public use32 'DEBNAM'
+	db	22,'@stk@cpu@rdtscp$qpuit1'
+	db	6,'a_chip'
+	db	6,'a_core'
+	db	6,'ret_cc'
+	db	6,'ret_lo'
+	db	6,'ret_hi'
+	db	3,'ret'
 	db	17,'@stk@cpu@rdtsc$qv'
-	db	1,'r'
-	db	2,'LO'
-	db	2,'HI'
+	db	6,'ret_hi'
+	db	6,'ret_lo'
+	db	3,'ret'
 	db	19,'@stk@cpu@rdtscex$qv'
-	db	1,'r'
-	db	2,'HI'
-	db	2,'LO'
+	db	9,'__shared1'
+	db	9,'__unique1'
+	db	6,'ret_hi'
+	db	6,'ret_lo'
+	db	3,'ret'
 	db	20,'@stk@cpu@tsc_init$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	2,'m1'
 	db	2,'m0'
 	db	9,'__shared1'
 	db	9,'__unique1'
 	db	21,'@stk@cpu@tsc_start$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	9,'__shared1'
 	db	9,'__unique1'
 	db	26,'@stk@cpu@tsc_checkpoint$qv'
@@ -22361,7 +25333,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	5,'a_edx'
 	db	9,'a_feature'
 	db	13,'a_feature_ecx'
-	db	1,'r'
+	db	3,'ret'
 	db	31,'@stk@cpu@cpuidex$qpuit1t1t1uiui'
 	db	5,'a_eax'
 	db	5,'a_ebx'
@@ -22369,7 +25341,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	5,'a_edx'
 	db	9,'a_feature'
 	db	13,'a_feature_ecx'
-	db	1,'r'
+	db	3,'ret'
 	db	9,'__shared1'
 	db	9,'__unique1'
 	db	20,'previous_feature_ecx'
@@ -22378,7 +25350,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	10,'cached_ecx'
 	db	10,'cached_ebx'
 	db	10,'cached_eax'
-	db	1,'r'
+	db	3,'ret'
 	db	22,'@stk@cpu@cpu_vendor$qv'
 	db	9,'__shared1'
 	db	9,'__unique1'
@@ -22394,7 +25366,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	1,'n'
 	db	27,'@stk@cpu@cpu_num_threads$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22403,7 +25375,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	25,'@stk@cpu@cpu_num_cores$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22413,7 +25385,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	8,'s_answer'
 	db	27,'@stk@cpu@cpu_cache_size$quc'
 	db	7,'a_level'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22423,7 +25395,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	8,'s_answer'
 	db	32,'@stk@cpu@cpu_cache_line_size$quc'
 	db	7,'a_level'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22434,7 +25406,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	23,'@stk@cpu@cpu_num_mhz$qo'
 	db	17,'a_constant_update'
 	db	4,'rcor'
-	db	1,'r'
+	db	3,'ret'
 	db	2,'t4'
 	db	2,'t3'
 	db	2,'t2'
@@ -22460,7 +25432,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_mmx$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22469,7 +25441,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	26,'@stk@cpu@cpu_has_mmxext$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22478,7 +25450,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	25,'@stk@cpu@cpu_has_amd64$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22487,7 +25459,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	22,'@stk@cpu@cpu_has_ht$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22496,7 +25468,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_sse$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22505,7 +25477,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	25,'@stk@cpu@cpu_has_sse4a$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22514,7 +25486,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_avx$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22523,7 +25495,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	26,'@stk@cpu@cpu_has_popcnt$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22532,7 +25504,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	24,'@stk@cpu@cpu_has_f16c$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22549,7 +25521,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_vmx$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22558,7 +25530,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_smx$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22567,7 +25539,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	24,'@stk@cpu@cpu_has_cmov$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22576,7 +25548,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	25,'@stk@cpu@cpu_has_movbe$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22585,7 +25557,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_bmi$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22594,7 +25566,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	24,'@stk@cpu@cpu_has_erms$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22603,7 +25575,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	25,'@stk@cpu@cpu_has_3dnow$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22612,7 +25584,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	33,'@stk@cpu@cpu_has_3dnowprefetch$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22621,7 +25593,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	27,'@stk@cpu@cpu_has_perftsc$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22630,7 +25602,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_sha$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22639,7 +25611,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_xop$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22648,7 +25620,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	27,'@stk@cpu@cpu_has_avx512f$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22657,7 +25629,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	28,'@stk@cpu@cpu_has_avx512bw$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22666,7 +25638,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	28,'@stk@cpu@cpu_has_avx512er$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22675,7 +25647,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	28,'@stk@cpu@cpu_has_avx512cd$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22684,7 +25656,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	28,'@stk@cpu@cpu_has_avx512pf$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22693,7 +25665,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	28,'@stk@cpu@cpu_has_avx512dq$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22702,7 +25674,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	28,'@stk@cpu@cpu_has_avx512vl$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22711,7 +25683,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	30,'@stk@cpu@cpu_has_avx512ifma$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22720,7 +25692,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	30,'@stk@cpu@cpu_has_avx512vbmi$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22729,7 +25701,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_adx$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22738,7 +25710,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	25,'@stk@cpu@cpu_has_lzcnt$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22747,7 +25719,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_tbm$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22756,7 +25728,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	25,'@stk@cpu@cpu_has_clfsh$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22765,7 +25737,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	29,'@stk@cpu@cpu_has_pclmulqdq$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22774,7 +25746,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	24,'@stk@cpu@cpu_has_fxsr$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22783,7 +25755,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	22,'@stk@cpu@cpu_has_ss$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22792,7 +25764,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	24,'@stk@cpu@cpu_has_mtrr$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22801,7 +25773,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_msr$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22810,7 +25782,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_tsc$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22819,7 +25791,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_psn$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22828,7 +25800,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	25,'@stk@cpu@cpu_has_xsave$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22837,7 +25809,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	25,'@stk@cpu@cpu_has_clmul$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22855,7 +25827,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	2,'sn'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_fma$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22864,7 +25836,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	23,'@stk@cpu@cpu_has_aes$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22873,7 +25845,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	26,'@stk@cpu@cpu_has_viaaes$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22882,7 +25854,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	26,'@stk@cpu@cpu_has_viarng$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22891,7 +25863,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	27,'@stk@cpu@cpu_has_viahash$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22900,7 +25872,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	26,'@stk@cpu@cpu_has_rdseed$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22909,7 +25881,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	26,'@stk@cpu@cpu_has_rdrand$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	5,'f_eax'
 	db	5,'f_ebx'
 	db	5,'f_ecx'
@@ -22918,17 +25890,16 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	9,'__unique1'
 	db	8,'s_answer'
 	db	26,'@stk@cpu@cpu_print_info$qv'
-	db	1,'r'
+	db	3,'ret'
 	db	20,'@stk@cpu@cpu_test$qv'
 	db	8,'_STCON0_'
 	db	3,'std'
 	db	3,'stk'
 	db	9,'@stk@time'
-	db	8,'@stk@mem'
 	db	9,'@stk@cstr'
+	db	8,'@stk@mem'
 	db	8,'@stk@cpu'
 	db	11,'@stk@thread'
-	db	16,'@stk@this_thread'
 	db	8,'@stk@con'
 	db	11,'tsc_STARTED'
 	db	10,'tsc_PAUSED'
@@ -23100,9 +26071,7 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	8,'mbstowcs'
 	db	5,'mblen'
 	db	13,'_seterrormode'
-	db	14,'@std@max$qulul'
 	db	26,'@std@%max$T1%$qrxT1t1$rxT1'
-	db	14,'@std@min$qulul'
 	db	26,'@std@%min$T1%$qrxT1t1$rxT1'
 	db	17,'@std@randomize$qv'
 	db	14,'@std@random$qi'
@@ -23154,10 +26123,6 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	6,'_lrand'
 	db	5,'_itow'
 	db	6,'_ultow'
-	db	17,'@std@_swab$qpct1i'
-	db	17,'@std@_putenv$qpxc'
-	db	18,'@std@_ultoa$qulpci'
-	db	16,'@std@_itoa$qipci'
 	db	5,'_gcvt'
 	db	5,'_fcvt'
 	db	9,'_fullpath'
@@ -23325,16 +26290,6 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	10,'_lstrncoll'
 	db	10,'_lstricoll'
 	db	9,'_lstrcoll'
-	db	9,'_strnicmp'
-	db	7,'_strcmp'
-	db	8,'_stricmp'
-	db	8,'_strcmpi'
-	db	7,'_strlwr'
-	db	7,'_strdup'
-	db	7,'_strupr'
-	db	8,'_strnset'
-	db	7,'_strset'
-	db	7,'_strrev'
 	db	6,'strrev'
 	db	8,'strnicmp'
 	db	7,'stricmp'
@@ -23450,32 +26405,34 @@ $$BNAMES	segment byte public use32 'DEBNAM'
 	db	10,'@std@gid_t'
 	db	10,'@std@off_t'
 $$BNAMES	ends
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\STK_CPU.H" 19055 45362
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\IO\./../stk_main.h" 19501 42785
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\IO\STK_CONSOLE.H" 19055 45362
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\TIME\STK_TIME.H" 19500 48172
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\STASM\STK_STASM.H" 19501 44203
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\STK_CPU.H" 22191 48643
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\IO\./../stk_main.h" 22183 27213
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\IO\STK_CONSOLE.H" 22172 32832
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\TIME\STK_TIME.H" 20752 24369
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\STASM\STK_STASM.H" 22142 40733
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_lim.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\limits.h" 10305 10240
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\STHREADS\./../cpu/./../stk_main.h" 19501 42785
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\STHREADS\./../cpu/stk_cpu.h" 19055 45362
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\STHREADS\./../time/stk_time.h" 19500 48172
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\STHREADS\./../stk_main.h" 19501 42785
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\STHREADS\STK_THREADS.H" 19055 45362
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\TEXT\./../mem/stk_mem.h" 19494 44707
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\TEXT\./../stk_main.h" 19501 42785
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\TEXT\STK_CSTR_UTILS.H" 19054 45782
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\MEM\./.././stasm/../stk_MAIN.h" 19501 42785
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\MEM\./.././stasm/stk_stasm.h" 19501 44203
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\MEM\./.././time/stk_time.h" 19500 48172
-	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\sys/stat.h" 10503 10272
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\THREADS\./../cpu/./../stk_main.h" 22183 27213
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\THREADS\./../cpu/stk_cpu.h" 22191 48643
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\THREADS\./../time/stk_time.h" 20752 24369
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\THREADS\./../stk_main.h" 22183 27213
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\THREADS\STK_THREADS.H" 22172 32835
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\TEXT\STK_CSTR_UTILS.H" 22172 32834
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\MEM\./.././stasm/./../stk_main.h" 22183 27213
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\MEM\./.././stasm/stk_stasm.h" 22142 40733
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\MEM\./.././text/./../mem/stk_mem.h" 20752 24368
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\MEM\./.././text/./../stk_main.h" 22183 27213
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\MEM\./.././text/stk_cstr_utils.h" 22172 32834
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\MEM\./.././time/./../stk_main.h" 22183 27213
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\MEM\./.././time/stk_time.h" 20752 24369
+	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\sys/stat.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\sys/types.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\fcntl.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\stdio.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\time.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\assert.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\search.h" 10305 10240
-	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\stdlib.h" 10503 10272
+	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\stdlib.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\tchar.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\dir.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\direct.h" 10305 10240
@@ -23492,7 +26449,7 @@ $$BNAMES	ends
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\wincon.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\winnls.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\tvout.h" 10305 10240
-	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\winuser.h" 18052 43723
+	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\winuser.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\pshpack1.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\wingdi.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\winerror.h" 10305 10240
@@ -23502,7 +26459,7 @@ $$BNAMES	ends
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\poppack.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_loc.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\locale.h" 10305 10240
-	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_str.h" 10503 10272
+	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_str.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\string.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\guiddef.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\basetsd.h" 10305 10240
@@ -23514,12 +26471,12 @@ $$BNAMES	ends
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\excpt.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_null.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_defs.h" 10305 10240
-	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_stddef.h" 10305 10240
-	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\mem.h" 10503 10272
+	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\_stddef.h" 22173 45872
+	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\mem.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\windows.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\pshpack4.h" 10305 10240
 	?debug	D "C:\PROGRAM FILES\BORLAND\CBUILDER5\INCLUDE\winsock2.h" 10305 10240
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\MEM\./../stk_main.h" 19501 42785
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\.\..\MEM\STK_MEM.H" 19494 44707
-	?debug	D "K:\prc++\x86_libraries\STK\cpu\stk_cpu.cpp" 19501 43804
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\MEM\./../stk_main.h" 22183 27213
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\.\..\MEM\STK_MEM.H" 20752 24368
+	?debug	D "E:\SRC\X86_LIBRARIES\stk\cpu\stk_cpu.cpp" 22191 48338
 	end

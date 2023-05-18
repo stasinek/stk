@@ -104,80 +104,89 @@ typedef struct {
 #ifdef  LZSSv4_HEAD
 
 //@normal codes 	-->>
-#define N_CODE_MASK				0x03L //00000011
-#define N_CODE_BITS				2
+#define N_CODE_MASK					0x03L //xxxx xx11
+#define N_CODE_BITS					2
+//@literals 2-bit code, 2-bit encoding selector, 4-bit lenght = 8-bit total
+#define N_LIT_CODE					0x00L //xxxx xx00
+#define N_LIT_CODE_BITS				2
+#define N_LIT_ENCODING_MASK			0x0CL //xxxx 11xx
+#define N_LIT_ENCODING_BITS			2
+#define N_LIT_LEN_MASK				0xF0L //1111 xxxx
+#define N_LIT_LEN_BITS				4
 //
-#define N_PLAIN_CODE			0x00L //00000000
-#define N_PLAIN_CODE_BITS		N_CODE_BITS
-#define N_PLAIN_ENCODING_MASK	0x0CL //000011cc
-#define N_PLAIN_ENCODING_BITS	2
-#define N_PLAIN_LEN_MASK		0xF0L //1111eecc
-#define N_PLAIN_LEN_BITS		4
+#define N_RLE_CODE					0x01L //xxxx xx01
+#define N_RLE_CODE_BITS				2
+#define N_RLE_PATTERN_BYTES_MASK	0x0CL //xxxx 11xx
+#define N_RLE_PATTERN_BYTES_BITS	2
+#define N_RLE_LEN_MASK				0xF0L //1111 xxxx
+#define N_RLE_LEN_BITS				4
 //
-#define N_PATTERN_CODE			0x01L //00000001
-#define N_PATTERN_CODE_BITS		N_CODE_BITS
-#define N_PATTERN_DIAMETER_MASK	0x0CL //000011cc
-#define N_PATTERN_DIAMETER_BITS	2
-#define N_PATTERN_LEN_MASK		0xF0L //1111sscc
-#define N_PATTERN_LEN_BITS		4
+#define N_RLE_SIZE_1				0x00L //xxxx 00xx
+#define N_RLE_SIZE_2				0x04L //xxxx 01xx
+#define N_RLE_SIZE_3				0x08L //xxxx 10xx
+#define N_RLE_SIZE_4				0x0CL //xxxx 11xx
+//@found in sliding window, 2-bit code, 2-bit number of bytes for offset, 4-bit lenght
+#define N_DUP_CODE					0x02L //xxxx xx10
+#define N_DUP_CODE_BITS				2
+#define N_DUP_OFFSET_BYTES_MASK		0x0CL //xxxx 11xx
+#define N_DUP_OFFSET_BYTES_BITS		2
+#define N_DUP_LEN_MASK				0x00L //xxxx xxxx
+#define N_DUP_LEN_BITS				0
 //
-#define N_DUP_CODE				0x02L //00000010
-#define N_DUP_CODE_BITS			N_CODE_BITS
-#define N_DUP_OFFSET_MASK		0x0CL //000011cc
-#define N_DUP_OFFSET_BITS		2
-#define N_DUP_OFFSET_0			0x00L //000000cc
-#define N_DUP_OFFSET_1			0x04L //000001cc
-#define N_DUP_OFFSET_2			0x08L //000010cc
-#define N_DUP_OFFSET_3			0x0CL //000011cc
-#define N_DUP_LEN_MASK			0xF0L //1111oocc
-#define N_DUP_LEN_BITS			4
+#define N_DUP_OFFSET_0				0x00L //xxxx 00xx
+#define N_DUP_OFFSET_1				0x04L //xxxx 01xx
+#define N_DUP_OFFSET_2				0x08L //xxxx 10xx
+#define N_DUP_OFFSET_3				0x0CL //xxxx 11xx
 //
-#define N_NEXT_CODE				N_CODE_MASK //00000011
-
+#define N_NEXT_CODE					N_CODE_MASK //xxxx 1111
 //@extended codes	-->>
-#define E_CODE_MASK			 	0x0FL
-#define E_CODE_BITS				(2 + N_CODE_BITS)
+#define E_CODE_MASK			 		0x0FL //xxxx 1111
+#define E_CODE_BITS					4
 //
-#define E_PLAIN_CODE			0x03L
-#define E_PLAIN_BITS			4
+#define E_LIT_CODE					0x03L //xxxx 0011
+#define E_LIT_BITS					4
 //
-#define E_PATTERN_CODE			(0x04L | N_NEXT_CODE)
-#define E_PATTERN_BITS			4
+#define E_RLE_CODE					0x07L //xxxx 0111
+#define E_RLE_BITS					4
+#define E_RLE_PATTERN_BYTES_MASK	0x30L //xxxx 11xx
+#define E_RLE_PATTERN_BYTES_BITS	2
+#define E_RLE_LEN_BYTES_MASK		0x30L //xxxx 11xx
+#define E_RLE_LEN_BYTES_BITS		2
 //
-#define E_DUP_CODE				(0x08L | N_NEXT_CODE)
-#define E_PATTERN_BITS			4
-#define E_DUP_OFFSET_MASK	 	0x30L
-#define E_DUP_OFFSET_0		 	0x00L
-#define E_DUP_OFFSET_1		 	0x10L
-#define E_DUP_OFFSET_2		 	0x20L
-#define E_DUP_OFFSET_BITS	 	2
-#define E_DUP_LEN_MASK		 	0xC0L
-#define E_DUP_LEN_BITS		 	2
+#define E_DUP_CODE					0x0BL //xxxx 1011
+#define E_DUP_BITS					4
+#define E_DUP_OFFSET_BYTES_MASK		0x30L //xx11 xxxx
+#define E_DUP_OFFSET_BYTES_BITS		2
+#define E_DUP_LEN_BYTES_MASK		0xC0L //11xx xxxx
+#define E_DUP_LEN_BYTES_BITS		2
 //
-#define E_NEXT_CODE		 	 	0x0FL //00001111
-
+#define E_DUP_OFFSET_1		 		0x00L //xx00 xxxx
+#define E_DUP_OFFSET_2		 		0x10L //xx01 xxxx
+#define E_DUP_OFFSET_3		 		0x20L //xx10 xxxx
+#define E_DUP_OFFSET_4		 		0x30L //xx11 xxxx
+#define E_DUP_LEN_1		 			0x00L //00xx xxxx
+#define E_DUP_LEN_2		 			0x10L //01xx xxxx
+#define E_DUP_LEN_3		 			0x20L //10xx xxxx
+#define E_DUP_LEN_4		 			0x30L //11xx xxxx
+//
+#define E_NEXT_CODE		 	 		0x0FL //xxxx 1111
 //@reserved codes -->>
-#define R_BITS					(2 + E_CODE_BITS)
-#define R_CODE_MASK			 	0x3FL
+#define R_BITS						6
+#define R_CODE_MASK			 		0x3FL //xx11 1111
+#define R_0_CODE					0x0FL //xx00 1111
+#define R_1_CODE					0x1FL //xx01 1111
+#define R_2_CODE					0x2FL //xx10 1111
 //
-#define R_0_CODE				(0x00L | E_NEXT_CODE)
-#define R_1_CODE				(0x10L | E_NEXT_CODE)
-#define R_2_CODE				(0x20L | E_NEXT_CODE)
-#define R_3_CODE				(0x30L | E_NEXT_CODE)
-
+#define R_NEXT_CODE					0x3FL //xx11 1111
 //@super & reserved for future use
-#define S_BITS				    (R_BITS+2)
-#define S_CODE_MASK			    0xFFL
+#define S_BITS				    	8
+#define S_CODE_MASK			    	0xFFL //1111 1111
+#define S_0_CODE			    	0x3FL //0011 1111
+#define S_1_CODE			    	0x3FL //0111 1111
+#define S_2_CODE			    	0x3FL //1011 1111
 //
-#define S_0_CODE			    (0x00L | R_NEXT_CODE)
-#define S_1_CODE			    (0x40L | R_NEXT_CODE)
-#define S_2_CODE			    (0x80L | R_NEXT_CODE)
-#define S_3_CODE			    (0xC0L | R_NEXT_CODE)
-
-//@and so on codes super duper ->>
-#define I_EXTENDED_CODE 	   	S_3_CODE
+#define S_NEXT_CODE 	   			0xFFL //1111 1111
 //
-
 #define PLAIN_LEN_MIN		(uint32_t)(0x00000001L)
 #define PLAIN_LEN_N			(uint32_t)(0x0000000FL) // 0000 xxxx + 0 BYTES = 16
 #define PLAIN_LEN_E			(uint32_t)(0x000003FFL) // 00xx xxxx + 1 BYTES = 1024
@@ -185,12 +194,12 @@ typedef struct {
 #define PLAIN_LEN_S			(uint32_t)(0x003FFFFFL) // xxxx xxxx + 0000 00xx + 2 BYTES = 4 194 304
 #define PLAIN_LEN_MAX		PLAIN_LEN_E
 
-#define PATTERN_LEN_MIN		(uint32_t)(0x00000002L)
-#define PATTERN_LEN_N		(uint32_t)(0x0000000FL) // 0000 xxxx + 0 BYTES = 16
-#define PATTERN_LEN_E		(uint32_t)(0x000003FFL) // 00xx xxxx + 1 BYTES = 1024
-#define PATTERN_LEN_R		(uint32_t)(0x0000FFFFL) // xxxx xxxx + 2 BYTES = 65536
-#define PATTERN_LEN_S		(uint32_t)(0x003FFFFFL) // xxxx xxxx + 0000 00xx + 2 BYTES = 4 194 304
-#define PATTERN_LEN_MAX		PATTERN_LEN_E
+#define RLE_LEN_MIN		(uint32_t)(0x00000002L)
+#define RLE_LEN_N		(uint32_t)(0x0000000FL) // 0000 xxxx + 0 BYTES = 16
+#define RLE_LEN_E		(uint32_t)(0x000003FFL) // 00xx xxxx + 1 BYTES = 1024
+#define RLE_LEN_R		(uint32_t)(0x0000FFFFL) // xxxx xxxx + 2 BYTES = 65536
+#define RLE_LEN_S		(uint32_t)(0x003FFFFFL) // xxxx xxxx + 0000 00xx + 2 BYTES = 4 194 304
+#define RLE_LEN_MAX		RLE_LEN_E
 
 #define DUP_LEN_MIN			(uint32_t)(0x00000004L)
 #define DUP_LEN_N			(uint32_t)(0x0000000FL) // 0000 xxxx = 16
@@ -214,16 +223,16 @@ public:
     static int8_t              __stdcall plain_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len);
     static int8_t              __stdcall plain_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr);
 
-    static int8_t              __stdcall pattern_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsizes);
-    static int8_t              __stdcall pattern_encode(void *a_code_ptr,const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize);
-    static int8_t              __stdcall pattern_decode(uint32_t *a_data_uncoded_counte,uint32_t *a_data_uncoded_elsize, const void *a_code_ptr);
+    static int8_t              __stdcall RLE_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsizes);
+    static int8_t              __stdcall RLE_encode(void *a_code_ptr,const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize);
+    static int8_t              __stdcall RLE_decode(uint32_t *a_data_uncoded_counte,uint32_t *a_data_uncoded_elsize, const void *a_code_ptr);
 
     static int8_t              __stdcall dup_price(const uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset);
     static int8_t              __stdcall dup_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len,const uint32_t axdata_uncoded_offset);
     static int8_t              __stdcall dup_decode(uint32_t *a_data_uncoded_len,uint32_t *a_data_uncoded_offset, const void *a_code_ptr);
 
-    static int32_t             __stdcall check_plain_cost(const uint32_t aplain_len);
-    static int32_t             __stdcall check_pattern_match_cost(const uint32_t aplain_len, const uint32_t apattern_counte, const uint32_t apattern_elsize);
+    static int32_t             __stdcall check_LIT_cost(const uint32_t aplain_len);
+    static int32_t             __stdcall check_RLE_match_cost(const uint32_t aplain_len, const uint32_t aRLE_counte, const uint32_t aRLE_elsize);
     static int32_t             __stdcall check_dup_match_cost(const uint32_t aplain_len, const uint32_t adup_len, const uint32_t adup_offset);
 };
 #endif
