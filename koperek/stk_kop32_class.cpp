@@ -222,7 +222,7 @@ if (path_separator=='\\' ?
         p.find(temp_lpCommand->c_str(),"-I","--DICT","/DICT",temp_lpCommandSubOption->data())==2 :
         p.find(temp_lpCommand->c_str(),"-I","--DICT",NULL,temp_lpCommandSubOption->data())==2)
    {options->coder_LZS_dup_size = stk::cstr::atoi(temp_lpCommandSubOption->data());
-        if (options->coder_LZS_dup_size > DUP_OFFSET_MAX || options->coder_LZS_dup_size < DUP_LEN_N)
+        if (options->coder_LZS_dup_size > DUP_OFFSET_MAX || options->coder_LZS_dup_size < DUP_LEN_L1)
            {do_event(ON_ERROR,"ERROR_INVALID_USER_DICT",OK);
                 progress->cancel = true;
                 return 0;

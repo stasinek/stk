@@ -439,10 +439,10 @@ __DEBUG_CALLED("")
                 }
 //--------------------
 //
-// SEARCH OPTIMAL PATTERNS
+// SEARCH OPTIMAL RLES
                 register char  *cur_ptr_end;
-                if (backward_max_len < PATTERN_LEN_MAX) cur_ptr_end = cur_ref + backward_max_len;
-                else cur_ptr_end = cur_ref + PATTERN_LEN_MAX;
+                if (backward_max_len < RLE_LEN_MAX) cur_ptr_end = cur_ref + backward_max_len;
+                else cur_ptr_end = cur_ref + RLE_LEN_MAX;
 
                 if (cur_els_max>=4 ? cur_els<=4 : false)
                                 while (cur_ptr <= cur_ptr_end -4) {
