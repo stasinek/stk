@@ -5,6 +5,17 @@
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
 //---------------------------------------------------------------------------
+#if defined(__WATCOMC__) // usupported
+    #define __CANT_COMPILE_RDTSCP__
+    #define __CANT_COMPILE_SFENCE__
+#endif
+#if defined(__BORLANDC__) // since version 550
+    #if (__BORLANDC__ <= 0x551)
+        #define __CANT_COMPILE_RDTSCP__
+        #define __CANT_COMPILE_SFENCE__
+    #endif
+#endif
+//---------------------------------------------------------------------------
 namespace stk { namespace cpu {
 //---------------------------------------------------------------------------
 /*EAX 1, ->EAX 0-3	Stepping number
@@ -83,15 +94,6 @@ extern bool		 __cdecl	cpu_has_psn(void);
 //---------------------------------------------------------------------------
 extern uint64_t  __cdecl    rdtsc(void);
 extern uint64_t	 __cdecl	rdtscex(void);
-//---------------------------------------------------------------------------
-#if defined(__WATCOMC__) // usupported
-    #define __CANT_COMPILE_RDTSCP__
-#endif
-#if defined(__BORLANDC__) // since version 550
-    #if (__BORLANDC__ < 0x550)
-        #define __CANT_COMPILE_RDTSCP__
-    #endif
-#endif
 #if !defined(__CANT_COMPILE_RDTSCP__)
 extern uint64_t  __cdecl    rdtscp(uint32_t *a_chip, uint32_t *a_core);
 #endif

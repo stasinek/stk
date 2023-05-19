@@ -19,11 +19,11 @@ __stdcall  stk::file_header::__lzstv4_header_coder::~__lzstv4_header_coder()
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::plain_price(const uint32_t axdata_uncoded_len)
+int8_t __stdcall stk::file_header::__lzstv4_header_coder::lit_price(const uint32_t axdata_uncoded_len)
 {
 //minimum code size for uncoded data header, just pass throught
                 register uint32_t l = axdata_uncoded_len;
-                if (l<=PLAIN_LEN_N) {
+                if (l<=LIT_LEN_L1) {
                                 return 1;
                 }
                 else {
@@ -31,13 +31,13 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::plain_price(const uint
                 }
 }
 //---------------------------------------------------------------------------
-int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_plain_cost(const uint32_t axdata_uncoded_len)
+int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_lit_cost(const uint32_t axdata_uncoded_len)
 {
-    return plain_price(axdata_uncoded_len) + axdata_uncoded_len;
+    return lit_price(axdata_uncoded_len) + axdata_uncoded_len;
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::plain_encode(void *a_code_ptr, const uint32_t axdata_uncoded_len)
+int8_t __stdcall stk::file_header::__lzstv4_header_coder::lit_encode(void *a_code_ptr, const uint32_t axdata_uncoded_len)
 {
 // 00LLLLLL
 // <<2
@@ -49,14 +49,14 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::plain_encode(void *a_c
 
                 register uint32_t l = axdata_uncoded_len;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
-                if (l<=PLAIN_LEN_N) {
-                                l = l <<N_CODE_BITS;
-                                l = l | N_PLAIN_CODE;
+                if (l<=LIT_LEN_L1) {
+                                l = l <<L1_CODE_BITS;
+                                l = l | L1_LIT_CODE;
                                 ((uint8_t*)code)[0] = l;
                                 return 1;
                 } else {
-                                l = l <<E_CODE_BITS;
-                                l = l | E_PLAIN_CODE;
+                                l = l <<L2_CODE_BITS;
+                                l = l | L2_LIT_CODE;
                                 ((uint8_t*)code)[0] = l;
                                 l = l >>8;
                                 ((uint8_t*)code)[1] = l;
@@ -65,7 +65,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::plain_encode(void *a_c
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::plain_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr)
+int8_t __stdcall stk::file_header::__lzstv4_header_coder::lit_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr)
 {
 // if N_CODE detected
 // LLLLLLXX
@@ -85,19 +85,19 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::plain_decode(uint32_t 
                 register uint8_t *code = (uint8_t*)a_code_ptr;
                 register uint8_t  c0, c1;
                 c0 = ((uint8_t*)code)[0];
-                register uint8_t h = c0 & N_CODE_MASK;
-                if (h==N_PLAIN_CODE) {
-                                c0 = c0 >> N_CODE_BITS;
+                register uint8_t h = c0 & L1_CODE_MASK;
+                if (h==L1_LIT_CODE) {
+                                c0 = c0 >> L1_CODE_BITS;
                                 l  = c0;
-                                l  = l  >> N_CODE_BITS;
+                                l  = l  >> L1_CODE_BITS;
                                 a_data_uncoded_len[0] = l;
                                 return 1;
                 }
                 else {
                                 c1 = ((uint8_t*)code)[1];
                                 l  = c1;
-                                l  = l  << (8 - E_CODE_BITS);
-                                c0 = c0 >> E_CODE_BITS;
+                                l  = l  << (8 - L2_CODE_BITS);
+                                c0 = c0 >> L2_CODE_BITS;
                                 l = l | c0;
                                 a_data_uncoded_len[0] = l;
                                 return 2;
@@ -106,12 +106,12 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::pattern_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
+int8_t __stdcall stk::file_header::__lzstv4_header_coder::rle_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
 {
 //minimum code size for data header, one byte for lenght and code second byte for RLE-byte
                 register uint32_t l = axdata_uncoded_counte;
                 register uint32_t e = axdata_uncoded_elsize;
-                if (l<=PATTERN_LEN_N) {
+                if (l<=RLE_LEN_L1) {
                                 return 1;
                 }
                 else {
@@ -121,38 +121,38 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_pattern_match_cost(const uint32_t alen, const uint32_t apattern_counte, const uint32_t apattern_elsize)
+int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_rle_match_cost(const uint32_t alen, const uint32_t arle_counte, const uint32_t arle_elsize)
 {
                 register uint32_t t;
-                register uint32_t pattern_elsize = apattern_elsize;
-                register uint32_t pattern_counte = apattern_counte;
-                register uint32_t pattern_len = pattern_elsize * pattern_counte;
+                register uint32_t rle_elsize = arle_elsize;
+                register uint32_t rle_counte = arle_counte;
+                register uint32_t rle_len = rle_elsize * rle_counte;
                 t = alen;
                 register uint32_t price =t;
-                while (t > PLAIN_LEN_MAX) {
-                                price+= plain_price(PLAIN_LEN_MAX);
-                                t -= PLAIN_LEN_MAX;
+                while (t > LIT_LEN_MAX) {
+                                price+= lit_price(LIT_LEN_MAX);
+                                t -= LIT_LEN_MAX;
                 }
                 if (t)
-                                price+= plain_price(t);
+                                price+= lit_price(t);
 //--------------------
-                price+= pattern_price(pattern_counte,pattern_elsize);
-                price+= pattern_elsize;
+                price+= rle_price(rle_counte,rle_elsize);
+                price+= rle_elsize;
 //--------------------
-                t = alen + pattern_len;
+                t = alen + rle_len;
                 register uint32_t  repl = t;
-                while (t > PLAIN_LEN_MAX) {
-                                repl+= plain_price(PLAIN_LEN_MAX);
-                                t -= PLAIN_LEN_MAX;
+                while (t > LIT_LEN_MAX) {
+                                repl+= lit_price(LIT_LEN_MAX);
+                                t -= LIT_LEN_MAX;
                 }
                 if (t)
-                                repl+= plain_price(t);
+                                repl+= lit_price(t);
 //--------------------
 return repl-price;
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::pattern_encode(void *a_code_ptr, const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
+int8_t __stdcall stk::file_header::__lzstv4_header_coder::rle_encode(void *a_code_ptr, const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
 {
 // L - LENGTH
 // 00LLLLLL
@@ -166,13 +166,13 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::pattern_encode(void *a
                 register uint32_t e = axdata_uncoded_elsize;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
                 register uint32_t t;
-                if (l<= PATTERN_LEN_N) {
+                if (l<= RLE_LEN_L1) {
                                 t = l;
                                 e = e - 1;
                                 t = t <<2;
                                 t = t | e;
                                 t = t <<2;
-                                t = t | N_PATTERN_CODE;
+                                t = t | L1_RLE_CODE;
                                 ((uint8_t*)code)[0] = t;
                                 return 1;
                 } else {
@@ -181,7 +181,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::pattern_encode(void *a
                                 t = t <<2;
                                 t = t | e;
                                 t = t <<4;
-                                t = t | E_PATTERN_CODE;
+                                t = t | L2_RLE_CODE;
                                 ((uint8_t*)code)[0] = t;
                                 t = t >>8;
                                 ((uint8_t*)code)[1] = t;
@@ -191,14 +191,14 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::pattern_encode(void *a
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::pattern_decode(uint32_t *a_data_uncoded_counte, uint32_t *a_data_uncoded_elsize, const void *a_code_ptr)
+int8_t __stdcall stk::file_header::__lzstv4_header_coder::rle_decode(uint32_t *a_data_uncoded_counte, uint32_t *a_data_uncoded_elsize, const void *a_code_ptr)
 {
                 register uint32_t l, e;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
                 register uint8_t  c0, c1;
                 c0 = ((uint8_t*)code)[0];
-                uint8_t h = c0 & N_CODE_MASK;
-                if (h==N_PATTERN_CODE) {
+                uint8_t h = c0 & L1_CODE_MASK;
+                if (h==L1_RLE_CODE) {
                                 c0 = c0 >>2;
                                 e  = c0 & 0x03L;
                                 e  = e + 1;
@@ -229,21 +229,21 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_price(const  uint3
 {
                 register uint32_t l = axdata_uncoded_len;
                 register uint32_t o = axdata_uncoded_offset;
-                if (l<=DUP_LEN_N) {
-                                if (o<=DUP_OFFSET_1) return 1+1;
-                                else if (o<=DUP_OFFSET_2) return 1+2;
+                if (l<=DUP_LEN_L1) {
+                                if (o<=DUP_OFFSET_L1) return 1+1;
+                                else if (o<=DUP_OFFSET_L2) return 1+2;
                                 else return 1+3;
                 }
                 else {
-                                if (o<=DUP_OFFSET_1) return 2+1;
-                                else if (o<=DUP_OFFSET_2) return 2+2;
+                                if (o<=DUP_OFFSET_L1) return 2+1;
+                                else if (o<=DUP_OFFSET_L2) return 2+2;
                                 else return 2+3;
                 }
 //return 0;
 }
 //---------------------------------------------------------------------------
 
-int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_dup_match_cost(const uint32_t aplain_len, const uint32_t adup_len, const uint32_t adup_offset)
+int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_dup_match_cost(const uint32_t alit_len, const uint32_t adup_len, const uint32_t adup_offset)
 {
 //
 // CALCULATE
@@ -251,25 +251,25 @@ int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_dup_match_cost(
                 register uint32_t t;
                 register uint32_t dup_len = adup_len;
                 register uint32_t dup_offset = adup_offset;
-                t = aplain_len;
+                t = alit_len;
                 register uint32_t price =t;
-                while (t > PLAIN_LEN_MAX) {
-                                price+= plain_price(PLAIN_LEN_MAX);
-                                t -= PLAIN_LEN_MAX;
+                while (t > LIT_LEN_MAX) {
+                                price+= lit_price(LIT_LEN_MAX);
+                                t -= LIT_LEN_MAX;
                 }
                 if (t)
-                                price+= plain_price(t);
+                                price+= lit_price(t);
 //--------------------
                 price+= dup_price(dup_len,dup_offset);
 //--------------------
-                t = aplain_len + dup_len;
+                t = alit_len + dup_len;
                 register uint32_t repl = t;
-                while (t > PLAIN_LEN_MAX) {
-                                repl+= plain_price(PLAIN_LEN_MAX);
-                                t -= PLAIN_LEN_MAX;
+                while (t > LIT_LEN_MAX) {
+                                repl+= lit_price(LIT_LEN_MAX);
+                                t -= LIT_LEN_MAX;
                 }
                 if (t)
-                                repl+= plain_price(t);
+                                repl+= lit_price(t);
 //--------------------
 return repl - price;
 }
@@ -296,31 +296,31 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_encode(void *a_cod
                 register uint8_t *code = (uint8_t*)a_code_ptr;
                 register uint32_t t;
 
-                if (l<= DUP_LEN_N) {
+                if (l<= DUP_LEN_L1) {
 
-                        if (o <= DUP_OFFSET_1) e = N_DUP_OFFSET_0;
+                        if (o <= DUP_OFFSET_L1) e = L1_DUP_OFFSET_SIZE_1;
                         else
-                        if (o <= DUP_OFFSET_2) e = N_DUP_OFFSET_1;
+                        if (o <= DUP_OFFSET_L1) e = L1_DUP_OFFSET_SIZE_2;
                         else
-                                                                   e = N_DUP_OFFSET_2;
+                                                                   e = L1_DUP_OFFSET_SIZE_2;
 
                                 t = l;
-                                t = t << (N_CODE_BITS + N_DUP_OFFSET_BITS);
+                                t = t << (L1_CODE_BITS + L1_DUP_OFFSET_SIZE_BITS + L1_DUP_LEN_SIZE_BITS);
                                 t = t | e;
-                                t = t | N_DUP_CODE;
+                                t = t | L1_DUP_CODE;
                                 ((uint8_t*)code)[0] = t;
 
-                                if (e==N_DUP_OFFSET_0) {
+                                if (e==L1_DUP_OFFSET_SIZE_0) {
                                         ((uint8_t*)code)[1] = o;
                                         return 2;
                                 }
-                                else if (e==N_DUP_OFFSET_1) {
+                                else if (e==L1_DUP_OFFSET_SIZE_1) {
                                         ((uint8_t*)code)[1] = o;
                                         o = o >> 8;
                                         ((uint8_t*)code)[2] = o;
                                         return 3;
                                 }
-                                else if (e==N_DUP_OFFSET_2) {
+                                else if (e==L1_DUP_OFFSET_SIZE_2) {
                                         ((uint8_t*)code)[1] = o;
                                         o = o >> 8;
                                         ((uint8_t*)code)[3] = o;
@@ -331,32 +331,32 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_encode(void *a_cod
                 }
                 else {
 
-                        if (o <= DUP_OFFSET_1) e = E_DUP_OFFSET_0;
+                        if (o <= L2_DUP_OFFSET_SIZE_1) e = L2_DUP_OFFSET_SIZE_1;
                         else
-                        if (o <= DUP_OFFSET_2) e = E_DUP_OFFSET_1;
+                        if (o <= L2_DUP_OFFSET_SIZE_2) e = L2_DUP_OFFSET_SIZE_2;
                         else
-                                                                   e = E_DUP_OFFSET_2;
+                                                                   e = L2_DUP_OFFSET_SIZE_3;
 
                                 t = l;
-                                t = t << (E_CODE_BITS + E_DUP_OFFSET_BITS);
+                                t = t << (L2_CODE_BITS + L2_DUP_OFFSET_SIZE_BITS);
                                 t = t | e;
-                                t = t | E_DUP_CODE;
+                                t = t | L2_DUP_CODE;
                                 ((uint8_t*)code)[0] = t;
                                 t = t >>8;
                                 ((uint8_t*)code)[1] = t;
 
-                                if (e==E_DUP_OFFSET_0) {
+                                if (e==L2_DUP_OFFSET_SIZE_1) {
                                         o = o;
                                         ((uint8_t*)code)[2] = o;
                                         return 2;
                                 }
-                                else if (e==E_DUP_OFFSET_1) {
+                                else if (e==L2_DUP_OFFSET_SIZE_2) {
                                         ((uint8_t*)code)[2] = o;
                                         o = o >> 8;
                                         ((uint8_t*)code)[3] = o;
                                         return 3;
                                 }
-                                else if (e==E_DUP_OFFSET_2) {
+                                else if (e==L2_DUP_OFFSET_SIZE_3) {
                                         ((uint8_t*)code)[2] = o;
                                         o = o >> 8;
                                         ((uint8_t*)code)[3] = o;
@@ -377,16 +377,16 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_decode(uint32_t *a
                 register uint8_t  c0, c1;
 
                                    c0 = ((uint8_t*)code)[0];
-                int8_t h = c0 & N_CODE_MASK;
+                int8_t h = c0 & L1_CODE_MASK;
 
-                if (h==N_DUP_CODE) {
-                                e  = c0  & N_DUP_OFFSET_MASK;
+                if (h==L1_DUP_CODE) {
+                                e  = c0  & L1_DUP_OFFSET_SIZE_MASK;
                                 o  =  0;
-                                c0 = c0 >> (N_CODE_BITS + N_DUP_OFFSET_BITS);
+                                c0 = c0 >> (L1_CODE_BITS + L1_DUP_OFFSET_SIZE_BITS);
                                 l  = c0;
                                 a_data_uncoded_len[0] = l;
 
-                                if (e==N_DUP_OFFSET_2) {
+                                if (e==L1_DUP_OFFSET_SIZE_2) {
                                                 o = o | ((uint8_t*)code)[3];
                                                 o = o <<8;
                                                 o = o | ((uint8_t*)code)[2];
@@ -396,7 +396,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_decode(uint32_t *a
                                                 a_data_uncoded_offset[0] = o;
                                                 return 1 + 3;
                                 }
-                                if (e==N_DUP_OFFSET_1) {
+                                if (e==L1_DUP_OFFSET_SIZE_1) {
                                                 o = o | ((uint8_t*)code)[2];
                                                 o = o <<8;
                                                 o = o | ((uint8_t*)code)[1];
@@ -404,7 +404,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_decode(uint32_t *a
                                                 a_data_uncoded_offset[0] = o;
                                                 return 1 + 2;
                                 }
-                                if (e==N_DUP_OFFSET_0) {
+                                if (e==L1_DUP_OFFSET_SIZE_0) {
                                                 o = o | ((uint8_t*)code)[1];
                                                 o = o;
                                                 a_data_uncoded_offset[0] = o;
@@ -412,17 +412,17 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_decode(uint32_t *a
                                 }
                 }
                 else {
-                                e  = c0 & E_DUP_OFFSET_MASK;
+                                e  = c0 & L2_DUP_OFFSET_SIZE_MASK;
                                 o  = 0;
-                                c0 = c0 >> (E_CODE_BITS + E_DUP_OFFSET_BITS);
+                                c0 = c0 >> (L2_CODE_BITS + L2_DUP_OFFSET_SIZE_BITS);
                                 l  = c0;
                                 c1 = ((uint8_t*)code)[1];
-                                c1 = c1 << E_DUP_LEN_BITS;
+                                c1 = c1 << L2_DUP_LEN_SIZE_BITS;
                                 l  = l | c1;
                                 l  = l;
                                 a_data_uncoded_len[0] = l;
 
-                                if (e==N_DUP_OFFSET_2) {
+                                if (e==L1_DUP_OFFSET_SIZE_2) {
                                                 o = o | ((uint8_t*)code)[4];
                                                 o = o <<8;
                                                 o = o | ((uint8_t*)code)[3];
@@ -432,7 +432,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_decode(uint32_t *a
                                                 a_data_uncoded_offset[0] = o;
                                                 return 1 + 3;
                                 }
-                                if (e==N_DUP_OFFSET_1) {
+                                if (e==L1_DUP_OFFSET_SIZE_1) {
                                                 o = o | ((uint8_t*)code)[3];
                                                 o = o <<8;
                                                 o = o | ((uint8_t*)code)[2];
@@ -440,7 +440,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_decode(uint32_t *a
                                                 a_data_uncoded_offset[0] = o;
                                                 return 1 + 2;
                                 }
-                                if (e==N_DUP_OFFSET_0) {
+                                if (e==L1_DUP_OFFSET_SIZE_0) {
                                                 o = o | ((uint8_t*)code)[2];
                                                 o = o;
                                                 a_data_uncoded_offset[0] = o;

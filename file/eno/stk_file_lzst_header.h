@@ -144,15 +144,15 @@ but its possible to use more bytes 1,2,3 additional up to 28bits total = 268MB b
 //@found in sliding window, 2-bit code, 2-bit number of bytes for offset, 4-bit lenght
 #define L1_DUP_CODE					0x02L //xxxx xx10
 #define L1_DUP_CODE_BITS			2
-#define L1_DUP_OFFSET_BYTES_MASK	0x0CL //xxxx 11xx
-#define L1_DUP_OFFSET_BYTES_BITS	2
-#define L1_DUP_LEN_MASK				0x00L //xxxx xxxx
-#define L1_DUP_LEN_BITS				0
+#define L1_DUP_OFFSET_SIZE_MASK	0x0CL //xxxx 11xx
+#define L1_DUP_OFFSET_SIZE_BITS	2
+#define L1_DUP_LEN_SIZE_MASK 		0x00L //xxxx xxxx
+#define L1_DUP_LEN_SIZE_BITS		0
 //
-#define L1_DUP_OFFSET_0				0x00L //xxxx 00xx
-#define L1_DUP_OFFSET_1				0x04L //xxxx 01xx
-#define L1_DUP_OFFSET_2				0x08L //xxxx 10xx
-#define L1_DUP_OFFSET_3				0x0CL //xxxx 11xx
+#define L1_DUP_OFFSET_SIZE_0		0x00L //xxxx 00xx
+#define L1_DUP_OFFSET_SIZE_1		0x04L //xxxx 01xx
+#define L1_DUP_OFFSET_SIZE_2		0x08L //xxxx 10xx
+#define L1_DUP_OFFSET_SIZE_3		0x0CL //xxxx 11xx
 //
 #define L1_NEXT_CODE				L1_CODE_MASK //xxxx 1111
 //@extended codes	-->>
@@ -164,42 +164,42 @@ but its possible to use more bytes 1,2,3 additional up to 28bits total = 268MB b
 //
 #define L2_RLE_CODE					0x07L //xxxx 0111
 #define L2_RLE_BITS					4
-#define L2_RLE_PATTERN_BYTES_MASK	0x30L //xxxx 11xx
-#define L2_RLE_PATTERN_BYTES_BITS	2
-#define L2_RLE_LEN_BYTES_MASK		0x30L //xxxx 11xx
-#define L2_RLE_LEN_BYTES_BITS		2
+#define L2_RLE_PATTERN_SIZE_MASK	0x30L //xxxx 11xx
+#define L2_RLE_PATTERN_SIZE_BITS	2
+#define L2_RLE_LEN_SIZE_MASK		0x30L //xxxx 11xx
+#define L2_RLE_LEN_SIZE_BITS        2
 //
 #define L2_DUP_CODE					0x0BL //xxxx 1011
 #define L2_DUP_BITS					4
-#define L2_DUP_OFFSET_BYTES_MASK	0x30L //xx11 xxxx
-#define L2_DUP_OFFSET_BYTES_BITS	2
-#define L2_DUP_LEN_BYTES_MASK		0xC0L //11xx xxxx
-#define L2_DUP_LEN_BYTES_BITS		2
+#define L2_DUP_OFFSET_SIZE_MASK	    0x30L //xx11 xxxx
+#define L2_DUP_OFFSET_SIZE_BITS	    2
+#define L2_DUP_LEN_SIZE_MASK		0xC0L //11xx xxxx
+#define L2_DUP_LEN_SIZE_BITS		2
 //
-#define L2_DUP_OFFSET_1		 		0x00L //xx00 xxxx
-#define L2_DUP_OFFSET_2		 		0x10L //xx01 xxxx
-#define L2_DUP_OFFSET_3		 		0x20L //xx10 xxxx
-#define L2_DUP_OFFSET_4		 		0x30L //xx11 xxxx
-#define L2_DUP_LEN_1		 		0x00L //00xx xxxx
-#define L2_DUP_LEN_2		 		0x10L //01xx xxxx
-#define L2_DUP_LEN_3		 		0x20L //10xx xxxx
-#define L2_DUP_LEN_4		 		0x30L //11xx xxxx
+#define L2_DUP_OFFSET_SIZE_1  		0x00L //xx00 xxxx
+#define L2_DUP_OFFSET_SIZE_2 		0x10L //xx01 xxxx
+#define L2_DUP_OFFSET_SIZE_3  		0x20L //xx10 xxxx
+#define L2_DUP_OFFSET_SIZE_4  		0x30L //xx11 xxxx
+#define L2_DUP_LEN_SIZE_1	 		0x00L //00xx xxxx
+#define L2_DUP_LEN_SIZE_2	 		0x10L //01xx xxxx
+#define L2_DUP_LEN_SIZE_3	  		0x20L //10xx xxxx
+#define L2_DUP_LEN_SIZE_4	  		0x30L //11xx xxxx
 //
 #define L2_NEXT_CODE		 	 	0x0FL //xxxx 1111
-//@reserved codes -->>
+//@reserved codes 2-->>
 #define L3_BITS						6
 #define L3_CODE_MASK			 	0x3FL //xx11 1111
-#define L3_0_CODE					0x0FL //xx00 1111
-#define L3_1_CODE					0x1FL //xx01 1111
-#define L3_2_CODE					0x2FL //xx10 1111
-#define L3_NEXT_CODE				0x3FL //xx11 1111
+#define L3_CODE_0					0x0FL //xx00 1111
+#define L3_CODE_1					0x1FL //xx01 1111
+#define L3_CODE_2					0x2FL //xx10 1111
+#define L3_CODE_NEXT				0x3FL //xx11 1111
 //@super & reserved for future use
 #define L4_BITS				    	8
 #define L4_CODE_MASK			    0xFFL //1111 1111
-#define L4_0_CODE			    	0x3FL //0011 1111
-#define L4_1_CODE			    	0x3FL //0111 1111
-#define L4_2_CODE			    	0x3FL //1011 1111
-#define L4_NEXT_CODE 	   			0xFFL //1111 1111
+#define L4_CODE_0			    	0x3FL //0011 1111
+#define L4_CODE_1			    	0x3FL //0111 1111
+#define L4_CODE_2			    	0x3FL //1011 1111
+#define L4_CODE_NEXT 	   			0xFFL //1111 1111
 //
 #define LIT_LEN_MIN		            (uint32_t)(0x00000001L)
 #define LIT_LEN_L1 		            (uint32_t)(0x00000010L) // 0000 xxxx + 0 BYTES = 16

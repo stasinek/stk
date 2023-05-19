@@ -257,11 +257,15 @@ uint32_t ret_lo, ret_hi;
         cpuid;
         jmp tsc_intel_measure;
         // AMD & other specific version
+#ifndef __CANT_COMPILE_SFENCE__
         sfence;
+#endif
         rdtsc;
 
         tsc_intel_measure:
+#ifndef __CANT_COMPILE_SFENCE__
         sfence;
+#endif
         rdtsc;
 
         tsc_exit:
