@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
+#pragma hdrstop
 #include "../text/stk_cstr_utils.h"
 #include "../threads/stk_threads.h"
 //---------------------------------------------------------------------------
@@ -20,6 +21,7 @@ static const uint8_t POLY_TAB[] = {0,1,2,4,5,7,8,10,11,12,16,22,23,26};
    XorOut : 00000000 <- ZIP version below, ONLY DIFFERENCE with MPEG2
    Check  : 0376E6E7
   */
+//---------------------------------------------------------------------------
 
 static uint32_t POLY_NOMIAL = 0x04C11DB7L;
 uint32_t CRC32_TAB[256] = {
@@ -118,6 +120,7 @@ uint32_t CRC32_TAB[256] = {
  *
  * CRC32 code derived from work by Gary S. Brown.
  */
+//---------------------------------------------------------------------------
 
 bool __stdcall stk::hash::crc32::test_CRC32(bool a_reset_table)
 {
@@ -331,6 +334,7 @@ return   crc;
 // largest prime smaller than 65536
 #define NUM_MAX 5550
 // the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1
+//---------------------------------------------------------------------------
 
 uint32_t __stdcall stk::hash::adler32::calc_ADLER32(const void *a_src_ptr,const uint32_t a_count)
 {
@@ -404,3 +408,5 @@ a -= MOD_ADLER;
 return (b << 16) | a;
 //#endif
 }
+//---------------------------------------------------------------------------
+

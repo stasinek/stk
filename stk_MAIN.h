@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_main_H__
-#define __stk_main_H__
+#ifndef __stk_main_h__
+#define __stk_main_h__
 //---------------------------------------------------------------------------
 // C++ Compiler name "redefinition"
 //---------------------------------------------------------------------------
@@ -8,6 +8,9 @@
 #define __CLANG__ __clang__
 #elif defined(_MSC_VER)
 #define __MSVC__ _MSC_VER
+#endif
+#if (_MSC_VER > 1600)
+   // ... std++11 Visual Studio 2010
 #endif
 //---------------------------------------------------------------------------
 #ifdef __MSVC__
@@ -17,17 +20,17 @@
 // IMPORT/EXPORT define what're You doing LINK LIBRARY or BUILD_STK_LIBRARY
 //---------------------------------------------------------------------------
 #if !defined(__EXPORT)
-    #ifdef __GNUC__
-        #define __EXPORT //__attribute__((dllexport)) //__attribute__((visibility("default")))
-    #else
+    #if defined(__GNUC__) // LLVM, GCC
+        #define __EXPORT  //__attribute__((dllexport)) //__attribute__((visibility("default")))
+    #else                 // Borland C++, WATCOM, Microsoft Visual C++
         #define __EXPORT __declspec(dllexport)
     #endif
 #define STK_EXPORT __EXPORT
 #endif /* __EXPORT */
 #if !defined(__IMPORT)
-    #ifdef __GNUC__
-        #define __IMPORT //__attribute__((dllimport))//__attribute__((visibility("default")))
-    #else
+    #if defined(__GNUC__) // LLVM, GCC
+        #define __IMPORT  //__attribute__((dllimport))//__attribute__((visibility("default")))
+    #else                 // Borland C++, WATCOM, Microsoft Visual C++
         #define __IMPORT __declspec(dllimport)
     #endif
 #define STK_IMPORT __IMPORT
@@ -37,7 +40,7 @@
     #define STK_IMPEXP __EXPORT
 #else
     #define STK_IMPEXP __IMPORT
-#endif /* BUILD_STK_LIBRARY */
+#endif /* Universal headers both for BUILD_STK_LIBRARY or IMPORT_STK_LIBRARY */
 //---------------------------------------------------------------------------
 //
 // C++ WARNINGS/ERRORS
@@ -148,6 +151,47 @@
 //---------------------------------------------------------------------------
 // OPERATING SYSTEM DETECTION
 //---------------------------------------------------------------------------
+//******************************************************************************
+// Automated platform detection
+//******************************************************************************
+
+// _WIN32 is used by
+// Visual C++
+#ifdef _WIN32
+#define __NT__
+#endif
+
+// Define __MAC__ platform indicator
+#ifdef macintosh
+#define __MAC__
+#endif
+
+// Define __OSX__ platform indicator
+#ifdef __APPLE__
+#define __OSX__
+#endif
+
+// Define __WIN16__ platform indicator 
+#ifdef _Windows_
+#ifndef __NT__
+#define __WIN16__
+#endif
+#endif
+
+// Define Windows CE platform indicator
+#ifdef WIN32_PLATFORM_HPCPRO
+#define __WINCE__
+#endif
+
+#if (_WIN32_WCE == 300) // for Pocket PC
+#define __POCKETPC__
+#define __WINCE__
+//#if (_WIN32_WCE == 211) // for Palm-size PC 2.11 (Wyvern)
+//#if (_WIN32_WCE == 201) // for Palm-size PC 2.01 (Gryphon)  
+//#ifdef WIN32_PLATFORM_HPC2000 // for H/PC 2000 (Galileo)
+#endif
+
+
 #if !defined(__BSD__) && (defined(__bsdi__) || defined(BSD) ||\
          defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) ||\
          defined(__APPLE__))
@@ -230,7 +274,7 @@
                 #define   NOMINMAX
     #endif
     #include <winsock2.h>
-    #include <windows.h>
+    //#include <windows.h>
     #include <conio.h>
     #include <io.h>
     #include <direct.h>

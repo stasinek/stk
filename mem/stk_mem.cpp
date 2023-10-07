@@ -1,16 +1,17 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "./../cpu/stk_cpu.h"
-#include "./../threads/stk_threads.h"
-#include "./../io/stk_console.h"
-#include "./../stk_vector.h"
-#include "stk_mem.h"
-//---------------------------------------------------------------------------
 #ifdef __MSVC__
 #include <MEMORY.h>
 #endif
 #include <malloc.h>
+#pragma hdrstop
+#include "./../cpu/stk_cpu.h"
+#include "./../threads/stk_threads.h"
+#include "./../io/stk_console.h"
+#include "./../stk_vector.h"
+//---------------------------------------------------------------------------
+#include "stk_mem.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { namespace mem {

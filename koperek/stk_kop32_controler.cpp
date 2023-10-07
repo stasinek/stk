@@ -1,9 +1,11 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "stk_kop32_controler.h"
-#include "stk_kop32_class.h"
+#pragma hdrstop
 #include "./../time/stk_time.h"
+#include "stk_kop32_class.h"
+//---------------------------------------------------------------------------
+#include "stk_kop32_controler.h"
 //---------------------------------------------------------------------------
 
 __stdcall  stk::__kop32_class_progress_controler::__stat_group::__stat_group(void)

@@ -10,14 +10,6 @@
 //
 //---------------------------------------------------------------------------
 #include <winsock2.h>
-#include "stk_kop32_API.h"
-
-//---------------------------------------------------------------------------
-#include "./../file/eno/stk_file_lzst_header.h"
-#include "./../hash/stk_hash_ssc1.h"
-#include "./../process_journal/stk_journal.h"
-#include "./../io/stk_console.h"
-//---------------------------------------------------------------------------
 #include <windows.h>
 #include <wincon.h>
 #include <stdio.h>
@@ -27,6 +19,13 @@
 //#include <dos.h>
 //#include <io.h>
 #include <fcntl.h>
+#pragma hdrstop
+#include "./../file/eno/stk_file_lzst_header.h"
+#include "./../hash/stk_hash_ssc1.h"
+#include "./../process_journal/stk_journal.h"
+#include "./../io/stk_console.h"
+//---------------------------------------------------------------------------
+#include "stk_kop32_API.h"
 //---------------------------------------------------------------------------
 // The main class
 //---------------------------------------------------------------------------

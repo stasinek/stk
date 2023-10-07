@@ -1,17 +1,17 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "stk_sockets.h"
-//---------------------------------------------------------------------------
+#ifdef __MSVC__
+#pragma comment(lib, "Ws2_32.lib")
+#endif
+#pragma hdrstop
 #include "./../file/stk_file_mime_types.h"
 #include "./../io/stk_console.h"
 #include "./../mem/stk_mem.h"
 #include "./../threads/stk_threads.h"
 #include "./../time/stk_time.h"
 //---------------------------------------------------------------------------
-#ifdef __MSVC__
-#pragma comment(lib, "Ws2_32.lib")
-#endif
+#include "stk_sockets.h"
 //---------------------------------------------------------------------------
 
 SOCKET __stdcall stk::socket::create_server_socket(const char *aipv4_port_s, const int atimeout_s)

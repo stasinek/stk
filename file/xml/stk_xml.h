@@ -163,9 +163,9 @@ class BDC
     {
     public:
         char* d;
-        unsigned long long ss;
+        unsigned __int64 ss;
 
-        BDC(unsigned long long s);
+        BDC(unsigned __int64 s);
         BDC();
         ~BDC();
         BDC(const BDC& d2);
@@ -174,12 +174,12 @@ class BDC
         operator char*() const;
         operator const char*() const;
         char* p() const;
-        unsigned long long size() const;
+        unsigned __int64 size() const;
         void clear();
         void reset();
-        void Ensure(unsigned long long news);
-        void Resize(unsigned long long news);
-        void AddResize(unsigned long long More);
+        void Ensure(unsigned __int64 news);
+        void Resize(unsigned __int64 news);
+        void AddResize(unsigned __int64 More);
     };
 /*
     Binary Exporting Stuff
@@ -496,8 +496,8 @@ class XMLElement
         XMLElement* AddElement(const char*,const wchar_t* = 0);
         XMLElement* InsertElement(unsigned int,XMLElement*);
 #endif
-        void SetElementParam(unsigned long long p);
-        unsigned long long GetElementParam();
+        void SetElementParam(unsigned __int64 p);
+        unsigned __int64 GetElementParam();
         void Reparse(const char*el,int Type = 0);
         int GetDeep();
 
@@ -708,7 +708,7 @@ class XMLElement
 #ifndef XML_USE_STL
         XMLElement(const XMLElement&);
 #endif
-        unsigned long long param;
+        unsigned __int64 param;
         int type; // type, 0 element
         XMLElement* parent; // one
 
@@ -780,15 +780,15 @@ class XMLVariable
 #endif
         int GetValueInt();
         unsigned int GetValueUInt();
-        long long GetValueInt64();
-        unsigned long long GetValueUInt64();
+        __int64 GetValueInt64();
+        unsigned __int64 GetValueUInt64();
         float GetValueFloat();
         void SetName(const char*,int NoDecode = 0,const wchar_t* = 0);
         void SetValue(const char*,int NoDecode = 0,const wchar_t* = 0);
         void SetValueUInt(unsigned int);
         void SetValueInt(int);
-        void SetValueInt64(long long);
-        void SetValueUInt64(unsigned long long);
+        void SetValueInt64(__int64);
+        void SetValueUInt64(unsigned __int64);
         void SetValueFloat(float);
         void SetFormattedValue(const char* fmt,...);
         template <typename T> T GetFormattedValue(const char* fmt)
@@ -969,7 +969,7 @@ class XML
 #else
         int PhantomLoad(const char* file,bool IsUnicode = false,bool UseMap = false);
 #endif
-        int PhantomElement(FILE*fp,class XMLElement* r,unsigned long long StartP,unsigned long long EndP);
+        int PhantomElement(FILE*fp,class XMLElement* r,unsigned __int64 StartP,unsigned __int64 EndP);
         static int DoMatch(const char *text, char *p, bool IsCaseSensitive = false);
         static bool VMatching(const char *text, char *p, bool IsCaseSensitive = false);
         static bool TestMatch(const char* item1,const char* comp,const char* item2);
@@ -1055,12 +1055,14 @@ size_t              XMLGetBinaryData(const char* item,const char* attr,const cha
 int                 XMLSetBinaryData(const char* section,const char* attr,char* data,int len,const char* xml,XML* af = 0);
 int                 XMLRenameElement(const char* section,const char* newname,const char* xml,XML* af = 0);
 #ifdef _WIN32
-long long           XMLGetInt64(const char* item,const char* attr,const long long defv,const char* xml,XML* af = 0);
-int                 XMLSetInt64(const char* section,const char* attr,long long v,const char* xml,XML* af = 0);
-unsigned long long  XMLGetUInt64(const char* item,const char* attr,const unsigned long long defv,const char* xml,XML* af = 0);
-int                 XMLSetUInt64(const char* section,const char* attr,unsigned long long v,const char* xml,XML* af = 0);
+__int64           XMLGetInt64(const char* item,const char* attr,const __int64 defv,const char* xml,XML* af = 0);
+int                 XMLSetInt64(const char* section,const char* attr,__int64 v,const char* xml,XML* af = 0);
+unsigned __int64  XMLGetUInt64(const char* item,const char* attr,const unsigned __int64 defv,const char* xml,XML* af = 0);
+int                 XMLSetUInt64(const char* section,const char* attr,unsigned __int64 v,const char* xml,XML* af = 0);
 int                 XMLSetStringW(const char* section,const char* Tattr,wchar_t*out,const char* xml,XML* af = 0);
+#if !defined(__BORLANDC__) && !defined(__WATCOMC__)
 #define             XMLSetStringA(...) XMLSetString(__VA_ARGS__)
+#endif
 #endif
 #ifndef __SYMBIAN32__
 #ifdef XML_USE_STL

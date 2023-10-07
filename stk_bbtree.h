@@ -1,21 +1,23 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_bbtree_h
-#define __stk_bbtree_h
+#ifndef __stk_bbtree_h__
+#define __stk_bbtree_h__
 //---------------------------------------------------------------------------
 struct bt_node
 {
  	unsigned index;
 	void *value;
+    char *name;
 	long left;
 	long right;
 	unsigned depth;
+    long parent;
 };
 struct bt_tree
 {
  	unsigned n;
 	unsigned buffer;
 	long current_root;
-	struct bt_node* nodes;
+	struct bt_node* node;
 	int freeslots;
 };
 //---------------------------------------------------------------------------

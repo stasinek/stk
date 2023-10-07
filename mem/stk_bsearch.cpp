@@ -1,4 +1,8 @@
+//---------------------------------------------------------------------------
+#pragma hdrstop
+//---------------------------------------------------------------------------
 #include "stk_bsearch.h"
+//---------------------------------------------------------------------------
 
 void* __cdecl stk::bsearch(const void *k, const void *base, size_t number_of_elements, size_t size_of_element,
 			   int (*compare)(const void *k1, const void *k2))
@@ -22,4 +26,5 @@ void* __cdecl stk::bsearch(const void *k, const void *base, size_t number_of_ele
 
 		 return NULL;
 }
- 
+//---------------------------------------------------------------------------
+

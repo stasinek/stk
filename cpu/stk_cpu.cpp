@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
+#pragma hdrstop
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
 #include "./../threads/stk_threads.h"
@@ -79,13 +80,11 @@ uint32_t ret_lo, ret_hi;
     #endif
 
 #elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
-
     __asm {
         rdtsc;
         mov [ret_lo], eax;
         mov [ret_hi], edx;
     }
-
 #elif defined(__WATCOMC__) // RDTSCP is not supported by older compilers but do exist on 32bit as well
 
     #error "WATCOM1 compiler is not supported"

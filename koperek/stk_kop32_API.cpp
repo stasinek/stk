@@ -5,7 +5,11 @@
 // CONSOLE APP
 //
 //---------------------------------------------------------------------------
-#include "stk_kop32_API.h"
+#include <wincon.h>
+#include <direct.h>
+#include <time.h>
+#include <fcntl.h>
+#pragma hdrstop
 //---------------------------------------------------------------------------
 #include "./../process_journal/stk_journal.h"
 #include "./../hash/stk_hash_ssc1.h"
@@ -13,10 +17,7 @@
 #include "./../io/stk_console.h"
 #include "./../text/stk_cstr_utils.h"
 //---------------------------------------------------------------------------
-#include <wincon.h>
-#include <direct.h>
-#include <time.h>
-#include <fcntl.h>
+#include "stk_kop32_API.h"
 //---------------------------------------------------------------------------
 // The main class
 //---------------------------------------------------------------------------

@@ -375,7 +375,7 @@ public:
 // Binary Data Container 
 //---------------------------------------------------------------------------
 
-BDC :: BDC(unsigned long long s)
+BDC :: BDC(unsigned __int64 s)
         {
         d = 0;
         if (s)
@@ -417,7 +417,7 @@ void BDC :: operator =(const BDC& d2)
                 delete[] d;
         d = 0;
         ss = 0;
-        unsigned long long ns = d2.size();
+        unsigned __int64 ns = d2.size();
         if (ns)
                 {
                 d = new char[(unsigned int)ns];
@@ -437,7 +437,7 @@ char* BDC :: p() const
         {
         return (char*)d;
         }
-unsigned long long BDC :: size() const
+unsigned __int64 BDC :: size() const
         {
         return ss;
         }
@@ -452,20 +452,20 @@ void BDC :: reset()
         d = 0;
         ss = 0;
         }
-void BDC :: Ensure(unsigned long long news)
+void BDC :: Ensure(unsigned __int64 news)
         {
         if (news < ss)
                 return; // capacity is ok
         Resize(news);
         }
-void BDC :: Resize(unsigned long long news)
+void BDC :: Resize(unsigned __int64 news)
         {
         if (news == ss)
                 return; // same size
 
         // Create buffer to store existing BDC
         char* newd = new char[(unsigned int)news];
-        unsigned long long newbs = news;
+        unsigned __int64 newbs = news;
         stk::mem::set((void*)newd,0, (size_t)newbs);
 
         if (ss < news)
@@ -477,7 +477,7 @@ void BDC :: Resize(unsigned long long news)
         d = newd;
         ss = news;
         }
-void BDC :: AddResize(unsigned long long More)
+void BDC :: AddResize(unsigned __int64 More)
         {
         Resize(ss + More);
         }
@@ -1116,17 +1116,17 @@ size_t XML :: XMLDecode(const char* src,char* trg)
                                 i++;
                                 }
 
-                        unsigned long N = 0;
+                        unsigned long ULN = 0;
                         for(int z = (y - 1) ; z >= 0 ; z--)
                                 {
-                                N += dig[z] * XMLHelper :: pow(16,(y - 1) - z);
+                                ULN += dig[z] * XMLHelper :: pow(16,(y - 1) - z);
                                 }
 
                         // Convert result to UTF-8
                         char d1[100] = {0};
 #ifdef _WIN32
                         wchar_t d2[100] = {0};
-                        swprintf(d2,100,L"%c",(wchar_t)N);
+                        swprintf(d2,L"%c",reinterpret_cast<wchar_t>(ULN));
                         WideCharToMultiByte(CP_UTF8,0,d2,-1,d1,100,0,0);
 #endif
                         strcat(trg + x,d1);
@@ -1147,17 +1147,17 @@ size_t XML :: XMLDecode(const char* src,char* trg)
                                 i++;
                                 }
 
-                        unsigned long N = 0;
+                        unsigned long ULN = 0;
                         for(int z = (y - 1) ; z >= 0 ; z--)
                                 {
-                                N += dig[z] * XMLHelper :: pow(10,(y - 1) - z);
+                                ULN += dig[z] * XMLHelper :: pow(10,(y - 1) - z);
                                 }
 
                         // Convert result to UTF-8
                         char d1[100] = {0};
 #ifdef _WIN32
                         wchar_t d2[100] = {0};
-                        swprintf(d2,100,TEXT("%c"),(wchar_t)N);
+                        swprintf(d2,100,TEXT("%c"),(wchar_t)ULN);
                         WideCharToMultiByte(CP_UTF8,0,d2,-1,d1,100,0,0);
 #endif
                         strcat(trg + x,d1);
@@ -1841,13 +1841,13 @@ int XMLElement :: RemoveAllElements()
         return 0;
         }
 
-void XMLElement :: SetElementParam(unsigned long long p)
+void XMLElement :: SetElementParam(unsigned __int64 p)
         {
         param = p;
         }
 //---------------------------------------------------------------------------
 
-unsigned long long XMLElement :: GetElementParam()
+unsigned __int64 XMLElement :: GetElementParam()
         {
         return param;
         }
@@ -4627,7 +4627,7 @@ void XML :: JsonParser(XMLElement* root,const char* txt)
                         XMLElement* nr = root->GetParent();
                         if (!nr) // End JSon parsing
                                 break;
-                        unsigned long long lp = root->GetElementParam();
+                        unsigned __int64 lp = root->GetElementParam();
                         if (lp != 1)
                                 {
                                 root = nr;
@@ -5397,7 +5397,7 @@ XMLVariable* XMLElement :: FindVariableZ(const char*  x,bool ForceCreate,const c
 
 //---------------------------------------------------------------------------
 /*
-int XML :: PhantomElement(FILE* fp,XMLElement* r,unsigned long long StartP,unsigned long long EndP)
+int XML :: PhantomElement(FILE* fp,XMLElement* r,unsigned __int64 StartP,unsigned __int64 EndP)
         {
         return 0;
         }
@@ -7894,12 +7894,12 @@ unsigned int XMLVariable :: GetValueUInt()
         }
 //---------------------------------------------------------------------------
 
-long long XMLVariable :: GetValueInt64()
+__int64 XMLVariable :: GetValueInt64()
         {
         size_t p = GetValue(0);
         Z<char> d(p + 10);
         GetValue(d);
-        long long x = 0;
+        __int64 x = 0;
 #ifndef _WIN32
         sscanf(d,"%lli",&x);
 #else
@@ -7909,12 +7909,12 @@ long long XMLVariable :: GetValueInt64()
         }
 //---------------------------------------------------------------------------
 
-unsigned long long XMLVariable :: GetValueUInt64()
+unsigned __int64 XMLVariable :: GetValueUInt64()
         {
         size_t p = GetValue(0);
         Z<char> d(p + 10);
         GetValue(d);
-        unsigned long long x = 0;
+        unsigned __int64 x = 0;
 #ifndef _WIN32
         sscanf(d,"%llu",&x);
 #else
@@ -7940,7 +7940,7 @@ void XMLVariable :: SetValueUInt(unsigned int V)
         }
 //---------------------------------------------------------------------------
 
-void XMLVariable :: SetValueInt64(long long V)
+void XMLVariable :: SetValueInt64(__int64 V)
         {
         char t[50] = {0};
 #ifndef _WIN32
@@ -7952,7 +7952,7 @@ void XMLVariable :: SetValueInt64(long long V)
         }
 //---------------------------------------------------------------------------
 
-void XMLVariable :: SetValueUInt64(unsigned long long V)
+void XMLVariable :: SetValueUInt64(unsigned __int64 V)
         {
         char t[50] = {0};
 #ifndef _WIN32
@@ -8617,17 +8617,17 @@ int XMLElement :: XMLQuery(const char* expression2,XMLElement** rv,unsigned int 
 
                 }
 
-        int N = 0;
+        unsigned long ULN = 0;
         for(int i = 0 ; i < C ; i++)
                 {
                 if (positives[i])
                         {
                         if (rv)
-                                rv[N] = allelements[i];
+                                rv[ULN] = allelements[i];
                         N++;
                         }
                 }
-        return N;
+        return ULN;
         }
 //---------------------------------------------------------------------------
 // Global functions
@@ -8693,7 +8693,7 @@ Z<char>* XML :: ReadToZ(const char* file,XMLTransform* eclass,class XMLTransform
 bool XMLContent :: ImportFromBinary(const BDC& b)
         {
         // Validate it
-        unsigned long long bs = b.size();
+        unsigned __int64 bs = b.size();
         char* ptr = b.p();
         if (bs < sizeof(XMLBINARYHEADER))
                 return false; // Invalid
@@ -8821,7 +8821,7 @@ BDC XMLContent :: ExportToBinary()
 bool XMLComment :: ImportFromBinary(const BDC& b)
         {
         // Validate it
-        unsigned long long bs = b.size();
+        unsigned __int64 bs = b.size();
         char* ptr = b.p();
         if (bs < sizeof(XMLBINARYHEADER))
                 return false; // Invalid
@@ -8921,7 +8921,7 @@ BDC XMLComment :: ExportToBinary()
 bool XMLCData :: ImportFromBinary(const BDC& b)
         {
         // Validate it
-        unsigned long long bs = b.size();
+        unsigned __int64 bs = b.size();
         char* ptr = b.p();
         if (bs < sizeof(XMLBINARYHEADER))
                 return false; // Invalid
@@ -9021,7 +9021,7 @@ BDC XMLCData :: ExportToBinary()
 bool XMLVariable :: ImportFromBinary(const BDC& b)
         {
         // Validate it
-        unsigned long long bs = b.size();
+        unsigned __int64 bs = b.size();
         char* ptr = b.p();
         if (bs < sizeof(XMLBINARYHEADER))
                 return false; // Invalid
@@ -9145,7 +9145,7 @@ BDC XMLVariable :: ExportToBinary()
 bool XMLHeader :: ImportFromBinary(const BDC& b)
         {
         // Validate it
-        unsigned long long bs = b.size();
+        unsigned __int64 bs = b.size();
         char* ptr = b.p();
         if (bs < sizeof(XMLBINARYHEADER))
                 return false; // Invalid
@@ -9324,7 +9324,7 @@ BDC XMLHeader :: ExportToBinary()
 bool XMLElement :: ImportFromBinary(const BDC& b)
         {
         // Validate it
-        unsigned long long bs = b.size();
+        unsigned __int64 bs = b.size();
         char* ptr = b.p();
         if (bs < sizeof(XMLBINARYHEADER))
                 return false; // Invalid
@@ -9604,7 +9604,7 @@ BDC XMLElement :: ExportToBinary()
 bool XML :: ImportFromBinary(const BDC& b)
         {
         // Validate it
-        unsigned long long bs = b.size();
+        unsigned __int64 bs = b.size();
         char* ptr = b.p();
         if (bs < sizeof(XMLBINARYHEADER))
                 return false; // Invalid
@@ -9824,7 +9824,7 @@ int XMLGetInt(const char* item,const char* attr,const int defv,const char* xml,X
         }
 //---------------------------------------------------------------------------
 #ifdef _WIN32
-long long  XMLGetInt64(const char* item,const char* attr,const long long defv,const char* xml,XML* af)
+__int64  XMLGetInt64(const char* item,const char* attr,const __int64 defv,const char* xml,XML* af)
         {
         Z<char> i(100);
         Z<char> id(100);
@@ -9839,7 +9839,7 @@ long long  XMLGetInt64(const char* item,const char* attr,const long long defv,co
         }
 //---------------------------------------------------------------------------
 
-unsigned long long  XMLGetUInt64(const char* item,const char* attr,const unsigned long long defv,const char* xml,XML* af)
+unsigned __int64  XMLGetUInt64(const char* item,const char* attr,const unsigned __int64 defv,const char* xml,XML* af)
         {
         Z<char> i(100);
         Z<char> id(100);
@@ -9849,7 +9849,7 @@ unsigned long long  XMLGetUInt64(const char* item,const char* attr,const unsigne
         sprintf(id,"%I64u",defv);
 #endif
         XMLGetString(item,attr,id,i,100,xml,af);
-        unsigned long long x = 0;
+        unsigned __int64 x = 0;
         sscanf(i,"%I64u",&x);
         return x;
         }
@@ -9926,7 +9926,7 @@ int XMLSetInt(const char* section,const char* attr,int v,const char* xml,XML* af
         }
 
 #ifdef _WIN32
-int    XMLSetUInt64(const char* section,const char* attr,unsigned long long v,const char* xml,XML* af)
+int    XMLSetUInt64(const char* section,const char* attr,unsigned __int64 v,const char* xml,XML* af)
         {
         char a[40] = {0};
 #ifndef _WIN32
@@ -9936,7 +9936,7 @@ int    XMLSetUInt64(const char* section,const char* attr,unsigned long long v,co
 #endif
         return XMLSetString(section,attr,a,xml,af);
         }
-int    XMLSetInt64(const char* section,const char* attr,long long v,const char* xml,XML* af)
+int    XMLSetInt64(const char* section,const char* attr,__int64 v,const char* xml,XML* af)
         {
         char a[40] = {0};
 #ifndef _WIN32

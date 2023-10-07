@@ -1,17 +1,17 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "stk_compression_API.h"
-//---------------------------------------------------------------------------
+#pragma hdrstop
 #include "stk_compression_lzstv4.h"
 #include "stk_compression_bwt_matrix2.h"
 #include "stk_compression_huff.h"
 #include "stk_compression_ari.h"
-//---------------------------------------------------------------------------
 #include "./../cipher/stk_cipher_mtf.h"
 #include "./../io/stk_console.h"
 #include "./../text/stk_cstr_utils.h"
 #include "./../mem/stk_mem.h"
+//---------------------------------------------------------------------------
+#include "stk_compression_API.h"
 //---------------------------------------------------------------------------
 
 void __stdcall stk::compression::test(void)

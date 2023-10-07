@@ -1,10 +1,12 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "stk_compression_static_huff.h"
+#pragma hdrstop
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
 #include "./../io/stk_console.h"
+//---------------------------------------------------------------------------
+#include "stk_compression_static_huff.h"
 //---------------------------------------------------------------------------
 #define BIT_COMBINATIONS_PER_BYTE	 (256) 		   /* kinds of characters (character code = 0..BIT_COMBINATIONS_PER_BYTE-1) */
 #define TREE_SIZE ((BIT_COMBINATIONS_PER_BYTE*2)-1)	/* size of table */

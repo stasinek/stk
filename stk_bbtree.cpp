@@ -1,6 +1,8 @@
 //---------------------------------------------------------------------------
+#include <assert.h>
 #pragma hdrstop
 #include "stk_bbtree.h"
+#include <stk_cstr_utils.h>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 //---------------------------------------------------------------------------
@@ -22,20 +24,23 @@ long __stdcall add_if_not_exists(struct bt_tree* bt, char *name, void*value)
 	//the function get_new_slot() pop a value from freeslots, if it has
 	// otherwise increase the counter of the tree, check if the buffer
 	//can satisfy the new request, otherwise realloc() the vector
-	long res = get_new_slot(bt->freeslots);
+    //TODO: create missing get_new_slot function!
+    //long res = get_new_slot(bt->freeslots);
+    long cur,res;
 	unsigned long tmp = add(bt,cur,res);
 	bt->node[res].name=name; //I just paste the address of the name
 				    //i don't duplicate yet
-	bt->node[res].value=value;
+	bt->node[res].value = value;
 	if (tmp==cur)	//successfully inserted
 	{
-		bt->node[res].name=strdup(name);
+		bt->node[res].name=stk::cstr::dup(name);
 		bt->node[res].value=value;
 
 	}
 	else
 	{  //already existing
-		stack_push(bt->freeslots,res);
+		// TODO: missing stack_push
+        //stac_push(bt->freeslots,res);
 		bt->node[res].name=NULL;
 		bt->node[res].value=NULL;
 	}
@@ -47,36 +52,37 @@ long __stdcall add_if_not_exists(struct bt_tree* bt, char *name, void*value)
 //with the same key. What do with it is a matter of interface function (if raise an exception or
 //sum, or just add_if_not_exists)
 
-long __stdcall add(struct bt_tree*bt, unsigned long newitemix)
+long __stdcall add(struct bt_tree *bt, unsigned long newitemix)
 {
 	int cmp;
-	long root=bt->cuurent_root;
+	///long root=bt->cuurent_root;
+long root;
 	while (root>0)
 	{
-		if ((cmp=strcmp(bt->nodes[root].name,bt->nodes[newitemix].name)==0)
+		if ((cmp=stk::cstr::cmp(bt->node[root].name,bt->node[newitemix].name))==0)
 		{
 			return root;
 		}else if(cmp<0)
 		{
-			if(bt->nodes[root].right<0)
+			if(bt->node[root].right<0)
 			{
-				bt->nodes[root].right=newitemix;
-				bt->nodes[newitemix].parent=root;
+				bt->node[root].right=newitemix;
+				bt->node[newitemix].parent=root;
 				break;
 			}
 			else
-				root=bt->nodes[root].right;
+				root=bt->node[root].right;
 		}
 		else
 		{
-			if(bt->nodes[root].left<0)
+			if(bt->node[root].left<0)
 			{
-				bt->nodes[root].left=newitemix;
-				bt->nodes[newitemix].parent=root;
+				bt->node[root].left=newitemix;
+				bt->node[newitemix].parent=root;
 				break;
 			}
 			else
-				root=bt->nodes[root].left;
+				root=bt->node[root].left;
 		}
 
 	}
@@ -87,58 +93,58 @@ long __stdcall add(struct bt_tree*bt, unsigned long newitemix)
 }
 //---------------------------------------------------------------------------
 
-void __stdcall propagate_depth(bt,newitemix)
+void __stdcall propagate_depth(struct bt_tree *bt, unsigned long newitemix)
 {
    assert(newitemix>=0);
    unsigned i, depth;
-   for(i=newitemix;i>=0;i=bt->nodes[i].parent)
+   for(i=newitemix;i>=0;i=bt->node[i].parent)
    {
-          depth=bt->nodes[i].right<0?0:bt->nodes[bt->nodes[i].right].depth;
-          depth=bt->nodes[i].left<0?depth:max(depth,bt->nodes[bt->nodes[i].left].depth);
+          depth=bt->node[i].right<0?0:bt->node[bt->node[i].right].depth;
+          depth=bt->node[i].left<0?depth:max(depth,bt->node[bt->node[i].left].depth);
           depth++;
-          bt->nodes[i].depth=depth;
+          bt->node[i].depth=depth;
    }
 }
 //---------------------------------------------------------------------------
 
 void __stdcall bubble(struct bt_tree*bt, unsigned index)
 {
-	unsigned parent=bt->nodes[index].parent;
+	unsigned parent=bt->node[index].parent;
 	struct bt_node*right,*left;
 	while (parent>=0)
-	{	right=bt->nodes[index].right<0?NULL:&bt->nodes[bt->nodes[index].right];
-		left=bt->nodes[index].left<0?NULL:&bt->nodes[bt->nodes[index].left];
+	{	right=bt->node[index].right<0?NULL:&bt->node[bt->node[index].right];
+		left=bt->node[index].left<0?NULL:&bt->node[bt->node[index].left];
 		if ((!left && right && right->depth>1)||
 		   (!right &&  left && left->depth>1)||
 		(left && right && abs(right->depth-left->depth)>1))
 			rotate(bt,index);
 		index=parent;
-		parent=bt->nodes[index].parent;
+		parent=bt->node[index].parent;
 	}
 }
 //---------------------------------------------------------------------------
 
 long __stdcall rotate(struct bt_tree*bt,unsigned long ix)
 {  //we save first all the neighborhood in some comfortable variables
-	asser (ix>=0 && ix<bt->n);
+	assert(ix>=0 && ix<bt->n);
    struct bt_node *me,*parent,*left,*right;
   char side; //and defines comfortable which side my parent keeps me
-  me=&bt->nodes[ix];
-  parent=me->parent<0?NULL:&bt->nodes[me->parent];
-  left=me->left<0?NULL:&bt->nodes[me->left];
-  right=me->right<0?NULL:&bt->nodes[me->right];
+  me=&bt->node[ix];
+  parent=me->parent<0?NULL:&bt->node[me->parent];
+  left=me->left<0?NULL:&bt->node[me->left];
+  right=me->right<0?NULL:&bt->node[me->right];
    assert(left || right);
   if (parent)
    side=parent->left==me->index?'l':'r';
   else
    side =0;
-   if (!right || (left && left->depth>right->depth)
+   if (!right || (left && left->depth>right->depth))
    {
      me->parent=left->index;
      me->left=left->right;
      left->right=me->index;
      if (me->left>=0)
-        bt->nodes[me->left].parent=me->index;
+        bt->node[me->left].parent=me->index;
      if (side='l')
         parent->left=left->index;
      else if(side='r')
@@ -160,12 +166,12 @@ void* __stdcall find(struct bt_tree*bt,char *key)
 	long current_root=bt->current_root;
 	int cmp;
 	while (current_root>=0)
-	{	if ( (cmp=strcmp(bt->nodes[current_root].name,key)==0)
-			return bt->nodes[current_root].value;
+	{	if ( (cmp=strcmp(bt->node[current_root].name,key))==0)
+			return bt->node[current_root].value;
 		else if (cmp<0)
-			current_root=bt->nodes[current_root].right;
+			current_root=bt->node[current_root].right;
 		else
-			current_root=bt->nodes[current_root].left;
+			current_root=bt->node[current_root].left;
 
 	}
 	printf ("item %s not present in the tree\n",key);
@@ -173,21 +179,21 @@ void* __stdcall find(struct bt_tree*bt,char *key)
 }
 //---------------------------------------------------------------------------
 
-void __stdcall fill_ratio(struct bt_tree*bt)
+void __stdcall fill_ratio(struct bt_tree *bt)
 {
-	unsigned depth=0:
-	long i,n,buf, fix;
+	unsigned long depth = 0;
+	long i, n , buf, fix;
 	buf=max(bt->n/10,100);
 	n=0;
-	 long long *reg= (long long*)calloc(buf,sizeof(long long));
+	 __int64 *reg= (__int64*)calloc(buf,sizeof(__int64));
 	reg[n++]=bt->current_root;
 	while (n>0)
 	{
 		depth ++;
-		printf ("depth %d count %d fillratio %g\n",depth, n, (double)n/
+		printf ("depth %d count %d fillratio %g\n",depth, n, (double)n);
       for (i=0;i<fix;i++)
      {
-        if (bt<<depth-1)); fix="n;" for="">nodes[reg[i]].left<0 && bt->nodes[reg[i]].right<0)
+        if (1) //bt<<(depth-1)) // fix="n;" for="">node[reg[i]].left<0 && bt->node[reg[i]].right<0)
 			{
                if (fix<n)
                {
@@ -200,20 +206,21 @@ void __stdcall fill_ratio(struct bt_tree*bt)
                  n--;
                 }
 				n--;
-		else if (i<n) reg="">nodes[reg[i]].left<0 && bt->nodes[reg[i]].right>0)
-				reg [i]=bt->nodes[reg[i]].right;
-			else if (bt->nodes[reg[i]].left>=0 && bt->nodes[reg[i]].right<0)
-				reg [i]=bt->nodes[reg[i]].left;
+        }
+		else if (i<n) //reg="";node[reg[i]].left<0 && bt->node[reg[i]].right>0)
+				reg [i]=bt->node[reg[i]].right;
+			else if (bt->node[reg[i]].left>=0 && bt->node[reg[i]].right<0)
+				reg [i]=bt->node[reg[i]].left;
 			else
 			{
 				n++;
 				if (n>=buf)
 				{
 					buf+=buf;
-					reg=(long long*)realloc(reg, buf*sizeof(long long));
+					reg=(__int64*)realloc(reg, buf*sizeof(__int64));
 				}
-				reg [i]=bt->nodes[reg[i]].right;
-				reg [n]=bt->nodes[reg[i]].left;
+				reg [i]=bt->node[reg[i]].right;
+				reg [n]=bt->node[reg[i]].left;
 			}
 		}
 	}

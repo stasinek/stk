@@ -37,6 +37,9 @@ namespace stk { namespace cstr {
        extern STK_IMPEXP intmax_t        __stdcall posr		 		(const char *a_src_ptr, const size_t a_start, const char *a_fnd_ptr);
        extern STK_IMPEXP intmax_t        __stdcall compare			(const char *alp1, const char *alp2);
        extern STK_IMPEXP intmax_t        __stdcall compare_max		(const char *alp1, const char *alp2, const size_t a_end);
+       inline intmax_t        __stdcall cmp(const char *alp1, const char *alp2)			{
+       return compare(alp1,alp2);
+}
        extern STK_IMPEXP bool            __stdcall test				(const char *alp1, const char *alp2);
        extern STK_IMPEXP intmax_t        __stdcall between_c        (char* dst, const char* src, const char  c);
        extern STK_IMPEXP intmax_t        __stdcall between_cc       (char* dst, const char* src, const char  l, const char  r);

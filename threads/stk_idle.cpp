@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
+#pragma hdrstop
+#pragma package(smart_init)
 #include "stk_idle.h"
-//#pragma hdrstop
-//#pragma package(smart_init)
 //---------------------------------------------------------------------------
 void __stdcall stk::idle::wait_init(struct __idle_t *a_idle)
 {

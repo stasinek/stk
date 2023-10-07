@@ -1,10 +1,12 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "stk_compression_ari.h"
+#pragma hdrstop
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
 #include "./../io/stk_console.h"
+//---------------------------------------------------------------------------
+#include "stk_compression_ari.h"
 //---------------------------------------------------------------------------
 
 /*  If you are not familiar with arithmetic compression, you should read

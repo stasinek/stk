@@ -1,10 +1,13 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#include "stk_time.h"
+#include  <time.h>
+#pragma hdrstop
+#pragma package(smart_init)
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
-#include  <time.h>
+//---------------------------------------------------------------------------
+#include "stk_time.h"
 //---------------------------------------------------------------------------
 
 STK_EXPORT uint64_t __stdcall stk::time::time_us(void)
