@@ -101,10 +101,10 @@ unsigned int base64_decode(const unsigned char* encoded_string, unsigned int in_
         char_array_4[j] = 0;
         char_array_4[j] = 0;
 
-        char_array_4[0] = static_cast<unsigned char>(base64_chars.find(char_array_4[0]));
-        char_array_4[1] = static_cast<unsigned char>(base64_chars.find(char_array_4[1]));
-        char_array_4[2] = static_cast<unsigned char>(base64_chars.find(char_array_4[2]));
-        char_array_4[3] = static_cast<unsigned char>(base64_chars.find(char_array_4[3]));
+        char_array_4[0] = static_cast<unsigned char>(stk::cstr::chr(base64_chars,char_array_4[0]));
+        char_array_4[1] = static_cast<unsigned char>(stk::cstr::chr(base64_chars,char_array_4[1]));
+        char_array_4[2] = static_cast<unsigned char>(stk::cstr::chr(base64_chars,char_array_4[2]));
+        char_array_4[3] = static_cast<unsigned char>(stk::cstr::chr(base64_chars,char_array_4[3]));
 
         char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
         char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);

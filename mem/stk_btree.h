@@ -4,7 +4,8 @@
 #include "../stk_main.h"
 //---------------------------------------------------------------------------
 namespace stk {
- #include <mem/cpp-btree-1.0.1/btree.h>
- #include <mem/cpp-btree-1.0.1/safe_btree.h>
+ //#include <mem/cpp-btree/btree.h>
+ //#include <mem/cpp-btree/safe_btree.h>
 }
 //---------------------------------------------------------------------------
+#endif

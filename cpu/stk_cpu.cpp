@@ -24,15 +24,22 @@ uint32_t ret_hi, ret_lo, ret_cc;
 // TODO: return ret 64bit as 32 bit parts union
 #if defined(__GNUC__) || defined(__CLANG__)
     asm volatile("rdtscp" : "=a" (ret_lo), "=d" (ret_hi), "=c" (ret_cc));
-#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
-    __asm {
-        rdtscp;
-        mov [ret_lo], eax;
-        mov [ret_hi], edx;
-        mov [ret_cc], ecx;
-    }
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+
+        #if (__BORLANDC__ > 0x551)
+                asm rdtscp; 
+        #else
+                __emit__( 0x0F ); // embeds ''rdtscp''
+                __emit__( 0x01 );
+                __emit__( 0xF9 );
+        #endif
+        __asm {
+                mov [ret_lo], eax;
+                mov [ret_hi], edx;
+                mov [ret_cc], ecx;
+        }
 #else
-    #error "Your compiler is not supported"
+    #pragma message "RDTSCP: Your compiler is not supported"
     // TODO: Watcom, Peles C, Borland C++ Builder 3
     return 0;
 #endif
@@ -48,7 +55,7 @@ if (a_core!=NULL)
  ret = ret  | ret_lo;
 return ret; //( (unsigned long long)ret_lo)|( ((unsigned long long)ret_hi)<<32 );
 }
-#endif // endif !WATCOM entire function
+#endif // endif !Borland 5, WATCOM entire function is unsupported
 //---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::rdtsc(void)
@@ -79,23 +86,21 @@ uint32_t ret_lo, ret_hi;
         return 0;
     #endif
 
-#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
-    __asm {
-        rdtsc;
-        mov [ret_lo], eax;
-        mov [ret_hi], edx;
-    }
-#elif defined(__WATCOMC__) // RDTSCP is not supported by older compilers but do exist on 32bit as well
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
 
-    #error "WATCOM1 compiler is not supported"
-    // TODO: Watcom 1
-
+        #if (__BORLANDC__ > 0x551)
+                asm rdtsc;
+        #else
+                __emit__( 0x0f ); // embeds ''rdtsc''
+                __emit__( 0x31 );
+        #endif
+        __asm {
+                mov [ret_lo], eax;
+                mov [ret_hi], edx;
+        }
 #else
-
-    #error "Your compiler is not supported"
     // TODO: OPEN Watcom, Peles C
-    return 0;
-
+    #pragma message "RDTSC: Your compiler is not supported due to the lack of RDTSC serializing instruction"
 #endif
 //-----------------------------
 // common to all compilers and architectures section
@@ -141,10 +146,11 @@ uint32_t ret_lo, ret_hi;
         mov rax,1;
         cpuid;
         jmp tsc_intel_measure;
-        tsc_amd_measure:\n
+
+// AMD & other specific version
         sfence;
         rdtsc;
-
+// Intel specific version
         tsc_intel_measure:\n
         sfence;
         rdtsc;
@@ -192,10 +198,11 @@ uint32_t ret_lo, ret_hi;
         mov eax,1;
         cpuid;
         jmp tsc_intel_measure;
-        tsc_amd_measure:\n
+
+// AMD & other specific version
         sfence;
         rdtsc;
-
+// Intel specific version
         tsc_intel_measure:\n
         sfence;
         rdtsc;
@@ -227,10 +234,9 @@ uint32_t ret_lo, ret_hi;
         return ret;
     #else
         #error "Processor is defined ARM but compilers other than GNU/CLANG are not supported"
-        return 0;
     #endif
 
-#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
 
     ATOMIC(1)
     ATOMIC_LOCK(1)
@@ -254,18 +260,30 @@ uint32_t ret_lo, ret_hi;
          jz tsc_exit;
         mov eax,1;
         cpuid;
-        jmp tsc_intel_measure;
-        // AMD & other specific version
-#ifndef __CANT_COMPILE_SFENCE__
-        sfence;
-#endif
-        rdtsc;
+        jmp tsc_intel_serialize_measure;
 
-        tsc_intel_measure:
+// AMD & other specific version
 #ifndef __CANT_COMPILE_SFENCE__
         sfence;
 #endif
+#if (__BORLANDC__ > 0x551)
         rdtsc;
+#else
+        __emit__( 0x0f ); // embeds ''rdtsc''
+        __emit__( 0x31 );
+#endif
+
+// Intel specific version
+        tsc_intel_serialize_measure:
+#ifndef __CANT_COMPILE_SFENCE__
+        sfence;
+#endif
+#if (__BORLANDC__ > 0x551)
+        rdtsc;
+#else
+        __emit__( 0x0f ); // embeds ''rdtsc''
+        __emit__( 0x31 );
+#endif
 
         tsc_exit:
         mov [ret_lo],eax;
@@ -284,15 +302,13 @@ uint32_t ret_lo, ret_hi;
     return ret;
 
 #else
-
-    #error "Your compiler is not supported"
-    // TODO: Watcom, Peles C
-    return 0;
-
+    // TODO: Open Watcom, Peles C
+    #pragma message "RDTSCEX: Your compiler is not supported due to the lack of RDTSC instruction"
 #endif
 //-----------------------------
 // common to all compilers and architectures section
 //-----------------------------
+return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -414,7 +430,7 @@ uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_e
         return 0;
     #endif
 // end of GNU compiler section
-#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
 
    __asm {
         mov eax,a_feature;
@@ -430,16 +446,15 @@ uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_e
         mov ESI,a_edx
         mov [ESI],edx
     }
+    register uint32_t ret = a_eax[0];
+    return ret;
 
 #else
-
-    #error "Your compiler is not supported"
+    #pragma message "CPUID: Your compiler is not supported"
     // TODO: Watcom, Peles C
     return 0;
 
 #endif
-register uint32_t ret = a_eax[0];
-return ret;
 }
 //---------------------------------------------------------------------------
 
@@ -566,10 +581,9 @@ previous_feature_ecx = a_feature_ecx;
         *a_edx = cached_edx;
     #else
         #error "Your processor is not x86, nor ARM and its not YET supported"
-        return 0;
     #endif
 
-#elif (__BORLANDC__ >= 0x550) || defined(_MSC_VER)
+#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
 
     #if defined(__x86_64__)
     __asm {
@@ -646,8 +660,7 @@ cpuid;
         popfd
   }
     #else
-    #error "Your processor is not x86, nor ARM and its not YET supported by Borland compiler"
-    return 0;
+        #error "Your processor is not x86, nor ARM and its not YET supported by Borland compiler"
     #endif
     // return gathered values section Borland, Microsoft version
     *a_eax = cached_eax;
@@ -658,15 +671,14 @@ cpuid;
 #else
     #if defined(__x86_64__)
         // 64 bit Intel, AMD CPUs
+        #pragma message "CPUIDEX: Your architecture is X86 64bit, but Your compiler is not supported"
     #elif defined(__i386__)
         // 32 bit x86
+        #pragma message "CPUIDEX: Your architecture is X86 32bit, but Your compiler is not supported"
     #else
         // ARM, MIPS and other processors
-        #error "Your processor is not x86, nor ARM and its not YET supported"
+        #error "Your processor is not x86, nor ARM and nothing is YET supported"
     #endif
-    #error "Regardless of architecture, Your compiler is also not YET supported"
-    // TODO: Watcom, Peles C
-    return 0;
 #endif
 //-----------------------------
 // common to all compilers and architectures section
@@ -2210,3 +2222,4 @@ cpu_print_info();
 }
 
 //---------------------------------------------------------------------------
+

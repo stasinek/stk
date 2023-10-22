@@ -5,6 +5,7 @@
 // CONSOLE APP
 //
 //---------------------------------------------------------------------------
+#include <windows.h>
 #include <wincon.h>
 #include <direct.h>
 #include <time.h>
