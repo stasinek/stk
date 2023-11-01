@@ -511,9 +511,7 @@ inline void __builtin___clear_cache(void *x1, void *x2)
 // SSTSOFT INCLUDES
 //---------------------------------------------------------------------------
 #define __STASM_DO_NOT_WARN__
-//---------------------------------------------------------------------------
 #include "./stasm/stk_stasm.h"
 //#include "./incbin/stk_incbin.h"
 //---------------------------------------------------------------------------
-#pragma once
 #endif

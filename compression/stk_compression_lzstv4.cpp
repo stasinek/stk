@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-// ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
+// ------ Stanislaw Stasiak = "sstsoft@2001-2015r" --------------------------
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #include "./../mem/stk_mem.h"
@@ -8,18 +8,27 @@
 //---------------------------------------------------------------------------
 #include "stk_compression_lzstv4.h"
 //---------------------------------------------------------------------------
-// tym wiecej bitow im wieksze slide window, 12 dla 4096   wyniki dla AMD Athlon X2 3800 Dual Core 939 2.2GHz 512kB cache LZS CalgaryCorpus
+// tym wiecej bitow im wieksze slide window, 
+// 12 dla 4096 wyniki dla AMD Athlon X2 3800 Dual Core 939 2.2GHz 512kB cache LZS CalgaryCorpus
+//
 // 64kB (cache ~L2)
 //#define HASH_SIZE (int32_t)(256<<8)
 //#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<3)^(((int16_t)ptr[2])<<5)^(((int16_t)ptr[3])<<8)) //4.20MB
-// 32kB (cache ~L1-L2)
+//
+// 32kB (cache ~L1 - L2)
 //#define HASH_SIZE (int32_t)(256<<7)
 //#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<3)^(((int16_t)ptr[2])<<5)^(((int16_t)ptr[3])<<7)) //5.1MB
-// 16kB (for sure cached in ~L1)
+//
+// 16kB (for sure its cached in ~L1)
 //#define HASH_SIZE (int32_t)(256<<6)
 //#define HASH(ptr) (int32_t)(int32_t((int16_t)ptr[0])^(int32_t((int16_t)ptr[1])<<2)^(int32_t((int16_t)ptr[2])<<4)^(int32_t((int16_t)ptr[3])<<6)) //5.1MB
+
+// 16kB (for sure its cached in ~L1, DEFAULT, CUSTOM)
 #define HASH_SIZE (int32_t)(256<<6)
 #define HASH(ptr) (int32_t)(int32_t((int16_t)ptr[0])^(int32_t((int16_t)ptr[1])<<2)^(int32_t((int16_t)ptr[2])<<4)^(int32_t((int16_t)ptr[3])<<6)) //5.1MB
+
+// Tested previously on Celeron 1GHz some 20 years ago :)
+//
 //#define HASH_SIZE (int32_t)(256<<6)
 //#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<2)^(((int16_t)ptr[2])<<4)^(((int16_t)ptr[3])<<6)) //4.9MB
 //#define HASH_SIZE (int32_t)(256<<5)
@@ -32,13 +41,14 @@
 //#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<1)^(((int16_t)ptr[2])<<2)) //2.20MB
 //#define HASH_SIZE (int32_t)(256<<1)
 //#define HASH(ptr) (int32_t)(((int16_t)ptr[0])^(((int16_t)ptr[1])<<1)) //0.95MB
-//#define HASH_SIZE (int32_t)256
+//#define HASH_SIZE (int32_t)(256<<0)
 //#define HASH(ptr) (int32_t)(((int16_t)ptr[0])) // 1__int8 SLOW 0.29MB
 
-// proste i 100% trafiania, ale powolne
+// proste 64kB i 100% trafiania, ale powolne
 //#define HASH_SIZE (int32_t)(256<<8)
 //#define HASH(ptr) (int32_t)(((int16_t)ptr[0])|(((int16_t)ptr[1])<<8)) //1.40MB
-//wersje ksiaï¿½kowe powolne
+//
+// wersje ksi¹¿kowe kombinowane i powolne, EXAMPLES AS SEEN in BOOKs (crap)
 //#define HASH_SIZE (int32_t)(256<<8)
 //#define HASH(ptr) (int32_t)(((((ptr[0]<<5)+ptr[1])<<5)+ptr[2])) //2.95MB
 //#define HASH_SIZE (int32_t)(256<<4)
@@ -60,8 +70,8 @@ __DEBUG_CALLED("")
 #endif
 
 //------------------------------------------
-                if (asize > DUP_LEN_MAX) backward_max_len = DUP_LEN_MAX;
-                else if (asize < DUP_LEN_MIN) backward_max_len = DUP_LEN_MIN; else backward_max_len = asize;
+                if (asize > DUP_LENGHT_MAX) backward_max_len = DUP_LENGHT_MAX;
+                else if (asize < DUP_LENGHT_MIN) backward_max_len = DUP_LENGHT_MIN; else backward_max_len = asize;
                 
                 if (adict > DUP_OFFSET_MAX) backward_max_offset = DUP_OFFSET_MAX;
                 else if (adict < DUP_OFFSET_MIN) backward_max_offset = DUP_OFFSET_MIN; else backward_max_offset = adict;
@@ -70,9 +80,9 @@ __DEBUG_CALLED("")
 // rozmiar sï¿½ownika(okna wstecz) musi byï¿½ nie mniejszy niï¿½ dwukrotnoï¿½ï¿½ aktualnego okna wzprzedzenia danych
 //------------------------------------------
                 /*
-                son_hash                                                                   HHHHHHHHH -> POINTS to SSSSSSS, double level hash, could be faster for pararell search?
-                dad               DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD|               int32_t x offset
-                son               SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS|SSSSSSSSS int32_t x offset + HASH_SIZE
+                son_hash                                   HHHHHHHHH -> POINTS to SSSSSSS, double level hash, could be faster for pararell search?
+                dad       DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD|               int32_t x offset
+                son       SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS|SSSSSSSSS int32_t x offset + HASH_SIZE
                 ring_ptr  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|XXXXXXXXXXXXXXX|X char x offset + char x max_len + sizeof(int64) for QWORD cmp pruposses - access violation of full int32_t comparision)
                 */
         dad = (uint32_t*)stk::mem::alloc(sizeof(int32_t)*(backward_max_offset));
@@ -83,7 +93,7 @@ __DEBUG_CALLED("")
                 small_offset = 0;
 }
 //---------------------------------------------------------------------------
-
+//
 stk::compression::__lzss_compressor::~__lzss_compressor(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
@@ -99,7 +109,6 @@ __DEBUG_CALLED("")
 //---------------------------------------------------------------------------
 // dad=son[TREE+for 0 to 256]=DUP_NULL
 //
-
 void __stdcall stk::compression::__lzss_compressor::initialize(const char *aptr)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
@@ -133,14 +142,11 @@ __DEBUG_CALLED("")
 // after this operation son[TREE+'g']=0 and son[TREE+'a']=1 and dad[1] will change form 0 to TREE+'a'
 // of course 'a' must be deleted first (stk::compression::__lzss_compressor::delete) becouse it is no longer exists in buffer history
 //
-
-
 void __stdcall stk::compression::__lzss_compressor::insert(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
 __DEBUG_CALLED("")
 #endif
-
 //insert from RIGHT to LEFT on RING BUFFER! (reverse order in dictionary vs buffer ocurances reality)
                 register uint32_t  ins = ring_insert;
                 register char *ins_ptr =((char*)ring_ptr + ins);
@@ -156,7 +162,7 @@ __DEBUG_CALLED("")
                 son[ins]=cpx;
 }
 //---------------------------------------------------------------------------
-
+//
 void __stdcall stk::compression::__lzss_compressor::skip(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
@@ -167,7 +173,6 @@ __DEBUG_CALLED("")
 // function dosnt check whatever skp was inserted or not so does nothing
 // son[skp]=DUP_NULL; dad[skp]=DUP_NULL;
 }
-
 //---------------------------------------------------------------------------
 
 void __stdcall stk::compression::__lzss_compressor::cut(const uint32_t choosen_ring_delete)
@@ -175,7 +180,6 @@ void __stdcall stk::compression::__lzss_compressor::cut(const uint32_t choosen_r
 #ifdef __DEBUG_LZSS_COMPRESSOR__
 __DEBUG_CALLED("")
 #endif
-
                 register uint32_t del;
                 if (choosen_ring_delete!=DUP_NULL) del = choosen_ring_delete;
                 else del = ring_delete;
@@ -195,13 +199,11 @@ __DEBUG_CALLED("")
 //---------------------------------------------------------------------------
 // updates tree by deleteing old and inserting new characters in ring buffer, also prepares buffer(last characters) for matches
 //
-
 void __stdcall stk::compression::__lzss_compressor::update(const char *aadd_ptr, const uint32_t aupdate_count, const bool a_insert)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
 __DEBUG_CALLED("")
 #endif
-
 //------------------------------------------
                 register uint32_t maxl = backward_max_len;
                 register uint32_t maxo = backward_max_offset;
@@ -371,7 +373,7 @@ EXIT:
                 return bst_len;
 }
 //---------------------------------------------------------------------------
-
+//
 void __stdcall  stk::compression::__lzss_compressor::clear_backward_result(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__
@@ -443,8 +445,8 @@ __DEBUG_CALLED("")
 //
 // SEARCH OPTIMAL RLES
                 register char  *cur_ptr_end;
-                if (backward_max_len < RLE_LEN_MAX) cur_ptr_end = cur_ref + backward_max_len;
-                else cur_ptr_end = cur_ref + RLE_LEN_MAX;
+                if (backward_max_len < RLE_LENGHT_MAX) cur_ptr_end = cur_ref + backward_max_len;
+                else cur_ptr_end = cur_ref + RLE_LENGHT_MAX;
 
                 if (cur_els_max>=4 ? cur_els<=4 : false)
                                 while (cur_ptr <= cur_ptr_end -4) {
@@ -481,7 +483,7 @@ __DEBUG_CALLED("")
 //--------------------
 }
 //---------------------------------------------------------------------------
-
+//
 void __stdcall  stk::compression::__lzss_compressor::clear_forward_result(void)
 {
 #ifdef __DEBUG_LZSS_COMPRESSOR__

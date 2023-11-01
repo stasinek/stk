@@ -96,7 +96,7 @@ __DEBUG_CALLED("")
 // search for fixed rles ahead 1,2,3,4 byte rles
 		LZS_RLE:
 //------------------------------------------
-		if (chain->search_forward()>=RLE_LEN_MIN) {
+		if (chain->search_forward()>=RLE_LENGHT_MIN) {
 			if (chain->header_coder.check_rle_match_cost(lit_text_len,chain->forward_elcount,chain->forward_elsize) > 0)
 				goto LZS_SAVE_LIT;
 			else chain->clear_forward_result();
@@ -105,7 +105,7 @@ __DEBUG_CALLED("")
 // search for variable rles in the past, but only for those that had been registered in chain
 		LZS_DUP:
 //------------------------------------------
-		if (chain->search_backward()>=DUP_LEN_MIN) {
+		if (chain->search_backward()>=DUP_LENGHT_MIN) {
 			if (chain->header_coder.check_dup_match_cost(lit_text_len,chain->backward_len,chain->backward_offset) > 0)
 				goto LZS_SAVE_LIT;
 			else chain->clear_backward_result();
@@ -114,7 +114,7 @@ __DEBUG_CALLED("")
 		LZS_NOTHING:
 // nothing found, increment passed text length, prepare for next charter or save passed if reach limit
 //------------------------------------------
-		if (lit_text_len  >=LIT_LEN_MAX) {
+		if (lit_text_len  >=LIT_LENGHT_MAX) {
 			goto LZS_SAVE_LIT;
 		}
 		else lit_text_len += 1;
@@ -127,11 +127,11 @@ __DEBUG_CALLED("")
 //------------------------------------------
 		if (lit_text_len==0) goto LZS_SAVE_RLE;
 #define SAVE_LIT(d,s,l)								\
-	for (;l> LIT_LEN_MAX; l-=LIT_LEN_MAX) {					\
-		 d+=chain->header_coder.lit_encode((void*)d,LIT_LEN_MAX);		\
-		 stk::mem::mov((char*)d,(char*)s,LIT_LEN_MAX);			\
-		 d+=LIT_LEN_MAX;							\
-		 s+=LIT_LEN_MAX; 							\
+	for (;l> LIT_LENGHT_MAX; l-=LIT_LENGHT_MAX) {					\
+		 d+=chain->header_coder.lit_encode((void*)d,LIT_LENGHT_MAX);		\
+		 stk::mem::mov((char*)d,(char*)s,LIT_LENGHT_MAX);			\
+		 d+=LIT_LENGHT_MAX;							\
+		 s+=LIT_LENGHT_MAX; 							\
 		}									\
 	if  (l> 0) {									\
 		 d+=chain->header_coder.lit_encode((void*)d,l);			\
@@ -147,7 +147,7 @@ __DEBUG_CALLED("")
 //------------------------------------------
 		LZS_SAVE_RLE:
 //------------------------------------------
-		if (chain->forward_len< RLE_LEN_MIN)
+		if (chain->forward_len< RLE_LENGHT_MIN)
 			goto LZS_SAVE_DUP;
 #define SAVE_RLE(d,s,c,e)												\
 	d+=chain->header_coder.rle_encode((void*)d,c,e);						\
@@ -175,7 +175,7 @@ __DEBUG_CALLED("")
 //------------------------------------------
 		LZS_SAVE_DUP:
 //------------------------------------------
-		if (chain->backward_len< DUP_LEN_MIN)
+		if (chain->backward_len< DUP_LENGHT_MIN)
 			continue;
 #define SAVE_DUP(d,l,o)												\
 		d+=chain->header_coder.dup_encode((void*)d,l,o);
@@ -248,7 +248,7 @@ __DEBUG_CALLED("")
 		if (hdr==L3_CODE_1) goto GOTO_L3_1;
 		if (hdr==L3_CODE_2) goto GOTO_L3_2;
 		//last 7-8bit = last code that fits in one byte
-		if (hdr==L3_CODE_NEXT) goto GOTO_RESERVED;
+		if (hdr==L3_EXT_CODE) goto GOTO_RESERVED;
 		break;
 //------------------------------------------
 		GOTO_LZS_LOAD_LIT:
