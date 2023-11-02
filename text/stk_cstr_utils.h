@@ -1,9 +1,9 @@
 //---------------------------------------------------------------------------
-#ifndef __stk_cstr_utils_h
-#define __stk_cstr_utils_h
+#ifndef __stk_cstr_utils_h__
+#define __stk_cstr_utils_h__
+#pragma once
 //---------------------------------------------------------------------------
 #include "./../stk_main.h"
-#include "./../mem/stk_mem.h"
 //---------------------------------------------------------------------------
 #ifdef __cplusplus
 namespace stk { namespace cstr {

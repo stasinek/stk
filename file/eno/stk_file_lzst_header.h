@@ -37,16 +37,16 @@ typedef struct __attribute__((__packed__))  {
 #define LZSS_BLOCK_HEADER_SIG   (uint32_t)(('B'<<0) | ('O'<<8) | ('D'<<16) | ('Y'<<24))
 #define LZSS_BLOCK_HEADER_VER   (uint32_t)(('2'<<0) | ('0'<<8) | ('2'<<16) | ('3'<<24))
 
-#define LZSS_CODER_LZS	 (uint32_t)0x00000001L
-#define LZSS_CODER_HUF	 (uint32_t)0x00000002L
-#define LZSS_CODER_ARI	 (uint32_t)0x00000004L
-#define LZSS_CODER_BWT	 (uint32_t)0x00000010L
-#define LZSS_CODER_MTF	 (uint32_t)0x00000020L
-#define LZSS_CODER_ROT	 (uint32_t)0x00000040L
-#define LZSS_CODER_XOR	 (uint32_t)0x00000080L
+#define LZSS_CODER_LZS  (uint32_t)0x00000001L
+#define LZSS_CODER_HUF  (uint32_t)0x00000002L
+#define LZSS_CODER_ARI  (uint32_t)0x00000004L
+#define LZSS_CODER_BWT  (uint32_t)0x00000010L
+#define LZSS_CODER_MTF  (uint32_t)0x00000020L
+#define LZSS_CODER_ROT  (uint32_t)0x00000040L
+#define LZSS_CODER_XOR  (uint32_t)0x00000080L
 
-#define LZSS_CODER_CRC	 (uint32_t)0x00010000L
-#define LZSS_CODER_SSC	 (uint32_t)0x00020000L
+#define LZSS_CODER_CRC  (uint32_t)0x00010000L
+#define LZSS_CODER_SSC  (uint32_t)0x00020000L
 
 #define LZSS_CODER_DEFAULT (uint32_t)LZSS_CODER_CRC | LZSS_CODER_LZS
 
@@ -126,24 +126,7 @@ typedef struct __attribute__((__packed__)) {
 #define Bx00001110 0x0EL
 #define Bx00001111 0x0FL
 
-#define Bx00001111 0x00L
-#define Bx00011111 0x10L
-#define Bx00101111 0x20L
-#define Bx00111111 0x30L
-#define Bx01001111 0x40L
-#define Bx01011111 0x50L
-#define Bx01101111 0x60L
-#define Bx01111111 0x70L
-#define Bx10001111 0x80L
-#define Bx10011111 0x90L
-#define Bx10101111 0xA0L
-#define Bx10111111 0xB0L
-#define Bx11001111 0xC0L
-#define Bx11011111 0xD0L
-#define Bx11101111 0xE0L
-#define Bx11111111 0xF0L
-
-#define Bx00000000 0x00L
+// #define Bx00000000 0x00L // common for ^^
 #define Bx00010000 0x10L
 #define Bx00100000 0x20L
 #define Bx00110000 0x30L
@@ -159,6 +142,23 @@ typedef struct __attribute__((__packed__)) {
 #define Bx11010000 0xD0L
 #define Bx11100000 0xE0L
 #define Bx11110000 0xF0L
+
+// #define Bx00000000 0x00L // common for ^^
+#define Bx00011111 0x10L
+#define Bx00101111 0x20L
+#define Bx00111111 0x30L
+#define Bx01001111 0x40L
+#define Bx01011111 0x50L
+#define Bx01101111 0x60L
+#define Bx01111111 0x70L
+#define Bx10001111 0x80L
+#define Bx10011111 0x90L
+#define Bx10101111 0xA0L
+#define Bx10111111 0xB0L
+#define Bx11001111 0xC0L
+#define Bx11011111 0xD0L
+#define Bx11101111 0xE0L
+#define Bx11111111 0xF0L
 
 //#define Bx0000000000000000 0x0F00L
 //#define Bx0000111100000000 0x0F00L

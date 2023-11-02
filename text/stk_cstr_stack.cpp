@@ -2,8 +2,8 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #pragma hdrstop
-#include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
+#include "./../mem/stk_mem.h"
 #include "./../stk_MAIN.h"
 //---------------------------------------------------------------------------
 #include "stk_cstr_stack.h"

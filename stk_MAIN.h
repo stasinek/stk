@@ -430,25 +430,24 @@
                 __asm { SFENCE; }
 #define __PTRDIFF_TYPE__ int8_t*
 #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
-#elif !defined(__GNUC__) && !defined(__CLANG__)
-#if defined(__MSVC__)
-inline void __builtin_prefetch(void *x1,int x2,int x3)
+#elif defined(__MSVC__)
+inline void __builtin_prefetch(const void *x1, const __int32 x2,const __int32 x3)
 {
-    __asm push ESI;
-    __asm mov ESI, x1;
-    __asm prefetchnta [ESI];
-    __asm pop ESI;
+  //  __asm push ESI;
+  //  __asm mov ESI, x1;
+  //  __asm prefetchnta [ESI];
+  //  __asm pop ESI;
 }
-inline void __builtin___clear_cache(void *x1, void *x2)
+inline void __builtin___clear_cache(const void *x1, const void *x2)
 {
-    __asm SFENCE;
+  // __asm SFENCE;
 }
-#else
-#define __builtin_prefetch(x1,x2,x3)
-#define __builtin___clear_cache(x1,x2)
-#endif
 #define __PTRDIFF_TYPE__ int8_t*
 #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
+#elif defined(__GNUC__) || defined(__CLANG__)
+// potentially stasm () could be used here.. so i keep as an option
+#define __builtin_prefetch(x1,x2,x3)
+#define __builtin___clear_cache(x1,x2)
 #endif
 //---------------------------------------------------------------------------
 // **************************************************************************

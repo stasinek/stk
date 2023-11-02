@@ -3,6 +3,7 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 #include "./../text/stk_cstr_utils.h"
+#include "./../mem/stk_mem.h"
 #include "./../threads/stk_threads.h"
 //---------------------------------------------------------------------------
 #include "stk_console.h"

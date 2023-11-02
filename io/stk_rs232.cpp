@@ -6,6 +6,7 @@
 #include <errno.h>
 #pragma hdrstop
 #include "./../text/stk_cstr_utils.h"
+#include "./../mem/stk_mem.h"
 #include "./../io/stk_console.h"
 //---------------------------------------------------------------------------
 #include "stk_rs232.h"
