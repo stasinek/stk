@@ -169,9 +169,9 @@ uint32_t ret_lo, ret_hi;
         pop rax;
         popfq;
     )
-     ret = (uint64_t)__stasm_x86[1];
+     ret = (uint64_t)__stasm_x86_stack[1];
      ret = ret << 32;
-     ret = ret  | (uint64_t)__stasm_x86[0];
+     ret = ret  | (uint64_t)__stasm_x86_stack[0];
     ATOMIC_UNLOCK(1)
     return ret;
     #elif defined(__i386__)
@@ -210,7 +210,7 @@ uint32_t ret_lo, ret_hi;
         rdtsc;
 
         tsc_exit:\n
-        mov edi,__stasm_x86;
+        mov edi,__stasm_x86_stack;
         mov [edi+0],eax;
         mov [edi+4],edx;
 
@@ -221,9 +221,9 @@ uint32_t ret_lo, ret_hi;
         pop eax;
         popfd;
     )
-    ret = (uint64_t)__stasm_x86[1];
+    ret = (uint64_t)__stasm_x86_stack[1];
     ret = ret << 32;
-    ret = ret  | (uint64_t)__stasm_x86[0];
+    ret = ret  | (uint64_t)__stasm_x86_stack[0];
     ATOMIC_UNLOCK(1)
     return ret;
     #elif defined(__ARM__)

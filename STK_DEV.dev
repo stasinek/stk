@@ -1,7 +1,7 @@
 [Project]
 FileName=STK_DEV.dev
-Name=Kop32_DEV
-Type=1
+Name=STK_DEV
+Type=3
 Ver=2
 ObjFiles=
 Includes=C:\SRC\x86_libraries\STK
@@ -11,7 +11,7 @@ ResourceIncludes=C:\SRC\x86_libraries\STK
 MakeIncludes=
 Compiler=-Wno-write-strings _@@_-Wno-unused-variable _@@_-Wno-unused-parameter_@@_-Wno-unused-value_@@_-Wno-unused-label_@@_-save-temps_@@_-DBUILD_STK_LIBRARY_@@_
 CppCompiler=-Wno-write-strings _@@_-Wno-unused-variable _@@_-Wno-unused-parameter_@@_-Wno-unused-value_@@_-Wno-unused-label_@@_-fopenmp_@@_-fverbose-asm_@@_-save-temps_@@_-DBUILD_STK_LIBRARY_@@_
-Linker=-lwsock32_@@_-lmingwex   _@@_-ladvapi32  _@@_-lshell32_@@_-luser32_@@_-lkernel32   _@@_-lmsvcrt   _@@_-lwinmm_@@_-lmoldname _@@_-lgomp_@@_-pg_@@_-lcrypt32_@@_-lws2_32_@@_
+Linker=-lwsock32_@@_-lmingwex_@@_-lmingw _@@_-ladvapi32  _@@_-lshell32_@@_-luser32_@@_-lkernel32   _@@_-lmsvcrt   _@@_-lwinmm_@@_-lmoldname _@@_-lgomp_@@_-pg_@@_-lcrypt32_@@_-lws2_32_@@_
 IsCpp=1
 Icon=
 ExeOutput=
@@ -19,7 +19,7 @@ ObjectOutput=
 LogOutput=
 LogOutputEnabled=0
 OverrideOutput=0
-OverrideOutputName=STK_DEV.exe
+OverrideOutputName=STK_DEV.dll
 HostApplication=
 UseCustomMakefile=0
 CustomMakefile=
@@ -35,18 +35,18 @@ UnitCount=96
 Major=0
 Minor=8
 Release=0
-Build=2518
+Build=2527
 LanguageID=1033
 CharsetID=1252
 CompanyName=
-FileVersion=0.8.0.2518
+FileVersion=0.8.0.2527
 FileDescription=Developed using the Dev-C++ IDE
 InternalName=STK
 LegalCopyright=SSTSOFT.pl
 LegalTrademarks=
 OriginalFilename=stk.dll
 ProductName=STK Toolkit
-ProductVersion=0.8.0.2518
+ProductVersion=0.8.0.2527
 AutoIncBuildNr=1
 SyncProduct=1
 
@@ -980,26 +980,6 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit95]
-FileName=..\..\PROGS\CPP\Kop32\Kop32_main.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit96]
-FileName=..\..\PROGS\CPP\Kop32\Kop32_main.h
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit99]
 FileName=..\..\..\x86_libraries\STK\text\stk_cstr_utils.cpp
 CompileCpp=1
@@ -1182,6 +1162,26 @@ BuildCmd=
 
 [Unit111]
 FileName=..\..\..\x86_libraries\STK\file\zip\miniz.c
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit96]
+FileName=stasm\stk_stasm.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit95]
+FileName=stk_BCB.cpp
 CompileCpp=1
 Folder=
 Compile=1

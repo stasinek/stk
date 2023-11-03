@@ -22,8 +22,8 @@ void __stdcall stk::compression::test(void)
 __DEBUG_CALLED("")
 #endif
 	register int32_t o, i = 0;
-	char *src = stk::cstr::alloc(4096);
-	char *dst = stk::cstr::alloc(4096);
+	char *src = stk::cstr::alloc((const size_t)4096);
+	char *dst = stk::cstr::alloc((const size_t)4096);
 if (src==NULL || dst==NULL)
 return;
 	stk::con::prints("Adres src: %d\n",(int8_t*)src);
