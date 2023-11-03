@@ -44,7 +44,8 @@ int __stdcall incbin_rc(char** resource_data, int RESOURCE_ID)
     HRSRC       resource;
     HGLOBAL     resource_handle;
     DWORD       resource_size;
-    resource = ::FindResource(GetCurrentModule(), MAKEINTRESOURCE(RESOURCE_ID), RT_RCDATA);
+    // GetCurrentModule() not available prior to Windows XP
+    resource = ::FindResource(NULL, MAKEINTRESOURCE(RESOURCE_ID), RT_RCDATA);
     if (resource==0)
         return 0;
     resource_handle = ::LoadResource(NULL, resource);

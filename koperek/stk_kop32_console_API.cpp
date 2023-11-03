@@ -20,7 +20,7 @@
 //#include <io.h>
 #include <fcntl.h>
 #pragma hdrstop
-#include "./../file/eno/stk_file_lzst_header.h"
+#include "./../file/eno/stk_file_lzss_header.h"
 #include "./../hash/stk_hash_ssc1.h"
 #include "./../process_journal/stk_journal.h"
 #include "./../io/stk_console.h"

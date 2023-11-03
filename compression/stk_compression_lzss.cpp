@@ -1,12 +1,14 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r" --------------------------
 //---------------------------------------------------------------------------
-#pragma hdrstop
+#ifdef __BORLANDC__
+    #pragma hdrstop
+#endif
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
 #include "./../io/stk_console.h"
 //---------------------------------------------------------------------------
-#include "stk_compression_lzstv4.h"
+#include "stk_compression_lzss.h"
 //---------------------------------------------------------------------------
 // tym wiecej bitow im wieksze slide window, 
 // 12 dla 4096 wyniki dla AMD Athlon X2 3800 Dual Core 939 2.2GHz 512kB cache LZS CalgaryCorpus

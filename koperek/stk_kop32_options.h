@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------
-#ifndef STK_KOP32_OPTIONS_h__
-#define STK_KOP32_OPTIONS_h__
+#ifndef __STK_KOP32_OPTIONS_h__
+#define __STK_KOP32_OPTIONS_h__
 //---------------------------------------------------------------------------
 #include "./../database/stk_database.h"
 #include "./../hash/stk_hash_password.h"
-#include "./../file/eno/stk_file_lzst_header.h"
+#include "./../file/eno/stk_file_lzss_header.h"
 //---------------------------------------------------------------------------
 namespace stk {
 //---------------------------------------------------------------------------

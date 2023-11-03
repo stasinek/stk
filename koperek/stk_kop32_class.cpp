@@ -1,12 +1,14 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#pragma hdrstop
+#ifdef __BORLANDC__
+    #pragma hdrstop
+#endif
 #include "./../compression/stk_compression_API.h"
 #include "./../cipher/stk_cipher_API.h"
 #include "./../hash/stk_hash_API.h"
 #include "./../pharser/stk_pharse_command_line.h"
-#include "./../file/eno/stk_file_lzst_header.h"
+#include "./../file/eno/stk_file_lzss_header.h"
 #include "./../io/stk_file_io.h"
 #include "./../io/stk_console.h"
 #include "./../threads/stk_threads.h"

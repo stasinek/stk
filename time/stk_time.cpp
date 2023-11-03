@@ -2,8 +2,10 @@
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
 #include  <time.h>
-#pragma hdrstop
-#pragma package(smart_init)
+#ifdef __BORLANDC__
+    #pragma hdrstop
+    #pragma package(smart_init)
+#endif
 #include "./../mem/stk_mem.h"
 #include "./../text/stk_cstr_utils.h"
 //---------------------------------------------------------------------------

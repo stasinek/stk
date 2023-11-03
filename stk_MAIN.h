@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 #ifndef __stk_main_h__
 #define __stk_main_h__
+#pragma once
 //---------------------------------------------------------------------------
 // C++ Compiler name "redefinition"
 //---------------------------------------------------------------------------
@@ -274,7 +275,7 @@
                 #define   NOMINMAX
     #endif
     #include <winsock2.h>
-    //#include <windows.h>
+    #include <windows.h>
     #include <conio.h>
     #include <io.h>
     #include <direct.h>
@@ -423,32 +424,40 @@
 //---------------------------------------------------------------------------
 // ASM MACROS
 //---------------------------------------------------------------------------
-#if defined(__POCC__) | defined(__BORLAND__) ? (__BORLANDC__ > 0x551) : 0
-#define __builtin_prefetch(x1,x2,x3)                    \
-                __asm { push ESI; mov ESI, x1; prefetchnta ESI+0; pop ESI; }
-#define __builtin___clear_cache(x1,x2)                  \
-                __asm { SFENCE; }
-#define __PTRDIFF_TYPE__ int8_t*
-#define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
-#elif defined(__MSVC__)
-inline void __builtin_prefetch(const void *x1, const __int32 x2,const __int32 x3)
-{
-  //  __asm push ESI;
-  //  __asm mov ESI, x1;
-  //  __asm prefetchnta [ESI];
-  //  __asm pop ESI;
-}
-inline void __builtin___clear_cache(const void *x1, const void *x2)
-{
-  // __asm SFENCE;
-}
-#define __PTRDIFF_TYPE__ int8_t*
-#define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
-#elif defined(__GNUC__) || defined(__CLANG__)
-// potentially stasm () could be used here.. so i keep as an option
-#define __builtin_prefetch(x1,x2,x3)
-#define __builtin___clear_cache(x1,x2)
+#if defined(__POCC__) || defined(__BORLANDC__) ? (__BORLANDC__ > 0x551) : 0
+    #define __builtin_prefetch(x1,x2,x3)                    \
+            __asm { push ESI; mov ESI, x1; prefetchnta ESI+0; pop ESI; }
+    #define __builtin___clear_cache(x1,x2)                  \
+            __asm { SFENCE; }
+    #define __PTRDIFF_TYPE__ int8_t*
+    #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
+#elif defined(__BORLANDC__)
+    #define __builtin_prefetch(x1,x2,x3)
+    #define __builtin___clear_cache(x1,x2)
+    #define __PTRDIFF_TYPE__ int8_t*
+    #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
 #endif
+#if defined(__MSVC__)
+    inline void __builtin_prefetch(const void *x1, const __int32 x2,const __int32 x3)
+    {
+      //  __asm push ESI;
+      //  __asm mov ESI, x1;
+      //  __asm prefetchnta [ESI];
+      //  __asm pop ESI;
+    }
+    inline void __builtin___clear_cache(const void *x1, const void *x2)
+    {
+          // __asm SFENCE;
+    }
+    #define __PTRDIFF_TYPE__ int8_t*
+    #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
+#endif
+#if defined(__GNUC__) || defined(__CLANG__)
+    // potentially stasm () could be used here.. so i keep as an option
+    #define __builtin_prefetch(x1,x2,x3)
+    #define __builtin___clear_cache(x1,x2)
+#endif
+
 //---------------------------------------------------------------------------
 // **************************************************************************
 // **************************************************************************

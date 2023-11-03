@@ -1,7 +1,9 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#pragma hdrstop
+#ifdef __BORLANDC__
+    #pragma hdrstop
+#endif
 #include "./../io/stk_console.h"
 #include "./../text/stk_cstr_utils.h"
 #include "./../mem/stk_mem.h"

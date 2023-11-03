@@ -1,8 +1,10 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#pragma hdrstop
-#include "stk_compression_lzstv4.h"
+#ifdef __BORLANDC__
+    #pragma hdrstop
+#endif
+#include "stk_compression_lzss.h"
 #include "stk_compression_bwt_matrix2.h"
 #include "stk_compression_huff.h"
 #include "stk_compression_ari.h"
@@ -216,8 +218,8 @@ __DEBUG_CALLED("")
 //------------------------------------------
 //stk_huff_compressor huff;
 //		 huff.initialize();
-#ifdef LZSSv4_HEAD
-	const file_header::__lzstv4_header_coder header_coder;
+#ifdef LZSS_HEAD
+	const file_header::__lzss_header_coder header_coder;
 #endif
 //------------------------------------------
 	for (; ptrd < ptrd_end;) {
