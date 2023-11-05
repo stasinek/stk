@@ -21,10 +21,10 @@ int64_t __unique##num;\
 volatile static int64_t __shared##num = 0;
 
 #define ATOMIC_LOCK(num)\
-    while (__shared##num !=0) { ::stk::time::wait_us(0); }\
+    while (__shared##num !=0) { ::stk::time::wait_us((const uint64_t)0); }\
     __unique##num = stk::cpu::rdtsc(); __shared##num = __unique##num;\
     asm("mfence");\
-    while(__shared##num !=0 ? __shared##num != __unique##num : false) { ::stk::time::wait_us(0); }
+    while(__shared##num !=0 ? __shared##num != __unique##num : false) { ::stk::time::wait_us((const uint64_t)0); }
 //    printf("ATOMIC_LOCK: %lld\n",__unique##num);
 
 #define ATOMIC_UNLOCK(num)\

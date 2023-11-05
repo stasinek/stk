@@ -1,25 +1,27 @@
 //---------------------------------------------------------------------------
 // ------ Stanislaw Stasiak = "sstsoft@2001-2015r"---------------------------
 //---------------------------------------------------------------------------
-#pragma hdrstop
+#ifdef __BORLANDC__
+    #pragma hdrstop
+#endif
 //---------------------------------------------------------------------------
-#include "stk_file_lzst_header.h"
+#include "stk_file_lzss_header.h"
 //---------------------------------------------------------------------------
-#ifdef  LZSSv4_HEAD
+#if LZSS_HEAD==4
 // Little Endian 0x03020100L -> [0]:0x00L, [1]:0x01L, [2]:0x02L, [3]:0x03L
 //---------------------------------------------------------------------------
 
-__stdcall  stk::file_header::__lzstv4_header_coder::__lzstv4_header_coder()
+__stdcall  stk::file_header::__lzss_header_coder::__lzss_header_coder()
 {
 }
 //---------------------------------------------------------------------------
 
-__stdcall  stk::file_header::__lzstv4_header_coder::~__lzstv4_header_coder()
+__stdcall  stk::file_header::__lzss_header_coder::~__lzss_header_coder()
 {
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::lit_price(const uint32_t axdata_uncoded_len)
+int8_t __stdcall stk::file_header::__lzss_header_coder::lit_price(const uint32_t axdata_uncoded_len)
 {
 //minimum code size for uncoded data header, just pass throught
                 register uint32_t l = axdata_uncoded_len;
@@ -31,13 +33,13 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::lit_price(const uint32
                 }
 }
 //---------------------------------------------------------------------------
-int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_lit_cost(const uint32_t axdata_uncoded_len)
+int32_t __stdcall stk::file_header::__lzss_header_coder::check_lit_cost(const uint32_t axdata_uncoded_len)
 {
     return lit_price(axdata_uncoded_len) + axdata_uncoded_len;
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::lit_encode(void *a_code_ptr, const uint32_t axdata_uncoded_len)
+int8_t __stdcall stk::file_header::__lzss_header_coder::lit_encode(void *a_code_ptr, const uint32_t axdata_uncoded_len)
 {
 // 00LLLLLL
 // <<2
@@ -65,7 +67,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::lit_encode(void *a_cod
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::lit_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr)
+int8_t __stdcall stk::file_header::__lzss_header_coder::lit_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr)
 {
 // if N_CODE detected
 // LLLLLLXX
@@ -106,7 +108,7 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::rle_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
+int8_t __stdcall stk::file_header::__lzss_header_coder::rle_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
 {
 //minimum code size for data header, one byte for lenght and code second byte for RLE-byte
                 register uint32_t l = axdata_uncoded_counte;
@@ -121,7 +123,7 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_rle_match_cost(const uint32_t alen, const uint32_t arle_counte, const uint32_t arle_elsize)
+int32_t __stdcall stk::file_header::__lzss_header_coder::check_rle_match_cost(const uint32_t alen, const uint32_t arle_counte, const uint32_t arle_elsize)
 {
                 register uint32_t t;
                 register uint32_t rle_elsize = arle_elsize;
@@ -152,7 +154,7 @@ return repl-price;
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::rle_encode(void *a_code_ptr, const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
+int8_t __stdcall stk::file_header::__lzss_header_coder::rle_encode(void *a_code_ptr, const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize)
 {
 // L - LENGTH
 // 00LLLLLL
@@ -191,7 +193,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::rle_encode(void *a_cod
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::rle_decode(uint32_t *a_data_uncoded_counte, uint32_t *a_data_uncoded_elsize, const void *a_code_ptr)
+int8_t __stdcall stk::file_header::__lzss_header_coder::rle_decode(uint32_t *a_data_uncoded_counte, uint32_t *a_data_uncoded_elsize, const void *a_code_ptr)
 {
                 register uint32_t l, e;
                 register uint8_t *code = (uint8_t*)a_code_ptr;
@@ -225,7 +227,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::rle_decode(uint32_t *a
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_price(const  uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset)
+int8_t __stdcall stk::file_header::__lzss_header_coder::dup_price(const  uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset)
 {
                 register uint32_t l = axdata_uncoded_len;
                 register uint32_t o = axdata_uncoded_offset;
@@ -251,7 +253,7 @@ int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_price(const  uint3
 }
 //---------------------------------------------------------------------------
 
-int32_t __stdcall stk::file_header::__lzstv4_header_coder::check_dup_match_cost(const uint32_t alit_len, const uint32_t adup_len, const uint32_t adup_offset)
+int32_t __stdcall stk::file_header::__lzss_header_coder::check_dup_match_cost(const uint32_t alit_len, const uint32_t adup_len, const uint32_t adup_offset)
 {
 //
 // CALCULATE
@@ -283,7 +285,7 @@ return repl - price;
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_encode(void *a_code_ptr, const uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset)
+int8_t __stdcall stk::file_header::__lzss_header_coder::dup_encode(void *a_code_ptr, const uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset)
 {
 // L - LENGTH
 // 0000LLLL
@@ -401,7 +403,7 @@ return 0;
 }
 //---------------------------------------------------------------------------
 
-int8_t __stdcall stk::file_header::__lzstv4_header_coder::dup_decode(uint32_t *a_data_uncoded_len, uint32_t *a_data_uncoded_offset, const void *a_code_ptr)
+int8_t __stdcall stk::file_header::__lzss_header_coder::dup_decode(uint32_t *a_data_uncoded_len, uint32_t *a_data_uncoded_offset, const void *a_code_ptr)
 {
                 register uint32_t l, o;
                 register uint8_t *code = (uint8_t*)a_code_ptr;

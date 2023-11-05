@@ -32,7 +32,6 @@ USEUNIT("hash\stk_hash_md5.cpp");
 USEUNIT("hash\stk_hash_password.cpp");
 USEUNIT("hash\stk_hash_ssc1.cpp");
 USEUNIT("file\stk_file_mime_types.cpp");
-USEUNIT("file\eno\stk_file_lzst_header.cpp");
 USEUNIT("file\ini\stk_file_ini.cpp");
 USEUNIT("database\stk_database.cpp");
 USEUNIT("database\stk_database_items.cpp");
@@ -40,7 +39,6 @@ USEUNIT("cpu\stk_cpu.cpp");
 USEUNIT("compression\stk_compression_API.cpp");
 USEUNIT("compression\stk_compression_ari.cpp");
 USEUNIT("compression\stk_compression_huff.cpp");
-USEUNIT("compression\stk_compression_lzstv4.cpp");
 USEUNIT("compression\stk_compression_static_huff.cpp");
 USEUNIT("cipher\stk_base64.cpp");
 USEUNIT("cipher\stk_cipher_API.cpp");
@@ -54,6 +52,8 @@ USEUNIT("threads\stk_threads.cpp");
 USEUNIT("koperek\stk_kop32_options.cpp");
 USEUNIT("koperek\stk_kop32_list.cpp");
 USEUNIT("file\json\stk_json.cpp");
+USEUNIT("file\eno\stk_file_lzss_header.cpp");
+USEUNIT("compression\stk_compression_lzss.cpp");
 //---------------------------------------------------------------------------
 This file is used by the project manager only and should be treated like the project file
 DllEntryPoint

@@ -178,8 +178,8 @@ static int new_value(stk::json_state * state, stk::json_value** top, stk::json_v
       return 1;
    }
 
-   if (! (value = (stk::json_value *) json_alloc
-         (state, sizeof (stk::json_value) + state->settings.value_extra, 1)))
+   value = (stk::json_value *)json_alloc(state, sizeof (stk::json_value) + state->settings.value_extra, 1);
+   if (!value)
    {
       return 0;
    }

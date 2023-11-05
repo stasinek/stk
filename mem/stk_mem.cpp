@@ -5,7 +5,9 @@
 #include <MEMORY.h>
 #endif
 #include <malloc.h>
-#pragma hdrstop
+#ifdef __BORLANDC__
+    #pragma hdrstop
+#endif
 #include "./../cpu/stk_cpu.h"
 #include "./../threads/stk_threads.h"
 #include "./../io/stk_console.h"
