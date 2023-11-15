@@ -12,7 +12,7 @@ contains(DEFINES, BUILD_STK_LIBRARY) {
 message($$DEFINES)
     TARGET = stk
     TEMPLATE = lib
-#    CONFIG += lib_bundle
+    CONFIG += lib_bundle
 #    CONFIG += staticlib
     CONFIG += embed_manifest_dll
     CONFIG += dll
@@ -48,7 +48,7 @@ message("lib"{$$TARGET}".lib")
 QT -= core gui
 CONFIG -= qt
 CONFIG += precompile_header
-#CONFIG -= static
+CONFIG -= static
 CONFIG += warn_on
 CONFIG += exceptions
 CONFIG += c++11
@@ -163,11 +163,13 @@ FLAGS_GNU += -mmmx -msse -msse2
 
 QMAKE_CXXFLAGS_DEBUG += $$FLAGS_GNU $$WARNINGS_GNU -std=gnu++0x
 QMAKE_CXXFLAGS_RELEASE += $$FLAGS_GNU $$NO_WARNINGS_GNU -std=gnu++0x
+QMAKE_CXXFLAGS += -fno-use-linker-plugin
 #QMAKE_CXXFLAGS -= -pipe
 #QMAKE_CXXFLAGS += -save-temps
 
 QMAKE_CFLAGS_DEBUG += $$FLAGS_GNU $$WARNINGS_GNU
 QMAKE_CFLAGS_RELEASE += $$FLAGS_GNU $$NO_WARNINGS_GNU
+QMAKE_CFLAGS += -fno-use-linker-plugin
 #QMAKE_FLAGS -= -pipe
 #QMAKE_FLAGS += -save-temps
 }
@@ -178,6 +180,7 @@ SOURCES += \
     stk_test.cpp \
     stk_hash_chain.cpp \
     stk_list.cpp \
+    stk_vector.cpp \
     stk_map.cpp \
     cpu/stk_cpu.cpp \
 #    cipher/rsa/stk_rsa_single.c \
@@ -188,14 +191,14 @@ SOURCES += \
     compression/stk_compression_ari.cpp \
     compression/stk_compression_bwt_matrix2.cpp \
     compression/stk_compression_huff.cpp \
-    compression/stk_compression_lzstv4.cpp \
+    compression/stk_compression_lzss.cpp \
     compression/stk_compression_static_huff.cpp \
     compression/stk_compression_API.cpp \
     database/stk_database_items.cpp \
     database/stk_database.cpp \
     file/stk_file_mime_types.cpp \
     file/ini/stk_file_ini.cpp \
-    file/eno/stk_file_lzst_header.cpp \
+    file/eno/stk_file_lzss_header.cpp \
     file/json/stk_json.cpp \
     file/vfs/stk_file_vfs.cpp \
     file/xml/stk_xml.cpp \
@@ -267,7 +270,7 @@ HEADERS += \
     compression/stk_compression_bwt_matrix2.h \
     compression/stk_compression_bwt_matrix3_suffix.h \
     compression/stk_compression_huff.h \
-    compression/stk_compression_lzstv4.h \
+    compression/stk_compression_lzss.h \
     compression/stk_compression_API.h \
     database/stk_database.h \
     database/stk_database_owner.h \
@@ -275,7 +278,7 @@ HEADERS += \
     database/stk_database_items.h \
     file/stk_file_mime_types.h \
     file/ini/stk_file_ini.h \
-    file/eno/stk_file_lzst_header.h \
+    file/eno/stk_file_lzss_header.h \
     file/json/stk_json.h \
     file/vfs/stk_file_vfs.h \
     file/xml/stk_xml.h \

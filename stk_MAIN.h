@@ -6,16 +6,16 @@
 // C++ Compiler name "redefinition"
 //---------------------------------------------------------------------------
 #if defined(__clang__)
-#define __CLANG__ __clang__
+    #define __CLANG__ __clang__
 #elif defined(_MSC_VER)
-#define __MSVC__ _MSC_VER
-#endif
-#if (_MSC_VER > 1600)
-   // ... std++11 Visual Studio 2010
+    #define __MSVC__ _MSC_VER
 #endif
 //---------------------------------------------------------------------------
 #ifdef __MSVC__
-#pragma once
+    #pragma once
+    #if (_MSC_VER > 1600)
+   // ... std++11 Visual Studio 2010
+    #endif
 #endif
 //---------------------------------------------------------------------------
 // IMPORT/EXPORT define what're You doing LINK LIBRARY or BUILD_STK_LIBRARY
@@ -172,7 +172,7 @@
 #define __OSX__
 #endif
 
-// Define __WIN16__ platform indicator 
+// Define __WIN16__ platform indicator
 #ifdef _Windows_
 #ifndef __NT__
 #define __WIN16__
@@ -188,7 +188,7 @@
 #define __POCKETPC__
 #define __WINCE__
 //#if (_WIN32_WCE == 211) // for Palm-size PC 2.11 (Wyvern)
-//#if (_WIN32_WCE == 201) // for Palm-size PC 2.01 (Gryphon)  
+//#if (_WIN32_WCE == 201) // for Palm-size PC 2.01 (Gryphon)
 //#ifdef WIN32_PLATFORM_HPC2000 // for H/PC 2000 (Galileo)
 #endif
 

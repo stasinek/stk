@@ -14,7 +14,7 @@
 #define _atoi64(x) atoll(x)
 #define CALG_AES_256 0x00006610
 #define MS_ENH_RSA_AES_PROV L"Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
-#define MS_ENH_RSA_AES_PROV_XP MS_ENH_RSA_AES_PROV 
+#define MS_ENH_RSA_AES_PROV_XP MS_ENH_RSA_AES_PROV
 #define PROV_RSA_AES 24
 #endif
 //---------------------------------------------------------------------------
@@ -120,11 +120,11 @@ static const char cBasisHex[] = "0123456789ABCDEF";
 template <class InIter, class OutIter>
 OutIter QpEncoder<InIter, OutIter>::Filter(
     OutIter out,
-    InIter inBeg, 
+    InIter inBeg,
     InIter inEnd )
 {
    unsigned char c;
-    
+
     for (; inBeg != inEnd; ++inBeg) {
                   c = *inBeg;
 
@@ -152,7 +152,7 @@ OutIter QpEncoder<InIter, OutIter>::Filter(
             itsLinePos += 3;
             itsPrevCh = 'A'; // close enough
         }
-        
+
         // printable characters
                   else {
             *out++ = itsPrevCh = c;
@@ -165,7 +165,7 @@ OutIter QpEncoder<InIter, OutIter>::Filter(
             itsLinePos = 0;
         }
     } // for loop over all input
-    
+
     return out;
 }
 //---------------------------------------------------------------------------
@@ -211,7 +211,7 @@ static const unsigned char cIndexHex[256] = {
 template <class InIter, class OutIter>
 OutIter QpDecoder<InIter, OutIter>::Filter(
     OutIter out,
-    InIter inBeg, 
+    InIter inBeg,
          InIter inEnd )
 {
     unsigned char c, c1, c2;
@@ -234,7 +234,7 @@ OutIter QpDecoder<InIter, OutIter>::Filter(
         else if (*inBeg == '=') itsHexLen = 1;  // beginning of a new Hex triplet
         else *out++ = *inBeg;                   // printable character
     }
-    
+
     return out;
 }
 //---------------------------------------------------------------------------
@@ -305,16 +305,16 @@ public:
                 srcp += i;
                 len -= i;
 
-                if(len & 0x02 ) // (i==2) 2 bytes left,pad one byte of '=' 
-                {      
+                if(len & 0x02 ) // (i==2) 2 bytes left,pad one byte of '='
+                {
                         *dstp++ = *(base64_map + ((*srcp>>2)&0x3f));
                         *dstp++ = *(base64_map + ((*srcp<< 4)&0x30 | (
                                 *(srcp+1)>>4)&0x0f ));
                         *dstp++ = *(base64_map + ((*(srcp+1)<<2)&0x3C) );
                         *dstp++ = '=';
                 }
-                else if(len & 0x01 )  // (i==1) 1 byte left,pad two bytes of '='  
-                { 
+                else if(len & 0x01 )  // (i==1) 1 byte left,pad two bytes of '='
+                {
                         *dstp++ = *(base64_map + ((*srcp>>2)&0x3f));
                         *dstp++ = *(base64_map + ((*srcp<< 4)&0x30));
                         *dstp++ = '=';
@@ -333,22 +333,22 @@ public:
 
                 while(i < len)
                 {
-                        *dstp++ = (B64_offset[*(srcp+i)] <<2 | 
+                        *dstp++ = (B64_offset[*(srcp+i)] <<2 |
                                 B64_offset[*(srcp+i+1)] >>4);
-                        *dstp++ = (B64_offset[*(srcp+i+1)]<<4 | 
+                        *dstp++ = (B64_offset[*(srcp+i+1)]<<4 |
                                 B64_offset[*(srcp+i+2)]>>2);
                         *dstp++ = (B64_offset[*(srcp+i+2)]<<6 |
                                 B64_offset[*(srcp+i+3)] );
                         i += 4;
                 }
                 srcp += i;
-                
-                if(*(srcp-2) == '=')  // remove 2 bytes of '='  padded while encoding 
-                {        
+
+                if(*(srcp-2) == '=')  // remove 2 bytes of '='  padded while encoding
+                {
                         *(dstp--) = '\0';
                         *(dstp--) = '\0';
                 }
-                else if(*(srcp-1) == '=') // remove 1 byte of '='  padded while encoding 
+                else if(*(srcp-1) == '=') // remove 1 byte of '='  padded while encoding
                         *(dstp--) = '\0';
 
                 *dstp = '\0';
@@ -372,7 +372,7 @@ public:
 };
 */
 //---------------------------------------------------------------------------
-// Binary Data Container 
+// Binary Data Container
 //---------------------------------------------------------------------------
 
 BDC :: BDC(unsigned __int64 s)
@@ -1126,7 +1126,8 @@ size_t XML :: XMLDecode(const char* src,char* trg)
                         char d1[100] = {0};
 #ifdef _WIN32
                         wchar_t d2[100] = {0};
-                        swprintf(d2,L"%c",reinterpret_cast<wchar_t>(ULN));
+                        //TODO: WTF IS THIS? Why?
+                        //swprintf(d2,L"%c",reinterpret_cast<wchar_t>(ULN));
                         WideCharToMultiByte(CP_UTF8,0,d2,-1,d1,100,0,0);
 #endif
                         strcat(trg + x,d1);
@@ -1441,7 +1442,7 @@ char* XMLHelper :: FindXMLClose(char* s)
                         {
                         a2 = strchr(a1,'>');
                         if (!a2) // duh
-                                return 0; 
+                                return 0;
                         a2++;
                         d--;
                         if (!d)
@@ -1546,7 +1547,7 @@ char* XMLHelper :: FindXMLClose(char* s)
 
                 a2 = a1 + 1;
                 }
-        }   
+        }
 //---------------------------------------------------------------------------
 
 void XMLHelper :: AddBlankVariable(XMLElement* parent,char *a2,int Pos)
@@ -1740,7 +1741,7 @@ XMLElement* XMLHelper :: ParseElementTree(XMLHeader* hdr,XMLElement* parent,char
                         else
                                 {
 #ifdef XML_USE_STL
-                                // Invalid? 
+                                // Invalid?
                                 if (!root)
                                         root = new XMLElement(0,a3 + 1,0);
 #else
@@ -1815,7 +1816,7 @@ int XMLElement :: RemoveAllElements()
                 {
                 if (children[i] == 0)
                         {
-                        // Unload 
+                        // Unload
                         DeleteUnloadedElementFile(i);
                         }
 
@@ -2138,7 +2139,7 @@ int XMLElement :: ReloadElement(unsigned int i)
         XML fx(us);
         int K = fx.ParseStatus();
         if (K == 2) // Fatal error
-                return 0; 
+                return 0;
 
         XMLElement* r = fx.RemoveRootElementAndKeep();
 
@@ -2434,7 +2435,7 @@ int XMLElement :: RemoveTemporalElements(bool Deep)
 #else
                         iNum += children[i]->RemoveTemporalElements();
 #endif
-                        }       
+                        }
                 }
         return iNum;
         }
@@ -2511,9 +2512,9 @@ int XMLElement :: RemoveVariableAndKeep(unsigned int i,XMLVariable* vr)
         {
         if (i >= variables.size())
                 return (int)variables.size();
-        if (vr) 
+        if (vr)
                 {
-                *vr = variables[i];   
+                *vr = variables[i];
                 }
         variables.erase(variables.begin() + i);
         return (int)variables.size();
@@ -2523,17 +2524,17 @@ int XMLElement :: RemoveVariableAndKeep(unsigned int i,XMLVariable* vr)
 
 int XMLElement :: RemoveVariableAndKeep(unsigned int i,XMLVariable** vr)
         {
-        if (vr) 
+        if (vr)
                 {
-                *vr = 0;   
+                *vr = 0;
                 }
         if (i >= variablesnum)
                 return variablesnum;
 
         //delete variables[i];
-        if (vr) 
+        if (vr)
                 {
-                *vr = variables[i];   
+                *vr = variables[i];
                 }
         variables[i] = 0;
 
@@ -3002,7 +3003,7 @@ void XMLElement :: printc(FILE* fp,XMLElement* root,int deep,int ShowAll,XML_SAV
                          printc((FILE*)pKey2,root->GetChildren()[i],deep + 1,ShowAll,SaveMode,TargetMode);
 #endif
                  else
-#endif                  
+#endif
                          {
 #ifdef XML_USE_STL
                          printc(fp,&root->GetChildren()[i],deep + 1,ShowAll,SaveMode,TargetMode);
@@ -4187,7 +4188,7 @@ void XMLElement :: CompressMemory()
 bool XMLElement :: IntegrityTest()
         {
 #ifdef XML_USE_STL
-    if (!parent) 
+    if (!parent)
             return false;
 
         // Check variables
@@ -4581,7 +4582,7 @@ void XML :: JsonParser(XMLElement* root,const char* txt)
         Z<char> LastData(10000);
 //      XMLElement* FirstRoot = root;
 
-        int KeyTypeParse = 0; 
+        int KeyTypeParse = 0;
         // 0 Begin
         // 1 End
         // 2 : found, begin new
@@ -4668,7 +4669,7 @@ void XML :: JsonParser(XMLElement* root,const char* txt)
                 if (c == ':' && KeyTypeParse == 2)
                         {
                         // It's something new
-                        
+
 //                      int BreakType = 0;
                         bool InQ = false;
                         bool FinishedQ = false;
@@ -4728,7 +4729,7 @@ void XML :: JsonParser(XMLElement* root,const char* txt)
                                                 strncat(vval,txt + k,1);
 #else
                                                 strncat(vval,txt + k,1); //strncat_s, jj - j + 1000
-#endif                                          
+#endif
                                                 }
                                         cv->SetValue(vval);
 
@@ -4742,7 +4743,7 @@ void XML :: JsonParser(XMLElement* root,const char* txt)
                                 }
                         continue;
                         }
-                if (KeyTypeParse == 1) 
+                if (KeyTypeParse == 1)
                         {
                         // In key
 #ifdef LINUX
@@ -4895,7 +4896,7 @@ XMLElement* XMLElement :: Duplicate(XMLElement* par)
 void XML :: SaveOnClose(bool S)
         {
         SOnClose = S;
-        }   
+        }
 //---------------------------------------------------------------------------
 
 int XML :: Save(const char* file,XML_SAVE_MODE SaveMode,XML_TARGET_MODE TargetMode,class XMLTransform* eclass,class XMLTransformData* edata)
@@ -4945,7 +4946,7 @@ int XML :: Save(const char* file,XML_SAVE_MODE SaveMode,XML_TARGET_MODE TargetMo
         if (TargetMode == 3)
                 {
                 // Write BOM
-                fwrite("\xFF\xFE",1,2,fp); 
+                fwrite("\xFF\xFE",1,2,fp);
 /*
                 // Hdr utf-16
 #ifdef XML_USE_STL
@@ -5003,7 +5004,7 @@ void XMLElement :: SetElementName(const char* x,const wchar_t* wx)
 #endif
         }
 //---------------------------------------------------------------------------
-        
+
 size_t XMLElement :: GetElementName(char* x,int NoDecode)
         {
 #ifdef XML_USE_STL
@@ -5508,7 +5509,7 @@ int XML :: PartialLoad(const char* file,const char* map)
         // Which is something like "el1\\el2\\el3" ...
         // Named elements to search
         // fclose(fp);
-        return 0;// 
+        return 0;//
         }
 */
 /*
@@ -5835,7 +5836,7 @@ XML_PARSE_STATUS XML :: ParseStatus(int* v)
         if (v)
                 *v = iParseStatusPos;
         return iParseStatus;
-        }   
+        }
 //---------------------------------------------------------------------------
 
 XML :: ~XML()
@@ -6615,7 +6616,7 @@ string XMLElement::VariableValue(const char* vn,const char* def)
         XMLVariable* var = FindVariableZ(vn,false);
         if (!var)
                 {
-                if (def) 
+                if (def)
                         return def;
                 return "";
                 }
@@ -6954,7 +6955,7 @@ void XMLCData :: SetParent(XMLElement* p,int epp)
         }
 //---------------------------------------------------------------------------
 
-int XMLCData :: GetEP() const 
+int XMLCData :: GetEP() const
         {
         return ep;
         }
@@ -7170,7 +7171,7 @@ void XMLContent :: SetValue(const char* VV,int NoDecode,int BinarySize)
                 {
                 // Add binary data, do base64
 
-        
+
                 // Sets value using MIME
                 char* a = new char[BinarySize*5 + 1000];
                 stk::mem::set(a,0,BinarySize*5 + 1000);
@@ -7344,18 +7345,18 @@ XMLHeader :: ~XMLHeader()
 XMLHeader :: operator const char*()
         {
         return hdr1.c_str();
-        }   
+        }
 #else
 XMLHeader :: operator const char*()
         {
         return hdr1;
-        }   
+        }
 #endif
 //---------------------------------------------------------------------------
 
 void XMLHeader :: SetEncoding(const char* e)
         {
-        // 
+        //
         Z<char> nt(1000);
         sprintf(nt,"<?xml version=\"1.0\" encoding=\"%s\" standalone=\"yes\" ?>",e);
         size_t sl = strlen(nt) + 1;
@@ -7547,7 +7548,7 @@ void XMLHeader :: Export(FILE* fp,int HeaderMode,XML_TARGET_MODE TargetMode,clas
                 {
                 if (HeaderMode == 0)
                         {
-                        
+
 #ifdef XML_USE_STL
                         Z<char> txt(strlen(hdr1.c_str())*2 + 100);
                         sprintf(txt,"%s\r\n",hdr1.c_str());
@@ -8145,7 +8146,7 @@ bool XMLEncryptDecryptData(bool Decrypt,const char*pwd,int pwdlen,const char* d,
 
         // Acquire context
         HCRYPTPROV hCryptProv = CryptAck();
-//  New Key Set 
+//  New Key Set
         if(!hCryptProv)
                 return 0;
 
@@ -8201,7 +8202,7 @@ bool XMLEncryptDecryptData(bool Decrypt,const char*pwd,int pwdlen,const char* d,
                 {
                 DWORD dl = sz;
                 CryptEncrypt(hCryptKey,0,TRUE,0,0,&dl,sz);
-        
+
                 // dl must have now the buffer
                 if (!dl)
                         {
@@ -8481,7 +8482,7 @@ int XMLElement :: XMLQuery(const char* expression2,XMLElement** rv,unsigned int 
         <item1> <comparator> <item2>[<expr> ...]
 
         <item1> is a variable name, or * if any variable can match or ? if it is to match
-        the element name or ! if it is to match the full element name 
+        the element name or ! if it is to match the full element name
         or ~ to match the content name
 
         <item2> can be either integers, or strings, or strings with ? and *
@@ -8624,7 +8625,7 @@ int XMLElement :: XMLQuery(const char* expression2,XMLElement** rv,unsigned int 
                         {
                         if (rv)
                                 rv[ULN] = allelements[i];
-                        N++;
+                        //N++; TODO: WTF is N?
                         }
                 }
         return ULN;
@@ -8752,8 +8753,8 @@ BDC XMLContent :: ExportToBinary()
         BDC b;
 
 /*
-        Save: 
-                header                          
+        Save:
+                header
                 ep                                      4
                 binary mode                     4
                 data size                       4
@@ -8782,7 +8783,7 @@ BDC XMLContent :: ExportToBinary()
         XMLBINARYHEADER* xbh = (XMLBINARYHEADER*)ptr;
         xbh->v = 0;
         xbh->t = 6; // Content
-        xbh->tv = 0; 
+        xbh->tv = 0;
         xbh->s = bs - sizeof(XMLBINARYHEADER);
         ptr += sizeof(XMLBINARYHEADER);
 
@@ -8868,8 +8869,8 @@ BDC XMLComment :: ExportToBinary()
         BDC b;
 
 /*
-        Save: 
-                header                          
+        Save:
+                header
                 ep                                      4
                 data size                       4
                 data                            xxx
@@ -8892,7 +8893,7 @@ BDC XMLComment :: ExportToBinary()
         XMLBINARYHEADER* xbh = (XMLBINARYHEADER*)ptr;
         xbh->v = 0;
         xbh->t = 4; // Comment
-        xbh->tv = 0; 
+        xbh->tv = 0;
         xbh->s = bs - sizeof(XMLBINARYHEADER);
         ptr += sizeof(XMLBINARYHEADER);
 
@@ -8968,8 +8969,8 @@ BDC XMLCData :: ExportToBinary()
         BDC b;
 
 /*
-        Save: 
-                header                          
+        Save:
+                header
                 ep                                      4
                 data size                       4
                 data                            xxx
@@ -8992,7 +8993,7 @@ BDC XMLCData :: ExportToBinary()
         XMLBINARYHEADER* xbh = (XMLBINARYHEADER*)ptr;
         xbh->v = 0;
         xbh->t = 5; // CData
-        xbh->tv = 0; 
+        xbh->tv = 0;
         xbh->s = bs - sizeof(XMLBINARYHEADER);
         ptr += sizeof(XMLBINARYHEADER);
 
@@ -9077,8 +9078,8 @@ BDC XMLVariable :: ExportToBinary()
         BDC b;
 
 /*
-        Save: 
-                header                          
+        Save:
+                header
                 ns                                      4
                 n                                       xxx
                 vs                                      4
@@ -9107,7 +9108,7 @@ BDC XMLVariable :: ExportToBinary()
         XMLBINARYHEADER* xbh = (XMLBINARYHEADER*)ptr;
         xbh->v = 0;
         xbh->t = 3; // Variable
-        xbh->tv = 0; 
+        xbh->tv = 0;
         xbh->s = bs - sizeof(XMLBINARYHEADER);
         ptr += sizeof(XMLBINARYHEADER);
 
@@ -9227,8 +9228,8 @@ BDC XMLHeader :: ExportToBinary()
         BDC b;
 
 /*
-        Save: 
-                header                          
+        Save:
+                header
                 data size                       4
                 data                            xxx
                 data size 2                     4
@@ -9285,7 +9286,7 @@ BDC XMLHeader :: ExportToBinary()
         XMLBINARYHEADER* xbh = (XMLBINARYHEADER*)ptr;
         xbh->v = 0;
         xbh->t = 1; // Header
-        xbh->tv = 0; 
+        xbh->tv = 0;
         xbh->s = bs - sizeof(XMLBINARYHEADER);
         ptr += sizeof(XMLBINARYHEADER);
 
@@ -9466,8 +9467,8 @@ BDC XMLElement :: ExportToBinary()
         BDC b;
 
 /*
-        Save: 
-                header                          
+        Save:
+                header
                 name s+d
                 all variables
                 all contents
@@ -9564,7 +9565,7 @@ BDC XMLElement :: ExportToBinary()
         XMLBINARYHEADER* xbh = (XMLBINARYHEADER*)ptr;
         xbh->v = 0;
         xbh->t = 2; // Element
-        xbh->tv = 0; 
+        xbh->tv = 0;
         xbh->s = bs - sizeof(XMLBINARYHEADER);
         ptr += sizeof(XMLBINARYHEADER);
 
@@ -9677,8 +9678,8 @@ BDC XML :: ExportToBinary()
         BDC b;
 
 /*
-        Save: 
-                header                          
+        Save:
+                header
                 root element
 */
 
@@ -9710,7 +9711,7 @@ BDC XML :: ExportToBinary()
         XMLBINARYHEADER* xbh = (XMLBINARYHEADER*)ptr;
         xbh->v = 0;
         xbh->t = 0; // XML
-        xbh->tv = 0; 
+        xbh->tv = 0;
         xbh->s = bs - sizeof(XMLBINARYHEADER);
         ptr += sizeof(XMLBINARYHEADER);
 
@@ -9828,7 +9829,7 @@ __int64  XMLGetInt64(const char* item,const char* attr,const __int64 defv,const 
         {
         Z<char> i(100);
         Z<char> id(100);
-        
+
 #ifndef _WIN32
         sprintf(id,"%lli",defv);
 #else
@@ -10177,7 +10178,7 @@ size_t XMLGetStringA(const char* section,const char* Tattr,const char* defv,char
 int XMLGetStringW(const char* ,const char* ,const wchar_t* ,wchar_t*,const int ,const char* ,XML* ,int )
         {
 
-        
+
         //
         return 0;
         }
@@ -10261,7 +10262,7 @@ bool XMLElement :: SignElement(unsigned int ij,PCCERT_CONTEXT pCert)
         if (e->FindVariableZ("__signature__"))
                 return Status;
 
-        // Take element text 
+        // Take element text
         size_t mu = e->MemoryUsage();
         Z<char> mut(mu*2 + 1000);
         const BYTE* pbContent = (const BYTE*)mut.operator char*();
@@ -10341,9 +10342,9 @@ bool XMLElement :: VerifyDigitalSignature(unsigned int ij,PCCERT_CONTEXT* ppCert
         // Remove Signature
         XMLVariable* ds = s->Duplicate();
         e->RemoveVariable(s);
-        
 
-        // Take element text 
+
+        // Take element text
         size_t mu = e->MemoryUsage();
         Z<char> mut(mu*2 + 1000);
         BYTE* pbContent = (BYTE*)mut.operator char*();
@@ -10373,7 +10374,7 @@ bool XMLElement :: VerifyDigitalSignature(unsigned int ij,PCCERT_CONTEXT* ppCert
         DWORD pbbc = 0;
         if (CryptVerifyMessageSignature(&VerifyParams,0,(BYTE*)Signature.operator char*(),SignatureSize,0,&pbbc,0))
                 {
-                
+
                 Status = true;
                 }
         else
@@ -10411,7 +10412,7 @@ XMLElement* XMLElement :: EncryptElement(unsigned int ij,PCCERT_CONTEXT* pCert,i
         if (!pCert || nCert <= 0)
                 return 0;
 
-        // Take element text 
+        // Take element text
         size_t mu = e->MemoryUsage();
         Z<char> mut(mu*2 + 1000);
         BYTE* pbContent = (BYTE*)mut.operator char*();

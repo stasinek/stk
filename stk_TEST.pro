@@ -1,0 +1,7 @@
+#
+# Qmake Qt5.5.1 file last modified 2018.5, Windows MSC2010,MinGW4.92,LLVM3.7 builds tester
+#
+DEFINES += BUILD_STK_LIBRARY
+#DEFINES += BUILD_STK_TESTER
+QMAKE_CXXFLAGS += -w
+QMAKE_CFLAGS += -w
