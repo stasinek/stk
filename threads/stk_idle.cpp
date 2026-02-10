@@ -1,6 +1,8 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
+#if defined(__BORLANDC__)
 #pragma package(smart_init)
+#endif
 #include "stk_idle.h"
 //---------------------------------------------------------------------------
 void __stdcall stk::idle::wait_init(struct __idle_t *a_idle)

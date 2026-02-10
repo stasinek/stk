@@ -35,16 +35,24 @@ void __stdcall stk::__kop32_class_progress_controler::__stat_group::add_readed(u
 {
 one->readed+=a_readed;
 all->readed+=a_readed;
+all->count++;
+}
+//---------------------------------------------------------------------------
+
+void __stdcall stk::__kop32_class_progress_controler::__stat_group::sub_readed(uint32_t a_readed)
+{
+one->readed-=a_readed;
+all->readed-=a_readed;
+all->count--;
 }
 //---------------------------------------------------------------------------
 
  __stdcall stk::__kop32_class_progress_controler::__stat::__stat()
-: readed(0), size(0)
+: readed(0), size(0), count(0)
 {
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
 __DEBUG_CALLED("")
 #endif
-    reset();
 }
 //---------------------------------------------------------------------------
 
@@ -53,7 +61,6 @@ __stdcall stk::__kop32_class_progress_controler::__stat::~__stat()
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
 __DEBUG_CALLED("")
 #endif
-
 }
 //---------------------------------------------------------------------------
 
@@ -72,7 +79,7 @@ void   __stdcall stk::__kop32_class_progress_controler::__stat::reset(void)
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
 __DEBUG_CALLED("")
 #endif
-        readed = size = 0;
+        count = size = readed = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -86,7 +93,6 @@ __stdcall  stk::__kop32_class_progress_controler::__kop32_class_progress_control
 #ifdef __DEBUG_KOP32_PROGRESS_CONTROLER__
 __DEBUG_CALLED("")
 #endif
-
         src = new __stat_group();
         dst = new __stat_group();
         reset();

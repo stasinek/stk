@@ -14,6 +14,7 @@
     <ProjectGuid>{C75DB4AB-90A9-4F55-BB70-2D642F1F3A40}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>stk_VCC</RootNamespace>
+    <ProjectName>stk_VS2010</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -38,9 +39,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\SRC\X86_LIBRARIES\STK;$(IncludePath)</IncludePath>
-    <OutDir>.\</OutDir>
-    <IntDir>.\</IntDir>
+    <IncludePath>C:\SRC\LIB\STK;$(IncludePath)</IncludePath>
+    <OutDir>$(OutputPath)</OutDir>
+    <IntDir>$(OutputPath)</IntDir>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>.</OutDir>
@@ -57,6 +59,8 @@
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
       <CallingConvention>StdCall</CallingConvention>
       <CompileAs>Default</CompileAs>
+      <AssemblerOutput>All</AssemblerOutput>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -119,7 +123,7 @@
     <ClInclude Include="file\json\stk_json.h" />
     <ClInclude Include="file\stk_file_mime_types.h" />
     <ClInclude Include="file\vfs\stk_file_vfs.h" />
-    <ClInclude Include="file\xml\xml.h" />
+    <ClInclude Include="file\xml\stk_xml.h" />
     <ClInclude Include="hash\md5\md5.h" />
     <ClInclude Include="hash\sha1\hmac_sha1.h" />
     <ClInclude Include="hash\sha1\sha.h" />

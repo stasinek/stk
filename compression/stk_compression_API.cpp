@@ -250,7 +250,7 @@ __DEBUG_CALLED("")
 		if (hdr==L3_CODE_1) goto GOTO_L3_1;
 		if (hdr==L3_CODE_2) goto GOTO_L3_2;
 		//last 7-8bit = last code that fits in one byte
-		if (hdr==L3_EXT_CODE) goto GOTO_RESERVED;
+		if (hdr==L3_EXIT_CODE) goto GOTO_RESERVED;
 		break;
 //------------------------------------------
 		GOTO_LZS_LOAD_LIT:

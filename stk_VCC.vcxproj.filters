@@ -109,9 +109,6 @@
     <ClInclude Include="file\vfs\stk_file_vfs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="file\xml\xml.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="file\stk_file_mime_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -227,6 +224,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stk_MAIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file\xml\stk_xml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

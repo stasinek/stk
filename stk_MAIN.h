@@ -440,14 +440,14 @@
 #if defined(__MSVC__)
     inline void __builtin_prefetch(const void *x1, const __int32 x2,const __int32 x3)
     {
-      //  __asm push ESI;
-      //  __asm mov ESI, x1;
-      //  __asm prefetchnta [ESI];
-      //  __asm pop ESI;
+        __asm push ESI;
+        __asm mov ESI, x1;
+        __asm prefetchnta [ESI];
+        __asm pop ESI;
     }
     inline void __builtin___clear_cache(const void *x1, const void *x2)
     {
-          // __asm SFENCE;
+           __asm SFENCE;
     }
     #define __PTRDIFF_TYPE__ int8_t*
     #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
@@ -493,8 +493,10 @@
 #define  _TEXT(s) __T(s)
 #endif
 
-#ifndef  _TEOF
-#define  _TEOF EOF
+#if !defined(__MSVC__)
+	#ifndef  _TEOF
+	#define  _TEOF EOF
+	#endif
 #endif
 //---------------------------------------------------------------------------
 // **************************************************************************

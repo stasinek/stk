@@ -13,12 +13,12 @@ class STK_IMPEXP __kop32_class_progress_controler {
 //---------------------------------------------------------------------------
     class __stat {
     public:
-                            __stdcall  __stat	(void);
-                            __stdcall ~__stat	(void);
-    void 		            __stdcall   reset	(void);
+                    __stdcall  __stat	(void);
+                    __stdcall ~__stat	(void);
+    void 		    __stdcall   reset	(void);
     //------------------------------------
-    int64_t readed, size;
-    int32_t                 __stdcall percent	(void);
+    int64_t readed, size, count;
+    int32_t         __stdcall percent	(void);
     //------------------------------------
     };
 //---------------------------------------------------------------------------
@@ -30,10 +30,11 @@ public:
                                         __stdcall ~__kop32_class_progress_controler();
         struct	 STK_IMPEXP __stat_group {
             __stat *one, *all;
-                             __stdcall  __stat_group(void);
-                             __stdcall ~__stat_group(void);
-            void             __stdcall reset(void);
-            void             __stdcall add_readed(uint32_t areaded);
+                    __stdcall  __stat_group (void);
+                    __stdcall ~__stat_group (void);
+            void    __stdcall reset         (void);
+            void    __stdcall add_readed    (uint32_t areaded);
+            void    __stdcall sub_readed    (uint32_t areaded);
         } *src, *dst;
         //------------------------------------
         stk::__kop32_class             *__stdcall owner                 (void);
@@ -47,10 +48,10 @@ public:
         uint32_t                        __stdcall elapsed				(void);
         bool cancel, pause;
         //------------------------------------
-        const char *__stdcall                     do_event(const char*, const char*, const char*);
-        typedef const char* (__stdcall __callback_event_handler)(__kop32_class*, const char *a_event, const char *a_code, const char *a_code_ex);
-        static const char*  __stdcall             default_callback_event_handler(__kop32_class*, const char*, const char*, const char*);
-        __callback_event_handler                 *callback_event_handler;
+        const char                     *__stdcall do_event              (const char*, const char*, const char*);
+        typedef const char*            (__stdcall __callback_event_handler)(__kop32_class*, const char *a_event, const char *a_code, const char *a_code_ex);
+         static const char*             __stdcall default_callback_event_handler(__kop32_class*, const char*, const char*, const char*);
+        __callback_event_handler *callback_event_handler;
         #define EMPTY								""
         #define ON_ERROR							"ERROR"
         #define ON_NOP								"NOP"

@@ -32,7 +32,7 @@ uint64_t STK_EXPORT __stdcall stk::time::time_ms(void) // cross-platform timeGet
 #ifdef __DEBUG_TIME__
 __DEBUG_CALLED("")
 #endif
-        return time_us() / 1000;
+        return stk::time::time_us() / 1000;
 }
 //---------------------------------------------------------------------------
 

@@ -44,7 +44,7 @@ extern STK_IMPEXP void      __stdcall uncompress_HUF(void *a_dst_ptr, const uint
 extern STK_IMPEXP uint32_t  __stdcall   compress_ARI(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const uint32_t ablock);
 extern STK_IMPEXP void      __stdcall uncompress_ARI(void *a_dst_ptr, const uint32_t a_count, const void *a_src_ptr);
 //---------------------------------------------------------------------------
-#if LZSS_HEAD==4
+#if LZSS_HEAD==4 
 #define BWT_WASTE_BPB(buffsize,bwt_block) (uint32_t)(2 + 2 + ((buffsize/bwt_block)+1))
 #endif
 extern STK_IMPEXP uint32_t  __stdcall   compress_BWT(void *a_dst_ptr, const void *a_src_ptr,  const uint32_t a_src_count, const uint32_t ablock);
