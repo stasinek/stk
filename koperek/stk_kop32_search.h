@@ -52,7 +52,7 @@ public:
         void __stdcall set_owner(stk::__kop32_class *aowner);
 //------------------------------------
         __stdcall				  __kop32_search					(stk::__kop32_class *aowner);
-        __stdcall				 ~__kop32_search					(void);
+        virtual __stdcall                        ~__kop32_search					(void);
 //------------------------------------
         class __options {
         } options;

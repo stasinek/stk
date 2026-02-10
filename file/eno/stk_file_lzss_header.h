@@ -146,8 +146,17 @@ typedef struct __attribute__((__packed__)) {
 #define Bx00011111 0x1FL
 #define Bx00101111 0x2FL
 #define Bx00111111 0x3FL
+#define Bx01001111 0x4FL
+#define Bx01011111 0x5FL
+#define Bx01101111 0x6FL
 #define Bx01111111 0x7FL
+#define Bx10001111 0x8FL
+#define Bx10011111 0x9FL
+#define Bx10101111 0xAFL
 #define Bx10111111 0xBFL
+#define Bx11001111 0xCFL
+#define Bx11011111 0xDFL
+#define Bx11101111 0xEFL
 #define Bx11111111 0xFFL
 
 //---------------------------------------------------------------------------
@@ -155,9 +164,12 @@ typedef struct __attribute__((__packed__)) {
 /* LZSv4 one byte is minimum code size, 2,4,6,8 bits for determination of codes types and meaning
 but it happens step by step, each 2 bits,
 first LSB 2 bits determine data type xxxxxx00 literal, xxxxxx01 rle, xxxxxx10 dictionary
-if its xxxxxx11 then next 2 bits are considered, if code is xxxx1111 then 6 bits
-value of 11111111 is considered illegal it measns as for current version the end of stream
-but in future could be extended
+if its xxxxxx11 then next 2 bits of 8 are considered as code, so 4 total,
+if 4bit code is xxxx1111, then 6 bits shall be used for code,
+if 6bit code is xx111111, then 8 bits, but those 6,8 bit ones are currently unspecified
+what is specified is the value 11111111 considered illegal it measns as for current version the end of stream EOF
+
+although in the future could be extended
 values of 0 means always lenghs 1, offsets more than 1, sizes of 1
 
 for literal 00, highest bits 5,6 are special, determine how data is coded, should be 00
@@ -220,7 +232,7 @@ this could be LZW style of dictionary 16 max for dictionary */
 
 #define L1_RLE_LENGHT_MASK			Bx11110000 		
 #define L1_RLE_LENGHT_BITS			4
-#define L1_RLE_LENGHT_0_MIN		    (uint32_t)(0)   
+#define L1_RLE_LENGHT_0_MIN		    (uint32_t)(1)   
 #define L1_RLE_LENGHT_0_MAX		    (uint32_t)(0x0FL) 
 #define L1_RLE_LENGHT_MIN		    L1_RLE_LENGHT_0_MIN   
 #define L1_RLE_LENGHT_MAX		    L1_RLE_LENGHT_0_MAX 
@@ -259,7 +271,7 @@ this could be LZW style of dictionary 16 max for dictionary */
 
 #define L1_DUP_LENGHT_MASK 			Bx11110000 		
 #define L1_DUP_LENGHT_BITS			4
-#define L1_DUP_LENGHT_0_MIN			(uint32_t)(0)   
+#define L1_DUP_LENGHT_0_MIN			(uint32_t)(1)   
 #define L1_DUP_LENGHT_0_MAX			(uint32_t)(0x0FL)
 #define L1_DUP_LENGHT_MIN			L1_DUP_LENGHT_0_MIN
 #define L1_DUP_LENGHT_MAX			L1_DUP_LENGHT_0_MAX
@@ -288,7 +300,7 @@ this could be LZW style of dictionary 16 max for dictionary */
 #define L2_LIT_LENGHT_CODE_BITS		2
 
 #define L2_LIT_LENGHT_1_CODE		Bx00000000 		
-#define L2_LIT_LENGHT_1_MIN		    (uint32_t)(0)   
+#define L2_LIT_LENGHT_1_MIN		    (uint32_t)(1)   
 #define L2_LIT_LENGHT_1_MAX		    (uint32_t)(0x000000FFL + L2_LIT_LENGHT_1_MIN)
 #define L2_LIT_LENGHT_1_PRICE		1
 
@@ -334,7 +346,7 @@ this could be LZW style of dictionary 16 max for dictionary */
 #define L2_RLE_LENGHT_CODE_BITS	    2
 
 #define L2_RLE_LENGHT_1_CODE		Bx00000000 		
-#define L2_RLE_LENGHT_1_MIN		    (uint32_t)(0)   
+#define L2_RLE_LENGHT_1_MIN		    (uint32_t)(1)   
 #define L2_RLE_LENGHT_1_MAX		    (uint32_t)(0x000000FFL + L2_LIT_LENGHT_1_MIN)
 #define L2_RLE_LENGHT_1_PRICE		1
 
@@ -368,7 +380,7 @@ this could be LZW style of dictionary 16 max for dictionary */
 #define L2_DUP_OFFSET_CODE_BITS	    2
 
 #define L2_DUP_OFFSET_1_CODE		Bx00000000
-#define L2_DUP_OFFSET_1_MIN		    (uint32_t)(0)
+#define L2_DUP_OFFSET_1_MIN		    (uint32_t)(1)
 #define L2_DUP_OFFSET_1_MAX		    (uint32_t)(0x000000FFL + L2_DUP_OFFSET_1_MIN)
 #define L2_DUP_OFFSET_1_PRICE		1
 
@@ -397,7 +409,7 @@ this could be LZW style of dictionary 16 max for dictionary */
 #define L2_DUP_LENGHT_CODE_BITS		2
 
 #define L2_DUP_LENGHT_1_CODE 		Bx00000000 		
-#define L2_DUP_LENGHT_1_MIN		    (uint32_t)(0)
+#define L2_DUP_LENGHT_1_MIN		    (uint32_t)(1)
 #define L2_DUP_LENGHT_1_MAX		    (uint32_t)(0x000000FFL + L2_DUP_OFFSET_1_MIN)
 #define L2_DUP_LENGHT_1_PRICE 		1 		
 

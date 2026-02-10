@@ -314,7 +314,9 @@ size_t __stdcall stk::cstr::len(const char *a_src_ptr)
 #ifdef __DEBUG_CSTR__
 __DEBUG_CALLED("")
 #endif
-return stk::cstr::chr(a_src_ptr,'\0');
+
+return strlen(a_src_ptr);
+//return stk::cstr::chr(a_src_ptr,'\0');
 }
 //---------------------------------------------------------------------------
 

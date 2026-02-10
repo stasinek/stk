@@ -23,6 +23,7 @@
 *.Debug
 *.cache
 *.unsuccessfulbuild
+*.lastbuildstate
 # Editor's IDE backups
 *.bak
 *.~*

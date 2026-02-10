@@ -28,8 +28,8 @@ extern void             STK_IMPEXP  __cdecl     printe  				(const char* __restr
 extern void             STK_IMPEXP  __cdecl     printr  				(const char* __restrict__ a_text, const char an_times);
 
 typedef char       		(__stdcall  __getch_handler)         (void);
-typedef void       		(__stdcall  __print_handler)         (const char* a_text);
-typedef void       		(__stdcall  __error_handler)         (const char* a_text);
+typedef void      		(__stdcall  __print_handler)         (const char* a_text);
+typedef void      		(__stdcall  __error_handler)         (const char* a_text);
 
 extern __getch_handler  STK_IMPEXP             *getch_handler;
 extern __print_handler  STK_IMPEXP             *print_handler;

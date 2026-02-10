@@ -17,7 +17,7 @@ class  STK_IMPEXP __kop32_class_options {
         public:
         //------------------------------------
                 __stdcall  __kop32_class_options();
-                __stdcall ~__kop32_class_options();
+        virtual __stdcall ~__kop32_class_options();
         void    __stdcall reset();
         //------------------------------------
         uint32_t operation;

@@ -70,16 +70,21 @@ stk::compression::__lzss_compressor::__lzss_compressor(const uint32_t adict, con
 #ifdef __DEBUG_LZSS_COMPRESSOR__
 __DEBUG_CALLED("")
 #endif
-
 //------------------------------------------
-                if (asize > DUP_LENGHT_MAX) backward_max_len = DUP_LENGHT_MAX;
-                else if (asize < DUP_LENGHT_MIN) backward_max_len = DUP_LENGHT_MIN; else backward_max_len = asize;
-                
                 if (adict > DUP_OFFSET_MAX) backward_max_offset = DUP_OFFSET_MAX;
-                else if (adict < DUP_OFFSET_MIN) backward_max_offset = DUP_OFFSET_MIN; else backward_max_offset = adict;
-//if (backward_max_len>8) backward_max_len=8;
-                if (backward_max_offset < backward_max_len * 2) backward_max_len = (backward_max_offset >> 1) - 1;
-// rozmiar s�ownika(okna wstecz) musi by� nie mniejszy ni� dwukrotno�� aktualnego okna wzprzedzenia danych
+                else
+                if (adict < DUP_OFFSET_MIN) backward_max_offset = DUP_OFFSET_MIN;
+                else
+                    backward_max_offset = adict;
+
+                if (asize > DUP_LENGHT_MAX) backward_max_len = DUP_LENGHT_MAX;
+                else
+                if (asize < DUP_LENGHT_MIN) backward_max_len = DUP_LENGHT_MIN;
+                else
+                    backward_max_len = asize;
+                // rozmiar sloownika(okna wstecz)
+                // musi byc nie mniejszy niz dwukrotnosc aktualnego okna wyprzedzenia danych
+                if ((backward_max_offset >> 1) < backward_max_len) backward_max_len = (backward_max_offset >> 1) - 1;
 //------------------------------------------
                 /*
                 son_hash                                   HHHHHHHHH -> POINTS to SSSSSSS, double level hash, could be faster for pararell search?
@@ -87,10 +92,11 @@ __DEBUG_CALLED("")
                 son       SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS|SSSSSSSSS int32_t x offset + HASH_SIZE
                 ring_ptr  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|XXXXXXXXXXXXXXX|X char x offset + char x max_len + sizeof(int64) for QWORD cmp pruposses - access violation of full int32_t comparision)
                 */
-        dad = (uint32_t*)stk::mem::alloc(sizeof(int32_t)*(backward_max_offset));
-        son = (uint32_t*)stk::mem::alloc(sizeof(int32_t)*(backward_max_offset + HASH_SIZE));
+                dad = (uint32_t*)stk::mem::alloc(sizeof(int32_t)*(backward_max_offset + 1));
+                son = (uint32_t*)stk::mem::alloc(sizeof(int32_t)*(backward_max_offset + HASH_SIZE + 1));
 //------------------------------------------
-                ring_ptr =      (char*)stk::mem::alloc(backward_max_offset + backward_max_len + 2*sizeof(int32_t)); // search_forward minimum match 4 bytes -> int32_t mode(8 bytes ahead)
+                ring_ptr =      (char*)stk::mem::alloc(backward_max_offset + backward_max_len + 2 * sizeof(int32_t));
+                // search_forward minimum match is 4 bytes -> int32_t but rle placeholder 2x4 so 8 bytes ahead here to be more safe
 //------------------------------------------
                 small_offset = 0;
 }
@@ -458,7 +464,9 @@ __DEBUG_CALLED("")
                                 }
                 if (cur_els_max==3 ? cur_els==3 : false)
                                 while (cur_ptr <= cur_ptr_end -3) {
-                                                if (((int16_t*)cur_ref)[0]!=((int16_t*)cur_ptr)[0] || ((int8_t*)(cur_ref+2))[0]!=((int8_t*)(cur_ptr+2))[0])
+                                                if (((int16_t*)cur_ref)[0]!=((int16_t*)cur_ptr)[0])
+                                                				break;
+												if (cur_ref[2]!=cur_ptr[2])
                                                                 break;
                                                 cur_ptr+=3;
                                 }

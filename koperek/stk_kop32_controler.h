@@ -14,7 +14,7 @@ class STK_IMPEXP __kop32_class_progress_controler {
     class __stat {
     public:
                     __stdcall  __stat	(void);
-                    __stdcall ~__stat	(void);
+                    virtual __stdcall ~__stat	(void);
     void 		    __stdcall   reset	(void);
     //------------------------------------
     int64_t readed, size, count;
@@ -27,11 +27,11 @@ private:
         bool f_timer_freezed; uint32_t f_t1, f_t2; time_t f_t;
 public:
                                         __stdcall  __kop32_class_progress_controler(stk::__kop32_class *aowner);
-                                        __stdcall ~__kop32_class_progress_controler();
+                                        virtual __stdcall ~__kop32_class_progress_controler();
         struct	 STK_IMPEXP __stat_group {
             __stat *one, *all;
                     __stdcall  __stat_group (void);
-                    __stdcall ~__stat_group (void);
+                    virtual __stdcall ~__stat_group (void);
             void    __stdcall reset         (void);
             void    __stdcall add_readed    (uint32_t areaded);
             void    __stdcall sub_readed    (uint32_t areaded);

@@ -90,6 +90,12 @@ setvbuf( stderr, NULL, _IONBF, 0 );
 }*/
 //---------------------------------------------------------------------------
 
+void __stdcall test_ConsoleErrorHandler(const char *a_text)
+{
+fputs(a_text,stdout);
+}
+//---------------------------------------------------------------------------
+
 void __stdcall test_ConsolePrintHandler(const char *a_text)
 {
 fputs(a_text,stdout);
@@ -109,9 +115,6 @@ return (char)getchar();
 #else
     void __cdecl stk::test::stk_atexit(void)
     {
-    #ifdef __BORLANDC__
-    system("pause");
-    #endif
     }
 #endif
 //---------------------------------------------------------------------------
@@ -120,16 +123,16 @@ return (char)getchar();
 
 int __stdcall stk::test::start_test(int argc, char *argv[])
 {
-    int32_t argi, argl = 0;
-    for (argi = 0; argi < argc; argi++) argl += stk::cstr::len(argv[argi]);
-    char *args = new char[argl+1];
+    int32_t argi = 0, argl = 0;
+    for (; argi < argc; argi++) argl += stk::cstr::len(argv[argi]);
+    char *args = stk::cstr::alloc(argl+1);
     for (argi = 0; argi < argc; argi++) stk::cstr::cat(args,argv[argi]);
     args[0] = '\0';
 
     ::atexit(&stk::test::stk_atexit);
-    system("COLOR A");
+    //system("COLOR A");
     register int32_t r = 0;
-    stk::con::set_console_handlers(&test_ConsoleGetchHandler, &test_ConsolePrintHandler,NULL);
+    stk::con::set_console_handlers(test_ConsoleGetchHandler, test_ConsolePrintHandler,test_ConsoleErrorHandler);
 
     stk::con::prints("ALLOCATING VARIABLES...\n");
     TEST_INIT(200000000,10000);

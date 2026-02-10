@@ -19,8 +19,8 @@ void (__stdcall *stk::con::error_handler)(const char*)  = &stk::con::stderr_hand
 //---------------------------------------------------------------------------
 
 void __stdcall stk::con::set_console_handlers(char (__stdcall *a_getch_event_handler)(void),
-                                             void (__stdcall *a_print_event_handler)(const char*),
-                                             void (__stdcall *a_error_event_handler)(const char*))
+                                              void (__stdcall *a_print_event_handler)(const char*),
+                                              void (__stdcall *a_error_event_handler)(const char*))
 {
     if (a_getch_event_handler!=NULL) stk::con::getch_handler = a_getch_event_handler;
     if (a_print_event_handler!=NULL) stk::con::print_handler = a_print_event_handler;
@@ -34,7 +34,7 @@ char __stdcall stk::con::stdinp_handler(void)
 }
 //---------------------------------------------------------------------------
 
-void  __stdcall stk::con::stdout_handler(const char* a_text)
+void __stdcall stk::con::stdout_handler(const char* a_text)
 {
     fputs(a_text,stdout);
 }
@@ -60,7 +60,7 @@ void  __stdcall stk::con::print(const char* a_text)
 }
 //---------------------------------------------------------------------------
 
-void  __stdcall stk::con::error(const char* a_text)
+void __stdcall stk::con::error(const char* a_text)
 {
     if (error_handler!=NULL) error_handler(a_text);
     else stderr_handler(a_text);
