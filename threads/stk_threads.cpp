@@ -106,10 +106,10 @@ bool __stdcall stk::thread::run(struct ssthread_t *a_thread)
 {
 #if defined(__WIN32__)
 if (a_thread->handle==NULL || a_thread->attr.detached==true)
-return false;
-unsigned long r = ::ResumeThread(a_thread->handle)!=0xFFFFFFFF;
+	return false;
+bool r = ::ResumeThread(a_thread->handle)!=0xFFFFFFFF;
 a_thread->attr.active = r;
-return r!=0;
+return r;
 #else
 // POSIX thread
 #endif
@@ -121,9 +121,9 @@ bool __stdcall stk::thread::suspend(struct ssthread_t *a_thread)
 #if defined(__WIN32__)
 if (a_thread->handle==NULL || a_thread->attr.detached==true)
 return false;
-unsigned long r = ::SuspendThread(a_thread->handle)!=0xFFFFFFFF;
+bool r = ::SuspendThread(a_thread->handle)!=0xFFFFFFFF;
 a_thread->attr.active = !r;
-return r!=0;
+return r;
 #else
 // POSIX thread
 #endif

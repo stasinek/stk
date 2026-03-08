@@ -26,15 +26,32 @@ uint32_t ret_hi, ret_lo, ret_cc;
 // TODO: return ret 64bit as 32 bit parts union
 #if defined(__GNUC__) || defined(__CLANG__)
     asm volatile("rdtscp" : "=a" (ret_lo), "=d" (ret_hi), "=c" (ret_cc));
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif defined(__BORLANDC__)
 
-        #if (__BORLANDC__ > 0x551)
-                asm rdtscp; 
+	#if (__BORLANDC__ > 0x551)
+         asm rdtscp;
+    #else
+         __emit__( 0x0F ); // embeds ''rdtscp''
+         __emit__( 0x01 );
+         __emit__( 0xF9 );
+    #endif
+
+    __asm {
+         mov [ret_lo], eax;
+         mov [ret_hi], edx;
+         mov [ret_cc], ecx;
+    }
+
+#elif defined(_MSC_VER)
+
+        #if (_MSC_VER > 1600)
+                __asm rdtscp;
         #else
-                __emit__( 0x0F ); // embeds ''rdtscp''
-                __emit__( 0x01 );
-                __emit__( 0xF9 );
+                __asm _emit 0x0F; // embeds ''rdtscp''
+                __asm _emit 0x01;
+                __asm _emit 0xF9;
         #endif
+
         __asm {
                 mov [ret_lo], eax;
                 mov [ret_hi], edx;
@@ -88,14 +105,28 @@ uint32_t ret_lo, ret_hi;
         return 0;
     #endif
 
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif defined(__BORLANDC__)
 
         #if (__BORLANDC__ > 0x551)
-                asm rdtsc;
+                __asm rdtsc;
         #else
-                __emit__( 0x0f ); // embeds ''rdtsc''
+                __emit__( 0x0F ); // embeds ''rdtsc''
                 __emit__( 0x31 );
         #endif
+
+        __asm {
+                mov [ret_lo], eax;
+                mov [ret_hi], edx;
+        }
+#elif defined(_MSC_VER)
+
+        #if (_MSC_VER > 1600)
+                __asm rdtscp;
+        #else
+                __asm _emit 0x0F; // embeds ''rdtsc''
+                __asm _emit 0x31;
+        #endif
+
         __asm {
                 mov [ret_lo], eax;
                 mov [ret_hi], edx;
@@ -238,7 +269,7 @@ uint32_t ret_lo, ret_hi;
         #error "Processor is defined ARM but compilers other than GNU/CLANG are not supported"
     #endif
 
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif defined(__BORLANDC__) || defined(_MSC_VER)
 
     ATOMIC(1)
     ATOMIC_LOCK(1)
@@ -268,11 +299,26 @@ uint32_t ret_lo, ret_hi;
 #ifndef __CANT_COMPILE_SFENCE__
         sfence;
 #endif
-#if (__BORLANDC__ > 0x551)
+// AMD & other specific version
+
+#if defined(__BORLANDC__)
+
+	#if (__BORLANDC__ > 0x551)
         rdtsc;
-#else
-        __emit__( 0x0f ); // embeds ''rdtsc''
+	#else
+        __emit__( 0x0F ); // embeds ''rdtsc''
         __emit__( 0x31 );
+	#endif
+
+#elif defined(_MSC_VER)
+
+	#if (_MSC_VER > 1600)
+        rdtsc;
+	#else
+        __asm _emit 0x0F; // embeds ''rdtsc''
+        __asm _emit 0x31;
+	#endif
+
 #endif
 
 // Intel specific version
@@ -280,13 +326,27 @@ uint32_t ret_lo, ret_hi;
 #ifndef __CANT_COMPILE_SFENCE__
         sfence;
 #endif
-#if (__BORLANDC__ > 0x551)
-        rdtsc;
-#else
-        __emit__( 0x0f ); // embeds ''rdtsc''
-        __emit__( 0x31 );
-#endif
+// Intel specific version
 
+#if defined(__BORLANDC__)
+
+	#if (__BORLANDC__ > 0x551)
+        rdtsc;
+	#else
+        __emit__( 0x0F ); // embeds ''rdtsc''
+        __emit__( 0x31 );
+	#endif
+
+#elif defined(_MSC_VER)
+
+	#if (_MSC_VER > 1600)
+        rdtsc;
+	#else
+        __asm _emit 0x0F; // embeds ''rdtsc''
+        __asm _emit 0x31;
+	#endif
+
+#endif
         tsc_exit:
         mov [ret_lo],eax;
         mov [ret_hi],edx;
@@ -310,7 +370,7 @@ uint32_t ret_lo, ret_hi;
 //-----------------------------
 // common to all compilers and architectures section
 //-----------------------------
-return 0;
+    return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -432,7 +492,7 @@ uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_e
         return 0;
     #endif
 // end of GNU compiler section
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif defined(__BORLANDC__) || defined(_MSC_VER)
 
    __asm {
         mov eax,a_feature;
@@ -585,7 +645,7 @@ previous_feature_ecx = a_feature_ecx;
         #error "Your processor is not x86, nor ARM and its not YET supported"
     #endif
 
-#elif (__BORLANDC__ > 0x551) || defined(_MSC_VER)
+#elif defined(__BORLANDC__) || defined(_MSC_VER)
 
     #if defined(__x86_64__)
     __asm {
@@ -955,7 +1015,7 @@ return (uint32_t)ret;
 }
 //---------------------------------------------------------------------------
 
-#if defined(__i386__) || defined(_MSC_VER) || (__BORLANDC__ > 0x551)
+#if defined(__i386__) || defined(_MSC_VER) || defined(__BORLANDC__)
 
 bool __cdecl stk::cpu::cpu_has_x87(void)
 {

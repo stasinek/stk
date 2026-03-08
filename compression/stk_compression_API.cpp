@@ -99,7 +99,7 @@ __DEBUG_CALLED("")
 		LZS_RLE:
 //------------------------------------------
 		if (chain->search_forward()>=RLE_LENGHT_MIN) {
-			if (chain->header_coder.check_rle_match_cost(lit_text_len,chain->forward_elcount,chain->forward_elsize) > 0)
+			if (chain->header_coder.rle_total_price(lit_text_len,chain->forward_elcount,chain->forward_elsize) > 0)
 				goto LZS_SAVE_LIT;
 			else chain->clear_forward_result();
 		}
@@ -108,7 +108,7 @@ __DEBUG_CALLED("")
 		LZS_DUP:
 //------------------------------------------
 		if (chain->search_backward()>=DUP_LENGHT_MIN) {
-			if (chain->header_coder.check_dup_match_cost(lit_text_len,chain->backward_len,chain->backward_offset) > 0)
+			if (chain->header_coder.dup_total_price(lit_text_len,chain->backward_len,chain->backward_offset) > 0)
 				goto LZS_SAVE_LIT;
 			else chain->clear_backward_result();
 		}

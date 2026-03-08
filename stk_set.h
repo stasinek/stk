@@ -10,9 +10,9 @@ namespace stk {
 //---------------------------------------------------------------------------
 class STK_IMPEXP __set_tree_node {
 public:
-      __set_tree_node();
-      __set_tree_node(__set_tree_node *owner);
-     ~__set_tree_node();
+      __stdcall __set_tree_node();
+      __stdcall __set_tree_node(__set_tree_node *owner);
+     __stdcall ~__set_tree_node();
       __set_tree_node  *__stdcall T_owner(void) const;
       uint32_t          __stdcall T_level(void) const;
       __set_tree_node  *__stdcall L_child(void) const;

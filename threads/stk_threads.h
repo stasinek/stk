@@ -17,20 +17,19 @@ namespace stk { namespace thread {
 #endif
 //---------------------------------------------------------------------------
 #define ATOMIC(num)\
-int64_t __unique##num;\
-volatile static int64_t __shared##num = 0;
+int64_t __unique_##num;\
+volatile static int64_t __shared_##num = 0;
 
 #define ATOMIC_LOCK(num)\
-    while (__shared##num !=0) { ::stk::time::wait_us((const uint64_t)0); }\
-    __unique##num = stk::cpu::rdtsc(); __shared##num = __unique##num;\
-    asm("mfence");\
-    while(__shared##num !=0 ? __shared##num != __unique##num : false) { ::stk::time::wait_us((const uint64_t)0); }
+    while (__shared_##num !=0) { ::stk::time::wait_us((const uint64_t)0); }\
+    __unique_##num = stk::cpu::rdtsc(); __shared_##num = __unique_##num;\
+    while(__shared_##num !=0 ? __shared_##num != __unique_##num : false) { ::stk::time::wait_us((const uint64_t)0); }
+//	__asm("mfence");\
 //    printf("ATOMIC_LOCK: %lld\n",__unique##num);
 
 #define ATOMIC_UNLOCK(num)\
-    __shared##num = 0;
+    __shared_##num = 0;
 //    printf("ATOMIC_UNLOCK: %lld\n",__unique##num);
-//    __shared##num = 0;
 //---------------------------------------------------------------------------
 
 #ifdef __cplusplus
@@ -45,7 +44,7 @@ extern STK_IMPEXP volatile int32_t __barier, __barier_locker;
     while(__barier_locker==0) { stk::time::wait_us(0); }\
     do {\
         uint32_t __barier_unique = stk::cpu::rdtsc(); __barier_locker = __barier_unique;\
-        asm("mfence");\
+         __asm("mfence");\
         while(__barier_locker !=0 ? __barier_locker != __barier_unique : false) { stk::time::wait_us(0); }\
         __barier++;\
         printf("BARIER_ADD: %d\n",__barier);\
@@ -60,7 +59,7 @@ extern STK_IMPEXP volatile int32_t __barier, __barier_locker;
     while(__barier_locker!=0) { stk::time::wait_us(0); }\
     do {\
         uint32_t __barier_unique = stk::cpu::rdtsc(); __barier_locker = __barier_unique;\
-        asm("mfence");\
+        __asm("mfence");\
         while(__barier_locker !=0 ? __barier_locker != __barier_unique : false) { stk::time::wait_us(0); }\
         __barier--;\
         printf("BARIER_REMOVE: %d\n",__barier);\

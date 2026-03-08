@@ -93,13 +93,13 @@ inline void __cdecl operator delete[] (void *a_ptr) _GLIBCXX_USE_NOEXCEPT
 inline void __cdecl operator delete[] (void *a_ptr, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
   {  stk::mem::free(a_ptr); }
 #else
-inline void* __cdecl operator new (const size_t a_count)
+void* __cdecl operator new (const size_t a_count)
 {	return stk::mem::alloc(a_count); }
-inline void* __cdecl operator new [] (const size_t a_count)
+void* __cdecl operator new [] (const size_t a_count)
 {	return stk::mem::alloc(a_count); }
-inline void __cdecl operator delete (void *a_ptr)
+void __cdecl operator delete (void *a_ptr)
 {	stk::mem::free(a_ptr); }
-inline void __cdecl operator delete[] (void *a_ptr)
+void __cdecl operator delete[] (void *a_ptr)
 {	stk::mem::free(a_ptr); }
 #endif
 #endif // __cplusplus

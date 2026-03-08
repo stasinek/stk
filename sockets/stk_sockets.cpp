@@ -142,7 +142,7 @@ int32_t __stdcall stk::socket::send_for_sure(SOCKET amain_socket,const char *ase
 #ifdef __DEBUG_SOCKET__
 __DEBUG_CALLED("")
 #endif
-                register int32_t s;
+        register int32_t s;
         register int32_t s_sum = 0;
         register int32_t to_s = alen;
                 while(s_sum < to_s) {

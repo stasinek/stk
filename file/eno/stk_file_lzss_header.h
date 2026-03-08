@@ -461,21 +461,21 @@ class STK_IMPEXP __lzss_header_coder {
 public:
                                __stdcall  __lzss_header_coder();
     virtual                    __stdcall ~__lzss_header_coder();
-    static int8_t              __stdcall lit_price(const uint32_t axdata_uncoded_len);
-    static int8_t              __stdcall lit_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len);
-    static int8_t              __stdcall lit_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr);
+    static int32_t             __stdcall lit_price(const uint32_t axdata_uncoded_len);
+    static int32_t             __stdcall lit_total_price(const uint32_t alit_len);
+    static int32_t             __stdcall lit_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len);
+    static int32_t             __stdcall lit_decode(uint32_t *a_data_uncoded_len, const void *a_code_ptr);
 
-    static int8_t              __stdcall rle_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsizes);
-    static int8_t              __stdcall rle_encode(void *a_code_ptr,const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize);
-    static int8_t              __stdcall rle_decode(uint32_t *a_data_uncoded_counte,uint32_t *a_data_uncoded_elsize, const void *a_code_ptr);
+    static int32_t             __stdcall rle_price(const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsizes);
+    static int32_t             __stdcall rle_total_price(const uint32_t alit_len, const uint32_t arle_counte, const uint32_t arle_elsize);
+    static int32_t             __stdcall rle_encode(void *a_code_ptr,const uint32_t axdata_uncoded_counte, const uint32_t axdata_uncoded_elsize);
+    static int32_t             __stdcall rle_decode(uint32_t *a_data_uncoded_counte,uint32_t *a_data_uncoded_elsize, const void *a_code_ptr);
 
-    static int8_t              __stdcall dup_price(const uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset);
-    static int8_t              __stdcall dup_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len,const uint32_t axdata_uncoded_offset);
-    static int8_t              __stdcall dup_decode(uint32_t *a_data_uncoded_len,uint32_t *a_data_uncoded_offset, const void *a_code_ptr);
+    static int32_t             __stdcall dup_price(const uint32_t axdata_uncoded_len, const uint32_t axdata_uncoded_offset);
+    static int32_t             __stdcall dup_total_price(const uint32_t alit_len, const uint32_t adup_len, const uint32_t adup_offset);
+    static int32_t             __stdcall dup_encode(void *a_code_ptr,const uint32_t axdata_uncoded_len,const uint32_t axdata_uncoded_offset);
+    static int32_t             __stdcall dup_decode(uint32_t *a_data_uncoded_len,uint32_t *a_data_uncoded_offset, const void *a_code_ptr);
 
-    static int32_t             __stdcall check_lit_cost(const uint32_t alit_len);
-    static int32_t             __stdcall check_rle_match_cost(const uint32_t alit_len, const uint32_t arle_counte, const uint32_t arle_elsize);
-    static int32_t             __stdcall check_dup_match_cost(const uint32_t alit_len, const uint32_t adup_len, const uint32_t adup_offset);
 };
 #endif
 //---------------------------------------------------------------------------

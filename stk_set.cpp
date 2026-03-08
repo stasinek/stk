@@ -8,7 +8,7 @@
 //---------------------------------------------------------------------------
 #include "stk_set.h"
 //---------------------------------------------------------------------------
-stk::__set_tree::__set_tree(uint32_t a_level)
+__stdcall stk::__set_tree::__set_tree(uint32_t a_level)
 {
 for (uint32_t c = 1; c <= a_level; c++) {
      f_ptrs_size = f_ptrs_size * 256;
@@ -20,7 +20,7 @@ for (uint32_t i = 0; i < f_ptrs_size; i++) {
 }
 //---------------------------------------------------------------------------
 
-stk::__set_tree::~__set_tree(void)
+__stdcall stk::__set_tree::~__set_tree(void)
 {
 for (uint32_t i = 0; i < f_ptrs_size; i++) {
      delete ptrs[i];
@@ -30,7 +30,7 @@ f_ptrs_size = 0;
 }
 //---------------------------------------------------------------------------
 
-stk::__set_tree_node::__set_tree_node()
+__stdcall stk::__set_tree_node::__set_tree_node()
 {
 #ifdef __DEBUG_SET_TREE__
 __DEBUG_CALLED("")
@@ -40,7 +40,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-stk::__set_tree_node::__set_tree_node(stk::__set_tree_node *a_owner)
+__stdcall stk::__set_tree_node::__set_tree_node(stk::__set_tree_node *a_owner)
 {
 #ifdef __DEBUG_SET_TREE__
 __DEBUG_CALLED("")
@@ -49,7 +49,7 @@ __DEBUG_CALLED("")
 }
 //---------------------------------------------------------------------------
 
-stk::__set_tree_node::~__set_tree_node()
+__stdcall stk::__set_tree_node::~__set_tree_node()
 {
 #ifdef __DEBUG_SET_TREE__
 __DEBUG_CALLED("")
