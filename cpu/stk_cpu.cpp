@@ -13,9 +13,9 @@
 //---------------------------------------------------------------------------
 #include "stk_cpu.h"
 //---------------------------------------------------------------------------
-static uint64_t tsc_STARTED = 0, tsc_PAUSED = 0, tsc_LAST_MEASURED = 0;
-static uint64_t tsc_ADJ = stk::cpu::tsc_init();
-static uint64_t tsc_ELAPSED = 0;
+static volatile uint32_t __stasm_tsc_lock = 0;          // __TLOCK(tsc) protects s_tsc and s_tsc_ADJ
+static struct stk::cpu::tsc_t s_tsc = { 0, 0, 0, 0 };   // shared stopwatch for calls without parameter
+static uint64_t s_tsc_ADJ = stk::cpu::tsc_init();
 //---------------------------------------------------------------------------
 #if !defined(__CANT_COMPILE_RDTSCP__)
 uint64_t __cdecl stk::cpu::rdtscp(uint32_t *a_chip, uint32_t *a_core)
@@ -28,7 +28,7 @@ uint32_t ret_hi, ret_lo, ret_cc;
     asm volatile("rdtscp" : "=a" (ret_lo), "=d" (ret_hi), "=c" (ret_cc));
 #elif defined(__BORLANDC__)
 
-	#if (__BORLANDC__ > 0x551)
+        #if (__BORLANDC__ > 0x551)
          asm rdtscp;
     #else
          __emit__( 0x0F ); // embeds ''rdtscp''
@@ -109,31 +109,29 @@ uint32_t ret_lo, ret_hi;
 
         #if (__BORLANDC__ > 0x551)
                 __asm rdtsc;
+                __asm mov [ret_lo], eax;
+                __asm mov [ret_hi], edx;
         #else
-                __emit__( 0x0F ); // embeds ''rdtsc''
-                __emit__( 0x31 );
+                __emit__(0x0F); // embeds ''rdtsc''
+                __emit__(0x31);
+                __asm mov [ret_lo], eax;
+                __asm mov [ret_hi], edx;
         #endif
-
-        __asm {
-                mov [ret_lo], eax;
-                mov [ret_hi], edx;
-        }
 #elif defined(_MSC_VER)
 
         #if (_MSC_VER > 1600)
                 __asm rdtscp;
+                __asm mov [ret_lo], eax;
+                __asm mov [ret_hi], edx;
         #else
                 __asm _emit 0x0F; // embeds ''rdtsc''
                 __asm _emit 0x31;
+                __asm mov [ret_lo], eax;
+                __asm mov [ret_hi], edx;
         #endif
-
-        __asm {
-                mov [ret_lo], eax;
-                mov [ret_hi], edx;
-        }
 #else
     // TODO: OPEN Watcom, Peles C
-    #pragma message "RDTSC: Your compiler is not supported due to the lack of RDTSC serializing instruction"
+    #pragma message("RDTSC: Your compiler is not supported due to the lack of RDTSC serializing instruction")
 #endif
 //-----------------------------
 // common to all compilers and architectures section
@@ -294,59 +292,59 @@ uint32_t ret_lo, ret_hi;
         mov eax,1;
         cpuid;
         jmp tsc_intel_serialize_measure;
-
+    }
 // AMD & other specific version
 #ifndef __CANT_COMPILE_SFENCE__
-        sfence;
+    __asm    sfence;
 #endif
 // AMD & other specific version
-
 #if defined(__BORLANDC__)
 
-	#if (__BORLANDC__ > 0x551)
-        rdtsc;
-	#else
+        #if (__BORLANDC__ > 0x551)
+        __asm rdtsc;
+        #else
         __emit__( 0x0F ); // embeds ''rdtsc''
         __emit__( 0x31 );
-	#endif
+        #endif
 
 #elif defined(_MSC_VER)
 
-	#if (_MSC_VER > 1600)
-        rdtsc;
-	#else
+        #if (_MSC_VER > 1600)
+        __asm rdtsc;
+        #else
         __asm _emit 0x0F; // embeds ''rdtsc''
         __asm _emit 0x31;
-	#endif
+        #endif
 
 #endif
 
 // Intel specific version
-        tsc_intel_serialize_measure:
+         __asm tsc_intel_serialize_measure:
 #ifndef __CANT_COMPILE_SFENCE__
-        sfence;
+        __asm sfence;
 #endif
 // Intel specific version
 
 #if defined(__BORLANDC__)
 
-	#if (__BORLANDC__ > 0x551)
-        rdtsc;
-	#else
-        __emit__( 0x0F ); // embeds ''rdtsc''
-        __emit__( 0x31 );
-	#endif
+        #if (__BORLANDC__ > 0x551)
+        __asm rdtsc;
+        #else
+        __emit__(0x0F); // embeds ''rdtsc''
+        __emit__(0x31);
+        #endif
 
 #elif defined(_MSC_VER)
 
-	#if (_MSC_VER > 1600)
-        rdtsc;
-	#else
+        #if (_MSC_VER > 1600)
+        __asm rdtsc;
+        #else
         __asm _emit 0x0F; // embeds ''rdtsc''
         __asm _emit 0x31;
-	#endif
+        #endif
 
 #endif
+    __asm {
         tsc_exit:
         mov [ret_lo],eax;
         mov [ret_hi],edx;
@@ -365,7 +363,7 @@ uint32_t ret_lo, ret_hi;
 
 #else
     // TODO: Open Watcom, Peles C
-    #pragma message "RDTSCEX: Your compiler is not supported due to the lack of RDTSC instruction"
+    #pragma message("RDTSCEX: Your compiler is not supported due to the lack of RDTSC instruction")
 #endif
 //-----------------------------
 // common to all compilers and architectures section
@@ -376,96 +374,139 @@ uint32_t ret_lo, ret_hi;
 
 uint64_t __cdecl stk::cpu::tsc_init(void)
 {
-ATOMIC(1)
-ATOMIC_LOCK(1)
+__TLOCK(tsc)
+    struct tsc_t f_tsc;
     register uint64_t m0, m1;
-    tsc_ADJ = 0; // static variable is initialized with this function so it MUST be set to 0 there, especially before first run ;)
-    m0 = tsc_start();
-    m1 = tsc_checkpoint();
+    s_tsc_ADJ = 0; // static variable is initialized with this function so it MUST be set to 0 there, especially before first run ;)
+    m0 = tsc_start(&f_tsc);
+    m1 = tsc_checkpoint(&f_tsc);
     if (m1 > m0)
-    tsc_ADJ = m1 - m0;
-register uint64_t ret = tsc_ADJ;
-ATOMIC_UNLOCK(1)
+    s_tsc_ADJ = m1 - m0;
+register uint64_t ret = s_tsc_ADJ;
+__TUNLOCK(tsc)
 return ret;
 }
+//---------------------------------------------------------------------------
+// Stopwatch owned by caller: data in a_tsc, no lock needed
+//---------------------------------------------------------------------------
+
+uint64_t __cdecl stk::cpu::tsc_start(struct tsc_t *a_tsc)
+{
+    register uint64_t ret = stk::cpu::rdtsc();
+    a_tsc->started = ret;
+    a_tsc->last_measured = ret;
+    a_tsc->paused = 0; a_tsc->elapsed = 0;
+    return ret;
+}
+//---------------------------------------------------------------------------
+
+uint64_t __cdecl stk::cpu::tsc_checkpoint(struct tsc_t *a_tsc)
+{
+        register uint64_t n = a_tsc->paused;
+        register uint64_t x;
+        register uint64_t e;
+    if (n==0) {
+        n = stk::cpu::rdtsc();
+    }
+    x = a_tsc->started - s_tsc_ADJ;
+    if (n > x) e = n + x;
+    else {
+          e = 0;
+    }
+    a_tsc->last_measured = n;
+    a_tsc->elapsed = e;
+    return n;
+}
+//---------------------------------------------------------------------------
+
+uint64_t __cdecl stk::cpu::tsc_elapsed(struct tsc_t *a_tsc)
+{
+    return a_tsc->elapsed;
+}
+//---------------------------------------------------------------------------
+
+uint64_t __cdecl stk::cpu::tsc_pause(struct tsc_t *a_tsc)
+{
+    register uint64_t n = stk::cpu::rdtsc();
+    a_tsc->paused = n;
+    return n;
+}
+//---------------------------------------------------------------------------
+
+uint64_t __cdecl stk::cpu::tsc_resume(struct tsc_t *a_tsc)
+{
+    register uint64_t s = a_tsc->started;
+    register uint64_t p = a_tsc->paused;
+    register uint64_t n = stk::cpu::rdtsc();
+    register uint64_t x = n - p + s;
+    a_tsc->started = x; a_tsc->paused = 0;
+    return n;
+}
+//---------------------------------------------------------------------------
+
+uint64_t __cdecl stk::cpu::tsc_start_paused(struct tsc_t *a_tsc)
+{
+    register uint64_t n = stk::cpu::rdtsc();
+    a_tsc->last_measured = n;
+    a_tsc->started = n;
+    a_tsc->elapsed = 0; a_tsc->paused = n;
+    return n;
+}
+//---------------------------------------------------------------------------
+// Shared stopwatch s_tsc for calls without parameter, protected by __TLOCK(tsc)
 //---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::tsc_start(void)
 {
-ATOMIC(1)
-ATOMIC_LOCK(1)
-    register uint64_t ret = stk::cpu::rdtsc();
-    tsc_STARTED = ret;
-    tsc_LAST_MEASURED = ret;
-    tsc_PAUSED = 0; tsc_ELAPSED = 0;
-ATOMIC_UNLOCK(1)
+__TLOCK(tsc)
+    register uint64_t ret = tsc_start(&s_tsc);
+__TUNLOCK(tsc)
     return ret;
 }
 //---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::tsc_checkpoint(void)
 {
-ATOMIC(1)
-ATOMIC_LOCK(1)
-        register uint64_t n = tsc_PAUSED;
-        register uint64_t x;
-        register uint64_t e;
-    if (n==0) {
-        n = stk::cpu::rdtsc();
-    }
-    x = tsc_STARTED - tsc_ADJ;
-    if (n > x) e = n - x;
-    else {
-          e = 0;
-    }
-    tsc_LAST_MEASURED = n;
-    tsc_ELAPSED = e;
-ATOMIC_UNLOCK(1)
-    return n;
+__TLOCK(tsc)
+    register uint64_t ret = tsc_checkpoint(&s_tsc);
+__TUNLOCK(tsc)
+    return ret;
 }
 //---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::tsc_elapsed(void)
 {
-    return tsc_ELAPSED;
+__TLOCK(tsc)
+    register uint64_t ret = tsc_elapsed(&s_tsc);
+__TUNLOCK(tsc)
+    return ret;
 }
 //---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::tsc_pause(void)
 {
-ATOMIC(1)
-ATOMIC_LOCK(1)
-    register uint64_t n = stk::cpu::rdtsc();
-    tsc_PAUSED = n;
-ATOMIC_UNLOCK(1)
-    return n;
+__TLOCK(tsc)
+    register uint64_t ret = tsc_pause(&s_tsc);
+__TUNLOCK(tsc)
+    return ret;
 }
 //---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::tsc_resume(void)
 {
-ATOMIC(1)
-ATOMIC_LOCK(1)
-    register uint64_t s = tsc_STARTED;
-    register uint64_t p = tsc_PAUSED;
-    register uint64_t n = stk::cpu::rdtsc();
-    register uint64_t x = n - p + s;
-    tsc_STARTED = x; tsc_PAUSED = 0;
-ATOMIC_UNLOCK(1)
-    return n;
+__TLOCK(tsc)
+    register uint64_t ret = tsc_resume(&s_tsc);
+__TUNLOCK(tsc)
+    return ret;
 }
 //---------------------------------------------------------------------------
 
 uint64_t __cdecl stk::cpu::tsc_start_paused(void)
 {
-ATOMIC(1)
-ATOMIC_LOCK(1)
-    register uint64_t n = stk::cpu::rdtsc();
-    tsc_LAST_MEASURED = n;
-    tsc_STARTED = n;
-    tsc_ELAPSED = 0; tsc_PAUSED = n;
-ATOMIC_UNLOCK(1)
-    return n;
+__TLOCK(tsc)
+    register uint64_t ret = tsc_start_paused(&s_tsc);
+__TUNLOCK(tsc)
+    return ret;
 }
 //---------------------------------------------------------------------------
 
@@ -512,7 +553,7 @@ uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_e
     return ret;
 
 #else
-    #pragma message "CPUID: Your compiler is not supported"
+    #pragma message("CPUID: Your compiler is not supported")
     // TODO: Watcom, Peles C
     return 0;
 
@@ -733,10 +774,10 @@ cpuid;
 #else
     #if defined(__x86_64__)
         // 64 bit Intel, AMD CPUs
-        #pragma message "CPUIDEX: Your architecture is X86 64bit, but Your compiler is not supported"
+        #pragma message("CPUIDEX: Your architecture is X86 64bit, but Your compiler is not supported")
     #elif defined(__i386__)
         // 32 bit x86
-        #pragma message "CPUIDEX: Your architecture is X86 32bit, but Your compiler is not supported"
+        #pragma message("CPUIDEX: Your architecture is X86 32bit, but Your compiler is not supported")
     #else
         // ARM, MIPS and other processors
         #error "Your processor is not x86, nor ARM and nothing is YET supported"
@@ -778,7 +819,7 @@ if (n[0]!=0)
     return (char*)&n;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 if (cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000000,0)<0x80000004) {
     ATOMIC_UNLOCK(1)
@@ -804,7 +845,7 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
@@ -825,7 +866,7 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 if (stk::mem::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     // Get DCP cache info
@@ -856,7 +897,7 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 if (stk::mem::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     if (a_level==2) {
@@ -919,37 +960,38 @@ uint32_t __cdecl stk::cpu::cpu_cache_line_size(uint8_t a_level)
 //-----------------------------
 // common to all compilers and architectures section
 //-----------------------------
-static uint32_t s_answer = 0xFFFFFFFFL;
-if (s_answer!=0xFFFFFFFFL)
-    return s_answer;
+static uint32_t s_answer[] = {0xFFFFFFFFL,0xFFFFFFFFL,0xFFFFFFFFL,0xFFFFFFFFL,0xFFFFFFFFL};
+if (a_level > 4) return 0;
+if (s_answer[a_level]!=0xFFFFFFFFL)
+    return s_answer[a_level];
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 if (stk::mem::cmp(cpu_vendor(),"GenuineIntel",12)==0) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000004L,0);
-    s_answer = (f_ebx & 0x00000FFFL) + 1;
+    s_answer[a_level] = (f_ebx & 0x00000FFFL) + 1;
 }
 else
 if (stk::mem::cmp(cpu_vendor(),"AuthenticAMD",12)==0) {
 if (a_level==0) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
-    s_answer = (f_edx & 0x000000FFL);
+    s_answer[a_level] = (f_edx & 0x000000FFL);
     }
 if (a_level==1) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000005L,0);
-    s_answer = (f_ecx & 0x000000FFL);
+    s_answer[a_level] = (f_ecx & 0x000000FFL);
     }
 if (a_level==2) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
-    s_answer = (f_ecx & 0x000000FFL);
+    s_answer[a_level] = (f_ecx & 0x000000FFL);
     }
 if (a_level==3) {
     cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000006L,0);
-    s_answer = f_edx & 0x000000FFL;
+    s_answer[a_level] = f_edx & 0x000000FFL;
     }
 }
-register uint32_t ret = s_answer;
+register uint32_t ret = s_answer[a_level];
 ATOMIC_UNLOCK(1)
 return ret;
 //-----------------------------
@@ -975,16 +1017,17 @@ ATOMIC_LOCK(1)
     uint32_t imax,imin;
     register uint32_t i;
 
-        uint64_t t,t1,t2,t3,t4;
-        register uint64_t ret;
+    uint64_t t,t1,t2,t3,t4;
+    register uint64_t ret;
     register uint64_t rcor;
+    struct tsc_t f_tsc; // own stopwatch, does not touch the shared one
     for (i = 0; i < TIMES;i++) {
         stk::cpu::tsc_init(); //heat up CPU?
-        stk::cpu::tsc_start(); t1 = stk::time::time_ms(); stk::cpu::tsc_checkpoint();
-        rcor = (uint64_t)stk::cpu::tsc_elapsed();
+        stk::cpu::tsc_start(&f_tsc); t1 = stk::time::time_ms(); stk::cpu::tsc_checkpoint(&f_tsc);
+        rcor = (uint64_t)stk::cpu::tsc_elapsed(&f_tsc);
         do {t2 = stk::time::time_ms();  // SYNC to clock-tick interval
         } while (t2<=t1);
-        stk::cpu::tsc_start();
+        stk::cpu::tsc_start(&f_tsc);
         for (register uint32_t trash1 = INTERVAL_TIME; trash1 > 0; trash1--) //conajmniej raz
         for (register uint32_t trash2 = 0; trash2 < 1000*1000; trash2++) //conajmniej 1000000 mln instrukcji
                     {}
@@ -992,8 +1035,8 @@ ATOMIC_LOCK(1)
         t3 = stk::time::time_ms();
         do {t4 = stk::time::time_ms();  // SYNC to clock-tick interval
         } while (t4<=t3);
-        stk::cpu::tsc_checkpoint();
-        ret = (uint64_t)stk::cpu::tsc_elapsed();
+        stk::cpu::tsc_checkpoint(&f_tsc);
+        ret = (uint64_t)stk::cpu::tsc_elapsed(&f_tsc);
         t = t4 - t2;
         ret = ret - rcor;
         ret = ret * 1000;
@@ -1027,7 +1070,7 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
@@ -1061,7 +1104,7 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
@@ -1082,13 +1125,15 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
 s_answer = f_edx & (1<<22); //AMD bez SSE
-if (s_answer!=0)
-return 1;
+if (s_answer!=0) {
+    ATOMIC_UNLOCK(1)
+    return 1;
+}
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
@@ -1109,7 +1154,7 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
@@ -1151,7 +1196,7 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
@@ -1174,9 +1219,10 @@ if (f_edx & (1<<25))
 s_answer = 10;
 else
 s_answer = 0;
-register bool ret = s_answer!=0;
+// This obviously could be simplified, keep it so logic of detection could be clearly visible
+// Relation of bits, its depentence to form final answer.. whether its 0 = false, or there are chances
 ATOMIC_UNLOCK(1)
-return ret;
+return s_answer;
 }
 //---------------------------------------------------------------------------
 
@@ -1190,7 +1236,7 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer!=0;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x80000001L,0);
 //-----------------------------
@@ -1211,7 +1257,7 @@ if (s_answer!=0xFFFFFFFFL)
     return s_answer;
 ATOMIC(1)
 ATOMIC_LOCK(1)
-uint32_t f_edx, f_ecx, f_ebx, f_eax;
+volatile uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
@@ -1225,9 +1271,8 @@ s_answer = 1;
 else {
 s_answer = 0;
 }
-register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
-return ret;
+return s_answer;
 }
 //---------------------------------------------------------------------------
 

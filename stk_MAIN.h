@@ -338,6 +338,7 @@
 #define __restrict__
 #define __restrict __restrict__
 #define   restrict __restrict__
+#define __attribute__(__some_parameter)
 //---------------------------------------------------------------------------
 #elif defined(__MSVC__)
 //---------------------------------------------------------------------------
@@ -369,6 +370,7 @@
 #define restrict
 #define __restrict__
 #define __restrict __restrict__
+#define __attribute__(__some_parameter)
 //---------------------------------------------------------------------------
 #elif defined(__POCC__)
 //---------------------------------------------------------------------------
@@ -434,6 +436,12 @@
     #define __PTRDIFF_TYPE__ int8_t*
     #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
 #elif defined(__BORLANDC__)
+    #define __builtin_prefetch(x1,x2,x3)
+    #define __builtin___clear_cache(x1,x2)
+    #define __PTRDIFF_TYPE__ int8_t*
+    #define __PTRDIFF_MAX__ ((__PTRDIFF_TYPE__)(~0))
+#endif
+#if defined(__WATCOMC__)
     #define __builtin_prefetch(x1,x2,x3)
     #define __builtin___clear_cache(x1,x2)
     #define __PTRDIFF_TYPE__ int8_t*

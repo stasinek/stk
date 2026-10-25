@@ -97,7 +97,21 @@ extern uint64_t	 __cdecl	rdtscex(void);
 extern uint64_t  __cdecl    rdtscp(uint32_t *a_chip, uint32_t *a_core);
 #endif
 //---------------------------------------------------------------------------
+// TSC stopwatch: caller owns the data (like WinAPI structures), no lock needed
+struct tsc_t {
+    uint64_t started;
+    uint64_t paused;
+    uint64_t elapsed;
+    uint64_t last_measured;
+};
 extern uint64_t  __cdecl	tsc_init(void);
+extern uint64_t	 __cdecl	tsc_start(struct tsc_t *a_tsc);
+extern uint64_t  __cdecl	tsc_start_paused(struct tsc_t *a_tsc);
+extern uint64_t  __cdecl	tsc_pause(struct tsc_t *a_tsc);
+extern uint64_t  __cdecl	tsc_resume(struct tsc_t *a_tsc);
+extern uint64_t  __cdecl	tsc_checkpoint(struct tsc_t *a_tsc);
+extern uint64_t  __cdecl	tsc_elapsed(struct tsc_t *a_tsc);
+// Same without parameter: one shared stopwatch, protected by __TLOCK(tsc)
 extern uint64_t	 __cdecl	tsc_start(void);
 extern uint64_t  __cdecl	tsc_start_paused(void);
 extern uint64_t  __cdecl	tsc_pause(void);

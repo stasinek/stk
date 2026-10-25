@@ -725,8 +725,8 @@ WVList
 0
 176
 MItem
-38
-compression\stk_compression_lzstv4.cpp
+36
+compression\stk_compression_lzss.cpp
 177
 WString
 6
@@ -816,7 +816,7 @@ WVList
 196
 MItem
 33
-file\eno\stk_file_lzst_header.cpp
+file\eno\stk_file_lzss_header.cpp
 197
 WString
 6

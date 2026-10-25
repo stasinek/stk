@@ -24,7 +24,7 @@ volatile static int64_t __shared_##num = 0;
     while (__shared_##num !=0) { ::stk::time::wait_us((const uint64_t)0); }\
     __unique_##num = stk::cpu::rdtsc(); __shared_##num = __unique_##num;\
     while(__shared_##num !=0 ? __shared_##num != __unique_##num : false) { ::stk::time::wait_us((const uint64_t)0); }
-//	__asm("mfence");\
+//      __asm("mfence");
 //    printf("ATOMIC_LOCK: %lld\n",__unique##num);
 
 #define ATOMIC_UNLOCK(num)\
