@@ -1269,22 +1269,46 @@ ATOMIC(1)
 ATOMIC_LOCK(1)
 uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
-// 28 = AVX available, 27 = OS supports OXSAVE is set,
-// 26 = function XGETBV is available
+// 28 = AVX available, 27 = OS supports OSXSAVE is set,
+// 26 = XSAVE/XRSTOR/XGETBV available
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
-if (((f_ecx & (1<<28)) && (f_ecx & (1<<27)) && (f_ecx & (1<<26))) == 0) return s_answer=0;
+if (((f_ecx & (1<<28)) && (f_ecx & (1<<27)) && (f_ecx & (1<<26))) == 0) {
+    s_answer = 0;
+    ATOMIC_UNLOCK(1)
+    return 0;
+}
 //-----------------------------
-cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x0000000DL,0);
-if ((f_ecx & (1<<26)) == 0) return s_answer=0;
-// WTF Intel https://www.felixcloutier.com/x86/xgetbv
-// Executing XGETBV and checking result
-f_ecx = 0;
+// XGETBV(0) = XCR0: bit 1 SSE state, bit 2 AVX state, both must be enabled by OS
+// https://www.felixcloutier.com/x86/xgetbv
+#if defined(__GNUC__) || defined(__CLANG__)
 __asm__ __volatile__(
         ".byte 0x0F, 0x01, 0xD0"
         : "=a"(f_eax), "=d"(f_edx)
-        : "c"(f_ecx)
+        : "c"(0)
     );
-if ((f_eax & 0x06) != 0x06) return s_answer=0;
+#elif defined(_MSC_VER)
+    __asm xor ecx,ecx;
+    __asm _emit 0x0F;   // embeds ''xgetbv''
+    __asm _emit 0x01;
+    __asm _emit 0xD0;
+    __asm mov [f_eax], eax;
+    __asm mov [f_edx], edx;
+#elif defined(__BORLANDC__)
+    __asm xor ecx,ecx;
+    __emit__(0x0F);     // embeds ''xgetbv''
+    __emit__(0x01);
+    __emit__(0xD0);
+    __asm mov [f_eax], eax;
+    __asm mov [f_edx], edx;
+#else
+    #pragma message("XGETBV: Your compiler is not supported")
+    f_eax = 0;
+#endif
+if ((f_eax & 0x06) != 0x06) {
+    s_answer = 0;
+    ATOMIC_UNLOCK(1)
+    return 0;
+}
 //-----------------------------
 // AVX1 vs AVX2 simplified
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000007L,0);
@@ -1292,12 +1316,10 @@ if (f_ebx & (1<< 5))
 s_answer = 2;
 else
 s_answer = 1;
-}
-else {
-s_answer = 0;
-}
+//-----------------------------
+register uint32_t ret = s_answer;
 ATOMIC_UNLOCK(1)
-return s_answer;
+return ret;
 }
 //---------------------------------------------------------------------------
 
