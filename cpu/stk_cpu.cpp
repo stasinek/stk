@@ -85,12 +85,12 @@ uint32_t ret_lo, ret_hi;
 // TODO: return ret 64bit as 32 bit parts union
 #if defined(__GNUC__) || defined(__CLANG__)
 
-    #if defined(__x86_64__) || defined(_WIN64) || defined(__i386)
+    #if defined(__x86_64__) || defined(_WIN64) || defined(__i386__)
     /*
      * cpuid -> ret_lo=EAX, ret_hu=EDX either on 64 and 32 bit CPU
      */
         asm volatile ("rdtsc" : "=a"(ret_lo), "=d"(ret_hi));
-    #elif defined(__ARM__)
+    #elif defined(__arm__)
     /*
      * According to ARM DDI 0487F.c, from Armv8.0 to Armv8.5 inclusive, the
      * system counter is at least 56 bits wide; from Armv8.6, the counter
@@ -255,7 +255,7 @@ uint32_t ret_lo, ret_hi;
     ret = ret  | (uint64_t)__stasm_x86_stack[0];
     ATOMIC_UNLOCK(1)
     return ret;
-    #elif defined(__ARM__)
+    #elif defined(__arm__)
         ATOMIC(1)
         ATOMIC_LOCK(1)
         uint32_t ret;
@@ -408,8 +408,8 @@ uint64_t __cdecl stk::cpu::tsc_checkpoint(struct tsc_t *a_tsc)
     if (n==0) {
         n = stk::cpu::rdtsc();
     }
-    x = a_tsc->started - s_tsc_ADJ;
-    if (n > x) e = n + x;
+    x = a_tsc->started + s_tsc_ADJ;
+    if (n > x) e = n - x;
     else {
           e = 0;
     }
@@ -533,7 +533,7 @@ uint32_t __cdecl stk::cpu::cpuid(uint32_t *a_eax, uint32_t *a_ebx, uint32_t *a_e
        *a_ecx = f_ecx;
        *a_edx = f_edx;
        return f_eax;
-#elif defined(__ARM__)
+#elif defined(__arm__)
         uint32_t ret;
         asm("mrs %0, " s : "=r" (ret));
         return ret;
@@ -2017,7 +2017,7 @@ uint32_t f_edx, f_ecx, f_ebx, f_eax;
 //-----------------------------
 cpuidex(&f_eax,&f_ebx,&f_ecx,&f_edx,0x00000001L,0);
 //-----------------------------
-s_answer = f_edx & (1<<12);
+s_answer = f_edx & (1<<5);
 register bool ret = s_answer!=0;
 ATOMIC_UNLOCK(1)
 return ret;

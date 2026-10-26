@@ -37,7 +37,7 @@ extern uint32_t *__cdecl    cpu_psn(void);
 extern uint32_t  __cdecl	cpu_cache_size(uint8_t a_level);
 extern uint32_t  __cdecl	cpu_cache_line_size(uint8_t a_level);
 //---------------------------------------------------------------------------
-#if defined(__i386__) | defined(__x86_64__)
+#if defined(__i386__) || defined(__x86_64__)
 extern bool 	 __cdecl	cpu_has_x87(void);
 extern bool 	 __cdecl	cpu_has_cmov(void);
 extern uint32_t	 __cdecl	cpu_has_cmpxchg(void);
